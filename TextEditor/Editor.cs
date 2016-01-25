@@ -1,20 +1,21 @@
-﻿using System.Windows;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TextEditor.Configuration;
 using TextEditor.Controls;
 using TextEditor.DataStructures;
+using TextEditor.Extensions;
 
 namespace TextEditor {
     public class Editor : Control {
 
         #region fields
 
-        private int linesColumnWidth;
         private TextArea textArea;
-        private Brush linesColumnColor;
-        private Color linesColumnFontColor;
 
         #endregion
 
@@ -39,7 +40,7 @@ namespace TextEditor {
 
         internal AutoShiftStack<ICommand> UndoCommands { get; private set; }
 
-        protected override int VisualChildrenCount => 1;
+        protected override int VisualChildrenCount => 2;
 
         #endregion
 
@@ -52,8 +53,24 @@ namespace TextEditor {
             Focusable = false;
 
             AddVisualChild(textArea);
+            AddLogicalChild(textArea);
+        }
+
+        #endregion
+
+        #region event handlers
+
+        protected override void OnInitialized(EventArgs e) {
+            base.OnInitialized(e);
+
             ConfigureLooks();
-            Init();
+        }
+
+        protected override void OnRender(DrawingContext drawingContext) {
+            base.OnRender(drawingContext);
+
+            drawingContext.DrawRectangle(EditorConfiguration.GetLinesColumnBrush(), null, new Rect(0, 0, EditorConfiguration.GetLinesColumnWidth(), RenderSize.Height));
+            RedrawLines(drawingContext);
         }
 
         #endregion
@@ -65,23 +82,25 @@ namespace TextEditor {
         private void TextPropertyChanged(string text) {
             //Text = text;
 
-            RedrawLines();
+            //RedrawLines();
         }
 
-        private void RedrawLines() {
+        private void RedrawLines(DrawingContext drawingContext) {
             int linesCount = textArea.GetLinesCount();
-        }
-
-        private void Init() {
-            RedrawLines();
+            var lineNumbers = Enumerable.Range(1, linesCount).ToArray();
+            var fontColor = EditorConfiguration.GetLinesColumnFontColor();
+            double fontHeight = EditorConfiguration.GetFontHeight();
+            var typeface = EditorConfiguration.GetTypeface();
+            
+            foreach (int num in lineNumbers) {
+                drawingContext.DrawText(
+                    new FormattedText(num.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, fontHeight, fontColor), 
+                    new Point(0, fontHeight * (num - 1)));
+            }
         }
 
         private void ConfigureLooks() {
-            linesColumnWidth = EditorConfiguration.GetLinesColumnWidth();
-            linesColumnColor = EditorConfiguration.GetLinesColumnBrush();
-            linesColumnFontColor = EditorConfiguration.GetLinesColumnFontColor();
-
-            textArea.Margin = new Thickness(linesColumnWidth, 0, 0, 0);
+            textArea.Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth(), 0, 0, 0);
         }
 
         #endregion
