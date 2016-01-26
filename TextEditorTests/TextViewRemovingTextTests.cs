@@ -65,6 +65,27 @@ namespace TextEditorTests {
             Assert.AreEqual(1, tv.GetTextLinesCount());
             Assert.AreEqual((text1 + text2).Length, tv.GetTextLineLength(0));
             Assert.AreEqual((text1 + text2), tv.GetTextLine(0));
+            Assert.AreEqual(4, tv.ActiveColumnIndex);
+            Assert.AreEqual(0, tv.ActiveLineIndex);
+        }
+
+        [TestMethod]
+        public void BackspaceWhenTwoNonEmptyLines() {
+            var tv = new TextEditor.Views.TextView.View();
+            string text1 = "asdf";
+            string text2 = "zxcv";
+
+            tv.EnterText(text1);
+            tv.EnterText("\r");
+            tv.EnterText(text2);
+            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
+            tv.RemoveText(Key.Back);
+
+            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual((text1 + text2).Length, tv.GetTextLineLength(0));
+            Assert.AreEqual((text1 + text2), tv.GetTextLine(0));
+            Assert.AreEqual(4, tv.ActiveColumnIndex);
+            Assert.AreEqual(0, tv.ActiveLineIndex);
         }
 
         private KeyEventArgs CreateKeyEventArgs(Key key) {

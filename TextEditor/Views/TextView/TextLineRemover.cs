@@ -65,7 +65,7 @@ namespace TextEditor.Views.TextView {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
                     new TextPosition { Column = textSources[startingTextPosition.Line - 1].Text.Length, Line = startingTextPosition.Line - 1 },
-                    textSources[startingTextPosition.Line - 1].Text)
+                    GetText(textSources, startingTextPosition.Line - 1) + textSources[startingTextPosition.Line].Text)
             };
 
             for (int i = startingTextPosition.Line + 1; i < textSources.Count; i++) {
