@@ -64,6 +64,7 @@ namespace TextEditorTests {
 
             Assert.AreEqual(1, tv.GetTextLinesCount());
             Assert.AreEqual((text1 + text2).Length, tv.GetTextLineLength(0));
+            Assert.AreEqual((text1 + text2), tv.GetTextLine(0));
         }
 
         private KeyEventArgs CreateKeyEventArgs(Key key) {

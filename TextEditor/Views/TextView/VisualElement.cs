@@ -4,7 +4,11 @@ using System.Windows.Media.TextFormatting;
 
 namespace TextEditor.Views.TextView {
     internal class VisualTextLine : DrawingVisual {
-        public VisualTextLine(TextLine textLine, double top) {
+        public int Index { get; set; }
+
+        public VisualTextLine(TextLine textLine, double top, int index) {
+            Index = index;
+
             Redraw(textLine, top);
         }
 

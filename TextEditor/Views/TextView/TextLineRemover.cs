@@ -82,9 +82,10 @@ namespace TextEditor.Views.TextView {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
                     new TextPosition { Column = startingTextPosition.Column, Line = startingTextPosition.Line },
-                    textSources[startingTextPosition.Line].Text)
+                    textSources[startingTextPosition.Line].Text + GetText(textSources, startingTextPosition.Line + 1))
             };
 
+            
             for (int i = startingTextPosition.Line + 2; i < textSources.Count; i++) {
                 linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition { Column = 0, Line = i - 2 }, textSources[i].Text));
             }
@@ -93,6 +94,14 @@ namespace TextEditor.Views.TextView {
                 LinesAffected = linesAffected,
                 LinesToRemove = new[] { startingTextPosition.Line + 1 }
             };
+        }
+
+        private string GetText(IList<SimpleTextSource> textSources, int lineIdx) {
+            if (lineIdx < textSources.Count && !string.IsNullOrEmpty(textSources[lineIdx].Text)) {
+                return textSources[lineIdx].Text;
+            }
+
+            return string.Empty;
         }
 
         #endregion

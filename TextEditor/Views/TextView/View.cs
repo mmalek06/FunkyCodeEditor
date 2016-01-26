@@ -125,9 +125,20 @@ namespace TextEditor.Views.TextView {
 
         private void RemoveLines(IEnumerable<int> indices) {
             var textSourcesToRemove = textSources.Select((obj, index) => new { index, obj }).Where(obj => indices.Contains(obj.index)).ToArray();
+            List<VisualTextLine> visualsToRemove = new List<VisualTextLine>();
 
             foreach (var txtSource in textSourcesToRemove) {
                 textSources.Remove(txtSource.obj);
+            }
+            foreach (var visual in visuals) {
+                var line = (VisualTextLine)visual;
+
+                if (indices.Contains(line.Index)) {
+                    visualsToRemove.Add(line);
+                }
+            }
+            foreach (var line in visualsToRemove) {
+                visuals.Remove(line);
             }
         }
 
@@ -159,7 +170,7 @@ namespace TextEditor.Views.TextView {
                 if (index < visuals.Count) {
                     ((VisualTextLine)visuals[index]).Redraw(textLine, top);
                 } else {
-                    visuals.Add(new VisualTextLine(textLine, top));
+                    visuals.Add(new VisualTextLine(textLine, top, index));
                 }
             }
         }
