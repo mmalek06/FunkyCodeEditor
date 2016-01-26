@@ -2,7 +2,6 @@
 using System;
 using System.Windows.Input;
 using System.Windows.Interop;
-using TextEditor.Commands;
 using TextEditor.Events;
 
 namespace TextEditorTests {

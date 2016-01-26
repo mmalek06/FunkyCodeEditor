@@ -5,86 +5,18 @@ namespace TextEditorTests {
     public class TextViewAddingTextTests {
 
         [TestMethod]
-        public void LinesCountShouldBe_1() {
+        public void PasteText() {
             var tv = new TextEditor.Views.TextView.View();
 
             tv.EnterText("asdf");
 
             Assert.AreEqual(1, tv.GetTextLinesCount());
-        }
-
-        [TestMethod]
-        public void CursorShouldBeOn_0_4() {
-            var tv = new TextEditor.Views.TextView.View();
-
-            tv.EnterText("asdf");
-
             Assert.AreEqual(4, tv.ActiveColumnIndex);
             Assert.AreEqual(0, tv.ActiveLineIndex);
         }
 
         [TestMethod]
-        public void SingleCharAtATime_LinesCountShouldBe_3() {
-            var tv = new TextEditor.Views.TextView.View();
-
-            tv.EnterText("a");
-            tv.EnterText("s");
-            tv.EnterText("d");
-            tv.EnterText("f");
-            tv.EnterText("\r");
-            tv.EnterText("\r");
-            tv.EnterText("z");
-            tv.EnterText("x");
-            tv.EnterText("c");
-            tv.EnterText("v");
-
-            Assert.AreEqual(3, tv.GetTextLinesCount());
-        }
-
-        [TestMethod]
-        public void SingleCharAtATime_CursorShouldBeOn_2_4() {
-            var tv = new TextEditor.Views.TextView.View();
-
-            tv.EnterText("a");
-            tv.EnterText("s");
-            tv.EnterText("d");
-            tv.EnterText("f");
-            tv.EnterText("\r");
-            tv.EnterText("\r");
-            tv.EnterText("z");
-            tv.EnterText("x");
-            tv.EnterText("c");
-            tv.EnterText("v");
-
-            Assert.AreEqual(4, tv.ActiveColumnIndex);
-            Assert.AreEqual(2, tv.ActiveLineIndex);
-        }
-
-        [TestMethod]
-        public void WholeLines_LinesShouldBe_3() {
-            var tv = new TextEditor.Views.TextView.View();
-
-            tv.EnterText("asdf");
-            tv.EnterText("\r");
-            tv.EnterText("\rzxcv");
-
-            Assert.AreEqual(3, tv.GetTextLinesCount());
-        }
-
-        [TestMethod]
-        public void WholeLines_CursorShouldBeOn_2_4() {
-            var tv = new TextEditor.Views.TextView.View();
-
-            tv.EnterText("asdf");
-            tv.EnterText("\r");
-            tv.EnterText("\rzxcv");
-
-            Assert.AreEqual(4, tv.ActiveColumnIndex);
-            Assert.AreEqual(2, tv.ActiveLineIndex);
-        }
-
-        [TestMethod]
-        public void SingleCharAtATime_LineShouldBe_4_CharsLong() {
+        public void EnterTextCharByChar() {
             var tv = new TextEditor.Views.TextView.View();
 
             tv.EnterText("a");
@@ -93,6 +25,41 @@ namespace TextEditorTests {
             tv.EnterText("d");
 
             Assert.AreEqual(4, tv.GetTextLineLength(0));
+            Assert.AreEqual(4, tv.ActiveColumnIndex);
+            Assert.AreEqual(0, tv.ActiveLineIndex);
+        }
+
+        [TestMethod]
+        public void EnterTextCharByCharInLines() {
+            var tv = new TextEditor.Views.TextView.View();
+
+            tv.EnterText("a");
+            tv.EnterText("s");
+            tv.EnterText("d");
+            tv.EnterText("f");
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.EnterText("z");
+            tv.EnterText("x");
+            tv.EnterText("c");
+            tv.EnterText("v");
+
+            Assert.AreEqual(3, tv.GetTextLinesCount());
+            Assert.AreEqual(4, tv.ActiveColumnIndex);
+            Assert.AreEqual(2, tv.ActiveLineIndex);
+        }
+
+        [TestMethod]
+        public void PasteTextInLines() {
+            var tv = new TextEditor.Views.TextView.View();
+
+            tv.EnterText("asdf");
+            tv.EnterText("\r");
+            tv.EnterText("\rzxcv");
+
+            Assert.AreEqual(3, tv.GetTextLinesCount());
+            Assert.AreEqual(4, tv.ActiveColumnIndex);
+            Assert.AreEqual(2, tv.ActiveLineIndex);
         }
 
         [TestMethod]
