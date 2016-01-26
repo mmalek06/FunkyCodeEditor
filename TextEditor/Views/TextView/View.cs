@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -24,7 +23,8 @@ namespace TextEditor.Views.TextView {
         private TextFormatter formatter;
         private TextRunProperties runProperties;
         private SimpleParagraphProperties paragraphProperties;
-        private TextLineTransformer transformer;
+        private TextLineTransformer addingTransformer;
+        private TextLineRemover removingTransformer;
 
         #endregion
 
@@ -42,50 +42,46 @@ namespace TextEditor.Views.TextView {
             runProperties = this.CreateGlobalTextRunProperties();
             textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, runProperties) };
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = runProperties };
-            transformer = new TextLineTransformer(textSources);
+            addingTransformer = new TextLineTransformer();
+            removingTransformer = new TextLineRemover();
         }
 
         #endregion
 
         #region event handlers
 
-        public void HandleCaretMove(object sender, CaretMovedEventArgs e) {
+        internal void HandleCaretMove(object sender, CaretMovedEventArgs e) {
             ActiveLineIndex = e.NewPosition.Line;
             ActiveColumnIndex = e.NewPosition.Column;
         }
 
-        public void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
+        internal void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
-        public void HandleMouseDown(object sender, MouseButtonEventArgs e) => Focus();
+        internal void HandleMouseDown(object sender, MouseButtonEventArgs e) => Focus();
 
         #endregion
 
         #region public methods
 
         public void EnterText(string enteredText) {
-            var newLines = transformer.CreateLines(enteredText, ActiveLineIndex, ActiveColumnIndex);
-            
+            var newLines = addingTransformer.TransformLines(textSources, new TextPosition { Line = ActiveLineIndex, Column = ActiveColumnIndex }, enteredText);
+
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
-            DrawLines(newLines.Select(line => line.Key.Line));
+            DrawLines(newLines.Select(lineInfo => lineInfo.Key.Line));
 
             newLines.Clear();
         }
 
         public void RemoveText(Key key) {
-            string lineToModify = textSources[ActiveLineIndex].Text;
-            string newLineContent = string.Empty;
-            
-            if (key == Key.Delete) {
-                textSources[ActiveLineIndex].Text = lineToModify.Substring(0, ActiveColumnIndex) + lineToModify.Substring(ActiveColumnIndex + 1);
-            } else {
-                bool attachRest = ActiveColumnIndex < textSources[ActiveLineIndex].Text.Length;
-                
-                textSources[ActiveLineIndex].Text = lineToModify.Substring(0, ActiveColumnIndex - 1) + (attachRest ? lineToModify.Substring(ActiveColumnIndex) : string.Empty);
-                ActiveColumnIndex -= 1;
+            var removalInfo = removingTransformer.TransformLines(textSources, new TextPosition { Column = ActiveColumnIndex, Line = ActiveLineIndex }, key);
+
+            if (removalInfo.LinesAffected.Any()) {
+                RemoveLines(removalInfo.LinesToRemove);
+                UpdateTextData(removalInfo.LinesAffected);
+                UpdateCursorPosition(removalInfo.LinesAffected.First().Key);
+                DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
             }
-            
-            DrawLine(ActiveLineIndex);
         }
 
         public int GetTextLinesCount() => textSources.Count;
@@ -96,14 +92,23 @@ namespace TextEditor.Views.TextView {
 
         public IEnumerable<string> GetTextLines() => textSources.Select(source => source.Text);
 
-        public void TriggerTextChanged() => TextChanged(this, new TextChangedEventArgs { CurrentColumn = ActiveColumnIndex, CurrentLine = ActiveLineIndex });
+        public void TriggerTextChanged() {
+            if (TextChanged != null) {
+                TextChanged(this, new TextChangedEventArgs { CurrentColumn = ActiveColumnIndex, CurrentLine = ActiveLineIndex });
+            }
+        }
 
         #endregion
 
         #region methods
 
+        private void UpdateCursorPosition(TextPosition position) {
+            ActiveColumnIndex = position.Column;
+            ActiveLineIndex = position.Line;
+        }
+
         private void UpdateCursorPosition(string text) {
-            var replacedText = transformer.SpecialCharsRegex.Replace(text, string.Empty);
+            var replacedText = addingTransformer.SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextConfiguration.NEWLINE) {
                 ActiveColumnIndex = 0;
@@ -118,7 +123,15 @@ namespace TextEditor.Views.TextView {
             }
         }
 
-        private void UpdateTextData(Dictionary<TextPosition, string> changedLines) {
+        private void RemoveLines(IEnumerable<int> indices) {
+            var textSourcesToRemove = textSources.Select((obj, index) => new { index, obj }).Where(obj => indices.Contains(obj.index)).ToArray();
+
+            foreach (var txtSource in textSourcesToRemove) {
+                textSources.Remove(txtSource.obj);
+            }
+        }
+
+        private void UpdateTextData(IEnumerable<KeyValuePair<TextPosition, string>> changedLines) {
             foreach (var kvp in changedLines) {
                 if (kvp.Key.Line < textSources.Count) {
                     textSources[kvp.Key.Line].Text = kvp.Value;

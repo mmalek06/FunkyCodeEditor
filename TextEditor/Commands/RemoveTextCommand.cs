@@ -22,11 +22,7 @@ namespace TextEditor.Commands {
             var e = parameter as KeyEventArgs;
 
             if (e != null && removalKeys.Contains(e.Key)) {
-                if (e.Key == Key.Delete) {
-                    return view.GetTextLinesCount() > 0 && view.ActiveColumnIndex < view.GetTextLineLength(view.ActiveLineIndex);
-                } else {
-                    return view.GetTextLinesCount() > 0 && view.ActiveColumnIndex > 0;
-                }
+                return view.GetTextLinesCount() > 0;
             }
 
             return false;

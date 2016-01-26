@@ -40,7 +40,7 @@ namespace TextEditor {
 
         internal AutoShiftStack<ICommand> UndoCommands { get; private set; }
 
-        protected override int VisualChildrenCount => 2;
+        protected override int VisualChildrenCount => 1;
 
         #endregion
 

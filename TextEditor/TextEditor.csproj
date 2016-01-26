@@ -81,7 +81,9 @@
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
     <Compile Include="Views\SelectionView\VisualElement.cs" />
     <Compile Include="Views\SelectionView\View.cs" />
+    <Compile Include="Views\TextView\LinesRemoveInfo.cs" />
     <Compile Include="Views\TextView\TextConfiguration.cs" />
+    <Compile Include="Views\TextView\TextLineRemover.cs" />
     <Compile Include="Views\TextView\TextLineTransformer.cs" />
     <Compile Include="Views\ViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />

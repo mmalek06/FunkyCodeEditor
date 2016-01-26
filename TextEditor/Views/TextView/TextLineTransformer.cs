@@ -8,12 +8,6 @@ using TextEditor.TextProperties;
 namespace TextEditor.Views.TextView {
     internal class TextLineTransformer {
 
-        #region fields
-
-        private IList<SimpleTextSource> textSources;
-
-        #endregion
-
         #region public properties
 
         public Regex SpecialCharsRegex { get; private set; }
@@ -22,8 +16,7 @@ namespace TextEditor.Views.TextView {
 
         #region constructor
 
-        public TextLineTransformer(IList<SimpleTextSource> textSources) {
-            this.textSources = textSources;
+        public TextLineTransformer() {
             SpecialCharsRegex = new Regex("[\a|\b|\n|\r|\f|\t|\v]");
         }
 
@@ -31,15 +24,15 @@ namespace TextEditor.Views.TextView {
 
         #region public methods
 
-        public Dictionary<TextPosition, string> CreateLines(string text, int startingLineIdx, int startingColIdx) {
+        public IDictionary<TextPosition, string> TransformLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, string text) {
             var replacedText = SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextConfiguration.NEWLINE) {
-                return LineAdded(text, startingLineIdx, startingColIdx);
+                return LineAdded(textSources, text, startingTextPosition);
             } else if (replacedText.Length == 1) {
-                return CharacterEntered(replacedText, startingLineIdx, startingColIdx);
+                return CharacterEntered(textSources, replacedText, startingTextPosition);
             } else {
-                return TextPasted(text, startingLineIdx, startingColIdx);
+                return TextPasted(textSources, text, startingTextPosition);
             }
         }
 
@@ -47,44 +40,44 @@ namespace TextEditor.Views.TextView {
 
         #region methods
 
-        private Dictionary<TextPosition, string> LineAdded(string text, int startingLineIdx, int startingColIdx) {
-            string textBeforeCursorPosition = string.Concat(textSources[startingLineIdx].Text.Take(startingColIdx));
-            string textAfterCursorPosition = string.Concat(textSources[startingLineIdx].Text.Skip(startingColIdx));
+        private IDictionary<TextPosition, string> LineAdded(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
+            string textBeforeCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column));
+            string textAfterCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
             var transformations = new Dictionary<TextPosition, string> {
-                [new TextPosition { Column = startingColIdx, Line = startingLineIdx }] = textBeforeCursorPosition,
-                [new TextPosition { Column = 0, Line = startingLineIdx + 1 }] = textAfterCursorPosition
+                [new TextPosition { Column = startingTextPosition.Column, Line = startingTextPosition.Line }] = textBeforeCursorPosition,
+                [new TextPosition { Column = 0, Line = startingTextPosition.Line + 1 }] = textAfterCursorPosition
             };
 
-            for (int i = startingLineIdx + 1; i < textSources.Count; i++) {
+            for (int i = startingTextPosition.Line + 1; i < textSources.Count; i++) {
                 transformations[new TextPosition { Column = 0, Line = i + 1 }] = textSources[i].Text;
             }
 
             return transformations;
         }
 
-        private Dictionary<TextPosition, string> CharacterEntered(string text, int startingLineIdx, int startingColIdx) {
+        private IDictionary<TextPosition, string> CharacterEntered(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
             string currentLineText = string.Empty;
 
             if (textSources.Any()) {
-                currentLineText = textSources[startingLineIdx].Text;
+                currentLineText = textSources[startingTextPosition.Line].Text;
 
-                if (startingColIdx >= currentLineText.Length) {
+                if (startingTextPosition.Column >= currentLineText.Length) {
                     currentLineText += text;
                 } else {
-                    currentLineText.Insert(startingColIdx, text);
+                    currentLineText.Insert(startingTextPosition.Column, text);
                 }
             } else {
                 currentLineText = text;
             }
 
             return new Dictionary<TextPosition, string> {
-                [new TextPosition { Column = startingColIdx + 1, Line = startingLineIdx }] = currentLineText
+                [new TextPosition { Column = startingTextPosition.Column + 1, Line = startingTextPosition.Line }] = currentLineText
             };
         }
 
-        private Dictionary<TextPosition, string> TextPasted(string text, int startingLineIdx, int startingColIdx) =>
+        private IDictionary<TextPosition, string> TextPasted(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) =>
             text.Split(TextConfiguration.NEWLINE[0])
-                .Select((line, index) => GetPositionWithText(line, index, startingLineIdx, startingColIdx))
+                .Select((line, index) => GetPositionWithText(line, index, startingTextPosition.Line, startingTextPosition.Column))
                 .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
 
         private Tuple<TextPosition, string> GetPositionWithText(string line, int loopIndex, int startingLineIdx, int startingColIdx) {
