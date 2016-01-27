@@ -66,10 +66,8 @@ namespace TextEditorTests.TextManipulationAlgorithmTests {
             Assert.AreEqual(text1, newLines.LinesAffected.First().Value);
             Assert.AreEqual(text2, newLines.LinesAffected.ElementAt(1).Value);
             Assert.AreEqual(text3, newLines.LinesAffected.ElementAt(2).Value);
-            Assert.AreEqual(3, removedLinesIndexes.Length);
-            Assert.AreEqual(1, removedLinesIndexes[0]);
-            Assert.AreEqual(2, removedLinesIndexes[1]);
-            Assert.AreEqual(3, removedLinesIndexes[2]);
+            Assert.AreEqual(1, removedLinesIndexes.Length);
+            Assert.AreEqual(3, removedLinesIndexes[0]);
         }
 
         [TestMethod]
@@ -92,10 +90,8 @@ namespace TextEditorTests.TextManipulationAlgorithmTests {
             Assert.AreEqual(text1, newLines.LinesAffected.First().Value);
             Assert.AreEqual(text2, newLines.LinesAffected.ElementAt(1).Value);
             Assert.AreEqual(text3, newLines.LinesAffected.ElementAt(2).Value);
-            Assert.AreEqual(3, removedLinesIndexes.Length);
-            Assert.AreEqual(1, removedLinesIndexes[0]);
-            Assert.AreEqual(2, removedLinesIndexes[1]);
-            Assert.AreEqual(3, removedLinesIndexes[2]);
+            Assert.AreEqual(1, removedLinesIndexes.Length);
+            Assert.AreEqual(3, removedLinesIndexes[0]);
         }
     }
 }
