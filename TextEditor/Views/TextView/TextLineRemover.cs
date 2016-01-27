@@ -84,15 +84,16 @@ namespace TextEditor.Views.TextView {
                     new TextPosition { Column = startingTextPosition.Column, Line = startingTextPosition.Line },
                     textSources[startingTextPosition.Line].Text + GetText(textSources, startingTextPosition.Line + 1))
             };
-
+            var linesToRemove = new List<int>(new[] { startingTextPosition.Line + 1 });
             
             for (int i = startingTextPosition.Line + 2; i < textSources.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition { Column = 0, Line = i - 2 }, textSources[i].Text));
+                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition { Column = 0, Line = i - 1 }, textSources[i].Text));
+                linesToRemove.Add(i);
             }
 
             return new LinesRemovalInfo {
                 LinesAffected = linesAffected,
-                LinesToRemove = new[] { startingTextPosition.Line + 1 }
+                LinesToRemove = linesToRemove
             };
         }
 
