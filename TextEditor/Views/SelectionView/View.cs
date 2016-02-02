@@ -38,6 +38,14 @@ namespace TextEditor.Views.SelectionView {
             lastSelectionEnd = end;
         }
 
+        public void Deselect() {
+            lastSelectionStart = null;
+            lastSelectionEnd = null;
+            isSelecting = false;
+
+            visuals.Clear();
+        }
+
         public TextPositionsPair GetCurrentSelectionArea() {
             if (lastSelectionStart == null || lastSelectionEnd == null) {
                 return null;
@@ -74,24 +82,12 @@ namespace TextEditor.Views.SelectionView {
         }
 
         public void HandleMouseDown(object sender, MouseButtonEventArgs e) {
-            ClearSelection();
-        }
-
-        public void HandleKeyDown(object sender, KeyEventArgs e) {
-            ClearSelection();
+            Deselect();
         }
 
         #endregion
 
         #region methods
-
-        private void ClearSelection() {
-            lastSelectionStart = null;
-            lastSelectionEnd = null;
-            isSelecting = false;
-
-            visuals.Clear();
-        }
 
         private IEnumerable<PointsPair> GetSelectionPoints(TextPosition start, TextPosition end) {
             var pairs = new List<PointsPair>();

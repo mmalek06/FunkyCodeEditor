@@ -68,22 +68,23 @@ namespace TextEditor.Views.TextView {
         }
 
         private IDictionary<TextPosition, string> CharacterEntered(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
-            string currentLineText = string.Empty;
+            string currentTextLine = string.Empty;
 
             if (textSources.Any()) {
-                currentLineText = textSources[startingTextPosition.Line].Text;
-
-                if (startingTextPosition.Column >= currentLineText.Length) {
-                    currentLineText += text;
+                if (startingTextPosition.Column >= textSources[startingTextPosition.Line].Text.Length) {
+                    currentTextLine = textSources[startingTextPosition.Line].Text + text;
                 } else {
-                    currentLineText.Insert(startingTextPosition.Column, text);
+                    currentTextLine = 
+                        string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column)) + 
+                        text + 
+                        string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
                 }
             } else {
-                currentLineText = text;
+                currentTextLine = text;
             }
 
             return new Dictionary<TextPosition, string> {
-                [new TextPosition { Column = startingTextPosition.Column + 1, Line = startingTextPosition.Line }] = currentLineText
+                [new TextPosition { Column = startingTextPosition.Column + 1, Line = startingTextPosition.Line }] = currentTextLine
             };
         }
 

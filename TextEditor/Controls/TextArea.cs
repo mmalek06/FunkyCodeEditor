@@ -54,11 +54,14 @@ namespace TextEditor.Controls {
             var removeTextCmd = new RemoveTextCommand(textView, textInfo);
             var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
             var selectionCmd = new TextSelectionCommand(textView, selectionView, textInfo);
+            var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (removeTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
+                deselectionCmd.Execute();
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
+                deselectionCmd.Execute();
             } else if (selectionCmd.CanExecute(e)) {
                 selectionCmd.Execute(e);
             }
@@ -66,9 +69,11 @@ namespace TextEditor.Controls {
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
             var enterTextCmd = new EnterTextCommand(textView, textInfo);
+            var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (enterTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
+                deselectionCmd.Execute();
             }
         }
 
@@ -100,7 +105,6 @@ namespace TextEditor.Controls {
             MouseDown += textView.HandleMouseDown;
             MouseDown += caretView.HandleMouseDown;
             GotFocus += textView.HandleGotFocus;
-            KeyDown += selectionView.HandleKeyDown;
 
             // custom editor events
             textView.TextChanged += caretView.HandleTextChange;

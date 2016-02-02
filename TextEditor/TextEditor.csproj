@@ -59,6 +59,7 @@
     <Compile Include="Commands\CaretMoveCommand.cs" />
     <Compile Include="Commands\EnterTextCommand.cs" />
     <Compile Include="Commands\RemoveTextCommand.cs" />
+    <Compile Include="Commands\TextDeselectionCommand.cs" />
     <Compile Include="Commands\TextSelectionCommand.cs" />
     <Compile Include="Commands\UndoEnterTextCommand.cs" />
     <Compile Include="Commands\UndoRemoveTextCommand.cs" />

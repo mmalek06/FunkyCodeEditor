@@ -5,14 +5,9 @@ using TextEditor.DataStructures;
 
 namespace TextEditor.Views.SelectionView {
     internal class VisualElement : DrawingVisual {
-        private double radiusX;
-        private double radiusY;
-        private Pen pen;
         private Brush brush;
 
         public VisualElement() {
-            ConfigureRadiuses();
-            ConfigurePen();
             ConfigureBrush();
         }
 
@@ -23,7 +18,7 @@ namespace TextEditor.Views.SelectionView {
                 foreach (var pair in boundingBoxes) {
                     rectangle = new Rect(pair.StartingPoint, pair.EndingPoint);
 
-                    drawingContext.DrawRoundedRectangle(brush, pen, rectangle, radiusX, radiusY);
+                    drawingContext.DrawRectangle(brush, null, rectangle);
                 }
             }
         }
@@ -36,17 +31,8 @@ namespace TextEditor.Views.SelectionView {
             return null;
         }
 
-        private void ConfigureRadiuses() {
-            radiusX = 5;
-            radiusY = 5;
-        }
-
         private void ConfigureBrush() {
-            brush = Brushes.LightBlue;
-        }
-
-        private void ConfigurePen() {
-            pen = new Pen(Brushes.Black, 0.5);
+            brush = Brushes.Orange;
         }
     }
 }
