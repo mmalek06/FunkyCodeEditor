@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using TextEditor.DataStructures;
 using TextEditor.TextProperties;
@@ -7,6 +8,23 @@ namespace TextEditor.Views.TextView {
     internal class TextLineRemover {
 
         #region public methods
+
+        public LinesRemovalInfo TransformLines(IList<SimpleTextSource> textSources, TextPositionsPair range) {
+            var orderedRanges = (new[] { range.StartPosition, range.EndPosition }).OrderBy(elem => elem.Line).ThenBy(elem => elem.Column).ToArray();
+            var pair = new TextPositionsPair {
+                StartPosition = orderedRanges[0],
+                EndPosition = orderedRanges[1]
+            };
+
+            return new LinesRemovalInfo {
+                LinesAffected = new Dictionary<TextPosition, string> {
+                    [new TextPosition { Column = pair.StartPosition.Column, Line = range.StartPosition.Line }] =
+                        string.Concat(textSources[pair.StartPosition.Line].Text.Take(pair.StartPosition.Column)) +
+                        string.Concat(textSources[pair.EndPosition.Line].Text.Skip(pair.EndPosition.Column))
+                },
+                LinesToRemove = Enumerable.Range(pair.StartPosition.Line + 1, textSources.Count - (pair.StartPosition.Line + 1))
+            };
+        }
 
         public LinesRemovalInfo TransformLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, Key key) {
             if (key == Key.Delete) {
@@ -44,7 +62,7 @@ namespace TextEditor.Views.TextView {
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column - 1) + (attachRest ? lineToModify.Substring(startingTextPosition.Column) : string.Empty);
 
             return new LinesRemovalInfo {
-                LinesAffected = new Dictionary <TextPosition, string> {
+                LinesAffected = new Dictionary<TextPosition, string> {
                     [new TextPosition { Column = startingTextPosition.Column - 1, Line = startingTextPosition.Line }] = textAfterRemove },
                 LinesToRemove = new int[0]
             };

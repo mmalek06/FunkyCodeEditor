@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using TextEditor.DataStructures;
-using TextEditor.Views.TextView;
 using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
@@ -58,6 +57,7 @@ namespace TextEditor.Commands {
             };
             TextPosition endingPosition = null;
             int column = 0;
+            int line = 0;
 
             switch (args.Key) {
                 case Key.Left:
@@ -75,10 +75,16 @@ namespace TextEditor.Commands {
                     endingPosition = new TextPosition { Column = textInfo.GetTextLineLength(textView.ActiveLineIndex), Line = textView.ActiveLineIndex };
                     break;
                 case Key.Up:
+                    column = area == null ? textView.ActiveColumnIndex : area.EndPosition.Column;
+                    line = area == null ? textView.ActiveLineIndex - 1 : area.EndPosition.Line - 1;
+                    endingPosition = new TextPosition { Column = column, Line = line };
                     break;
                 case Key.PageUp:
                     break;
                 case Key.Down:
+                    column = area == null ? textView.ActiveColumnIndex : area.EndPosition.Column;
+                    line = area == null ? textView.ActiveLineIndex + 1 : area.EndPosition.Line + 1;
+                    endingPosition = new TextPosition { Column = column, Line = line };
                     break;
                 case Key.PageDown:
                     break;

@@ -51,7 +51,7 @@ namespace TextEditor.Controls {
             drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, RenderSize.Width, RenderSize.Height));
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            var removeTextCmd = new RemoveTextCommand(textView, textInfo);
+            var removeTextCmd = new RemoveTextCommand(selectionView, textView, textInfo);
             var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
             var selectionCmd = new TextSelectionCommand(textView, selectionView, textInfo);
             var deselectionCmd = new TextDeselectionCommand(selectionView);

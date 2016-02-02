@@ -71,19 +71,28 @@ namespace TextEditor.Views.TextView {
 
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
-            DrawLines(newLines.Select(lineInfo => lineInfo.Key.Line));
+            DrawLines(newLines.Select(lineInfo => lineInfo.Key));
 
             newLines.Clear();
+        }
+
+        public void ReplaceText(IEnumerable<TextPositionsPair> oldText, IEnumerable<TextPositionsPair> newText) {
+
         }
 
         public void RemoveText(Key key) {
             var removalInfo = removingAlgorithm.TransformLines(textSources, new TextPosition { Column = ActiveColumnIndex, Line = ActiveLineIndex }, key);
 
             if (removalInfo.LinesAffected.Any()) {
-                RemoveLines(removalInfo.LinesToRemove);
-                UpdateTextData(removalInfo.LinesAffected);
-                UpdateCursorPosition(removalInfo.LinesAffected.First().Key);
-                DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
+                DeleteText(removalInfo);
+            }
+        }
+
+        public void RemoveText(TextPositionsPair ranges) {
+            var removalInfo = removingAlgorithm.TransformLines(textSources, ranges);
+
+            if (removalInfo.LinesAffected.Any()) {
+                DeleteText(removalInfo);
             }
         }
 
@@ -96,6 +105,13 @@ namespace TextEditor.Views.TextView {
         #endregion
 
         #region methods
+
+        private void DeleteText(LinesRemovalInfo removalInfo) {
+            RemoveLines(removalInfo.LinesToRemove);
+            UpdateTextData(removalInfo.LinesAffected.Select(pair => new KeyValuePair<int, string>(pair.Key.Line, pair.Value)));
+            UpdateCursorPosition(removalInfo.LinesAffected.First().Key);
+            DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
+        }
 
         private void UpdateCursorPosition(TextPosition position) {
             ActiveColumnIndex = position.Column;
@@ -139,10 +155,10 @@ namespace TextEditor.Views.TextView {
             }
         }
 
-        private void UpdateTextData(IEnumerable<KeyValuePair<TextPosition, string>> changedLines) {
+        private void UpdateTextData(IEnumerable<KeyValuePair<int, string>> changedLines) {
             foreach (var kvp in changedLines) {
-                if (kvp.Key.Line < textSources.Count) {
-                    textSources[kvp.Key.Line].Text = kvp.Value;
+                if (kvp.Key < textSources.Count) {
+                    textSources[kvp.Key].Text = kvp.Value;
                 } else {
                     textSources.Add(new SimpleTextSource(kvp.Value, runProperties));
                 }

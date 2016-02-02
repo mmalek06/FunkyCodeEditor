@@ -4,16 +4,20 @@ using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
     internal class RemoveTextCommand : BaseTextViewCommand {
-
+        
         #region fields
 
         private HashSet<Key> removalKeys = new HashSet<Key> { Key.Delete, Key.Back };
+
+        private Views.SelectionView.View selectionView;
 
         #endregion
 
         #region constructor
 
-        public RemoveTextCommand(Views.TextView.View view, LocalTextInfo textInfo) : base(view, textInfo) { }
+        public RemoveTextCommand(Views.SelectionView.View selectionView, Views.TextView.View view, LocalTextInfo textInfo) : base(view, textInfo) {
+            this.selectionView = selectionView;
+        }
 
         #endregion
 
@@ -35,7 +39,13 @@ namespace TextEditor.Commands {
 
             UpdateCommandState(BeforeCommandExecutedState);
 
-            view.RemoveText(key);
+            var selectionArea = selectionView.GetCurrentSelectionArea();
+
+            if (selectionArea == null) {
+                view.RemoveText(key);
+            } else {
+                view.RemoveText(selectionArea);
+            }
 
             UpdateCommandState(AfterCommandExecutedState);
 
