@@ -5,17 +5,12 @@ using TextEditor.DataStructures;
 
 namespace TextEditor.Views.SelectionView {
     internal class VisualElement : DrawingVisual {
-        public bool IsClosed { get; set; }
-
         private double radiusX;
         private double radiusY;
         private Pen pen;
         private Brush brush;
 
         public VisualElement() {
-            IsClosed = true;
-            //Opacity = 0.5;
-
             ConfigureRadiuses();
             ConfigurePen();
             ConfigureBrush();
@@ -24,10 +19,10 @@ namespace TextEditor.Views.SelectionView {
         public void Draw(IEnumerable<PointsPair> boundingBoxes) {
             Rect rectangle;
 
-            foreach (var pair in boundingBoxes) {
-                rectangle = new Rect(pair.StartingPoint, pair.EndingPoint);
+            using (var drawingContext = RenderOpen()) {
+                foreach (var pair in boundingBoxes) {
+                    rectangle = new Rect(pair.StartingPoint, pair.EndingPoint);
 
-                using (var drawingContext = RenderOpen()) {
                     drawingContext.DrawRoundedRectangle(brush, pen, rectangle, radiusX, radiusY);
                 }
             }

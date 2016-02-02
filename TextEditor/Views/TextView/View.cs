@@ -23,14 +23,17 @@ namespace TextEditor.Views.TextView {
         private TextFormatter formatter;
         private TextRunProperties runProperties;
         private SimpleParagraphProperties paragraphProperties;
-        private TextLineTransformer addingTransformer;
-        private TextLineRemover removingTransformer;
+        private TextLineUpdater updatingAlgorithm;
+        private TextLineRemover removingAlgorithm;
 
         #endregion
 
         #region properties
 
+        public IList<string> Lines => textSources.Select(ts => string.Copy(ts.Text)).ToList();
+
         public int ActiveLineIndex { get; private set; } = 0;
+
         public int ActiveColumnIndex { get; private set; } = 0;
 
         #endregion
@@ -42,8 +45,8 @@ namespace TextEditor.Views.TextView {
             runProperties = this.CreateGlobalTextRunProperties();
             textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, runProperties) };
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = runProperties };
-            addingTransformer = new TextLineTransformer();
-            removingTransformer = new TextLineRemover();
+            updatingAlgorithm = new TextLineUpdater();
+            removingAlgorithm = new TextLineRemover();
         }
 
         #endregion
@@ -64,7 +67,7 @@ namespace TextEditor.Views.TextView {
         #region public methods
 
         public void EnterText(string enteredText) {
-            var newLines = addingTransformer.TransformLines(textSources, new TextPosition { Line = ActiveLineIndex, Column = ActiveColumnIndex }, enteredText);
+            var newLines = updatingAlgorithm.UpdateLines(textSources, new TextPosition { Line = ActiveLineIndex, Column = ActiveColumnIndex }, enteredText);
 
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
@@ -74,7 +77,7 @@ namespace TextEditor.Views.TextView {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingTransformer.TransformLines(textSources, new TextPosition { Column = ActiveColumnIndex, Line = ActiveLineIndex }, key);
+            var removalInfo = removingAlgorithm.TransformLines(textSources, new TextPosition { Column = ActiveColumnIndex, Line = ActiveLineIndex }, key);
 
             if (removalInfo.LinesAffected.Any()) {
                 RemoveLines(removalInfo.LinesToRemove);
@@ -83,14 +86,6 @@ namespace TextEditor.Views.TextView {
                 DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
             }
         }
-
-        public int GetTextLinesCount() => textSources.Count;
-
-        public int GetTextLineLength(int index) => textSources[index].Text.Length;
-
-        public string GetTextLine(int index) => index >= textSources.Count ? string.Empty : string.Copy(textSources[index].Text);
-
-        public IEnumerable<string> GetTextLines() => textSources.Select(source => source.Text);
 
         public void TriggerTextChanged() {
             if (TextChanged != null) {
@@ -108,11 +103,13 @@ namespace TextEditor.Views.TextView {
         }
 
         private void UpdateCursorPosition(string text) {
-            var replacedText = addingTransformer.SpecialCharsRegex.Replace(text, string.Empty);
+            var replacedText = updatingAlgorithm.SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextConfiguration.NEWLINE) {
                 ActiveColumnIndex = 0;
                 ActiveLineIndex += 1;
+            } else if (text == TextConfiguration.TAB) {
+                ActiveColumnIndex += TextConfiguration.TabSize;
             } else if (replacedText.Length == 1) {
                 ActiveColumnIndex += 1;
             } else {

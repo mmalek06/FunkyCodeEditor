@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TextEditor.Commands;
 using TextEditor.DataStructures;
+using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 using LocalViewBase = TextEditor.Views.ViewBase;
 
 namespace TextEditor.Controls {
@@ -15,15 +16,18 @@ namespace TextEditor.Controls {
 
         private Editor master;
         private List<LocalViewBase> views;
+        private LocalTextInfo textInfo;
         private Views.TextView.View textView;
         private Views.CaretView.View caretView;
         private Views.SelectionView.View selectionView;
-        
+
         #endregion
 
         #region properties
 
         public TextPosition CaretPosition => caretView.CaretPosition;
+
+        internal LocalTextInfo TextInfo => textInfo;
 
         protected override int VisualChildrenCount => views.Count;
 
@@ -35,7 +39,7 @@ namespace TextEditor.Controls {
             master = parent;
             views = new List<LocalViewBase>();
             
-            SetLayers();
+            SetViews();
             InitEvents();
         }
 
@@ -47,24 +51,24 @@ namespace TextEditor.Controls {
             drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, RenderSize.Width, RenderSize.Height));
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            var removeTextCmd = new RemoveTextCommand(textView);
+            var removeTextCmd = new RemoveTextCommand(textView, textInfo);
+            var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
+            var selectionCmd = new TextSelectionCommand(textView, selectionView, textInfo);
 
             if (removeTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView), e);
-            } else {
-                var caretMoveCmd = new CaretMoveCommand(textView, caretView);
-
-                if (caretMoveCmd.CanExecute(e)) {
-                    caretMoveCmd.Execute(e);
-                }
+                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
+            } else if (caretMoveCmd.CanExecute(e)) {
+                caretMoveCmd.Execute(e);
+            } else if (selectionCmd.CanExecute(e)) {
+                selectionCmd.Execute(e);
             }
         }
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
-            var enterTextCmd = new EnterTextCommand(textView);
+            var enterTextCmd = new EnterTextCommand(textView, textInfo);
 
             if (enterTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView), e);
+                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
             }
         }
 
@@ -72,13 +76,14 @@ namespace TextEditor.Controls {
 
         #region methods
 
-        internal int GetLinesCount() => textView.GetTextLinesCount();
+        internal int GetLinesCount() => textInfo.GetTextLinesCount();
 
         protected override Visual GetVisualChild(int index) => views[index];
 
-        private void SetLayers() {
+        private void SetViews() {
             textView = new Views.TextView.View();
-            selectionView = new Views.SelectionView.View();
+            textInfo = new LocalTextInfo(textView);
+            selectionView = new Views.SelectionView.View(textInfo);
             caretView = new Views.CaretView.View();
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
@@ -94,11 +99,10 @@ namespace TextEditor.Controls {
             MouseDown += selectionView.HandleMouseDown;
             MouseDown += textView.HandleMouseDown;
             MouseDown += caretView.HandleMouseDown;
-            MouseUp += selectionView.HandleMouseUp;
             GotFocus += textView.HandleGotFocus;
+            KeyDown += selectionView.HandleKeyDown;
 
             // custom editor events
-            textView.TextChanged += selectionView.HandleTextChange;
             textView.TextChanged += caretView.HandleTextChange;
             caretView.CaretMoved += textView.HandleCaretMove;
         }

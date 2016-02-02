@@ -105,8 +105,6 @@ namespace TextEditor.Views.CaretView {
             };
         }
 
-        public bool IsMoveRequested(KeyEventArgs e) => StepKeys.Contains(e.Key) || JumpKeys.Contains(e.Key);
-
         #endregion
 
         #region methods

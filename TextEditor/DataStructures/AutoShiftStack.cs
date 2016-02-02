@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace TextEditor.DataStructures {
-    internal class AutoShiftStack<T> : IEnumerable<T>, IEnumerable, ICollection {
+    internal class AutoTrimmingStack<T> : IEnumerable<T>, IEnumerable, ICollection {
 
         #region fields
 
@@ -25,7 +25,7 @@ namespace TextEditor.DataStructures {
 
         #region constructor
 
-        public AutoShiftStack(int capacity) {
+        public AutoTrimmingStack(int capacity) {
             stack = new List<T>(capacity);
             this.capacity = capacity;
         }

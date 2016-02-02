@@ -7,10 +7,11 @@ namespace TextEditorTests {
         [TestMethod]
         public void FourCharsPasted_LinesShouldBe1() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("asdf");
 
-            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -26,13 +27,14 @@ namespace TextEditorTests {
         [TestMethod]
         public void FourCharsEntered_LineLengthShouldBe4() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("a");
             tv.EnterText("b");
             tv.EnterText("c");
             tv.EnterText("d");
 
-            Assert.AreEqual(4, tv.GetTextLineLength(0));
+            Assert.AreEqual(4, ti.GetTextLineLength(0));
         }
 
         [TestMethod]
@@ -51,6 +53,7 @@ namespace TextEditorTests {
         [TestMethod]
         public void ThreeLinesAddedCharsEntered_LinesShouldBe3() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("a");
             tv.EnterText("s");
@@ -63,7 +66,7 @@ namespace TextEditorTests {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(3, tv.GetTextLinesCount());
+            Assert.AreEqual(3, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -88,12 +91,13 @@ namespace TextEditorTests {
         [TestMethod]
         public void ThreeLinesPasted_LinesShouldBe3() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("asdf");
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(3, tv.GetTextLinesCount());
+            Assert.AreEqual(3, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -111,6 +115,7 @@ namespace TextEditorTests {
         [TestMethod]
         public void LineBreakInTheMiddle_LinesShouldBeText1Text2() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
             string text1 = "as";
             string text2 = "df";
 
@@ -123,13 +128,14 @@ namespace TextEditorTests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(text1, tv.GetTextLine(0));
-            Assert.AreEqual(text2, tv.GetTextLine(1));
+            Assert.AreEqual(text1, ti.GetTextLine(0));
+            Assert.AreEqual(text2, ti.GetTextLine(1));
         }
 
         [TestMethod]
         public void EmptyLineAddedAfterSecondLine_LinesShouldBeOk() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("a");
             tv.EnterText("\r");
@@ -143,11 +149,11 @@ namespace TextEditorTests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(4, tv.GetTextLinesCount());
-            Assert.AreEqual("a", tv.GetTextLine(0));
-            Assert.AreEqual(string.Empty, tv.GetTextLine(1));
-            Assert.AreEqual(string.Empty, tv.GetTextLine(2));
-            Assert.AreEqual("z", tv.GetTextLine(3));
+            Assert.AreEqual(4, ti.GetTextLinesCount());
+            Assert.AreEqual("a", ti.GetTextLine(0));
+            Assert.AreEqual(string.Empty, ti.GetTextLine(1));
+            Assert.AreEqual(string.Empty, ti.GetTextLine(2));
+            Assert.AreEqual("z", ti.GetTextLine(3));
         }
     }
 }

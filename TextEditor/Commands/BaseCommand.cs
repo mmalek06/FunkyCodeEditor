@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
     internal abstract class BaseTextViewCommand : ICommand {
@@ -7,6 +8,8 @@ namespace TextEditor.Commands {
         #region fields
 
         protected Views.TextView.View view;
+
+        protected LocalTextInfo textInfo;
 
         #endregion
 
@@ -26,8 +29,9 @@ namespace TextEditor.Commands {
 
         #region constructor
 
-        public BaseTextViewCommand(Views.TextView.View view) {
+        public BaseTextViewCommand(Views.TextView.View view, LocalTextInfo info) {
             this.view = view;
+            textInfo = info;
             BeforeCommandExecutedState = new ViewState();
             AfterCommandExecutedState = new ViewState();
         }
@@ -46,10 +50,10 @@ namespace TextEditor.Commands {
 
         protected void UpdateCommandState(ViewState stateToUpdate) {
             if (view.ActiveLineIndex >= 0) {
-                stateToUpdate.LineCount = view.GetTextLinesCount();
+                stateToUpdate.LineCount = textInfo.GetTextLinesCount();
                 stateToUpdate.ActiveLineIndex = view.ActiveLineIndex;
                 stateToUpdate.ActiveColumnIndex = view.ActiveColumnIndex;
-                stateToUpdate.LineStates[view.ActiveLineIndex] = view.GetTextLine(view.ActiveLineIndex);
+                stateToUpdate.LineStates[view.ActiveLineIndex] = textInfo.GetTextLine(view.ActiveLineIndex);
             }
         }
 

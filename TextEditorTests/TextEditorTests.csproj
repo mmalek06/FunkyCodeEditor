@@ -59,6 +59,7 @@
     <Compile Include="TextViewTests\TextViewAddingTextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextViewTests\TextViewRemovingTextTests.cs" />
+    <Compile Include="TextViewTests\TextViewSelectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextEditor\TextEditor.csproj">

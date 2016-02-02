@@ -36,9 +36,9 @@ namespace TextEditor {
             set { SetValue(TextProperty, value); }
         }
 
-        internal AutoShiftStack<ICommand> DoCommands { get; private set; }
+        internal AutoTrimmingStack<ICommand> DoCommands { get; private set; }
 
-        internal AutoShiftStack<ICommand> UndoCommands { get; private set; }
+        internal AutoTrimmingStack<ICommand> UndoCommands { get; private set; }
 
         protected override int VisualChildrenCount => 1;
 
@@ -48,8 +48,8 @@ namespace TextEditor {
 
         public Editor() {
             textArea = new TextArea(this);
-            DoCommands = new AutoShiftStack<ICommand>(100);
-            UndoCommands = new AutoShiftStack<ICommand>(100);
+            DoCommands = new AutoTrimmingStack<ICommand>(100);
+            UndoCommands = new AutoTrimmingStack<ICommand>(100);
             Focusable = false;
 
             AddVisualChild(textArea);

@@ -6,7 +6,7 @@ using TextEditor.DataStructures;
 using TextEditor.TextProperties;
 
 namespace TextEditor.Views.TextView {
-    internal class TextLineTransformer {
+    internal class TextLineUpdater {
 
         #region public properties
 
@@ -16,7 +16,7 @@ namespace TextEditor.Views.TextView {
 
         #region constructor
 
-        public TextLineTransformer() {
+        public TextLineUpdater() {
             SpecialCharsRegex = new Regex("[\a|\b|\n|\r|\f|\t|\v]");
         }
 
@@ -24,11 +24,13 @@ namespace TextEditor.Views.TextView {
 
         #region public methods
 
-        public IDictionary<TextPosition, string> TransformLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, string text) {
+        public IDictionary<TextPosition, string> UpdateLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, string text) {
             var replacedText = SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextConfiguration.NEWLINE) {
                 return LineAdded(textSources, text, startingTextPosition);
+            } else if (text == TextConfiguration.TAB) {
+                return TabPressed(textSources, text, startingTextPosition);
             } else if (replacedText.Length == 1) {
                 return CharacterEntered(textSources, replacedText, startingTextPosition);
             } else {
@@ -53,6 +55,16 @@ namespace TextEditor.Views.TextView {
             }
 
             return transformations;
+        }
+
+        private IDictionary<TextPosition, string> TabPressed(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
+            string textBeforeCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column));
+            string textAfterCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
+
+            return new Dictionary<TextPosition, string> {
+                [new TextPosition { Column = startingTextPosition.Column + TextConfiguration.TabSize, Line = startingTextPosition.Line }] =
+                    textBeforeCursorPosition + new string(' ', TextConfiguration.TabSize) + textAfterCursorPosition
+            };
         }
 
         private IDictionary<TextPosition, string> CharacterEntered(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using TextEditor.Views.CaretView;
 using TextEditor.Views.TextView;
+using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
     internal class CaretMoveCommand : ICommand {
@@ -11,6 +11,8 @@ namespace TextEditor.Commands {
         private Views.TextView.View textView;
 
         private Views.CaretView.View caretView;
+
+        private LocalTextInfo textInfo;
 
         #endregion
 
@@ -22,9 +24,10 @@ namespace TextEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(Views.TextView.View textView, Views.CaretView.View caretView) {
+        public CaretMoveCommand(Views.TextView.View textView, Views.CaretView.View caretView, LocalTextInfo info) {
             this.textView = textView;
             this.caretView = caretView;
+            textInfo = info;
         }
 
         #endregion
@@ -34,16 +37,16 @@ namespace TextEditor.Commands {
         public bool CanExecute(object parameter) {
             var e = parameter as KeyEventArgs;
 
-            if (e == null) {
+            if (e == null || Keyboard.IsKeyDown(Key.RightShift)) {
                 return false;
             }
-            if (!caretView.IsMoveRequested(e)) {
+            if (!caretView.StepKeys.Contains(e.Key) && !caretView.JumpKeys.Contains(e.Key)) {
                 return false;
             }
 
             var nextPosition = caretView.GetNextPosition(e.Key);
             
-            if (nextPosition.Line < 0 || nextPosition.Line >= textView.GetTextLinesCount()) {
+            if (nextPosition.Line < 0 || nextPosition.Line >= textInfo.GetTextLinesCount()) {
                 return false;
             }
             if (nextPosition.Column < 0) {
@@ -57,11 +60,11 @@ namespace TextEditor.Commands {
             var e = parameter as KeyEventArgs;
             var newPos = caretView.GetNextPosition(e.Key);
 
-            if (newPos.Column > textView.GetTextLineLength(newPos.Line)) {
-                newPos.Column = textView.GetTextLineLength(newPos.Line);
+            if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
+                newPos.Column = textInfo.GetTextLineLength(newPos.Line);
             }
-            if (newPos.Line >= textView.GetTextLinesCount()) {
-                newPos.Line = textView.GetTextLinesCount() - 1;
+            if (newPos.Line >= textInfo.GetTextLinesCount()) {
+                newPos.Line = textInfo.GetTextLinesCount() - 1;
             }
 
             caretView.MoveCursor(newPos);

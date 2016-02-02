@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
     internal class RemoveTextCommand : BaseTextViewCommand {
@@ -12,7 +13,7 @@ namespace TextEditor.Commands {
 
         #region constructor
 
-        public RemoveTextCommand(Views.TextView.View view) : base(view) { }
+        public RemoveTextCommand(Views.TextView.View view, LocalTextInfo textInfo) : base(view, textInfo) { }
 
         #endregion
 
@@ -22,7 +23,7 @@ namespace TextEditor.Commands {
             var e = parameter as KeyEventArgs;
 
             if (e != null && removalKeys.Contains(e.Key)) {
-                return view.GetTextLinesCount() > 0;
+                return textInfo.GetTextLinesCount() > 0;
             }
 
             return false;

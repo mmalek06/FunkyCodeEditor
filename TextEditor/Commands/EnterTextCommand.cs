@@ -1,11 +1,12 @@
 ﻿using System.Windows.Input;
+using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
     internal class EnterTextCommand : BaseTextViewCommand {
 
         #region constructor
 
-        public EnterTextCommand(Views.TextView.View view) : base(view) { }
+        public EnterTextCommand(Views.TextView.View view, LocalTextInfo textInfo) : base(view, textInfo) { }
 
         #endregion
 

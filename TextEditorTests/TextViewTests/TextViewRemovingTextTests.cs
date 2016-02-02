@@ -21,23 +21,25 @@ namespace TextEditorTests {
         [TestMethod]
         public void EmptyLineEnteredAndBackspaced_CursorShouldBeAt00() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
             Assert.AreEqual(0, tv.ActiveColumnIndex);
             Assert.AreEqual(0, tv.ActiveLineIndex);
-            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
         public void EmptyLineEnteredAndBackspaced_LinesShouldBe1() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -55,17 +57,19 @@ namespace TextEditorTests {
         [TestMethod]
         public void EmptyLineEnteredAndDelPressed_LinesShouldBe1() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("\r");
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_LinesShouldBe1() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -75,7 +79,7 @@ namespace TextEditorTests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(4, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -97,6 +101,7 @@ namespace TextEditorTests {
         [TestMethod]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_LinesShouldBe1() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -106,7 +111,7 @@ namespace TextEditorTests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(1, tv.GetTextLinesCount());
+            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -128,6 +133,7 @@ namespace TextEditorTests {
         [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe3() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
@@ -141,12 +147,13 @@ namespace TextEditorTests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(4, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(3, tv.GetTextLinesCount());
+            Assert.AreEqual(3, ti.GetTextLinesCount());
         }
 
         [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe2() {
             var tv = new TextEditor.Views.TextView.View();
+            var ti = new TextEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
@@ -161,7 +168,7 @@ namespace TextEditorTests {
             tv.RemoveText(Key.Delete);
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(2, tv.GetTextLinesCount());
+            Assert.AreEqual(2, ti.GetTextLinesCount());
         }
 
         private KeyEventArgs CreateKeyEventArgs(Key key) {
