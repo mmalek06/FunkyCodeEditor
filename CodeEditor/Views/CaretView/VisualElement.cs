@@ -2,11 +2,11 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
-using TextEditor.DataStructures;
-using TextEditor.Extensions;
-using TextEditor.TextProperties;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
+using CodeEditor.TextProperties;
 
-namespace TextEditor.Views.CaretView {
+namespace CodeEditor.Views.CaretView {
     internal class VisualElement : DrawingVisual {
 
         #region fields

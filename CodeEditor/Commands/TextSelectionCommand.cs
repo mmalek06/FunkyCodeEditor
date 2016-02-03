@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Input;
-using TextEditor.Configuration;
-using TextEditor.DataStructures;
-using TextEditor.Extensions;
-using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
+using CodeEditor.Configuration;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
+using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
-namespace TextEditor.Commands {
+namespace CodeEditor.Commands {
     internal class TextSelectionCommand : ICommand {
 
         #region fields

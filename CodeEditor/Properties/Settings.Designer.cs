@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TextEditor.Properties {
+namespace CodeEditor.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

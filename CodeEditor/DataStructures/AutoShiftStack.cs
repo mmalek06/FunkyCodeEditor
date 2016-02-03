@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TextEditor.DataStructures {
+namespace CodeEditor.DataStructures {
     internal class AutoTrimmingStack<T> : IEnumerable<T>, IEnumerable, ICollection {
 
         #region fields

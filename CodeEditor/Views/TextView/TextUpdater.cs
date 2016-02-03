@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using TextEditor.DataStructures;
-using TextEditor.TextProperties;
+using CodeEditor.DataStructures;
+using CodeEditor.TextProperties;
 
-namespace TextEditor.Views.TextView {
+namespace CodeEditor.Views.TextView {
     internal class TextUpdater {
 
         #region public properties

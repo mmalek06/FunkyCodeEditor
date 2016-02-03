@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Input;
-using TextEditor.DataStructures;
-using TextEditor.Extensions;
-using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
+using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
-namespace TextEditor.Commands {
+namespace CodeEditor.Commands {
     internal class CaretMoveCommand : ICommand {
 
         #region fields

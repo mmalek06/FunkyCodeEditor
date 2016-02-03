@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using TextEditor.Configuration;
-using TextEditor.Controls;
-using TextEditor.DataStructures;
-using TextEditor.Extensions;
+using CodeEditor.Configuration;
+using CodeEditor.Controls;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
 
-namespace TextEditor {
+namespace CodeEditor {
     public class Editor : Control {
 
         #region fields

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media.TextFormatting;
 
-namespace TextEditor.TextProperties {
+namespace CodeEditor.TextProperties {
     internal sealed class SimpleTextSource : TextSource {
         public string Text { get; set; }
         private readonly TextRunProperties properties;

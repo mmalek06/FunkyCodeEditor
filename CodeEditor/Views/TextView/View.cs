@@ -3,12 +3,12 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
-using TextEditor.DataStructures;
-using TextEditor.Events;
-using TextEditor.Extensions;
-using TextEditor.TextProperties;
+using CodeEditor.DataStructures;
+using CodeEditor.Events;
+using CodeEditor.Extensions;
+using CodeEditor.TextProperties;
 
-namespace TextEditor.Views.TextView {
+namespace CodeEditor.Views.TextView {
     internal class View : ViewBase {
 
         #region events

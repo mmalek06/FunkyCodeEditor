@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
-using TextEditor.Extensions;
+using CodeEditor.Extensions;
 
-namespace TextEditor.Configuration {
+namespace CodeEditor.Configuration {
     public static class EditorConfiguration {
 
         internal static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) + 10;

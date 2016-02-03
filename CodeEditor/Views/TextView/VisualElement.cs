@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 
-namespace TextEditor.Views.TextView {
+namespace CodeEditor.Views.TextView {
     internal class VisualTextLine : DrawingVisual {
         public int Index { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TextEditor.Commands {
+namespace CodeEditor.Commands {
     internal class ViewState {
 
         #region public properties

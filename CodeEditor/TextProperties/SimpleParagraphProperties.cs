@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.TextFormatting;
 
-namespace TextEditor.TextProperties {
+namespace CodeEditor.TextProperties {
     internal class SimpleParagraphProperties : TextParagraphProperties {
         internal TextRunProperties defaultTextRunProperties;
         internal TextWrapping textWrapping;

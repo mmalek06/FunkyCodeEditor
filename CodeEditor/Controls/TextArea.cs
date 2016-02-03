@@ -4,12 +4,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using TextEditor.Commands;
-using TextEditor.DataStructures;
-using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
-using LocalViewBase = TextEditor.Views.ViewBase;
+using CodeEditor.Commands;
+using CodeEditor.DataStructures;
+using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using LocalViewBase = CodeEditor.Views.ViewBase;
 
-namespace TextEditor.Controls {
+namespace CodeEditor.Controls {
     public class TextArea : Control {
 
         #region fields

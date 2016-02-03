@@ -2,14 +2,14 @@
 using System;
 using System.Windows.Input;
 using System.Windows.Interop;
-using TextEditor.Events;
+using CodeEditor.Events;
 
-namespace TextEditorTests {
+namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewRemovingTextTests {
         [TestMethod]
         public void CharEnteredAndBackspaced_CursorShouldBeAt00() {
-            var tv = new TextEditor.Views.TextView.View();
+            var tv = new CodeEditor.Views.TextView.View();
 
             tv.EnterText("s");
             tv.RemoveText(Key.Back);
@@ -20,8 +20,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void EmptyLineEnteredAndBackspaced_CursorShouldBeAt00() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
@@ -33,8 +33,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void EmptyLineEnteredAndBackspaced_LinesShouldBe1() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
@@ -44,7 +44,7 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void EmptyLineEnteredAndDelPressed_CursorShouldBeAt00() {
-            var tv = new TextEditor.Views.TextView.View();
+            var tv = new CodeEditor.Views.TextView.View();
 
             tv.EnterText("\r");
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
@@ -56,8 +56,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void EmptyLineEnteredAndDelPressed_LinesShouldBe1() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
 
             tv.EnterText("\r");
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
@@ -68,8 +68,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_LinesShouldBe1() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -84,7 +84,7 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_CursorShouldBeAt40() {
-            var tv = new TextEditor.Views.TextView.View();
+            var tv = new CodeEditor.Views.TextView.View();
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -100,8 +100,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_LinesShouldBe1() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -116,7 +116,7 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_CursorShouldBeAt40() {
-            var tv = new TextEditor.Views.TextView.View();
+            var tv = new CodeEditor.Views.TextView.View();
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -132,8 +132,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe3() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
@@ -152,8 +152,8 @@ namespace TextEditorTests {
 
         [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe2() {
-            var tv = new TextEditor.Views.TextView.View();
-            var ti = new TextEditor.Views.TextView.TextInfo(tv);
+            var tv = new CodeEditor.Views.TextView.View();
+            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
@@ -182,7 +182,7 @@ namespace TextEditorTests {
         }
 
         private CaretMovedEventArgs CreateCaretMovedEventArgs(int col, int line) {
-            return new CaretMovedEventArgs { NewPosition = new TextEditor.DataStructures.TextPosition { Column = col, Line = line } };
+            return new CaretMovedEventArgs { NewPosition = new CodeEditor.DataStructures.TextPosition { Column = col, Line = line } };
         }
     }
 }

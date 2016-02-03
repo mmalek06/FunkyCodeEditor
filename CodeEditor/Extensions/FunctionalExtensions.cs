@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TextEditor.Extensions {
+namespace CodeEditor.Extensions {
     internal static class FunctionalExtensions {
         public static TResult Map<TSource, TResult>(this TSource @this, Func<TSource, TResult> fn) => fn(@this);
 

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace TextEditor.Views {
+namespace CodeEditor.Views {
     public abstract class ViewBase : FrameworkElement {
         protected VisualCollection visuals;
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using TextEditor.Views.SelectionView;
+using CodeEditor.Views.SelectionView;
 
-namespace TextEditor.Commands {
+namespace CodeEditor.Commands {
     internal class TextDeselectionCommand : ICommand {
 
         #region fields

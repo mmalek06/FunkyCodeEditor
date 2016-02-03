@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using TextEditor.DataStructures;
+using CodeEditor.DataStructures;
 
-namespace TextEditor.Views.SelectionView {
+namespace CodeEditor.Views.SelectionView {
     internal class VisualElement : DrawingVisual {
         private Brush brush;
 

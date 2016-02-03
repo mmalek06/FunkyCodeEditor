@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TextEditor.DataStructures;
+using CodeEditor.DataStructures;
 
-namespace TextEditor.Views.TextView {
+namespace CodeEditor.Views.TextView {
     internal class LinesRemovalInfo {
         public IEnumerable<int> LinesToRemove { get; set; }
         public IEnumerable<KeyValuePair<TextPosition, string>> LinesAffected { get; set; }

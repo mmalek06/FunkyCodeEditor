@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using TextEditor.DataStructures;
-using TextEditor.TextProperties;
+using CodeEditor.DataStructures;
+using CodeEditor.TextProperties;
 
-namespace TextEditor.Views.TextView {
+namespace CodeEditor.Views.TextView {
     internal class TextRemover {
 
         #region public methods

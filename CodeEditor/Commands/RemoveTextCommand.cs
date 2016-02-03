@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
-using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
+using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
-namespace TextEditor.Commands {
+namespace CodeEditor.Commands {
     internal class RemoveTextCommand : BaseTextViewCommand {
         
         #region fields

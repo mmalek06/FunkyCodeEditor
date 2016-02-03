@@ -62,12 +62,11 @@
     <Compile Include="TextViewTests\TextViewSelectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEditor.Tests\CodeEditor.Tests.csproj">
+    <ProjectReference Include="..\CodeEditor\CodeEditor.csproj">
       <Project>{73a5df78-02d6-47e5-9f97-66619a8f9499}</Project>
-      <Name>CodeEditor.Tests</Name>
+      <Name>CodeEditor</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

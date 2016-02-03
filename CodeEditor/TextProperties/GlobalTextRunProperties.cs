@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 
-namespace TextEditor.TextProperties {
+namespace CodeEditor.TextProperties {
     internal sealed class GlobalTextRunProperties : TextRunProperties {
         internal Typeface typeface;
         internal double fontRenderingEmSize;

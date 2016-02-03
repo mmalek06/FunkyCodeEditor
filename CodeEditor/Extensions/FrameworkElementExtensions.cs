@@ -3,10 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
-using TextEditor.Configuration;
-using TextEditor.TextProperties;
+using CodeEditor.Configuration;
+using CodeEditor.TextProperties;
 
-namespace TextEditor.Extensions {
+namespace CodeEditor.Extensions {
     public static class FrameworkElementExtensions {
         public static Typeface CreateTypeface(this FrameworkElement fe) {
             return new Typeface(TextConfiguration.GetFontFamily(),

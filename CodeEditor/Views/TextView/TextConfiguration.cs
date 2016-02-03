@@ -1,4 +1,4 @@
-﻿namespace TextEditor.Views.TextView {
+﻿namespace CodeEditor.Views.TextView {
     public static class TextConfiguration {
 
         #region constants

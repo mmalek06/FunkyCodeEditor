@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using TextEditor.DataStructures;
+using CodeEditor.DataStructures;
 
-namespace TextEditor.Extensions {
+namespace CodeEditor.Extensions {
     public static class TextPositionExtensions {
         public static Point GetPositionRelativeToParent(this TextPosition position) {
             var charSize = StringExtensions.GetCharSize();

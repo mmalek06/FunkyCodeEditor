@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace TextEditor.Configuration {
+namespace CodeEditor.Configuration {
     public static class TextConfiguration {
 
         public static int GetFontSize() {

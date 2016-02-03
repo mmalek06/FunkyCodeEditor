@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TextEditor.Extensions {
+namespace CodeEditor.Extensions {
     public static class HashSetExtensions {
 
         public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> elements) {

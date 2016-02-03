@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using TextEditor.Configuration;
+using CodeEditor.Configuration;
 
-namespace TextEditor.Extensions {
+namespace CodeEditor.Extensions {
     public static class StringExtensions {
         public static Size GetScreenSize(this string text, FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch) {
             fontFamily = fontFamily ?? new TextBlock().FontFamily;

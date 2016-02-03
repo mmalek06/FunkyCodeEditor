@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using TextEditor.DataStructures;
+using CodeEditor.DataStructures;
 
-namespace TextEditor.Extensions {
+namespace CodeEditor.Extensions {
     public static class PointExtensions {
         public static TextPosition GetDocumentPosition(this Point point) {
             var charSize = StringExtensions.GetCharSize();

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
+using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
-namespace TextEditor.Commands {
+namespace CodeEditor.Commands {
     internal abstract class BaseTextViewCommand : ICommand {
 
         #region fields

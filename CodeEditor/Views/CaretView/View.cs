@@ -5,13 +5,13 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Threading;
-using TextEditor.Configuration;
-using TextEditor.DataStructures;
-using TextEditor.Events;
-using TextEditor.Extensions;
-using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
+using CodeEditor.Configuration;
+using CodeEditor.DataStructures;
+using CodeEditor.Events;
+using CodeEditor.Extensions;
+using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
-namespace TextEditor.Views.CaretView {
+namespace CodeEditor.Views.CaretView {
     internal class View : ViewBase {
 
         #region constants
