@@ -49,11 +49,11 @@ namespace TextEditor.Commands {
         #region methods
 
         protected void UpdateCommandState(ViewState stateToUpdate) {
-            if (view.ActiveLineIndex >= 0) {
+            if (view.ActivePosition.Line >= 0) {
                 stateToUpdate.LineCount = textInfo.GetTextLinesCount();
-                stateToUpdate.ActiveLineIndex = view.ActiveLineIndex;
-                stateToUpdate.ActiveColumnIndex = view.ActiveColumnIndex;
-                stateToUpdate.LineStates[view.ActiveLineIndex] = textInfo.GetTextLine(view.ActiveLineIndex);
+                stateToUpdate.ActiveLineIndex = view.ActivePosition.Line;
+                stateToUpdate.ActiveColumnIndex = view.ActivePosition.Column;
+                stateToUpdate.LineStates[view.ActivePosition.Line] = textInfo.GetTextLine(view.ActivePosition.Line);
             }
         }
 

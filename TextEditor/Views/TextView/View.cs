@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -32,9 +33,7 @@ namespace TextEditor.Views.TextView {
 
         public IList<string> Lines => textSources.Select(ts => string.Copy(ts.Text)).ToList();
 
-        public int ActiveLineIndex { get; private set; } = 0;
-
-        public int ActiveColumnIndex { get; private set; } = 0;
+        public TextPosition ActivePosition { get; private set; } = new TextPosition { Column = 0, Line = 0 };
 
         #endregion
 
@@ -53,10 +52,7 @@ namespace TextEditor.Views.TextView {
 
         #region event handlers
 
-        internal void HandleCaretMove(object sender, CaretMovedEventArgs e) {
-            ActiveLineIndex = e.NewPosition.Line;
-            ActiveColumnIndex = e.NewPosition.Column;
-        }
+        internal void HandleCaretMove(object sender, CaretMovedEventArgs e) => UpdateCursorPosition(e.NewPosition);
 
         internal void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
@@ -67,13 +63,11 @@ namespace TextEditor.Views.TextView {
         #region public methods
 
         public void EnterText(string enteredText) {
-            var newLines = updatingAlgorithm.UpdateLines(textSources, new TextPosition { Line = ActiveLineIndex, Column = ActiveColumnIndex }, enteredText);
+            var newLines = updatingAlgorithm.UpdateLines(textSources, ActivePosition, enteredText);
 
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
             DrawLines(newLines.Select(lineInfo => lineInfo.Key));
-
-            newLines.Clear();
         }
 
         public void ReplaceText(IEnumerable<TextPositionsPair> oldText, IEnumerable<TextPositionsPair> newText) {
@@ -81,7 +75,7 @@ namespace TextEditor.Views.TextView {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.TransformLines(textSources, new TextPosition { Column = ActiveColumnIndex, Line = ActiveLineIndex }, key);
+            var removalInfo = removingAlgorithm.TransformLines(textSources, ActivePosition, key);
 
             if (removalInfo.LinesAffected.Any()) {
                 DeleteText(removalInfo);
@@ -98,7 +92,7 @@ namespace TextEditor.Views.TextView {
 
         public void TriggerTextChanged() {
             if (TextChanged != null) {
-                TextChanged(this, new TextChangedEventArgs { CurrentColumn = ActiveColumnIndex, CurrentLine = ActiveLineIndex });
+                TextChanged(this, new TextChangedEventArgs { CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
             }
         }
 
@@ -108,31 +102,31 @@ namespace TextEditor.Views.TextView {
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);
-            UpdateTextData(removalInfo.LinesAffected.Select(pair => new KeyValuePair<int, string>(pair.Key.Line, pair.Value)));
+            UpdateTextData(removalInfo.LinesAffected.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
             UpdateCursorPosition(removalInfo.LinesAffected.First().Key);
             DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
         }
 
         private void UpdateCursorPosition(TextPosition position) {
-            ActiveColumnIndex = position.Column;
-            ActiveLineIndex = position.Line;
+            ActivePosition.Column = position.Column;
+            ActivePosition.Line = position.Line;
         }
 
         private void UpdateCursorPosition(string text) {
             var replacedText = updatingAlgorithm.SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextConfiguration.NEWLINE) {
-                ActiveColumnIndex = 0;
-                ActiveLineIndex += 1;
+                ActivePosition.Column = 0;
+                ActivePosition.Line += 1;
             } else if (text == TextConfiguration.TAB) {
-                ActiveColumnIndex += TextConfiguration.TabSize;
+                ActivePosition.Column += TextConfiguration.TabSize;
             } else if (replacedText.Length == 1) {
-                ActiveColumnIndex += 1;
+                ActivePosition.Column += 1;
             } else {
                 var parts = text.Split(TextConfiguration.NEWLINE[0]);
 
-                ActiveColumnIndex = parts.Last().Length;
-                ActiveLineIndex += parts.Length - 1;
+                ActivePosition.Column = parts.Last().Length;
+                ActivePosition.Line += parts.Length - 1;
             }
         }
 
@@ -155,7 +149,7 @@ namespace TextEditor.Views.TextView {
             }
         }
 
-        private void UpdateTextData(IEnumerable<KeyValuePair<int, string>> changedLines) {
+        private void UpdateTextData(IDictionary<int, string> changedLines) {
             foreach (var kvp in changedLines) {
                 if (kvp.Key < textSources.Count) {
                     textSources[kvp.Key].Text = kvp.Value;

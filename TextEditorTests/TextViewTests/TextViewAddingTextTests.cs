@@ -20,8 +20,8 @@ namespace TextEditorTests {
 
             tv.EnterText("asdf");
 
-            Assert.AreEqual(4, tv.ActiveColumnIndex);
-            Assert.AreEqual(0, tv.ActiveLineIndex);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -46,8 +46,8 @@ namespace TextEditorTests {
             tv.EnterText("c");
             tv.EnterText("d");
             
-            Assert.AreEqual(4, tv.ActiveColumnIndex);
-            Assert.AreEqual(0, tv.ActiveLineIndex);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -84,8 +84,8 @@ namespace TextEditorTests {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(4, tv.ActiveColumnIndex);
-            Assert.AreEqual(2, tv.ActiveLineIndex);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(2, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -108,8 +108,8 @@ namespace TextEditorTests {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(4, tv.ActiveColumnIndex);
-            Assert.AreEqual(2, tv.ActiveLineIndex);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(2, tv.ActivePosition.Line);
         }
 
         [TestMethod]

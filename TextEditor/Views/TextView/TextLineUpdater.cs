@@ -57,6 +57,11 @@ namespace TextEditor.Views.TextView {
             return transformations;
         }
 
+        private IDictionary<int, string> TextPasted(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) =>
+            text.Split(TextConfiguration.NEWLINE[0])
+                .Select((line, index) => GetPositionWithText(line, index, startingTextPosition.Line, startingTextPosition.Column))
+                .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
+
         private IDictionary<int, string> TabPressed(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
             string textBeforeCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column));
             string textAfterCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
@@ -86,11 +91,6 @@ namespace TextEditor.Views.TextView {
                 [startingTextPosition.Line] = currentTextLine
             };
         }
-
-        private IDictionary<int, string> TextPasted(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) =>
-            text.Split(TextConfiguration.NEWLINE[0])
-                .Select((line, index) => GetPositionWithText(line, index, startingTextPosition.Line, startingTextPosition.Column))
-                .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
 
         private Tuple<int, string> GetPositionWithText(string line, int loopIndex, int startingLineIdx, int startingColIdx) {
             string normalizedText = NormalizeText(line);
