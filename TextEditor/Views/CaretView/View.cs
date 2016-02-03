@@ -119,6 +119,9 @@ namespace TextEditor.Views.CaretView {
                 newPos.Line = textInfo.GetTextLinesCount() - 1;
                 newPos.Column = textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1);
             }
+            if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
+                newPos.Column = textInfo.GetTextLineLength(newPos.Line);
+            }
         }
 
         private void DrawCaret() {

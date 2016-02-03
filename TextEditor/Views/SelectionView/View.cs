@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using TextEditor.DataStructures;
 using TextEditor.Extensions;
@@ -81,25 +82,58 @@ namespace TextEditor.Views.SelectionView {
         }
 
         private IEnumerable<PointsPair> GetSelectionPoints(TextPosition start, TextPosition end) {
-            var pairs = new List<PointsPair>();
-            var realStart = start <= end ? start : end;
-            var realEnd = start <= end ? end : start;
-
             visuals.Clear();
 
-            for (int i = realStart.Line; i <= realEnd.Line; i++) {
+            if (start.Line <= end.Line) {
+                return GetSelectionPointsForward(start, end);
+            } else {
+                return GetSelectionPointsInverted(start, end);
+            }
+        }
+
+        private IEnumerable<PointsPair> GetSelectionPointsForward(TextPosition start, TextPosition end) {
+            var pairs = new List<PointsPair>();
+
+            for (int i = start.Line; i <= end.Line; i++) {
                 TextPosition tmpStartPos = new TextPosition { Column = 0, Line = i };
                 TextPosition tmpEndPos = new TextPosition { Column = 0, Line = i };
 
-                if (i == realStart.Line) {
-                    tmpStartPos.Column = realStart.Column;
+                if (i == start.Line) {
+                    tmpStartPos.Column = start.Column;
                 }
 
                 int lineLen = textInfo.GetTextLineLength(i);
 
-                if (i == realEnd.Line) {
-                    tmpEndPos.Column = realEnd.Column > lineLen ? lineLen : realEnd.Column;
+                if (i == end.Line) {
+                    tmpEndPos.Column = end.Column > lineLen ? lineLen : end.Column;
                 } else {
+                    tmpEndPos.Column = lineLen;
+                }
+
+                pairs.Add(new PointsPair {
+                    StartingPoint = tmpStartPos.GetPositionRelativeToParent().AlignToVisualLineTop(),
+                    EndingPoint = tmpEndPos.GetPositionRelativeToParent().AlignToVisualLineBottom()
+                });
+            }
+
+            return pairs;
+        }
+
+        private IEnumerable<PointsPair> GetSelectionPointsInverted(TextPosition start, TextPosition end) {
+            var pairs = new List<PointsPair>();
+
+            for (int i = start.Line; i >= end.Line; i--) {
+                TextPosition tmpStartPos = new TextPosition { Column = 0, Line = i };
+                TextPosition tmpEndPos = new TextPosition { Column = 0, Line = i };
+                int lineLen = textInfo.GetTextLineLength(i);
+
+                if (i == start.Line) {
+                    tmpStartPos.Column = start.Column;
+                } else if (i == end.Line) {
+                    tmpStartPos.Column = end.Column > lineLen ? lineLen : end.Column;
+                    tmpEndPos.Column = lineLen;
+                } else {
+                    tmpStartPos.Column = 0;
                     tmpEndPos.Column = lineLen;
                 }
 
