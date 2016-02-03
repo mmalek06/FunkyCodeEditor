@@ -88,8 +88,8 @@
     <Compile Include="Views\TextView\LinesRemoveInfo.cs" />
     <Compile Include="Views\TextView\TextConfiguration.cs" />
     <Compile Include="Views\TextView\TextInfo.cs" />
-    <Compile Include="Views\TextView\TextLineRemover.cs" />
-    <Compile Include="Views\TextView\TextLineUpdater.cs" />
+    <Compile Include="Views\TextView\TextRemover.cs" />
+    <Compile Include="Views\TextView\TextUpdater.cs" />
     <Compile Include="Views\ViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
     <Compile Include="Controls\TextArea.cs" />

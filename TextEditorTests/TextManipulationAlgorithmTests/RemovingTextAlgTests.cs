@@ -9,13 +9,13 @@ using TextEditor.TextProperties;
 namespace TextEditorTests.TextManipulationAlgorithmTests {
     [TestClass]
     public class RemovingTextAlgTests {
-        private static TextEditor.Views.TextView.TextLineRemover algorithm;
+        private static TextEditor.Views.TextView.TextRemover algorithm;
         private static TextEditor.Views.TextView.View view;
         private static TextRunProperties runProperties;
 
         [ClassInitialize]
         public static void Initialize(TestContext context) {
-            algorithm = new TextEditor.Views.TextView.TextLineRemover();
+            algorithm = new TextEditor.Views.TextView.TextRemover();
             view = new TextEditor.Views.TextView.View();
             runProperties = view.CreateGlobalTextRunProperties();
         }
@@ -109,6 +109,27 @@ namespace TextEditorTests.TextManipulationAlgorithmTests {
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(0, removedLinesIndexes.Length);
+            Assert.AreEqual(text1 + text3, newLines.LinesAffected.ElementAt(0).Value);
+        }
+
+        [TestMethod]
+        public void TwoLinesEnteredSelectionInTheMiddleOfFirst_LinesShouldBeText1Text3Text4() {
+            string text1 = "as";
+            string text2 = " df ";
+            string text3 = "qwer";
+            string text4 = "zxcv";
+            var textSources = new List<SimpleTextSource> {
+                new SimpleTextSource(text1 + text2 + text3, runProperties),
+                new SimpleTextSource(text4, runProperties)
+            };
+            var newLines = algorithm.TransformLines(textSources, new TextEditor.DataStructures.TextPositionsPair {
+                StartPosition = new TextEditor.DataStructures.TextPosition { Column = 2, Line = 0 },
+                EndPosition = new TextEditor.DataStructures.TextPosition { Column = 6, Line = 0 }
+            });
+            var removedLineIndexes = newLines.LinesToRemove.ToArray();
+
+            Assert.AreEqual(0, removedLineIndexes.Length);
+            Assert.AreEqual(1, newLines.LinesAffected.Count());
             Assert.AreEqual(text1 + text3, newLines.LinesAffected.ElementAt(0).Value);
         }
 

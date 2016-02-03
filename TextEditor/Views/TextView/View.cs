@@ -24,8 +24,8 @@ namespace TextEditor.Views.TextView {
         private TextFormatter formatter;
         private TextRunProperties runProperties;
         private SimpleParagraphProperties paragraphProperties;
-        private TextLineUpdater updatingAlgorithm;
-        private TextLineRemover removingAlgorithm;
+        private TextUpdater updatingAlgorithm;
+        private TextRemover removingAlgorithm;
 
         #endregion
 
@@ -44,8 +44,8 @@ namespace TextEditor.Views.TextView {
             runProperties = this.CreateGlobalTextRunProperties();
             textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, runProperties) };
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = runProperties };
-            updatingAlgorithm = new TextLineUpdater();
-            removingAlgorithm = new TextLineRemover();
+            updatingAlgorithm = new TextUpdater();
+            removingAlgorithm = new TextRemover();
         }
 
         #endregion

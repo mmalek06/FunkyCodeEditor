@@ -6,7 +6,7 @@ using TextEditor.DataStructures;
 using TextEditor.TextProperties;
 
 namespace TextEditor.Views.TextView {
-    internal class TextLineUpdater {
+    internal class TextUpdater {
 
         #region public properties
 
@@ -16,7 +16,7 @@ namespace TextEditor.Views.TextView {
 
         #region constructor
 
-        public TextLineUpdater() {
+        public TextUpdater() {
             SpecialCharsRegex = new Regex("[\a|\b|\n|\r|\f|\t|\v]");
         }
 

@@ -5,7 +5,7 @@ using TextEditor.DataStructures;
 using TextEditor.TextProperties;
 
 namespace TextEditor.Views.TextView {
-    internal class TextLineRemover {
+    internal class TextRemover {
 
         #region public methods
 
@@ -22,7 +22,7 @@ namespace TextEditor.Views.TextView {
                         string.Concat(textSources[pair.StartPosition.Line].Text.Take(pair.StartPosition.Column)) +
                         string.Concat(textSources[pair.EndPosition.Line].Text.Skip(pair.EndPosition.Column))
                 },
-                LinesToRemove = Enumerable.Range(pair.StartPosition.Line + 1, textSources.Count - (pair.StartPosition.Line + 1))
+                LinesToRemove = Enumerable.Range(pair.StartPosition.Line + 1, pair.EndPosition.Line)
             };
         }
 
