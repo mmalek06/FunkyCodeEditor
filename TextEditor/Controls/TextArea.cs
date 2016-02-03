@@ -53,7 +53,7 @@ namespace TextEditor.Controls {
         protected override void OnKeyDown(KeyEventArgs e) {
             var removeTextCmd = new RemoveTextCommand(selectionView, textView, textInfo);
             var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
-            var selectionCmd = new TextSelectionCommand(textView, selectionView, textInfo);
+            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView, textInfo);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (removeTextCmd.CanExecute(e)) {

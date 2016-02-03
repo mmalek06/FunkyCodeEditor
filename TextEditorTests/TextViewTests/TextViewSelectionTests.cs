@@ -26,7 +26,8 @@ namespace TextEditorTests.TextViewTests {
             tv.HandleCaretMove(this, new TextEditor.Events.CaretMovedEventArgs {
                 NewPosition = startingPosition
             });
-            sv.Select(startingPosition, endingPosition);
+            sv.Select(startingPosition);
+            sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
             var selectedParts = textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
@@ -55,7 +56,8 @@ namespace TextEditorTests.TextViewTests {
             tv.HandleCaretMove(this, new TextEditor.Events.CaretMovedEventArgs {
                 NewPosition = startingPosition
             });
-            sv.Select(startingPosition, endingPosition);
+            sv.Select(startingPosition);
+            sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
             var selectedParts = textInfo.GetTextPartsBetweenPositions(selectionArea.EndPosition, selectionArea.StartPosition);
@@ -87,7 +89,8 @@ namespace TextEditorTests.TextViewTests {
             tv.HandleCaretMove(this, new TextEditor.Events.CaretMovedEventArgs {
                 NewPosition = startingPosition
             });
-            sv.Select(startingPosition, endingPosition);
+            sv.Select(startingPosition);
+            sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
             var selectedParts = textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);

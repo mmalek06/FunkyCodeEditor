@@ -27,16 +27,7 @@ namespace TextEditor.Views.SelectionView {
 
         #region public methods
 
-        public void Select(TextPosition start, TextPosition end) {
-            var selection = new VisualElement();
-
-            visuals.Clear();
-            selection.Draw(GetSelectionPoints(start, end));
-            visuals.Add(selection);
-
-            lastSelectionStart = start;
-            lastSelectionEnd = end;
-        }
+        public void Select(TextPosition position) => MakeSelection(position);
 
         public void Deselect() {
             lastSelectionStart = null;
@@ -63,21 +54,7 @@ namespace TextEditor.Views.SelectionView {
 
         public void HandleMouseMove(object sender, MouseEventArgs e) {
             if (e.LeftButton == MouseButtonState.Pressed) {
-                var selection = new VisualElement();
-
-                visuals.Clear();
-
-                if (!isSelecting) {
-                    isSelecting = true;
-
-                    lastSelectionStart = e.GetPosition(this).GetDocumentPosition();
-                    lastSelectionEnd = lastSelectionStart;
-                } else {
-                    lastSelectionEnd = e.GetPosition(this).GetDocumentPosition();
-                }
-
-                selection.Draw(GetSelectionPoints(lastSelectionStart, lastSelectionEnd));
-                visuals.Add(selection);
+                MakeSelection(e.GetPosition(this).GetDocumentPosition());
             }
         }
 
@@ -88,6 +65,26 @@ namespace TextEditor.Views.SelectionView {
         #endregion
 
         #region methods
+
+        private void MakeSelection(TextPosition position) {
+            var selection = new VisualElement();
+
+            visuals.Clear();
+            SetSelectionState(position);
+            selection.Draw(GetSelectionPoints(lastSelectionStart, lastSelectionEnd));
+            visuals.Add(selection);
+        }
+
+        private void SetSelectionState(TextPosition position) {
+            if (!isSelecting) {
+                isSelecting = true;
+
+                lastSelectionStart = position;
+                lastSelectionEnd = lastSelectionStart;
+            } else {
+                lastSelectionEnd = position;
+            }
+        }
 
         private IEnumerable<PointsPair> GetSelectionPoints(TextPosition start, TextPosition end) {
             var pairs = new List<PointsPair>();
