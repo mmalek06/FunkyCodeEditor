@@ -86,7 +86,7 @@ namespace TextEditor {
         }
 
         private void RedrawLines(DrawingContext drawingContext) {
-            int linesCount = textArea.GetLinesCount();
+            int linesCount = textArea.TextInfo.GetTextLinesCount();
             var lineNumbers = Enumerable.Range(1, linesCount).ToArray();
             var fontColor = EditorConfiguration.GetLinesColumnFontColor();
             double fontHeight = EditorConfiguration.GetFontHeight();

@@ -44,6 +44,17 @@ namespace TextEditor.Views.TextView {
             return parts;
         }
 
+        public bool IsInTextRange(TextPosition position) {
+            if (position.Line >= GetTextLinesCount()) {
+                return false;
+            }
+            if (position.Column > GetTextLineLength(position.Line)) {
+                return false;
+            }
+
+            return true;
+        }
+
         #endregion
 
     }

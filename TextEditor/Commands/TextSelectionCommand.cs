@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using TextEditor.DataStructures;
+using TextEditor.Extensions;
 using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
@@ -43,25 +44,67 @@ namespace TextEditor.Commands {
         #region public methods
 
         public bool CanExecute(object parameter) {
-            var args = parameter as KeyEventArgs;
+            var keyboardEvent = parameter as KeyEventArgs;
+            var mouseEvent = parameter as MouseEventArgs;
 
-            if (args == null) {
-                return false;
+            if (keyboardEvent != null) {
+                return CanExecuteKeyboard(keyboardEvent);
+            } else if (mouseEvent != null) {
+                return CanExecuteMouse(mouseEvent);
             }
 
-            return Keyboard.IsKeyDown(Key.RightShift) && 
-                (args.Key == Key.Left || args.Key == Key.Right || 
-                 args.Key == Key.Up || args.Key == Key.Down || 
-                 args.Key == Key.Home || args.Key == Key.End ||
-                 args.Key == Key.PageUp || args.Key == Key.PageDown);
+            return false;
         }
 
         public void Execute(object parameter) {
-            var args = (KeyEventArgs)parameter;
+            var keyboardEvent = parameter as KeyEventArgs;
+            var mouseEvent = parameter as MouseEventArgs;
+            
+            if (keyboardEvent != null) {
+                ExecuteKeyboard(keyboardEvent);
+            } else if (mouseEvent != null) {
+                ExecuteMouse(mouseEvent);
+            }
+        }
+
+        #endregion
+
+        #region methods
+
+        private bool CanExecuteKeyboard(KeyEventArgs keyboardEvent) {
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Left && caretView.CaretPosition.Column == 0) {
+                return false;
+            }
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Right && caretView.CaretPosition.Column == textInfo.GetTextLineLength(caretView.CaretPosition.Line)) {
+                return false;
+            }
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Up && caretView.CaretPosition.Line == 0) {
+                return false;
+            }
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == textInfo.GetTextLinesCount() - 1) {
+                return false;
+            }
+
+            return Keyboard.IsKeyDown(Key.RightShift) &&
+                (keyboardEvent.Key == Key.Left || keyboardEvent.Key == Key.Right ||
+                 keyboardEvent.Key == Key.Up || keyboardEvent.Key == Key.Down ||
+                 keyboardEvent.Key == Key.Home || keyboardEvent.Key == Key.End ||
+                 keyboardEvent.Key == Key.PageUp || keyboardEvent.Key == Key.PageDown);
+        }
+
+        private bool CanExecuteMouse(MouseEventArgs mouseEvent) => 
+            mouseEvent.LeftButton == MouseButtonState.Pressed && 
+            textInfo.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition());
+
+        private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
             var area = selectionView.GetCurrentSelectionArea();
             TextPosition endingPosition = new TextPosition(0, 0);
 
-            switch (args.Key) {
+#if DEBUG
+            Console.WriteLine("Selection command executed");
+#endif
+
+            switch (keyboardEvent.Key) {
                 case Key.Left:
                     endingPosition.Column = area == null ? textView.ActivePosition.Column - 1 : area.EndPosition.Column - 1;
                     endingPosition.Line = textView.ActivePosition.Line;
@@ -101,6 +144,8 @@ namespace TextEditor.Commands {
             selectionView.Select(endingPosition);
             caretView.MoveCursor(endingPosition);
         }
+
+        private void ExecuteMouse(MouseEventArgs mouseEvent) => selectionView.Select(mouseEvent.GetPosition(selectionView).GetDocumentPosition());
 
         #endregion
 

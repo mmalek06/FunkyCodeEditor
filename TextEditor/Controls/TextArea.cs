@@ -77,11 +77,28 @@ namespace TextEditor.Controls {
             }
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e) {
+            var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
+
+            if (caretMoveCmd.CanExecute(e)) {
+                caretMoveCmd.Execute(e);
+            }
+
+            selectionView.HandleMouseDown(e);
+            textView.HandleMouseDown(e);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e) {
+            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView, textInfo);
+
+            if (selectionCmd.CanExecute(e)) {
+                selectionCmd.Execute(e);
+            }
+        }
+
         #endregion
 
         #region methods
-
-        internal int GetLinesCount() => textInfo.GetTextLinesCount();
 
         protected override Visual GetVisualChild(int index) => views[index];
 
@@ -99,17 +116,6 @@ namespace TextEditor.Controls {
         }
 
         private void InitEvents() {
-            // standard control events
-            MouseMove += selectionView.HandleMouseMove;
-            MouseDown += selectionView.HandleMouseDown;
-            MouseDown += textView.HandleMouseDown;
-            MouseDown += (sender, e) => {
-                var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
-
-                if (caretMoveCmd.CanExecute(e)) {
-                    caretMoveCmd.Execute(e);
-                }
-            };
             GotFocus += textView.HandleGotFocus;
 
             // custom editor events

@@ -27,7 +27,14 @@ namespace TextEditor.Views.SelectionView {
 
         #region public methods
 
-        public void Select(TextPosition position) => MakeSelection(position);
+        public void Select(TextPosition position) {
+            var selection = new VisualElement();
+
+            visuals.Clear();
+            SetSelectionState(position);
+            selection.Draw(GetSelectionPoints(lastSelectionStart, lastSelectionEnd));
+            visuals.Add(selection);
+        }
 
         public void Deselect() {
             lastSelectionStart = null;
@@ -52,28 +59,13 @@ namespace TextEditor.Views.SelectionView {
 
         #region event handlers
 
-        public void HandleMouseMove(object sender, MouseEventArgs e) {
-            if (e.LeftButton == MouseButtonState.Pressed) {
-                MakeSelection(e.GetPosition(this).GetDocumentPosition());
-            }
-        }
-
-        public void HandleMouseDown(object sender, MouseButtonEventArgs e) {
+        public void HandleMouseDown(MouseButtonEventArgs e) {
             Deselect();
         }
 
         #endregion
 
         #region methods
-
-        private void MakeSelection(TextPosition position) {
-            var selection = new VisualElement();
-
-            visuals.Clear();
-            SetSelectionState(position);
-            selection.Draw(GetSelectionPoints(lastSelectionStart, lastSelectionEnd));
-            visuals.Add(selection);
-        }
 
         private void SetSelectionState(TextPosition position) {
             if (!isSelecting) {

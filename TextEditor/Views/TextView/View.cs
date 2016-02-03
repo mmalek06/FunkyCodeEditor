@@ -56,7 +56,7 @@ namespace TextEditor.Views.TextView {
 
         internal void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
-        internal void HandleMouseDown(object sender, MouseButtonEventArgs e) => Focus();
+        internal void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
         #endregion
 
