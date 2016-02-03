@@ -100,10 +100,6 @@ namespace TextEditor.Commands {
             var area = selectionView.GetCurrentSelectionArea();
             TextPosition endingPosition = new TextPosition(0, 0);
 
-#if DEBUG
-            Console.WriteLine("Selection command executed");
-#endif
-
             switch (keyboardEvent.Key) {
                 case Key.Left:
                     endingPosition.Column = area == null ? textView.ActivePosition.Column - 1 : area.EndPosition.Column - 1;
