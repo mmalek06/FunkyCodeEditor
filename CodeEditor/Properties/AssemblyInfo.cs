@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TextEditor")]
+[assembly: AssemblyTitle("CodeEditor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TextEditor")]
+[assembly: AssemblyProduct("CodeEditor")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -55,4 +55,4 @@ using System.Windows;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // Configuration for testing purposes
-[assembly: InternalsVisibleTo("TextEditorTests")]
+[assembly: InternalsVisibleTo("CodeEditor.Tests")]

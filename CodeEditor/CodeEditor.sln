@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEditor", "TextEditor.csproj", "{73A5DF78-02D6-47E5-9F97-66619A8F9499}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEditor", "CodeEditor.csproj", "{73A5DF78-02D6-47E5-9F97-66619A8F9499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEditorTests", "..\TextEditorTests\TextEditorTests.csproj", "{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEditor.Tests", "..\CodeEditor.Tests\CodeEditor.Tests.csproj", "{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

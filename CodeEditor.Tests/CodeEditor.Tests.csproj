@@ -6,8 +6,8 @@
     <ProjectGuid>{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TextEditorTests</RootNamespace>
-    <AssemblyName>TextEditorTests</AssemblyName>
+    <RootNamespace>CodeEditor.Tests</RootNamespace>
+    <AssemblyName>CodeEditor.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,9 +62,9 @@
     <Compile Include="TextViewTests\TextViewSelectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextEditor\TextEditor.csproj">
+    <ProjectReference Include="..\CodeEditor.Tests\CodeEditor.Tests.csproj">
       <Project>{73a5df78-02d6-47e5-9f97-66619a8f9499}</Project>
-      <Name>TextEditor</Name>
+      <Name>CodeEditor.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
