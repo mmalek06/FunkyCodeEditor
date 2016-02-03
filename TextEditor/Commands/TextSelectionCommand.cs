@@ -145,7 +145,12 @@ namespace TextEditor.Commands {
             caretView.MoveCursor(endingPosition);
         }
 
-        private void ExecuteMouse(MouseEventArgs mouseEvent) => selectionView.Select(mouseEvent.GetPosition(selectionView).GetDocumentPosition());
+        private void ExecuteMouse(MouseEventArgs mouseEvent) {
+            var endPosition = mouseEvent.GetPosition(selectionView).GetDocumentPosition();
+
+            selectionView.Select(endPosition);
+            caretView.MoveCursor(endPosition);
+        }
 
         #endregion
 
