@@ -67,8 +67,6 @@ namespace TextEditor.Views.CaretView {
 
         public void HandleTextChange(object sender, TextChangedEventArgs e) => MoveCaret(new TextPosition { Column = e.CurrentColumn, Line = e.CurrentLine });
 
-        public void HandleMouseDown(object sender, MouseButtonEventArgs e) { }
-
         #endregion
 
         #region public methods

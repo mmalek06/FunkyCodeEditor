@@ -95,6 +95,6 @@ namespace TextEditorTests.TextViewTests {
             Assert.AreEqual(text2, selectedParts.First());
             Assert.AreEqual(text3, selectedParts.Last());
         }
-        
+                
     }
 }

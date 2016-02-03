@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using TextEditor.Views.TextView;
+using TextEditor.DataStructures;
+using TextEditor.Extensions;
 using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Commands {
@@ -35,9 +36,48 @@ namespace TextEditor.Commands {
         #region public methods
 
         public bool CanExecute(object parameter) {
-            var e = parameter as KeyEventArgs;
+            var keyboardEvent = parameter as KeyEventArgs;
+            var mouseEvent = parameter as MouseButtonEventArgs;
 
-            if (e == null || Keyboard.IsKeyDown(Key.RightShift)) {
+            if (keyboardEvent != null) {
+                return CanExecuteKeyMove(keyboardEvent);
+            } else if (mouseEvent != null) {
+                return CanExecuteMouseMove(mouseEvent);
+            }
+
+            return false;
+        }
+
+        public void Execute(object parameter) {
+            var keyboardEvent = parameter as KeyEventArgs;
+            var mouseEvent = parameter as MouseButtonEventArgs;
+            TextPosition newPos = null;
+
+            if (keyboardEvent != null) {
+                newPos = caretView.GetNextPosition(keyboardEvent.Key);
+            } else if (mouseEvent != null) {
+                newPos = mouseEvent.GetPosition(textView).GetDocumentPosition();
+            }
+            if (newPos == null) {
+                return;
+            }
+
+            if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
+                newPos.Column = textInfo.GetTextLineLength(newPos.Line);
+            }
+            if (newPos.Line >= textInfo.GetTextLinesCount()) {
+                newPos.Line = textInfo.GetTextLinesCount() - 1;
+            }
+
+            caretView.MoveCursor(newPos);
+        }
+
+        #endregion
+
+        #region methods
+
+        private bool CanExecuteKeyMove(KeyEventArgs e) {
+            if (Keyboard.IsKeyDown(Key.RightShift)) {
                 return false;
             }
             if (!caretView.StepKeys.Contains(e.Key) && !caretView.JumpKeys.Contains(e.Key)) {
@@ -45,7 +85,7 @@ namespace TextEditor.Commands {
             }
 
             var nextPosition = caretView.GetNextPosition(e.Key);
-            
+
             if (nextPosition.Line < 0 || nextPosition.Line >= textInfo.GetTextLinesCount()) {
                 return false;
             }
@@ -56,18 +96,17 @@ namespace TextEditor.Commands {
             return true;
         }
 
-        public void Execute(object parameter) {
-            var e = parameter as KeyEventArgs;
-            var newPos = caretView.GetNextPosition(e.Key);
+        private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
+            var docPosition = mouseEvent.GetPosition(textView).GetDocumentPosition();
 
-            if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
-                newPos.Column = textInfo.GetTextLineLength(newPos.Line);
+            if (docPosition.Line < 0 || docPosition.Line >= textInfo.GetTextLinesCount()) {
+                return false;
             }
-            if (newPos.Line >= textInfo.GetTextLinesCount()) {
-                newPos.Line = textInfo.GetTextLinesCount() - 1;
+            if (docPosition.Column < 0) {
+                return false;
             }
 
-            caretView.MoveCursor(newPos);
+            return true;
         }
 
         #endregion

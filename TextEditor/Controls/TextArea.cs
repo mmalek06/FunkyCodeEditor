@@ -103,7 +103,13 @@ namespace TextEditor.Controls {
             MouseMove += selectionView.HandleMouseMove;
             MouseDown += selectionView.HandleMouseDown;
             MouseDown += textView.HandleMouseDown;
-            MouseDown += caretView.HandleMouseDown;
+            MouseDown += (sender, e) => {
+                var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
+
+                if (caretMoveCmd.CanExecute(e)) {
+                    caretMoveCmd.Execute(e);
+                }
+            };
             GotFocus += textView.HandleGotFocus;
 
             // custom editor events
