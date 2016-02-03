@@ -55,6 +55,8 @@ namespace TextEditor.Views.SelectionView {
             };
         }
 
+        public bool HasSelection() => lastSelectionStart != null && lastSelectionEnd != null && isSelecting;
+
         #endregion
 
         #region event handlers
@@ -80,21 +82,23 @@ namespace TextEditor.Views.SelectionView {
 
         private IEnumerable<PointsPair> GetSelectionPoints(TextPosition start, TextPosition end) {
             var pairs = new List<PointsPair>();
+            var realStart = start <= end ? start : end;
+            var realEnd = start <= end ? end : start;
 
             visuals.Clear();
 
-            for (int i = start.Line; i <= end.Line; i++) {
+            for (int i = realStart.Line; i <= realEnd.Line; i++) {
                 TextPosition tmpStartPos = new TextPosition { Column = 0, Line = i };
                 TextPosition tmpEndPos = new TextPosition { Column = 0, Line = i };
 
-                if (i == start.Line) {
-                    tmpStartPos.Column = start.Column;
+                if (i == realStart.Line) {
+                    tmpStartPos.Column = realStart.Column;
                 }
 
                 int lineLen = textInfo.GetTextLineLength(i);
 
-                if (i == end.Line) {
-                    tmpEndPos.Column = end.Column > lineLen ? lineLen : end.Column;
+                if (i == realEnd.Line) {
+                    tmpEndPos.Column = realEnd.Column > lineLen ? lineLen : realEnd.Column;
                 } else {
                     tmpEndPos.Column = lineLen;
                 }

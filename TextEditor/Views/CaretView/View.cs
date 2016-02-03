@@ -9,9 +9,10 @@ using TextEditor.Configuration;
 using TextEditor.DataStructures;
 using TextEditor.Events;
 using TextEditor.Extensions;
+using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
 
 namespace TextEditor.Views.CaretView {
-    public class View : ViewBase {
+    internal class View : ViewBase {
 
         #region constants
 
@@ -21,6 +22,7 @@ namespace TextEditor.Views.CaretView {
 
         #region fields
 
+        private LocalTextInfo textInfo;
         private DispatcherTimer blinkTimer;
         private Timer checkTimer;
         private TextPosition caretPosition;
@@ -50,13 +52,14 @@ namespace TextEditor.Views.CaretView {
 
         #region constructor
 
-        public View() : base() {
+        public View(LocalTextInfo textInfo) : base() {
+            this.textInfo = textInfo;
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });
             textRunProperties = this.CreateGlobalTextRunProperties();
             caretPosition = new TextPosition(0, 0);
             isCaretVisible = true;
-
+            
             InitBlinker();
             DrawCaret();
         }
@@ -74,6 +77,7 @@ namespace TextEditor.Views.CaretView {
         public void MoveCursor(TextPosition newPos) {
             var oldPos = caretPosition;
 
+            EnsureCursorIsNotExceedingTextBounds(newPos);
             MoveCaret(newPos);
             TriggerCaretMoved(newPos, oldPos);
         }
@@ -106,6 +110,16 @@ namespace TextEditor.Views.CaretView {
         #endregion
 
         #region methods
+
+        private void EnsureCursorIsNotExceedingTextBounds(TextPosition newPos) {
+            if (newPos.Line < 0) {
+                newPos.Line = 0;
+                newPos.Column = textInfo.GetTextLineLength(0);
+            } else if (newPos.Line >= textInfo.GetTextLinesCount()) {
+                newPos.Line = textInfo.GetTextLinesCount() - 1;
+                newPos.Column = textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1);
+            }
+        }
 
         private void DrawCaret() {
             blinkTimer.Stop();

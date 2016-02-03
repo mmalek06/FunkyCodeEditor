@@ -106,7 +106,7 @@ namespace TextEditor.Controls {
             textView = new Views.TextView.View();
             textInfo = new LocalTextInfo(textView);
             selectionView = new Views.SelectionView.View(textInfo);
-            caretView = new Views.CaretView.View();
+            caretView = new Views.CaretView.View(textInfo);
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 views.Add(view);

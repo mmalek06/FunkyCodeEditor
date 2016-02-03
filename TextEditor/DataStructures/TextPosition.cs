@@ -22,6 +22,10 @@
 
         public static bool operator >(TextPosition @this, TextPosition other) => other == null ? false : @this.Column > other.Column || @this.Line > other.Line;
 
+        public static bool operator <=(TextPosition @this, TextPosition other) => @this < other || @this == other;
+
+        public static bool operator >=(TextPosition @this, TextPosition other) => @this > other || @this == other;
+
         public static bool operator ==(TextPosition @this, TextPosition other) {
             if (ReferenceEquals(@this, null) && ReferenceEquals(other, null)) {
                 return true;
@@ -36,6 +40,9 @@
         public static bool operator !=(TextPosition @this, TextPosition other) {
             if ((ReferenceEquals(@this, null) && !ReferenceEquals(other, null))|| (!ReferenceEquals(@this, null) && ReferenceEquals(other, null))) {
                 return true;
+            }
+            if (ReferenceEquals(@this, null) && ReferenceEquals(other, null)) {
+                return false;
             }
 
             return @this.Column != other.Column || @this.Line != other.Line;

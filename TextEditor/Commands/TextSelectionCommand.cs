@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using TextEditor.Configuration;
 using TextEditor.DataStructures;
 using TextEditor.Extensions;
 using LocalTextInfo = TextEditor.Views.TextView.TextInfo;
@@ -97,12 +98,11 @@ namespace TextEditor.Commands {
             textInfo.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition());
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
-            var area = selectionView.GetCurrentSelectionArea();
             TextPosition endingPosition = new TextPosition(0, 0);
 
             switch (keyboardEvent.Key) {
                 case Key.Left:
-                    endingPosition.Column = area == null ? textView.ActivePosition.Column - 1 : area.EndPosition.Column - 1;
+                    endingPosition.Column = textView.ActivePosition.Column - 1;
                     endingPosition.Line = textView.ActivePosition.Line;
                     break;
                 case Key.Home:
@@ -110,7 +110,7 @@ namespace TextEditor.Commands {
                     endingPosition.Line = textView.ActivePosition.Line;
                     break;
                 case Key.Right:
-                    endingPosition.Column = area == null ? textView.ActivePosition.Column + 1 : area.EndPosition.Column + 1;
+                    endingPosition.Column = textView.ActivePosition.Column + 1;
                     endingPosition.Line = textView.ActivePosition.Line;
                     break;
                 case Key.End:
@@ -118,19 +118,23 @@ namespace TextEditor.Commands {
                     endingPosition.Line = textView.ActivePosition.Line;
                     break;
                 case Key.Up:
-                    endingPosition.Column = area == null ? textView.ActivePosition.Column : area.EndPosition.Column;
-                    endingPosition.Line = area == null ? textView.ActivePosition.Line - 1 : area.EndPosition.Line - 1;
+                    endingPosition.Column = textView.ActivePosition.Column;
+                    endingPosition.Line = textView.ActivePosition.Line - 1;
                     break;
                 case Key.PageUp:
+                    endingPosition.Column = textView.ActivePosition.Column;
+                    endingPosition.Line = textView.ActivePosition.Line - GlobalConstants.PageSize;
                     break;
                 case Key.Down:
-                    endingPosition.Column = area == null ? textView.ActivePosition.Column : area.EndPosition.Column;
-                    endingPosition.Line = area == null ? textView.ActivePosition.Line + 1 : area.EndPosition.Line + 1;
+                    endingPosition.Column = textView.ActivePosition.Column;
+                    endingPosition.Line = textView.ActivePosition.Line + 1;
                     break;
                 case Key.PageDown:
+                    endingPosition.Column = textView.ActivePosition.Column;
+                    endingPosition.Line = textView.ActivePosition.Line + GlobalConstants.PageSize;
                     break;
             }
-            if (area == null) {
+            if (!selectionView.HasSelection()) {
                 selectionView.Select(new TextPosition {
                     Column = textView.ActivePosition.Column,
                     Line = textView.ActivePosition.Line

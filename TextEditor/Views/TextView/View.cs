@@ -9,7 +9,7 @@ using TextEditor.Extensions;
 using TextEditor.TextProperties;
 
 namespace TextEditor.Views.TextView {
-    public class View : ViewBase {
+    internal class View : ViewBase {
 
         #region events
 
