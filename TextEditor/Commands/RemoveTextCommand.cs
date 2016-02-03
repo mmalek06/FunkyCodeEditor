@@ -36,10 +36,9 @@ namespace TextEditor.Commands {
         public override void Execute(object parameter) {
             var e = parameter as KeyEventArgs;
             var key = e.Key;
+            var selectionArea = selectionView.GetCurrentSelectionArea();
 
             UpdateCommandState(BeforeCommandExecutedState);
-
-            var selectionArea = selectionView.GetCurrentSelectionArea();
 
             if (selectionArea == null) {
                 view.RemoveText(key);

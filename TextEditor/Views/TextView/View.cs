@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -62,16 +61,11 @@ namespace TextEditor.Views.TextView {
 
         #region public methods
 
-        public void EnterText(string enteredText) {
-            var newLines = updatingAlgorithm.UpdateLines(textSources, ActivePosition, enteredText);
+        public void EnterText(string enteredText) => InputText(enteredText);
 
-            UpdateTextData(newLines);
-            UpdateCursorPosition(enteredText);
-            DrawLines(newLines.Select(lineInfo => lineInfo.Key));
-        }
-
-        public void ReplaceText(IEnumerable<TextPositionsPair> oldText, IEnumerable<TextPositionsPair> newText) {
-
+        public void EnterText(string enteredText, TextPositionsPair range) {
+            RemoveText(range);
+            InputText(enteredText);
         }
 
         public void RemoveText(Key key) {
@@ -99,6 +93,14 @@ namespace TextEditor.Views.TextView {
         #endregion
 
         #region methods
+
+        private void InputText(string enteredText) {
+            var newLines = updatingAlgorithm.UpdateLines(textSources, ActivePosition, enteredText);
+
+            UpdateTextData(newLines);
+            UpdateCursorPosition(enteredText);
+            DrawLines(newLines.Select(lineInfo => lineInfo.Key));
+        }
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);

@@ -68,7 +68,7 @@ namespace TextEditor.Controls {
         }
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
-            var enterTextCmd = new EnterTextCommand(textView, textInfo);
+            var enterTextCmd = new EnterTextCommand(selectionView, textView, textInfo);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (enterTextCmd.CanExecute(e)) {
