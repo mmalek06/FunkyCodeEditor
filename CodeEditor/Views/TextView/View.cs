@@ -7,6 +7,7 @@ using CodeEditor.DataStructures;
 using CodeEditor.Events;
 using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
+using CodeEditor.Algorithms.TextManipulation;
 
 namespace CodeEditor.Views.TextView {
     internal class View : ViewBase {
@@ -51,11 +52,11 @@ namespace CodeEditor.Views.TextView {
 
         #region event handlers
 
-        internal void HandleCaretMove(object sender, CaretMovedEventArgs e) => UpdateCursorPosition(e.NewPosition);
+        public void HandleCaretMove(object sender, CaretMovedEventArgs e) => UpdateCursorPosition(e.NewPosition);
 
-        internal void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
+        public void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
-        internal void HandleMouseDown(MouseButtonEventArgs e) => Focus();
+        public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
         #endregion
 
@@ -134,13 +135,13 @@ namespace CodeEditor.Views.TextView {
 
         private void RemoveLines(IEnumerable<int> indices) {
             var textSourcesToRemove = textSources.Select((obj, index) => new { index, obj }).Where(obj => indices.Contains(obj.index)).ToArray();
-            List<VisualTextLine> visualsToRemove = new List<VisualTextLine>();
+            List<VisualElement> visualsToRemove = new List<VisualElement>();
 
             foreach (var txtSource in textSourcesToRemove) {
                 textSources.Remove(txtSource.obj);
             }
             foreach (var visual in visuals) {
-                var line = (VisualTextLine)visual;
+                var line = (VisualElement)visual;
 
                 if (indices.Contains(line.Index)) {
                     visualsToRemove.Add(line);
@@ -177,9 +178,9 @@ namespace CodeEditor.Views.TextView {
                 double top = index * textLine.Height;
 
                 if (index < visuals.Count) {
-                    ((VisualTextLine)visuals[index]).Redraw(textLine, top);
+                    ((VisualElement)visuals[index]).Redraw(textLine, top);
                 } else {
-                    visuals.Add(new VisualTextLine(textLine, top, index));
+                    visuals.Add(new VisualElement(textLine, top, index));
                 }
             }
         }

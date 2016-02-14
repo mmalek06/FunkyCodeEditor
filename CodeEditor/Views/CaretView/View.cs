@@ -57,7 +57,7 @@ namespace CodeEditor.Views.CaretView {
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });
             textRunProperties = this.CreateGlobalTextRunProperties();
-            caretPosition = new TextPosition(0, 0);
+            caretPosition = TextPosition.Zero;
             isCaretVisible = true;
             
             InitBlinker();
@@ -128,9 +128,9 @@ namespace CodeEditor.Views.CaretView {
             blinkTimer.Stop();
             checkTimer?.Dispose();
 
-            var caret = new VisualElement { Position = caretPosition };
+            var caret = new VisualElement();
 
-            caret.Draw(textRunProperties);
+            caret.Draw(textRunProperties, caretPosition);
             visuals.Clear();
             visuals.Add(caret);
 
@@ -191,9 +191,9 @@ namespace CodeEditor.Views.CaretView {
             blinkTimer.Tick += (sender, e) => {
                 Application.Current.Dispatcher.Invoke(() => {
                     if (isCaretVisible) {
-                        var caret = new VisualElement { Position = caretPosition };
+                        var caret = new VisualElement();
 
-                        caret.Draw(textRunProperties);
+                        caret.Draw(textRunProperties, CaretPosition);
                         visuals.Add(caret);
                     } else {
                         visuals.Clear();

@@ -3,10 +3,10 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 
 namespace CodeEditor.Views.TextView {
-    internal class VisualTextLine : DrawingVisual {
+    internal class VisualElement : DrawingVisual {
         public int Index { get; set; }
 
-        public VisualTextLine(TextLine textLine, double top, int index) {
+        public VisualElement(TextLine textLine, double top, int index) {
             Index = index;
 
             Redraw(textLine, top);

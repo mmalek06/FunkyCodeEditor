@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
 
-namespace CodeEditor.Views.TextView {
+namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextUpdater {
 
         #region public properties

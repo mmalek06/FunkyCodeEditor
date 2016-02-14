@@ -4,8 +4,18 @@
     public class TextPosition {
 #pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
 #pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
+
+        #region properties
+
+        public static TextPosition Zero => new TextPosition(0, 0);
+
         public int Column { get; set; }
+
         public int Line { get; set; }
+
+        #endregion
+
+        #region constructors
 
         public TextPosition() { }
 
@@ -13,6 +23,10 @@
             Column = column;
             Line = line;
         }
+
+        #endregion
+
+        #region public methods and operators
 
         public override bool Equals(object obj) {
             return base.Equals(obj);
@@ -47,6 +61,8 @@
 
             return @this.Column != other.Column || @this.Line != other.Line;
         }
+
+        #endregion
 
     }
 }

@@ -24,7 +24,7 @@ namespace CodeEditor.Commands {
             var e = parameter as TextCompositionEventArgs;
 
             if (e != null) {
-                return e.Text != Views.TextView.TextConfiguration.BACKSPACE;
+                return e.Text != TextProperties.TextConfiguration.BACKSPACE;
             }
 
             return false;

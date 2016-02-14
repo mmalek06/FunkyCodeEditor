@@ -4,33 +4,42 @@ using System.Linq;
 namespace CodeEditor.Tests.TextViewTests {
     [TestClass]
     public class TextViewSelectionTests {
+        private Views.TextView.View tv;
+        private Views.SelectionView.View sv;
+        private Views.TextView.TextInfo ti;
+        private Views.CaretView.View cv;
+
+        [TestInitialize]
+        public void InitializeTests() {
+            tv = new Views.TextView.View();
+            ti = new Views.TextView.TextInfo(tv);
+            sv = new Views.SelectionView.View(ti);
+            cv = new Views.CaretView.View(ti);
+        }
 
         [TestMethod]
         public void SelectFourCharsInOneLineToTheRight_TextRangeIsText2() {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
-            var tv = new CodeEditor.Views.TextView.View();
-            var textInfo = new CodeEditor.Views.TextView.TextInfo(tv);
-            var sv = new CodeEditor.Views.SelectionView.View(textInfo);
-            var startingPosition = new CodeEditor.DataStructures.TextPosition {
+            var startingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = 4
             };
-            var endingPosition = new CodeEditor.DataStructures.TextPosition {
+            var endingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = 8
             };
 
             tv.EnterText(text1 + text2 + text3);
-            tv.HandleCaretMove(this, new CodeEditor.Events.CaretMovedEventArgs {
+            tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
                 NewPosition = startingPosition
             });
             sv.Select(startingPosition);
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }
@@ -40,27 +49,24 @@ namespace CodeEditor.Tests.TextViewTests {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
-            var tv = new CodeEditor.Views.TextView.View();
-            var textInfo = new CodeEditor.Views.TextView.TextInfo(tv);
-            var sv = new CodeEditor.Views.SelectionView.View(textInfo);
-            var startingPosition = new CodeEditor.DataStructures.TextPosition {
+            var startingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = 8
             };
-            var endingPosition = new CodeEditor.DataStructures.TextPosition {
+            var endingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = 4
             };
 
             tv.EnterText(text1 + text2 + text3);
-            tv.HandleCaretMove(this, new CodeEditor.Events.CaretMovedEventArgs {
+            tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
                 NewPosition = startingPosition
             });
             sv.Select(startingPosition);
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = textInfo.GetTextPartsBetweenPositions(selectionArea.EndPosition, selectionArea.StartPosition);
+            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.EndPosition, selectionArea.StartPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }
@@ -71,14 +77,11 @@ namespace CodeEditor.Tests.TextViewTests {
             string text2 = " saw Susie sitting in a shoe shine shop.";
             string text3 = "Where she ";
             string text4 = "sits she shines, and where she shines she sits.";
-            var tv = new CodeEditor.Views.TextView.View();
-            var textInfo = new CodeEditor.Views.TextView.TextInfo(tv);
-            var sv = new CodeEditor.Views.SelectionView.View(textInfo);
-            var startingPosition = new CodeEditor.DataStructures.TextPosition {
+            var startingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = 1
             };
-            var endingPosition = new CodeEditor.DataStructures.TextPosition {
+            var endingPosition = new DataStructures.TextPosition {
                 Line = 1,
                 Column = 10
             };
@@ -86,14 +89,14 @@ namespace CodeEditor.Tests.TextViewTests {
             tv.EnterText(text1 + text2);
             tv.EnterText("\r");
             tv.EnterText(text3 + text4);
-            tv.HandleCaretMove(this, new CodeEditor.Events.CaretMovedEventArgs {
+            tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
                 NewPosition = startingPosition
             });
             sv.Select(startingPosition);
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
             Assert.AreEqual(text3, selectedParts.Last());
@@ -103,15 +106,11 @@ namespace CodeEditor.Tests.TextViewTests {
         public void SelectTwoOfFourLinesBottomToTop_CursorPositionIsAtTheEndOfText1() {
             string text1 = "shop";
             string text2 = "Where she sits she shines, and where she shines she sits.";
-            var tv = new CodeEditor.Views.TextView.View();
-            var textInfo = new CodeEditor.Views.TextView.TextInfo(tv);
-            var sv = new CodeEditor.Views.SelectionView.View(textInfo);
-            var cv = new CodeEditor.Views.CaretView.View(textInfo);
-            var startingPosition = new CodeEditor.DataStructures.TextPosition {
+            var startingPosition = new DataStructures.TextPosition {
                 Line = 1,
                 Column = text2.Length
             };
-            var endingPosition = new CodeEditor.DataStructures.TextPosition {
+            var endingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = text1.Length
             };
@@ -133,15 +132,11 @@ namespace CodeEditor.Tests.TextViewTests {
         public void SelectTwoOfFourLinesTopToBottom_CursorPositionIsAtTheEndOfText2() {
             string text1 = "Where she sits she shines, and where she shines she sits.";
             string text2 = "shop";
-            var tv = new CodeEditor.Views.TextView.View();
-            var textInfo = new CodeEditor.Views.TextView.TextInfo(tv);
-            var sv = new CodeEditor.Views.SelectionView.View(textInfo);
-            var cv = new CodeEditor.Views.CaretView.View(textInfo);
-            var startingPosition = new CodeEditor.DataStructures.TextPosition {
+            var startingPosition = new DataStructures.TextPosition {
                 Line = 0,
                 Column = text1.Length
             };
-            var endingPosition = new CodeEditor.DataStructures.TextPosition {
+            var endingPosition = new DataStructures.TextPosition {
                 Line = 1,
                 Column = text2.Length
             };

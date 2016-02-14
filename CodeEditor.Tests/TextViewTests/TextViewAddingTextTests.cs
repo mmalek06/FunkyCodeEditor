@@ -3,12 +3,17 @@
 namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewAddingTextTests {
+        private Views.TextView.View tv;
+        private new Views.TextView.TextInfo ti;
+
+        [TestInitialize]
+        public void InitializeTest() {
+            tv = new Views.TextView.View();
+            ti = new Views.TextView.TextInfo(tv);
+        }
 
         [TestMethod]
         public void FourCharsPasted_LinesShouldBe1() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("asdf");
 
             Assert.AreEqual(1, ti.GetTextLinesCount());
@@ -16,8 +21,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void FourCharsPasted_CursorShouldBe40() {
-            var tv = new CodeEditor.Views.TextView.View();
-
             tv.EnterText("asdf");
 
             Assert.AreEqual(4, tv.ActivePosition.Column);
@@ -26,9 +29,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void FourCharsEntered_LineLengthShouldBe4() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("a");
             tv.EnterText("b");
             tv.EnterText("c");
@@ -39,8 +39,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void FourCharsEntered_CursorShouldBe40() {
-            var tv = new CodeEditor.Views.TextView.View();
-
             tv.EnterText("a");
             tv.EnterText("b");
             tv.EnterText("c");
@@ -52,9 +50,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void ThreeLinesAddedCharsEntered_LinesShouldBe3() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("a");
             tv.EnterText("s");
             tv.EnterText("d");
@@ -71,8 +66,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void ThreeLinesAddedCharsEntered_CursorShouldBeAt42() {
-            var tv = new CodeEditor.Views.TextView.View();
-
             tv.EnterText("a");
             tv.EnterText("s");
             tv.EnterText("d");
@@ -90,9 +83,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void ThreeLinesPasted_LinesShouldBe3() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("asdf");
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
@@ -102,8 +92,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void ThreeLinesPasted_CursorShouldBeAt42() {
-            var tv = new CodeEditor.Views.TextView.View();
-
             tv.EnterText("asdf");
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
@@ -114,14 +102,12 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void LineBreakInTheMiddle_LinesShouldBeText1Text2() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "as";
             string text2 = "df";
 
             tv.EnterText(text1 + text2);
-            tv.HandleCaretMove(this, new CodeEditor.Events.CaretMovedEventArgs {
-                NewPosition = new CodeEditor.DataStructures.TextPosition {
+            tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
+                NewPosition = new DataStructures.TextPosition {
                     Line = 0,
                     Column = 2
                 }
@@ -134,15 +120,12 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void EmptyLineAddedAfterSecondLine_LinesShouldBeOk() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("a");
             tv.EnterText("\r");
             tv.EnterText("\r");
             tv.EnterText("z");
-            tv.HandleCaretMove(this, new CodeEditor.Events.CaretMovedEventArgs {
-                NewPosition = new CodeEditor.DataStructures.TextPosition {
+            tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
+                NewPosition = new DataStructures.TextPosition {
                     Line = 1,
                     Column = 0
                 }

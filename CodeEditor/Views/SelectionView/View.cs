@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
@@ -62,9 +61,7 @@ namespace CodeEditor.Views.SelectionView {
 
         #region event handlers
 
-        public void HandleMouseDown(MouseButtonEventArgs e) {
-            Deselect();
-        }
+        public void HandleMouseDown(MouseButtonEventArgs e) => Deselect();
 
         #endregion
 

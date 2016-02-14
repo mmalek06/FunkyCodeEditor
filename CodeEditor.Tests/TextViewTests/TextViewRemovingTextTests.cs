@@ -7,10 +7,17 @@ using CodeEditor.Events;
 namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewRemovingTextTests {
+        private Views.TextView.View tv;
+        private Views.TextView.TextInfo ti;
+
+        [TestInitialize]
+        public void InitializeTests() {
+            tv = new Views.TextView.View();
+            ti = new Views.TextView.TextInfo(tv);
+        }
+
         [TestMethod]
         public void CharEnteredAndBackspaced_CursorShouldBeAt00() {
-            var tv = new CodeEditor.Views.TextView.View();
-
             tv.EnterText("s");
             tv.RemoveText(Key.Back);
 
@@ -20,9 +27,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void EmptyLineEnteredAndBackspaced_CursorShouldBeAt00() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
@@ -33,9 +37,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void EmptyLineEnteredAndBackspaced_LinesShouldBe1() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
@@ -44,8 +45,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void EmptyLineEnteredAndDelPressed_CursorShouldBeAt00() {
-            var tv = new CodeEditor.Views.TextView.View();
-
             tv.EnterText("\r");
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
             tv.RemoveText(Key.Delete);
@@ -56,9 +55,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void EmptyLineEnteredAndDelPressed_LinesShouldBe1() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
-
             tv.EnterText("\r");
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
             tv.RemoveText(Key.Delete);
@@ -68,8 +64,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_LinesShouldBe1() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -84,7 +78,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_CursorShouldBeAt40() {
-            var tv = new CodeEditor.Views.TextView.View();
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -100,8 +93,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_LinesShouldBe1() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -116,7 +107,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_CursorShouldBeAt40() {
-            var tv = new CodeEditor.Views.TextView.View();
             string text1 = "asdf";
             string text2 = "zxcv";
 
@@ -132,8 +122,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe3() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
@@ -152,8 +140,6 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe2() {
-            var tv = new CodeEditor.Views.TextView.View();
-            var ti = new CodeEditor.Views.TextView.TextInfo(tv);
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";

@@ -4,7 +4,7 @@ using System.Windows.Input;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
 
-namespace CodeEditor.Views.TextView {
+namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextRemover {
 
         #region public methods

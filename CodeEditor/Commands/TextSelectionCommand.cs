@@ -98,7 +98,7 @@ namespace CodeEditor.Commands {
             textInfo.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition());
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
-            TextPosition endingPosition = new TextPosition(0, 0);
+            TextPosition endingPosition = TextPosition.Zero;
 
             switch (keyboardEvent.Key) {
                 case Key.Left:

@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
+    <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CaretMoveCommand.cs" />
     <Compile Include="Commands\EnterTextCommand.cs" />
@@ -71,8 +73,8 @@
     <Compile Include="Events\CaretMovedEventHandler.cs" />
     <Compile Include="Events\TextChangedEventArgs.cs" />
     <Compile Include="Events\TextChangedEventHandler.cs" />
-    <Compile Include="Extensions\FunctionalExtensions.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="DataStructures\PointsPair.cs" />
     <Compile Include="DataStructures\TextPosition.cs" />
@@ -83,13 +85,18 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
+    <Compile Include="Algorithms\Folding\FoldingStates.cs" />
+    <Compile Include="Views\FoldingView\View.cs" />
+    <Compile Include="Views\FoldingView\VisualElementCodeSnippet.cs" />
+    <Compile Include="Views\FoldingView\VisualElementLine.cs" />
+    <Compile Include="Views\FoldingView\VisualElementSymbol.cs" />
     <Compile Include="Views\SelectionView\VisualElement.cs" />
     <Compile Include="Views\SelectionView\View.cs" />
-    <Compile Include="Views\TextView\LinesRemoveInfo.cs" />
-    <Compile Include="Views\TextView\TextConfiguration.cs" />
+    <Compile Include="Algorithms\TextManipulation\LinesRemoveInfo.cs" />
+    <Compile Include="TextProperties\TextConfiguration.cs" />
     <Compile Include="Views\TextView\TextInfo.cs" />
-    <Compile Include="Views\TextView\TextRemover.cs" />
-    <Compile Include="Views\TextView\TextUpdater.cs" />
+    <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
+    <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
     <Compile Include="Views\ViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
     <Compile Include="Controls\TextArea.cs" />
@@ -98,6 +105,7 @@
     <Compile Include="Views\CaretView\View.cs" />
     <Compile Include="Views\TextView\VisualElement.cs" />
     <Compile Include="Views\TextView\View.cs" />
+    <Compile Include="Views\VisualElementSymbolBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
