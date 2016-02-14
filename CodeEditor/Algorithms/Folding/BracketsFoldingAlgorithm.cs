@@ -32,35 +32,24 @@ namespace CodeEditor.Algorithms.Folding {
                      .Sum() + 1;
 
         private TextPosition GetClosingBracketPosition(IEnumerable<string> textLines, TextPosition startPosition, int openingBracketNum) {
-            bool closingBracketFound = false;
             int closingBracketNum = 0;
+            var linesArray = textLines.ToArray();
+            int linesCount = textLines.Count();
 
-            return textLines.Where((line, idx) => idx >= startPosition.Line)
-                            .Select((line, idx) => {
-                                if (closingBracketFound) {
-                                    return null;
-                                }
+            for (int i = linesCount - 1; i >= startPosition.Line; i--) {
+                for (int j = linesArray[i].Length - 1; j >= 0; j--) {
+                    char character = linesArray[i][j];
 
-                                var indexes = line.Select((character, charIdx) => {
-                                    if (character == '}') {
-                                        closingBracketNum++;
-                                    }
-                                    if (closingBracketNum == openingBracketNum && character == '}') {
-                                        closingBracketFound = true;
+                    if (character == '}') {
+                        closingBracketNum++;
+                    }
+                    if (closingBracketNum == openingBracketNum && character == '}') {
+                        return new TextPosition { Column = j + 1, Line = i };
+                    }
+                }
+            }
 
-                                        return charIdx;
-                                    }
-
-                                    return -1;
-                                }).ToArray();
-
-                                if (!indexes.Any(number => number > -1)) {
-                                    return null;
-                                }
-
-                                return new TextPosition { Column = indexes.First(index => index > -1) + 1, Line = idx };
-                            })
-                            .FirstOrDefault(position => position != null);
+            return null;
         }
 
         #endregion
