@@ -31,15 +31,17 @@ namespace CodeEditor.Views.TextView {
 
         public IEnumerable<string> GetTextPartsBetweenPositions(TextPosition startPosition, TextPosition endPosition) {
             var parts = new string[(endPosition.Line - startPosition.Line) + 1];
+            int middleIndex = 0;
 
             if (startPosition.Line == endPosition.Line) {
                 parts[0] = textView.Lines[startPosition.Line].Substring(startPosition.Column, endPosition.Column - startPosition.Column);
             } else {
                 parts[0] = textView.Lines[startPosition.Line].Substring(startPosition.Column);
                 parts[parts.Length - 1] = textView.Lines[endPosition.Line].Substring(0, endPosition.Column);
+                middleIndex = 1;
             }
-            for (int i = startPosition.Line + 1; i < endPosition.Line; i++) {
-                parts[i] = textView.Lines[i];
+            for (int i = startPosition.Line + 1; i < endPosition.Line; i++, middleIndex++) {
+                parts[middleIndex] = textView.Lines[i];
             }
 
             return parts;

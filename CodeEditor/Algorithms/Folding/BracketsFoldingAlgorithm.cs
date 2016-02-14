@@ -28,8 +28,8 @@ namespace CodeEditor.Algorithms.Folding {
 
         private int GetOpeningBracketNumber(IEnumerable<string> textLines, TextPosition startPosition) => 
             textLines.Where((line, idx) => idx <= startPosition.Line)
-                     .Select(line => line.Where((character, idx) => idx < startPosition.Column && character == '{').Count())
-                     .Sum() + 1;
+                     .Select(line => line.Where((character, idx) => idx <= startPosition.Column && character == '{').Count())
+                     .Sum();
 
         private TextPosition GetClosingBracketPosition(IEnumerable<string> textLines, TextPosition startPosition, int openingBracketNum) {
             int closingBracketNum = 0;
