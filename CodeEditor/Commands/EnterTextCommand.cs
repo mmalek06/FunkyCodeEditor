@@ -39,7 +39,7 @@ namespace CodeEditor.Commands {
             if (selectionArea == null) {
                 view.EnterText(e.Text);
             } else {
-                view.EnterText(e.Text, selectionArea);
+                view.ReplaceText(e.Text, selectionArea);
             }
 
             UpdateCommandState(AfterCommandExecutedState);

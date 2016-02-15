@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using CodeEditor.Algorithms.Folding;
 using CodeEditor.Extensions;
 
 namespace CodeEditor.Configuration {
@@ -18,5 +19,8 @@ namespace CodeEditor.Configuration {
 
         internal static Typeface GetTypeface() => 
             new Typeface(TextConfiguration.GetFontFamily(), TextConfiguration.GetFontStyle(), TextConfiguration.GetFontWeight(), TextConfiguration.GetFontStretch());
+
+        internal static IFoldingAlgorithm GetFoldingAlgorithm() => new BracketsFoldingAlgorithm();
+
     }
 }

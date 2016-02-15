@@ -3,14 +3,14 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodeEditor.Tests.TextFoldingTests {
+namespace CodeEditor.Tests {
     [TestClass]
     public class BracketsFoldingTests {
         private BracketsFoldingAlgorithm fa;
         private Views.TextView.View tv;
         private Views.TextView.TextInfo ti;
 
-        /*[TestInitialize]
+        [TestInitialize]
         public void InitializeTest() {
             tv = new Views.TextView.View();
             ti = new Views.TextView.TextInfo(tv);
@@ -122,6 +122,6 @@ namespace CodeEditor.Tests.TextFoldingTests {
 
             Assert.AreEqual(3, possibleFolds.Count());
             Assert.AreEqual(0, 0);
-        }*/
+        }
     }
 }

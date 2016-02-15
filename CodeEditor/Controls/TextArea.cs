@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.Commands;
+using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 using LocalViewBase = CodeEditor.Views.ViewBase;
@@ -74,6 +75,7 @@ namespace CodeEditor.Controls {
 
             if (enterTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
+
                 deselectionCmd.Execute();
             }
         }
@@ -108,9 +110,9 @@ namespace CodeEditor.Controls {
             textInfo = new LocalTextInfo(textView);
             selectionView = new Views.SelectionView.View(textInfo);
             caretView = new Views.CaretView.View(textInfo);
-            //foldingView = new Views.FoldingView.View(textInfo);
+            foldingView = new Views.FoldingView.View(textInfo, EditorConfiguration.GetFoldingAlgorithm());
 
-            foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
+            foreach (var view in new LocalViewBase[] { selectionView, textView, caretView, foldingView }) {
                 views.Add(view);
                 AddVisualChild(view);
                 AddLogicalChild(view);

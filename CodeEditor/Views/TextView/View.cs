@@ -64,7 +64,7 @@ namespace CodeEditor.Views.TextView {
 
         public void EnterText(string enteredText) => InputText(enteredText);
 
-        public void EnterText(string enteredText, TextPositionsPair range) {
+        public void ReplaceText(string enteredText, TextPositionsPair range) {
             RemoveText(range);
             InputText(enteredText);
         }

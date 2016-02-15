@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
@@ -35,7 +30,7 @@ namespace CodeEditor.Views.FoldingView {
 
         #region event handlers
 
-        public void HandleTextChange(TextCompositionEventArgs e, TextPosition position) => foldingAlgorithm.Update(e.Text, position);
+        public void HandleTextInput(TextCompositionEventArgs e, TextPosition position) => foldingAlgorithm.RecreateFolds(e.Text[0], position);
 
         #endregion
 

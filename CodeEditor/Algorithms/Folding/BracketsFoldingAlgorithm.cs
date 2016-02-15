@@ -7,6 +7,10 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region fields
 
+        private const char OPENING_BRACKET = '{';
+
+        private const char CLOSING_BRACKET = '}';
+
         private HashSet<TextPosition> mappedPositions;
 
         private Dictionary<TextPosition, TextPosition> foldingPositions;
@@ -30,12 +34,19 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region public methods
 
-        public void Update(string text, TextPosition position) {
-            if (text == "{") {
+        public void RecreateFolds(char bracket, TextPosition position) {
+            if (bracket == OPENING_BRACKET) {
                 UpdateFoldsForOpenPosition(position);
-            }
-            if (text == "}") {
+            } else if (bracket == CLOSING_BRACKET) {
                 UpdateFoldsForClosePosition(position);
+            }
+        }
+
+        public void DeleteFolds(char bracket, TextPosition position) {
+            if (bracket == OPENING_BRACKET) {
+                DeleteFoldForOpenPosition(position);
+            } else if (bracket == CLOSING_BRACKET) {
+                DeleteFoldForClosePosition(position);
             }
         }
 
@@ -73,7 +84,17 @@ namespace CodeEditor.Algorithms.Folding {
 
             mappedPositions.Add(parentPosition);
         }
-        
+
+        private void DeleteFoldForOpenPosition(TextPosition position) => foldingPositions.Remove(position);
+
+        private void DeleteFoldForClosePosition(TextPosition position) {
+            var pair = foldingPositions.Where(kvp => kvp.Value == position).FirstOrDefault();
+
+            if (!pair.Equals(default(KeyValuePair<TextPosition, TextPosition>))) {
+                foldingPositions.Remove(pair.Key);
+            }
+        }
+
         #endregion
 
     }

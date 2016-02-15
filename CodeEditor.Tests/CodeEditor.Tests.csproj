@@ -55,12 +55,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TextFoldingTests\BracketsFoldingTests.cs" />
-    <Compile Include="TextViewTests\RemovingTextAlgTests.cs" />
-    <Compile Include="TextViewTests\TextViewAddingTextTests.cs" />
+    <Compile Include="AlgorithmTests\BracketsFoldingTests.cs" />
+    <Compile Include="AlgorithmTests\RemovingTextAlgTests.cs" />
+    <Compile Include="ViewTests\TextViewAddingTextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextViewTests\TextViewRemovingTextTests.cs" />
-    <Compile Include="TextViewTests\TextViewSelectionTests.cs" />
+    <Compile Include="ViewTests\TextViewRemovingTextTests.cs" />
+    <Compile Include="ViewTests\TextViewSelectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeEditor\CodeEditor.csproj">
