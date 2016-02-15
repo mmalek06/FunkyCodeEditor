@@ -55,8 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithms\Folding\BracketInfo.cs" />
     <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />
+    <Compile Include="Algorithms\TextManipulation\Autoformatting.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CaretMoveCommand.cs" />
     <Compile Include="Commands\EnterTextCommand.cs" />

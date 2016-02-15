@@ -1,57 +1,79 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.DataStructures;
-using CodeEditor.Views.TextView;
 
 namespace CodeEditor.Algorithms.Folding {
     internal class BracketsFoldingAlgorithm : IFoldingAlgorithm {
 
+        #region fields
+
+        private HashSet<TextPosition> mappedPositions;
+
+        private Dictionary<TextPosition, TextPosition> foldingPositions;
+
+        #endregion
+
+        #region properties
+
+        public Dictionary<TextPosition, TextPosition> FoldingPositions => foldingPositions;
+
+        #endregion
+
+        #region constructor
+
+        public BracketsFoldingAlgorithm() {
+            mappedPositions = new HashSet<TextPosition>();
+            foldingPositions = new Dictionary<TextPosition, TextPosition>();
+        }
+
+        #endregion
+
         #region public methods
 
-        public IList<string> GetCollapsedLines(IEnumerable<string> textLines, TextPosition startPosition, TextInfo textInfo) {
-            int openingBracketNum = GetOpeningBracketNumber(textLines, startPosition);
-            var endPosition = GetClosingBracketPosition(textLines, startPosition, openingBracketNum);
-
-            if (endPosition == null) {
-                return new string[0];
+        public void Update(string text, TextPosition position) {
+            if (text == "{") {
+                UpdateFoldsForOpenPosition(position);
             }
-            if (startPosition.Line == endPosition.Line) {
-                return new string[0];
+            if (text == "}") {
+                UpdateFoldsForClosePosition(position);
             }
-
-            return textInfo.GetTextPartsBetweenPositions(startPosition, endPosition).ToArray();
         }
 
         #endregion
 
         #region methods
 
-        private int GetOpeningBracketNumber(IEnumerable<string> textLines, TextPosition startPosition) => 
-            textLines.Where((line, idx) => idx <= startPosition.Line)
-                     .Select(line => line.Where((character, idx) => idx <= startPosition.Column && character == '{').Count())
-                     .Sum();
+        private void UpdateFoldsForOpenPosition(TextPosition position) {
+            TextPosition outVal;
 
-        private TextPosition GetClosingBracketPosition(IEnumerable<string> textLines, TextPosition startPosition, int openingBracketNum) {
-            int closingBracketNum = 0;
-            var linesArray = textLines.ToArray();
-            int linesCount = textLines.Count();
-
-            for (int lineIndex = linesCount - 1; lineIndex >= startPosition.Line; lineIndex--) {
-                for (int columnIndex = linesArray[lineIndex].Length - 1; columnIndex >= 0; columnIndex--) {
-                    char character = linesArray[lineIndex][columnIndex];
-
-                    if (character == '}') {
-                        closingBracketNum++;
-                    }
-                    if (closingBracketNum == openingBracketNum && character == '}') {
-                        return new TextPosition { Column = columnIndex + 1, Line = lineIndex };
-                    }
-                }
+            if (!foldingPositions.TryGetValue(position, out outVal)) {
+                foldingPositions[position] = null;
             }
-
-            return null;
         }
 
+        private void UpdateFoldsForClosePosition(TextPosition position) {
+            var parentPosition = foldingPositions.Keys.Where(key => !mappedPositions.Contains(key) && key <= position).Max();
+
+            if (parentPosition == null) {
+                return;
+            }
+
+            var oldClosingPosition = foldingPositions[parentPosition];
+            var nextOpeningPositions = foldingPositions.Keys.Where(key => key > parentPosition);
+            TextPosition previousValue = null;
+            TextPosition nextValue = oldClosingPosition;
+
+            foreach (var openPosition in nextOpeningPositions) {
+                nextValue = foldingPositions[openPosition];
+                foldingPositions[openPosition] = previousValue;
+                previousValue = nextValue;
+            }
+
+            foldingPositions[parentPosition] = position;
+
+            mappedPositions.Add(parentPosition);
+        }
+        
         #endregion
 
     }

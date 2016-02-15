@@ -68,7 +68,7 @@ namespace CodeEditor.Views.CaretView {
 
         #region event handlers
 
-        public void HandleTextChange(object sender, TextChangedEventArgs e) => MoveCaret(new TextPosition { Column = e.CurrentColumn, Line = e.CurrentLine });
+        public void HandleTextChange(object sender, TextChangedEventArgs e) => MoveCaret(new TextPosition(column: e.CurrentColumn, line: e.CurrentLine));
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace CodeEditor.Views.CaretView {
         public void MoveCursor(TextPosition newPos) {
             var oldPos = caretPosition;
 
-            EnsureCursorIsNotExceedingTextBounds(newPos);
+            GetCursorNotExceedingTextBounds(newPos);
             MoveCaret(newPos);
             TriggerCaretMoved(newPos, oldPos);
         }
@@ -101,27 +101,29 @@ namespace CodeEditor.Views.CaretView {
                 }
             }
 
-            return new TextPosition {
-                Column = column,
-                Line = line
-            };
+            return new TextPosition(column: column, line: line);
         }
 
         #endregion
 
         #region methods
 
-        private void EnsureCursorIsNotExceedingTextBounds(TextPosition newPos) {
+        private TextPosition GetCursorNotExceedingTextBounds(TextPosition newPos) {
+            int column = -1;
+            int line = -1;
+
             if (newPos.Line < 0) {
-                newPos.Line = 0;
-                newPos.Column = textInfo.GetTextLineLength(0);
+                line = 0;
+                column = textInfo.GetTextLineLength(0);
             } else if (newPos.Line >= textInfo.GetTextLinesCount()) {
-                newPos.Line = textInfo.GetTextLinesCount() - 1;
-                newPos.Column = textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1);
+                line = textInfo.GetTextLinesCount() - 1;
+                column = textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1);
             }
             if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
-                newPos.Column = textInfo.GetTextLineLength(newPos.Line);
+                column = textInfo.GetTextLineLength(newPos.Line);
             }
+
+            return new TextPosition(column: column > -1 ? column : newPos.Column, line: line > -1 ? line : newPos.Line);
         }
 
         private void DrawCaret() {
@@ -145,8 +147,7 @@ namespace CodeEditor.Views.CaretView {
         }
 
         private void MoveCaret(TextPosition position) {
-            caretPosition.Column = position.Column;
-            caretPosition.Line = position.Line;
+            caretPosition = new TextPosition(column: position.Column, line: position.Line);
 
             DrawCaret();
             RestartCheckTimer();

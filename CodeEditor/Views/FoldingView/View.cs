@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
+using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
@@ -18,39 +19,39 @@ namespace CodeEditor.Views.FoldingView {
 
         private TextRunProperties runProperties;
 
-        //private Dictionary<int, FoldingInfo> folds;
+        private IFoldingAlgorithm foldingAlgorithm;
 
         #endregion
 
         #region constructor
 
-        public View(LocalTextInfo textInfo) : base() {
+        public View(LocalTextInfo textInfo, IFoldingAlgorithm foldingAlgorithm) : base() {
             this.textInfo = textInfo;
+            this.foldingAlgorithm = foldingAlgorithm;
             runProperties = this.CreateGlobalTextRunProperties();
-            //folds = new Dictionary<int, FoldingInfo>();
         }
 
         #endregion
 
         #region event handlers
 
-        public void HandleTextEntered(TextCompositionEventArgs e, TextPosition position) {
-            if (e.Text == "}") {
-                //var matchPosition = (new BracesStrategy().GetMatch(textInfo, position, e.Text));
-            }
-        }
+        public void HandleTextChange(TextCompositionEventArgs e, TextPosition position) => foldingAlgorithm.Update(e.Text, position);
 
         #endregion
 
         #region public methods
 
+        public void MarkFoldingOption(int line) {
 
+        }
 
         #endregion
 
         #region methods
 
+        private void RunAnalysis() {
 
+        }
 
         #endregion
 

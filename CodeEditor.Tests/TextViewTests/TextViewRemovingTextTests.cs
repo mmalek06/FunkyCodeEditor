@@ -168,7 +168,7 @@ namespace CodeEditor.Tests {
         }
 
         private CaretMovedEventArgs CreateCaretMovedEventArgs(int col, int line) {
-            return new CaretMovedEventArgs { NewPosition = new CodeEditor.DataStructures.TextPosition { Column = col, Line = line } };
+            return new CaretMovedEventArgs { NewPosition = new CodeEditor.DataStructures.TextPosition(column: col, line: line) };
         }
     }
 }

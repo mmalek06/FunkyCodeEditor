@@ -18,7 +18,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
             return new LinesRemovalInfo {
                 LinesAffected = new Dictionary<TextPosition, string> {
-                    [new TextPosition { Column = pair.StartPosition.Column, Line = range.StartPosition.Line }] =
+                    [new TextPosition (pair.StartPosition.Column, range.StartPosition.Line)] =
                         string.Concat(textSources[pair.StartPosition.Line].Text.Take(pair.StartPosition.Column)) +
                         string.Concat(textSources[pair.EndPosition.Line].Text.Skip(pair.EndPosition.Column))
                 },
@@ -63,7 +63,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
             return new LinesRemovalInfo {
                 LinesAffected = new Dictionary<TextPosition, string> {
-                    [new TextPosition { Column = startingTextPosition.Column - 1, Line = startingTextPosition.Line }] = textAfterRemove },
+                    [new TextPosition(startingTextPosition.Column - 1, startingTextPosition.Line)] = textAfterRemove },
                 LinesToRemove = new int[0]
             };
         }
@@ -74,7 +74,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
             return new LinesRemovalInfo {
                 LinesAffected = new Dictionary<TextPosition, string> {
-                    [new TextPosition { Column = startingTextPosition.Column, Line = startingTextPosition.Line }] = textAfterRemove },
+                    [new TextPosition(startingTextPosition.Column, startingTextPosition.Line)] = textAfterRemove },
                 LinesToRemove = new int[0]
             };
         }
@@ -82,12 +82,12 @@ namespace CodeEditor.Algorithms.TextManipulation {
         private LinesRemovalInfo RemoveThisLine(IList<SimpleTextSource> textSources, TextPosition startingTextPosition) {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
-                    new TextPosition { Column = textSources[startingTextPosition.Line - 1].Text.Length, Line = startingTextPosition.Line - 1 },
+                    new TextPosition(textSources[startingTextPosition.Line - 1].Text.Length, startingTextPosition.Line - 1),
                     GetText(textSources, startingTextPosition.Line - 1) + textSources[startingTextPosition.Line].Text)
             };
 
             for (int i = startingTextPosition.Line + 1; i < textSources.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition { Column = 0, Line = i - 1 }, textSources[i].Text));
+                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), textSources[i].Text));
             }
 
             return new LinesRemovalInfo {
@@ -99,12 +99,12 @@ namespace CodeEditor.Algorithms.TextManipulation {
         private LinesRemovalInfo DeleteNextLine(IList<SimpleTextSource> textSources, TextPosition startingTextPosition) {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
-                    new TextPosition { Column = startingTextPosition.Column, Line = startingTextPosition.Line },
+                    new TextPosition(startingTextPosition.Column, startingTextPosition.Line),
                     textSources[startingTextPosition.Line].Text + GetText(textSources, startingTextPosition.Line + 1))
             };
             
             for (int i = startingTextPosition.Line + 2; i < textSources.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition { Column = 0, Line = i - 1 }, textSources[i].Text));
+                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), textSources[i].Text));
             }
 
             return new LinesRemovalInfo {

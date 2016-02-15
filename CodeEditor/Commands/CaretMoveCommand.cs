@@ -62,12 +62,16 @@ namespace CodeEditor.Commands {
                 return;
             }
 
+            int column = -1, line = -1;
+
             if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
-                newPos.Column = textInfo.GetTextLineLength(newPos.Line);
+                column = textInfo.GetTextLineLength(newPos.Line);
             }
             if (newPos.Line >= textInfo.GetTextLinesCount()) {
-                newPos.Line = textInfo.GetTextLinesCount() - 1;
+                line = textInfo.GetTextLinesCount() - 1;
             }
+
+            newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
 
             caretView.MoveCursor(newPos);
         }

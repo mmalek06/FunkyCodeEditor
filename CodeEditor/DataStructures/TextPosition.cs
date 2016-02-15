@@ -9,15 +9,13 @@
 
         public static TextPosition Zero => new TextPosition(0, 0);
 
-        public int Column { get; set; }
+        public int Column { get; }
 
-        public int Line { get; set; }
+        public int Line { get; }
 
         #endregion
 
         #region constructors
-
-        public TextPosition() { }
 
         public TextPosition(int column, int line) {
             Column = column;

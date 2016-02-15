@@ -30,7 +30,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text2, runProperties)
             };
 
-            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition { Column = 4, Line = 0 }, Key.Delete);
+            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition(column: 4, line: 0), Key.Delete);
 
             Assert.AreEqual(text1 + text2, newLines.LinesAffected.First().Value);
         }
@@ -44,7 +44,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text2, runProperties)
             };
 
-            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition { Column = 0, Line = 1 }, Key.Back);
+            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition(column: 0, line: 1), Key.Back);
 
             Assert.AreEqual(text1 + text2, newLines.LinesAffected.First().Value);
         }
@@ -61,7 +61,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text3, runProperties)
             };
 
-            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition { Column = 4, Line = 0 }, Key.Delete);
+            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesAffected.First().Value);
@@ -83,9 +83,9 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text3, runProperties)
             };
 
-            algorithm.TransformLines(textSources, new DataStructures.TextPosition { Column = 4, Line = 0 }, Key.Delete);
+            algorithm.TransformLines(textSources, new DataStructures.TextPosition(column: 4, line: 0), Key.Delete);
 
-            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition { Column = 4, Line = 0 }, Key.Delete);
+            var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesAffected.First().Value);
@@ -104,8 +104,8 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text1 + text2 + text3, runProperties)
             };
             var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPositionsPair {
-                StartPosition = new DataStructures.TextPosition { Column = 4, Line = 0 },
-                EndPosition = new DataStructures.TextPosition { Column = 8, Line = 0 }
+                StartPosition = new DataStructures.TextPosition(column: 4, line: 0),
+                EndPosition = new DataStructures.TextPosition(column: 8, line: 0)
             });
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
@@ -124,8 +124,8 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text4, runProperties)
             };
             var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPositionsPair {
-                StartPosition = new DataStructures.TextPosition { Column = 2, Line = 0 },
-                EndPosition = new DataStructures.TextPosition { Column = 6, Line = 0 }
+                StartPosition = new DataStructures.TextPosition(column: 2, line: 0),
+                EndPosition = new DataStructures.TextPosition(column: 6, line: 0)
             });
             var removedLineIndexes = newLines.LinesToRemove.ToArray();
 
@@ -149,8 +149,8 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text5 + text6, runProperties)
             };
             var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPositionsPair {
-                StartPosition = new DataStructures.TextPosition { Column = 2, Line = 0 },
-                EndPosition = new DataStructures.TextPosition { Column = 2, Line = 3 }
+                StartPosition = new DataStructures.TextPosition(column: 2, line: 0),
+                EndPosition = new DataStructures.TextPosition(column: 2, line: 3)
             });
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
@@ -167,8 +167,8 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text1 + text2, runProperties)
             };
             var newLines = algorithm.TransformLines(textSources, new DataStructures.TextPositionsPair {
-                StartPosition = new DataStructures.TextPosition { Column = 2, Line = 0 },
-                EndPosition = new DataStructures.TextPosition { Column = 4, Line = 0 }
+                StartPosition = new DataStructures.TextPosition(column: 2, line: 0),
+                EndPosition = new DataStructures.TextPosition(column: 4, line: 0)
             });
 
             Assert.AreEqual(0, newLines.LinesToRemove.Count());

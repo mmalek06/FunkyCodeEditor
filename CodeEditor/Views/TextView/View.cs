@@ -33,7 +33,7 @@ namespace CodeEditor.Views.TextView {
 
         public IList<string> Lines => textSources.Select(ts => string.Copy(ts.Text)).ToList();
 
-        public TextPosition ActivePosition { get; private set; } = new TextPosition { Column = 0, Line = 0 };
+        public TextPosition ActivePosition { get; private set; } = new TextPosition(column: 0, line: 0);
 
         #endregion
 
@@ -110,27 +110,28 @@ namespace CodeEditor.Views.TextView {
             DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
         }
 
-        private void UpdateCursorPosition(TextPosition position) {
-            ActivePosition.Column = position.Column;
-            ActivePosition.Line = position.Line;
-        }
+        private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
 
         private void UpdateCursorPosition(string text) {
             var replacedText = updatingAlgorithm.SpecialCharsRegex.Replace(text, string.Empty);
+            int column = -1;
+            int line = -1;
 
             if (text == TextConfiguration.NEWLINE) {
-                ActivePosition.Column = 0;
-                ActivePosition.Line += 1;
+                column = 0;
+                line = ActivePosition.Line + 1;
             } else if (text == TextConfiguration.TAB) {
-                ActivePosition.Column += TextConfiguration.TabSize;
+                column = ActivePosition.Column + TextConfiguration.TabSize;
             } else if (replacedText.Length == 1) {
-                ActivePosition.Column += 1;
+                column = ActivePosition.Column + 1;
             } else {
                 var parts = text.Split(TextConfiguration.NEWLINE[0]);
 
-                ActivePosition.Column = parts.Last().Length;
-                ActivePosition.Line += parts.Length - 1;
+                column = parts.Last().Length;
+                line = ActivePosition.Line + parts.Length - 1;
             }
+
+            ActivePosition = new TextPosition(column: column > -1 ? column : ActivePosition.Column, line: line > -1 ? line : ActivePosition.Line);
         }
 
         private void RemoveLines(IEnumerable<int> indices) {

@@ -20,6 +20,7 @@ namespace CodeEditor.Controls {
         private Views.TextView.View textView;
         private Views.CaretView.View caretView;
         private Views.SelectionView.View selectionView;
+        private Views.FoldingView.View foldingView;
 
         #endregion
 
@@ -107,6 +108,7 @@ namespace CodeEditor.Controls {
             textInfo = new LocalTextInfo(textView);
             selectionView = new Views.SelectionView.View(textInfo);
             caretView = new Views.CaretView.View(textInfo);
+            //foldingView = new Views.FoldingView.View(textInfo);
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 views.Add(view);

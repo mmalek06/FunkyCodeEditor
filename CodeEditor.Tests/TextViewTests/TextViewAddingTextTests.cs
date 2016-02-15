@@ -107,10 +107,7 @@ namespace CodeEditor.Tests {
 
             tv.EnterText(text1 + text2);
             tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
-                NewPosition = new DataStructures.TextPosition {
-                    Line = 0,
-                    Column = 2
-                }
+                NewPosition = new DataStructures.TextPosition(line: 0, column: 2)
             });
             tv.EnterText("\r");
 
@@ -125,10 +122,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.EnterText("z");
             tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
-                NewPosition = new DataStructures.TextPosition {
-                    Line = 1,
-                    Column = 0
-                }
+                NewPosition = new DataStructures.TextPosition(line: 1, column: 0)
             });
             tv.EnterText("\r");
 

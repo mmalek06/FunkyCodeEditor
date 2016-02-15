@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using CodeEditor.DataStructures;
 
 namespace CodeEditor.Views.TextView {
@@ -28,6 +27,8 @@ namespace CodeEditor.Views.TextView {
         public int GetTextLineLength(int index) => index < textView.Lines.Count ? textView.Lines[index].Length : 0;
 
         public string GetTextLine(int index) => index >= textView.Lines.Count ? string.Empty : textView.Lines[index];
+
+        public IEnumerable<string> GetAllTextLines() => textView.Lines;
 
         public IEnumerable<string> GetTextPartsBetweenPositions(TextPosition startPosition, TextPosition endPosition) {
             var parts = new string[(endPosition.Line - startPosition.Line) + 1];

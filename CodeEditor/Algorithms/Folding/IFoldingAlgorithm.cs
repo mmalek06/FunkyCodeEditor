@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.DataStructures;
-using CodeEditor.Views.TextView;
 
 namespace CodeEditor.Algorithms.Folding {
     internal interface IFoldingAlgorithm {
 
+        #region properties
+
+        Dictionary<TextPosition, TextPosition> FoldingPositions { get; }
+
+        #endregion
+
         #region public methods
 
-        IList<string> GetCollapsedLines(IEnumerable<string> textLines, TextPosition startPosition, TextInfo textInfo);
-
+        void Update(string text, TextPosition position);
+        
         #endregion
 
     }

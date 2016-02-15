@@ -92,24 +92,26 @@ namespace CodeEditor.Views.SelectionView {
             var pairs = new List<PointsPair>();
 
             for (int i = start.Line; i <= end.Line; i++) {
-                TextPosition tmpStartPos = new TextPosition { Column = 0, Line = i };
-                TextPosition tmpEndPos = new TextPosition { Column = 0, Line = i };
+                int tmpStartColumn = 0;
+                int tmpStartLine = i;
+                int tmpEndColumn = 0;
+                int tmpEndLine = i;
 
                 if (i == start.Line) {
-                    tmpStartPos.Column = start.Column;
+                    tmpStartColumn = start.Column;
                 }
 
                 int lineLen = textInfo.GetTextLineLength(i);
 
                 if (i == end.Line) {
-                    tmpEndPos.Column = end.Column > lineLen ? lineLen : end.Column;
+                    tmpEndColumn = end.Column > lineLen ? lineLen : end.Column;
                 } else {
-                    tmpEndPos.Column = lineLen;
+                    tmpEndColumn = lineLen;
                 }
 
                 pairs.Add(new PointsPair {
-                    StartingPoint = tmpStartPos.GetPositionRelativeToParent().AlignToVisualLineTop(),
-                    EndingPoint = tmpEndPos.GetPositionRelativeToParent().AlignToVisualLineBottom()
+                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent().AlignToVisualLineTop(),
+                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent().AlignToVisualLineBottom()
                 });
             }
 
@@ -120,23 +122,25 @@ namespace CodeEditor.Views.SelectionView {
             var pairs = new List<PointsPair>();
 
             for (int i = start.Line; i >= end.Line; i--) {
-                TextPosition tmpStartPos = new TextPosition { Column = 0, Line = i };
-                TextPosition tmpEndPos = new TextPosition { Column = 0, Line = i };
+                int tmpStartColumn = 0;
+                int tmpStartLine = i;
+                int tmpEndColumn = 0;
+                int tmpEndLine = i;
                 int lineLen = textInfo.GetTextLineLength(i);
 
                 if (i == start.Line) {
-                    tmpStartPos.Column = start.Column;
+                    tmpStartColumn = start.Column;
                 } else if (i == end.Line) {
-                    tmpStartPos.Column = end.Column > lineLen ? lineLen : end.Column;
-                    tmpEndPos.Column = lineLen;
+                    tmpStartColumn = end.Column > lineLen ? lineLen : end.Column;
+                    tmpEndColumn = lineLen;
                 } else {
-                    tmpStartPos.Column = 0;
-                    tmpEndPos.Column = lineLen;
+                    tmpStartColumn = 0;
+                    tmpEndColumn = lineLen;
                 }
 
                 pairs.Add(new PointsPair {
-                    StartingPoint = tmpStartPos.GetPositionRelativeToParent().AlignToVisualLineTop(),
-                    EndingPoint = tmpEndPos.GetPositionRelativeToParent().AlignToVisualLineBottom()
+                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent().AlignToVisualLineTop(),
+                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent().AlignToVisualLineBottom()
                 });
             }
 
