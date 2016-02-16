@@ -12,9 +12,11 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region public methods
 
-        void RecreateFolds(char bracket, TextPosition position);
+        bool CanHandle(string text);
 
-        void DeleteFolds(char bracket, TextPosition position);
+        void RecreateFolds(string text, TextPosition position);
+
+        void DeleteFolds(string text, TextPosition position);
 
         #endregion
 

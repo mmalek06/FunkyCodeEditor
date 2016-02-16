@@ -34,7 +34,15 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region public methods
 
-        public void RecreateFolds(char bracket, TextPosition position) {
+        public bool CanHandle(string text) {
+            char bracket = text[0];
+
+            return bracket == OPENING_BRACKET || bracket == CLOSING_BRACKET;
+        }
+
+        public void RecreateFolds(string text, TextPosition position) {
+            char bracket = text[0];
+
             if (bracket == OPENING_BRACKET) {
                 UpdateFoldsForOpenPosition(position);
             } else if (bracket == CLOSING_BRACKET) {
@@ -42,7 +50,9 @@ namespace CodeEditor.Algorithms.Folding {
             }
         }
 
-        public void DeleteFolds(char bracket, TextPosition position) {
+        public void DeleteFolds(string text, TextPosition position) {
+            char bracket = text[0];
+
             if (bracket == OPENING_BRACKET) {
                 DeleteFoldForOpenPosition(position);
             } else if (bracket == CLOSING_BRACKET) {

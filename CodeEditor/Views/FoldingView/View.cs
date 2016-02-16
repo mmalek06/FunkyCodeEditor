@@ -30,11 +30,23 @@ namespace CodeEditor.Views.FoldingView {
 
         #region event handlers
 
-        public void HandleTextPaste(string test, TextPosition position) {
+        public void HandleTextPaste(string text, TextPosition position) {
 
         }
 
-        public void HandleTextInput(TextCompositionEventArgs e, TextPosition position) => foldingAlgorithm.RecreateFolds(e.Text[0], position);
+        public void HandleTextDelete(string text, TextPosition position) {
+
+        }
+
+        public void HandleTextInput(TextCompositionEventArgs e, TextPosition position) {
+            char character = e.Text[0];
+
+            if (!foldingAlgorithm.CanHandle(e.Text)) {
+                return;
+            }
+
+            foldingAlgorithm.RecreateFolds(e.Text, position);
+        }
 
         #endregion
 
