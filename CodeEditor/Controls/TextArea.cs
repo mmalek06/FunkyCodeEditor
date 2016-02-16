@@ -77,6 +77,7 @@ namespace CodeEditor.Controls {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
 
                 deselectionCmd.Execute();
+                foldingView.HandleTextInput(e, textView.ActivePosition);
             }
         }
 

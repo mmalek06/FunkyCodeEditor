@@ -85,13 +85,17 @@ namespace CodeEditor.Algorithms.Folding {
             mappedPositions.Add(parentPosition);
         }
 
-        private void DeleteFoldForOpenPosition(TextPosition position) => foldingPositions.Remove(position);
+        private void DeleteFoldForOpenPosition(TextPosition position) {
+            foldingPositions.Remove(position);
+            mappedPositions.Remove(position);
+        }
 
         private void DeleteFoldForClosePosition(TextPosition position) {
             var pair = foldingPositions.Where(kvp => kvp.Value == position).FirstOrDefault();
 
             if (!pair.Equals(default(KeyValuePair<TextPosition, TextPosition>))) {
                 foldingPositions.Remove(pair.Key);
+                mappedPositions.Remove(pair.Key);
             }
         }
 
