@@ -1,7 +1,9 @@
-﻿namespace CodeEditor.DataStructures {
+﻿using System;
+
+namespace CodeEditor.DataStructures {
 #pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 #pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-    public class TextPosition {
+    public class TextPosition : IComparable {
 #pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
 #pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 
@@ -28,6 +30,19 @@
 
         public override bool Equals(object obj) {
             return base.Equals(obj);
+        }
+
+        public int CompareTo(object obj) {
+            var otherPosition = (TextPosition)obj;
+
+            if (this < otherPosition) {
+                return -1;
+            }
+            if (this > otherPosition) {
+                return 1;
+            }
+
+            return 0;
         }
 
         public static bool operator <(TextPosition @this, TextPosition other) => other == null ? false : @this.Column < other.Column || @this.Line < other.Line;

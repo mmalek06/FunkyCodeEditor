@@ -21,7 +21,7 @@ namespace CodeEditor.Tests {
             fa.RecreateFolds('{', new TextPosition(column: 0, line: 0));
             fa.RecreateFolds('}', new TextPosition(column: 1, line: 0));
             
-            Assert.AreEqual(0, fa.FoldingPositions.Count);
+            Assert.AreEqual(1, fa.FoldingPositions.Count);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace CodeEditor.Tests {
             fa.RecreateFolds('}', new TextPosition(column: 0, line: 4));
             fa.RecreateFolds('}', new TextPosition(column: 3, line: 5));
 
-            Assert.AreEqual(2, fa.FoldingPositions.Count);
+            Assert.AreEqual(3, fa.FoldingPositions.Count);
         }
 
         [TestMethod]

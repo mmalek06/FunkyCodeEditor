@@ -70,7 +70,7 @@ namespace CodeEditor.Algorithms.Folding {
             }
 
             var oldClosingPosition = foldingPositions[parentPosition];
-            var nextOpeningPositions = foldingPositions.Keys.Where(key => key > parentPosition);
+            var nextOpeningPositions = foldingPositions.Keys.Where(key => key > parentPosition).ToArray();
             TextPosition previousValue = null;
             TextPosition nextValue = oldClosingPosition;
 
