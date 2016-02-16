@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 using System.Windows.Threading;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Events;
-using CodeEditor.Extensions;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
 namespace CodeEditor.Views.CaretView {
@@ -26,7 +24,6 @@ namespace CodeEditor.Views.CaretView {
         private DispatcherTimer blinkTimer;
         private Timer checkTimer;
         private TextPosition caretPosition;
-        private TextRunProperties textRunProperties;
         private bool isCaretVisible;
 
         #endregion
@@ -56,7 +53,6 @@ namespace CodeEditor.Views.CaretView {
             this.textInfo = textInfo;
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });
-            textRunProperties = this.CreateGlobalTextRunProperties();
             caretPosition = TextPosition.Zero;
             isCaretVisible = true;
             
@@ -132,7 +128,7 @@ namespace CodeEditor.Views.CaretView {
 
             var caret = new VisualElement();
 
-            caret.Draw(textRunProperties, caretPosition);
+            caret.Draw(TextConfiguration.GetGlobalTextRunProperties(), caretPosition);
             visuals.Clear();
             visuals.Add(caret);
 
@@ -194,7 +190,7 @@ namespace CodeEditor.Views.CaretView {
                     if (isCaretVisible) {
                         var caret = new VisualElement();
 
-                        caret.Draw(textRunProperties, CaretPosition);
+                        caret.Draw(TextConfiguration.GetGlobalTextRunProperties(), CaretPosition);
                         visuals.Add(caret);
                     } else {
                         visuals.Clear();

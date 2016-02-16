@@ -82,7 +82,6 @@
     <Compile Include="Commands\ViewState.cs" />
     <Compile Include="Extensions\TextPositionExtensions.cs" />
     <Compile Include="Views\CaretView\VisualElement.cs" />
-    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />

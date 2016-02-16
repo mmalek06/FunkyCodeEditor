@@ -12,7 +12,7 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region public methods
 
-        bool CanHandle(string text);
+        bool CanRun(string text);
 
         void RecreateFolds(string text, TextPosition position);
 

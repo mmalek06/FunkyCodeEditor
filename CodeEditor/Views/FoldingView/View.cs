@@ -1,8 +1,6 @@
 ﻿using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
-using CodeEditor.Extensions;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
 namespace CodeEditor.Views.FoldingView {
@@ -11,8 +9,6 @@ namespace CodeEditor.Views.FoldingView {
         #region fields
 
         private LocalTextInfo textInfo;
-
-        private TextRunProperties runProperties;
 
         private IFoldingAlgorithm foldingAlgorithm;
 
@@ -23,7 +19,6 @@ namespace CodeEditor.Views.FoldingView {
         public View(LocalTextInfo textInfo, IFoldingAlgorithm foldingAlgorithm) : base() {
             this.textInfo = textInfo;
             this.foldingAlgorithm = foldingAlgorithm;
-            runProperties = this.CreateGlobalTextRunProperties();
         }
 
         #endregion
@@ -41,7 +36,7 @@ namespace CodeEditor.Views.FoldingView {
         public void HandleTextInput(TextCompositionEventArgs e, TextPosition position) {
             char character = e.Text[0];
 
-            if (!foldingAlgorithm.CanHandle(e.Text)) {
+            if (!foldingAlgorithm.CanRun(e.Text)) {
                 return;
             }
 
@@ -50,15 +45,11 @@ namespace CodeEditor.Views.FoldingView {
 
         #endregion
 
-        #region public methods
-
-
-
-        #endregion
-
         #region methods
 
+        private void RedrawFolds() {
 
+        }
 
         #endregion
 

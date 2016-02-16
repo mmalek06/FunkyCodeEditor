@@ -34,7 +34,7 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region public methods
 
-        public bool CanHandle(string text) {
+        public bool CanRun(string text) {
             char bracket = text[0];
 
             return bracket == OPENING_BRACKET || bracket == CLOSING_BRACKET;

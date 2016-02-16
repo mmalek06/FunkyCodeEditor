@@ -5,7 +5,6 @@ using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.DataStructures;
 using CodeEditor.Events;
-using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
 
@@ -22,7 +21,6 @@ namespace CodeEditor.Views.TextView {
 
         private List<SimpleTextSource> textSources;
         private TextFormatter formatter;
-        private TextRunProperties runProperties;
         private SimpleParagraphProperties paragraphProperties;
         private TextUpdater updatingAlgorithm;
         private TextRemover removingAlgorithm;
@@ -41,9 +39,8 @@ namespace CodeEditor.Views.TextView {
 
         public View() : base() {
             formatter = TextFormatter.Create();
-            runProperties = this.CreateGlobalTextRunProperties();
-            textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, runProperties) };
-            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = runProperties };
+            textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, Configuration.TextConfiguration.GetGlobalTextRunProperties()) };
+            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties() };
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
         }
@@ -158,7 +155,7 @@ namespace CodeEditor.Views.TextView {
                 if (kvp.Key < textSources.Count) {
                     textSources[kvp.Key].Text = kvp.Value;
                 } else {
-                    textSources.Add(new SimpleTextSource(kvp.Value, runProperties));
+                    textSources.Add(new SimpleTextSource(kvp.Value, Configuration.TextConfiguration.GetGlobalTextRunProperties()));
                 }
             }
         }

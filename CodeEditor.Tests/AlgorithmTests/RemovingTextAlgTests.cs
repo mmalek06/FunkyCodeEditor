@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.TextManipulation;
-using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 
 namespace CodeEditor.Tests {
@@ -18,7 +17,7 @@ namespace CodeEditor.Tests {
         public static void Initialize(TestContext context) {
             algorithm = new TextRemover();
             view = new Views.TextView.View();
-            runProperties = view.CreateGlobalTextRunProperties();
+            runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
         }
 
         [TestMethod]

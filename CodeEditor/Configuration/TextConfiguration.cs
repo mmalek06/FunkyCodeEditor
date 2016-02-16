@@ -1,8 +1,22 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
+using CodeEditor.TextProperties;
 
 namespace CodeEditor.Configuration {
-    public static class TextConfiguration {
+    internal static class TextConfiguration {
+
+        #region fields
+
+        private static Typeface typeface;
+
+        private static TextRunProperties textRunProperties;
+
+        #endregion
+
+        #region public methods
 
         public static int GetFontSize() {
             return 12;
@@ -23,6 +37,43 @@ namespace CodeEditor.Configuration {
         public static FontStretch GetFontStretch() {
             return FontStretches.Normal;
         }
+
+        public static Typeface GetTypeface() {
+            if (typeface == null) {
+                typeface = CreateTypeface();
+            }
+
+            return typeface;
+        }
+
+        public static TextRunProperties GetGlobalTextRunProperties() {
+            if (textRunProperties == null) {
+                textRunProperties = CreateGlobalTextRunProperties();
+            }
+
+            return textRunProperties;
+        }
+
+        public static Typeface CreateTypeface() {
+            return new Typeface(GetFontFamily(),
+                                GetFontStyle(),
+                                GetFontWeight(),
+                                GetFontStretch());
+        }
+
+        public static TextRunProperties CreateGlobalTextRunProperties() {
+            var fe = new FrameworkElement();
+            var p = new GlobalTextRunProperties();
+
+            p.typeface = CreateTypeface();
+            p.fontRenderingEmSize = GetFontSize();
+            p.foregroundBrush = (Brush)fe.GetValue(Control.ForegroundProperty);
+            p.cultureInfo = CultureInfo.CurrentCulture;
+
+            return p;
+        }
+
+        #endregion
 
     }
 }
