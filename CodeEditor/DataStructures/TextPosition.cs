@@ -1,11 +1,7 @@
 ﻿using System;
 
 namespace CodeEditor.DataStructures {
-#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
-#pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
     public class TextPosition : IComparable {
-#pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-#pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 
         #region properties
 
@@ -30,6 +26,15 @@ namespace CodeEditor.DataStructures {
 
         public override bool Equals(object obj) {
             return base.Equals(obj);
+        }
+
+        public override int GetHashCode() {
+            int hash = 23;
+
+            hash = hash * 31 + Column.GetHashCode();
+            hash = hash * 31 + Line.GetHashCode();
+
+            return hash;
         }
 
         public int CompareTo(object obj) {
