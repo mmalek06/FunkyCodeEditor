@@ -72,7 +72,7 @@ namespace CodeEditor.Views.TextView {
         public void RemoveText(Key key) {
             var removalInfo = removingAlgorithm.TransformLines(textSources, ActivePosition, key);
 
-            if (removalInfo.LinesAffected.Any()) {
+            if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
             }
         }
@@ -80,7 +80,7 @@ namespace CodeEditor.Views.TextView {
         public void RemoveText(TextPositionsPair ranges) {
             var removalInfo = removingAlgorithm.TransformLines(textSources, ranges);
 
-            if (removalInfo.LinesAffected.Any()) {
+            if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
             }
         }
@@ -105,9 +105,9 @@ namespace CodeEditor.Views.TextView {
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);
-            UpdateTextData(removalInfo.LinesAffected.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
-            UpdateCursorPosition(removalInfo.LinesAffected.First().Key);
-            DrawLines(removalInfo.LinesAffected.Select(lineInfo => lineInfo.Key.Line));
+            UpdateTextData(removalInfo.LinesToChange.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
+            UpdateCursorPosition(removalInfo.LinesToChange.First().Key);
+            DrawLines(removalInfo.LinesToChange.Select(lineInfo => lineInfo.Key.Line));
         }
 
         private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);

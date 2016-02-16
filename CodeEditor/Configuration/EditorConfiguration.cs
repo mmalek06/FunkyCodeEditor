@@ -3,24 +3,24 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.Extensions;
 
 namespace CodeEditor.Configuration {
-    public static class EditorConfiguration {
+    internal static class EditorConfiguration {
 
-        internal static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) + 10;
+        public static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) + 10;
 
-        internal static Brush GetLinesColumnBrush() {
+        public static Brush GetLinesColumnBrush() {
             return Brushes.Black;
         }
 
-        internal static Brush GetLinesColumnFontColor() {
+        public static Brush GetLinesColumnFontColor() {
             return Brushes.White;
         }
 
-        internal static double GetFontHeight() => StringExtensions.GetCharSize().Height;
+        public static double GetFontHeight() => StringExtensions.GetCharSize().Height;
 
-        internal static Typeface GetTypeface() => 
+        public static Typeface GetTypeface() => 
             new Typeface(TextConfiguration.GetFontFamily(), TextConfiguration.GetFontStyle(), TextConfiguration.GetFontWeight(), TextConfiguration.GetFontStretch());
 
-        internal static IFoldingAlgorithm GetFoldingAlgorithm() => new BracketsFoldingAlgorithm();
+        public static IFoldingAlgorithm GetFoldingAlgorithm() => new BracketsFoldingAlgorithm();
 
     }
 }

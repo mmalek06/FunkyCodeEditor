@@ -52,17 +52,13 @@ namespace CodeEditor.Views.FoldingView {
 
         #region public methods
 
-        public void MarkFoldingOption(int line) {
 
-        }
 
         #endregion
 
         #region methods
 
-        private void RunAnalysis() {
 
-        }
 
         #endregion
 

@@ -121,6 +121,25 @@ namespace CodeEditor.Tests {
         }
 
         [TestMethod]
+        public void ThreeNonEmptyLinesEnteredBackspacePressedAtCharOneBeforeTheLastOneInTheLastLine_LinesShouldBe1() {
+            string text1 = "some text";
+            string text2 = "";
+            string text3 = "totally unimportant text";
+
+            tv.EnterText(text1);
+            tv.EnterText("\r");
+            tv.EnterText(text2);
+            tv.EnterText("\r");
+            tv.EnterText(text3);
+            tv.RemoveText(new DataStructures.TextPositionsPair {
+                StartPosition = new DataStructures.TextPosition(column: 0, line: 0),
+                EndPosition = new DataStructures.TextPosition(column: 21, line: 2)
+            });
+
+            Assert.AreEqual(1, ti.GetTextLinesCount());
+        }
+
+        [TestMethod]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBe3() {
             string text1 = "asdf";
             string text2 = "zxcv";

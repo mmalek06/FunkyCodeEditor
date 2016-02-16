@@ -18,52 +18,52 @@ namespace CodeEditor.Tests {
 
         [TestMethod]
         public void StartFoldingAt_0_0_ShouldBeNoFolding() {
-            fa.RecreateFolds('{', new TextPosition(column: 0, line: 0));
-            fa.RecreateFolds('}', new TextPosition(column: 1, line: 0));
+            fa.RecreateFolds("{", new TextPosition(column: 0, line: 0));
+            fa.RecreateFolds("}", new TextPosition(column: 1, line: 0));
             
             Assert.AreEqual(1, fa.FoldingPositions.Count);
         }
 
         [TestMethod]
         public void StartFoldingAt_0_0_ShouldHaveOneFold() {
-            fa.RecreateFolds('{', new TextPosition(column: 0, line: 0));
-            fa.RecreateFolds('}', new TextPosition(column: 0, line: 1));
+            fa.RecreateFolds("{", new TextPosition(column: 0, line: 0));
+            fa.RecreateFolds("}", new TextPosition(column: 0, line: 1));
 
             Assert.AreEqual(1, fa.FoldingPositions.Count);
         }
 
         [TestMethod]
         public void StartFoldingAt_0_0_ShouldHaveTwoFolds() {
-            fa.RecreateFolds('{', new TextPosition(column: 0, line: 0));
-            fa.RecreateFolds('{', new TextPosition(column: 5, line: 1));
-            fa.RecreateFolds('{', new TextPosition(column: 3, line: 3));
-            fa.RecreateFolds('}', new TextPosition(column: 8, line: 3));
-            fa.RecreateFolds('}', new TextPosition(column: 0, line: 4));
-            fa.RecreateFolds('}', new TextPosition(column: 3, line: 5));
+            fa.RecreateFolds("{", new TextPosition(column: 0, line: 0));
+            fa.RecreateFolds("{", new TextPosition(column: 5, line: 1));
+            fa.RecreateFolds("{", new TextPosition(column: 3, line: 3));
+            fa.RecreateFolds("}", new TextPosition(column: 8, line: 3));
+            fa.RecreateFolds("}", new TextPosition(column: 0, line: 4));
+            fa.RecreateFolds("}", new TextPosition(column: 3, line: 5));
 
             Assert.AreEqual(3, fa.FoldingPositions.Count);
         }
 
         [TestMethod]
         public void ClosingBracketsInTheSameLine_ShouldHaveThreeFoldings() {
-            fa.RecreateFolds('{', new TextPosition(column: 0, line: 0));
-            fa.RecreateFolds('{', new TextPosition(column: 5, line: 1));
-            fa.RecreateFolds('{', new TextPosition(column: 3, line: 3));
-            fa.RecreateFolds('}', new TextPosition(column: 0, line: 4));
-            fa.RecreateFolds('}', new TextPosition(column: 1, line: 4));
-            fa.RecreateFolds('}', new TextPosition(column: 2, line: 4));
+            fa.RecreateFolds("{", new TextPosition(column: 0, line: 0));
+            fa.RecreateFolds("{", new TextPosition(column: 5, line: 1));
+            fa.RecreateFolds("{", new TextPosition(column: 3, line: 3));
+            fa.RecreateFolds("}", new TextPosition(column: 0, line: 4));
+            fa.RecreateFolds("}", new TextPosition(column: 1, line: 4));
+            fa.RecreateFolds("}", new TextPosition(column: 2, line: 4));
 
             Assert.AreEqual(3, fa.FoldingPositions.Count);
         }
 
         [TestMethod]
         public void OpeningBracketsInTheSameLine_ShouldHaveThreeFoldings() {
-            fa.RecreateFolds('{', new TextPosition(column: 0, line: 0));
-            fa.RecreateFolds('{', new TextPosition(column: 1, line: 0));
-            fa.RecreateFolds('{', new TextPosition(column: 2, line: 0));
-            fa.RecreateFolds('}', new TextPosition(column: 8, line: 3));
-            fa.RecreateFolds('}', new TextPosition(column: 0, line: 4));
-            fa.RecreateFolds('}', new TextPosition(column: 3, line: 5));
+            fa.RecreateFolds("{", new TextPosition(column: 0, line: 0));
+            fa.RecreateFolds("{", new TextPosition(column: 1, line: 0));
+            fa.RecreateFolds("{", new TextPosition(column: 2, line: 0));
+            fa.RecreateFolds("}", new TextPosition(column: 8, line: 3));
+            fa.RecreateFolds("}", new TextPosition(column: 0, line: 4));
+            fa.RecreateFolds("}", new TextPosition(column: 3, line: 5));
 
             Assert.AreEqual(3, fa.FoldingPositions.Count);
         }

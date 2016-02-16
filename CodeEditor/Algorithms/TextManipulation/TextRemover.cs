@@ -17,12 +17,12 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
 
             return new LinesRemovalInfo {
-                LinesAffected = new Dictionary<TextPosition, string> {
-                    [new TextPosition (pair.StartPosition.Column, range.StartPosition.Line)] =
+                LinesToChange = new Dictionary<TextPosition, string> {
+                    [new TextPosition(pair.StartPosition.Column, pair.StartPosition.Line)] =
                         string.Concat(textSources[pair.StartPosition.Line].Text.Take(pair.StartPosition.Column)) +
                         string.Concat(textSources[pair.EndPosition.Line].Text.Skip(pair.EndPosition.Column))
                 },
-                LinesToRemove = Enumerable.Range(pair.StartPosition.Line + 1, pair.EndPosition.Line)
+                LinesToRemove = Enumerable.Range(pair.StartPosition.Line, pair.EndPosition.Line)
             };
         }
 
@@ -31,7 +31,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 bool isStartEqToTextLen = startingTextPosition.Column == textSources[startingTextPosition.Line].Text.Length;
 
                 if (isStartEqToTextLen && startingTextPosition.Line == textSources.Count - 1) {
-                    return new LinesRemovalInfo { LinesAffected = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
+                    return new LinesRemovalInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
                 }
                 if (isStartEqToTextLen) {
                     return DeleteNextLine(textSources, startingTextPosition);
@@ -42,7 +42,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 bool isStartEqZero = startingTextPosition.Column == 0;
 
                 if (isStartEqZero && startingTextPosition.Line == 0) {
-                    return new LinesRemovalInfo { LinesAffected = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
+                    return new LinesRemovalInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
                 }
                 if (isStartEqZero) {
                     return RemoveThisLine(textSources, startingTextPosition);
@@ -62,7 +62,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column - 1) + (attachRest ? lineToModify.Substring(startingTextPosition.Column) : string.Empty);
 
             return new LinesRemovalInfo {
-                LinesAffected = new Dictionary<TextPosition, string> {
+                LinesToChange = new Dictionary<TextPosition, string> {
                     [new TextPosition(startingTextPosition.Column - 1, startingTextPosition.Line)] = textAfterRemove },
                 LinesToRemove = new int[0]
             };
@@ -73,7 +73,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column) + lineToModify.Substring(startingTextPosition.Column + 1);
 
             return new LinesRemovalInfo {
-                LinesAffected = new Dictionary<TextPosition, string> {
+                LinesToChange = new Dictionary<TextPosition, string> {
                     [new TextPosition(startingTextPosition.Column, startingTextPosition.Line)] = textAfterRemove },
                 LinesToRemove = new int[0]
             };
@@ -91,7 +91,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             }
 
             return new LinesRemovalInfo {
-                LinesAffected = linesAffected,
+                LinesToChange = linesAffected,
                 LinesToRemove = new[] { startingTextPosition.Line }
             };
         }
@@ -108,7 +108,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             }
 
             return new LinesRemovalInfo {
-                LinesAffected = linesAffected,
+                LinesToChange = linesAffected,
                 LinesToRemove = new[] { textSources.Count - 1 }
             };
         }
