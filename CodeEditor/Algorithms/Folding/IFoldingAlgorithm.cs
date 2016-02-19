@@ -4,19 +4,13 @@ using CodeEditor.DataStructures;
 namespace CodeEditor.Algorithms.Folding {
     internal interface IFoldingAlgorithm {
 
-        #region properties
-
-        Dictionary<TextPosition, TextPosition> FoldingPositions { get; }
-
-        #endregion
-
         #region public methods
 
         bool CanRun(string text);
 
-        void RecreateFolds(string text, TextPosition position);
+        void GetFoldsToDelete(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 
-        void DeleteFolds(string text, TextPosition position);
+        IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 
         #endregion
 

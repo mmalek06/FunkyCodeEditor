@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
@@ -12,6 +13,8 @@ namespace CodeEditor.Views.FoldingView {
 
         private IFoldingAlgorithm foldingAlgorithm;
 
+        private Dictionary<TextPosition, TextPosition> foldingPositions;
+
         #endregion
 
         #region constructor
@@ -19,6 +22,7 @@ namespace CodeEditor.Views.FoldingView {
         public View(LocalTextInfo textInfo, IFoldingAlgorithm foldingAlgorithm) : base() {
             this.textInfo = textInfo;
             this.foldingAlgorithm = foldingAlgorithm;
+            foldingPositions = new Dictionary<TextPosition, TextPosition>();
         }
 
         #endregion
@@ -39,8 +43,9 @@ namespace CodeEditor.Views.FoldingView {
             if (!foldingAlgorithm.CanRun(e.Text)) {
                 return;
             }
-
-            foldingAlgorithm.RecreateFolds(e.Text, position);
+            foreach (var kvp in foldingAlgorithm.CreateFolds(e.Text, position, foldingPositions)) {
+                foldingPositions[kvp.Key] = kvp.Value;
+            }
         }
 
         #endregion
@@ -48,7 +53,7 @@ namespace CodeEditor.Views.FoldingView {
         #region methods
 
         private void RedrawFolds() {
-
+            
         }
 
         #endregion
