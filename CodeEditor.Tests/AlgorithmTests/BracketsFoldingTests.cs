@@ -116,7 +116,7 @@ namespace CodeEditor.Tests {
                 foldingPositions[kvp.Key] = kvp.Value;
             }
 
-            return folds.ToList();
+            return folds.OrderBy(kvp => kvp.Key).ToList();
         }
     }
 }

@@ -25,7 +25,9 @@ namespace CodeEditor.DataStructures {
         #region public methods and operators
 
         public override bool Equals(object obj) {
-            return base.Equals(obj);
+            var other = (TextPosition)obj;
+
+            return Column == other.Column && Line == other.Line;
         }
 
         public override int GetHashCode() {
@@ -54,9 +56,9 @@ namespace CodeEditor.DataStructures {
             return 0;
         }
 
-        public static bool operator <(TextPosition @this, TextPosition other) => other == null ? false : @this.Column < other.Column || @this.Line < other.Line;
+        public static bool operator <(TextPosition @this, TextPosition other) => other == null ? false : @this.Line < other.Line || (@this.Line < other.Line && @this.Column < other.Column);
 
-        public static bool operator >(TextPosition @this, TextPosition other) => other == null ? false : @this.Column > other.Column || @this.Line > other.Line;
+        public static bool operator >(TextPosition @this, TextPosition other) => other == null ? false : @this.Line > other.Line || (@this.Line > other.Line && @this.Column > other.Column);
 
         public static bool operator <=(TextPosition @this, TextPosition other) => @this < other || @this == other;
 
