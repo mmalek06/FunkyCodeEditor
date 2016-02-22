@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.DataStructures;
 
@@ -33,13 +34,13 @@ namespace CodeEditor.Algorithms.Folding {
             return bracket == OPENING_BRACKET || bracket == CLOSING_BRACKET;
         }
 
-        public IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+        public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             char bracket = text[0];
 
             if (bracket == OPENING_BRACKET) {
-                return CreateFold(position, foldingPositions);
+                return CreateEmptyFold(position, foldingPositions);
             } else if (bracket == CLOSING_BRACKET) {
-                return UpdateFolds(position, foldingPositions);
+                return RebuildFolds(position, foldingPositions);
             }
 
             return null;
@@ -59,40 +60,46 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region methods
 
-        private IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFold(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+        private IDictionary<TextPosition, TextPosition> CreateEmptyFold(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             TextPosition outVal;
 
             if (!foldingPositions.TryGetValue(position, out outVal)) {
-                foldingPositions[position] = null;
+                var tmpDict = new Dictionary<TextPosition, TextPosition>(foldingPositions);
 
-                return new[] { new KeyValuePair<TextPosition, TextPosition>(position, null) };
+                tmpDict[position] = null;
+
+                return tmpDict;
             }
 
             return null;
         }
 
-        private IEnumerable<KeyValuePair<TextPosition, TextPosition>> UpdateFolds(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
-            var parentPosition = foldingPositions.Keys.Where(key => !mappedPositions.Contains(key) && key <= position).Max();
+        private IDictionary<TextPosition, TextPosition> RebuildFolds(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+            var newFolds = new Dictionary<TextPosition, TextPosition>(foldingPositions);
+            var candidates = foldingPositions.Where(kvp => position > kvp.Key && (kvp.Value == null || position < kvp.Value));
+            var closestCandidate = candidates.Max(kvp => kvp.Key);
 
-            if (parentPosition == null) {
-                return null;
+            if (newFolds[closestCandidate] == null) {
+                newFolds[closestCandidate] = position;
+            } else {
+                newFolds = UpdateFolds(newFolds, closestCandidate, position);
             }
 
-            var newFolds = new Dictionary<TextPosition, TextPosition>();
-            var oldClosingPosition = foldingPositions[parentPosition];
-            var nextOpeningPositions = foldingPositions.Keys.Where(key => key > parentPosition).ToArray();
-            TextPosition previousValue = null;
-            TextPosition nextValue = oldClosingPosition;
+            return newFolds;
+        }
 
-            foreach (var openPosition in nextOpeningPositions) {
-                nextValue = foldingPositions[openPosition];
-                newFolds[openPosition] = previousValue;
-                previousValue = nextValue;
+        private Dictionary<TextPosition, TextPosition> UpdateFolds(Dictionary<TextPosition, TextPosition> newFolds, TextPosition keyToUpdate, TextPosition foldValue) {
+            var nextPositions = newFolds.Where(kvp => kvp.Key > keyToUpdate).OrderBy(kvp => kvp.Key);
+            var oldPosition = newFolds[keyToUpdate];
+
+            newFolds[keyToUpdate] = foldValue;
+
+            foreach (var kvp in nextPositions) {
+                var tmpPosition = kvp.Value;
+
+                newFolds[kvp.Key] = oldPosition;
+                oldPosition = tmpPosition;
             }
-
-            newFolds[parentPosition] = position;
-
-            mappedPositions.Add(parentPosition);
 
             return newFolds;
         }

@@ -10,7 +10,7 @@ namespace CodeEditor.Algorithms.Folding {
 
         void GetFoldsToDelete(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 
-        IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
+        IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 
         #endregion
 

@@ -40,7 +40,7 @@ namespace CodeEditor.DataStructures {
         }
 
         public override string ToString() {
-            return string.Format("Column: {0}, Line: {1}", Column, Line);
+            return string.Format("Line: {1}, Column: {0}", Column, Line);
         }
 
         public int CompareTo(object obj) {

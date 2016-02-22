@@ -28,12 +28,16 @@ namespace CodeEditor.Tests {
         }
 
         [TestMethod]
-        public void EnterTwoOpeningBrackets_ShouldBeNoFolding() {
+        public void EnterTwoOpeningBrackets_ShouldHaveTwoEmptyFolds() {
             Fold("{", 0, 0);
 
             var folds = Fold("{", 1, 0);
 
-            Assert.AreEqual(0, folds.Count);
+            Assert.AreEqual(2, folds.Count);
+            Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
+            Assert.IsNull(folds[0].Value);
+            Assert.AreEqual(new TextPosition(column: 1, line: 0), folds[1].Key);
+            Assert.IsNull(folds[1].Value);
         }
 
         [TestMethod]
@@ -94,7 +98,7 @@ namespace CodeEditor.Tests {
         }
 
         [TestMethod]
-        public void ThreeBracketsEnteredOneNotPaired_ShouldHaveTwoFolds() {
+        public void ThreeBracketsEnteredOneNotPaired_ShouldHaveTwoFullFoldsAndOneEmpty() {
             Fold("{", 0, 0);
             Fold("{", 5, 1);
             Fold("{", 3, 3);
@@ -102,11 +106,13 @@ namespace CodeEditor.Tests {
 
             var folds = Fold("}", 3, 5);
 
-            Assert.AreEqual(2, folds.Count);
+            Assert.AreEqual(3, folds.Count);
             Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
-            Assert.AreEqual(new TextPosition(column: 3, line: 5), folds[0].Value);
+            Assert.IsNull(folds[0].Value);
             Assert.AreEqual(new TextPosition(column: 5, line: 1), folds[1].Key);
-            Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[1].Value);
+            Assert.AreEqual(new TextPosition(column: 3, line: 5), folds[1].Value);
+            Assert.AreEqual(new TextPosition(column: 3, line: 3), folds[2].Key);
+            Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[2].Value);            
         }
 
         [TestMethod]
