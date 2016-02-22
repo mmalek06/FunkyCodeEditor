@@ -37,6 +37,10 @@ namespace CodeEditor.DataStructures {
             return hash;
         }
 
+        public override string ToString() {
+            return string.Format("Column: {0}, Line: {1}", Column, Line);
+        }
+
         public int CompareTo(object obj) {
             var otherPosition = (TextPosition)obj;
 

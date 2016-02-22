@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
@@ -43,9 +44,17 @@ namespace CodeEditor.Views.FoldingView {
             if (!foldingAlgorithm.CanRun(e.Text)) {
                 return;
             }
-            foreach (var kvp in foldingAlgorithm.CreateFolds(e.Text, position, foldingPositions)) {
+
+            var folds = foldingAlgorithm.CreateFolds(e.Text, position, foldingPositions);
+
+            if (folds == null || !folds.Any()) {
+                return;
+            }
+            foreach (var kvp in folds) {
                 foldingPositions[kvp.Key] = kvp.Value;
             }
+
+            RedrawFolds();
         }
 
         #endregion
