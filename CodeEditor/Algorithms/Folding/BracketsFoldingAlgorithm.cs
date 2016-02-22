@@ -37,9 +37,9 @@ namespace CodeEditor.Algorithms.Folding {
             char bracket = text[0];
 
             if (bracket == OPENING_BRACKET) {
-                return CreateFoldsForOpenPosition(position, foldingPositions);
+                return CreateFold(position, foldingPositions);
             } else if (bracket == CLOSING_BRACKET) {
-                return CreateFoldsForClosePosition(position, foldingPositions);
+                return UpdateFolds(position, foldingPositions);
             }
 
             return null;
@@ -59,7 +59,7 @@ namespace CodeEditor.Algorithms.Folding {
 
         #region methods
 
-        private IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFoldsForOpenPosition(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+        private IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFold(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             TextPosition outVal;
 
             if (!foldingPositions.TryGetValue(position, out outVal)) {
@@ -71,7 +71,7 @@ namespace CodeEditor.Algorithms.Folding {
             return null;
         }
 
-        private IEnumerable<KeyValuePair<TextPosition, TextPosition>> CreateFoldsForClosePosition(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+        private IEnumerable<KeyValuePair<TextPosition, TextPosition>> UpdateFolds(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             var parentPosition = foldingPositions.Keys.Where(key => !mappedPositions.Contains(key) && key <= position).Max();
 
             if (parentPosition == null) {

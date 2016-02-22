@@ -109,6 +109,25 @@ namespace CodeEditor.Tests {
             Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[1].Value);
         }
 
+        [TestMethod]
+        public void TwoBracketsAtTheSameLevel_ShouldHaveThreeFolds() {
+            Fold("{", 0, 0);
+            Fold("{", 0, 1);
+            Fold("}", 0, 2);
+            Fold("{", 0, 3);
+            Fold("}", 0, 4);
+
+            var folds = Fold("}", 0, 5);
+
+            Assert.AreEqual(3, folds.Count);
+            Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
+            Assert.AreEqual(new TextPosition(column: 0, line: 5), folds[0].Value);
+            Assert.AreEqual(new TextPosition(column: 0, line: 1), folds[1].Key);
+            Assert.AreEqual(new TextPosition(column: 0, line: 2), folds[1].Value);
+            Assert.AreEqual(new TextPosition(column: 0, line: 3), folds[2].Key);
+            Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[2].Value);
+        }
+
         private List<KeyValuePair<TextPosition, TextPosition>> Fold(string bracket, int col, int line) {
             var folds = fa.CreateFolds(bracket, new TextPosition(column: col, line: line), foldingPositions);
 

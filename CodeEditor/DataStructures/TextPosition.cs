@@ -56,9 +56,9 @@ namespace CodeEditor.DataStructures {
             return 0;
         }
 
-        public static bool operator <(TextPosition @this, TextPosition other) => other == null ? false : @this.Line < other.Line || (@this.Line < other.Line && @this.Column < other.Column);
+        public static bool operator <(TextPosition @this, TextPosition other) => other == null ? false : @this.Line < other.Line || (@this.Line <= other.Line && @this.Column < other.Column);
 
-        public static bool operator >(TextPosition @this, TextPosition other) => other == null ? false : @this.Line > other.Line || (@this.Line > other.Line && @this.Column > other.Column);
+        public static bool operator >(TextPosition @this, TextPosition other) => other == null ? false : @this.Line > other.Line || (@this.Line >= other.Line && @this.Column > other.Column);
 
         public static bool operator <=(TextPosition @this, TextPosition other) => @this < other || @this == other;
 
