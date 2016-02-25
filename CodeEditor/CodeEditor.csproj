@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Adorners\FoldingAdorner\Adorner.cs" />
+    <Compile Include="Adorners\LinesAdorner\Adorner.cs" />
+    <Compile Include="Adorners\ReactiveAdorner.cs" />
     <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\Autoformatting.cs" />
@@ -66,7 +69,6 @@
     <Compile Include="Commands\TextSelectionCommand.cs" />
     <Compile Include="Commands\UndoEnterTextCommand.cs" />
     <Compile Include="Commands\UndoRemoveTextCommand.cs" />
-    <Compile Include="DataStructures\AutoShiftStack.cs" />
     <Compile Include="DataStructures\TextPositionsPair.cs" />
     <Compile Include="Editor.cs" />
     <Compile Include="Configuration\EditorConfiguration.cs" />
@@ -86,10 +88,9 @@
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
     <Compile Include="Algorithms\Folding\FoldingStates.cs" />
-    <Compile Include="Views\FoldingView\View.cs" />
-    <Compile Include="Views\FoldingView\VisualElementCodeSnippet.cs" />
-    <Compile Include="Views\FoldingView\VisualElementLine.cs" />
-    <Compile Include="Views\FoldingView\VisualElementSymbol.cs" />
+    <Compile Include="Adorners\FoldingAdorner\VisualElementCodeSnippet.cs" />
+    <Compile Include="Adorners\FoldingAdorner\VisualElementLine.cs" />
+    <Compile Include="Adorners\FoldingAdorner\VisualElementSymbol.cs" />
     <Compile Include="Views\SelectionView\VisualElement.cs" />
     <Compile Include="Views\SelectionView\View.cs" />
     <Compile Include="Algorithms\TextManipulation\LinesRemoveInfo.cs" />
@@ -99,13 +100,13 @@
     <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
     <Compile Include="Views\ViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
-    <Compile Include="Controls\TextArea.cs" />
+    <Compile Include="Controls\ViewsWrapper.cs" />
     <Compile Include="TextProperties\SimpleTextSource.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Views\CaretView\View.cs" />
     <Compile Include="Views\TextView\VisualElement.cs" />
     <Compile Include="Views\TextView\View.cs" />
-    <Compile Include="Views\VisualElementSymbolBase.cs" />
+    <Compile Include="Visuals\VisualElementSymbolBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -146,7 +147,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CodeEditor.Core\CodeEditor.Core.csproj">
+      <Project>{396e0f88-2b8e-4ab6-bca4-b3c103f51166}</Project>
+      <Name>CodeEditor.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

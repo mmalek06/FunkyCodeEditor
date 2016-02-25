@@ -3,19 +3,21 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using CodeEditor.Adorners;
 using CodeEditor.Configuration;
 using CodeEditor.Controls;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.DataStructures;
-using CodeEditor.Extensions;
 
 namespace CodeEditor {
     public class Editor : Control {
 
         #region fields
 
-        private TextArea textArea;
+        private ViewsWrapper textArea;
 
         #endregion
 
@@ -47,13 +49,11 @@ namespace CodeEditor {
         #region constructor
 
         public Editor() {
-            textArea = new TextArea(this);
             DoCommands = new AutoTrimmingStack<ICommand>(100);
             UndoCommands = new AutoTrimmingStack<ICommand>(100);
             Focusable = false;
 
-            AddVisualChild(textArea);
-            AddLogicalChild(textArea);
+            Loaded += EditorLoaded;
         }
 
         #endregion
@@ -63,14 +63,17 @@ namespace CodeEditor {
         protected override void OnInitialized(EventArgs e) {
             base.OnInitialized(e);
 
+            textArea = new ViewsWrapper(this);
+
+            AddVisualChild(textArea);
+            AddLogicalChild(textArea);
+
             ConfigureLooks();
         }
 
-        protected override void OnRender(DrawingContext drawingContext) {
-            base.OnRender(drawingContext);
-
-            drawingContext.DrawRectangle(EditorConfiguration.GetLinesColumnBrush(), null, new Rect(0, 0, EditorConfiguration.GetLinesColumnWidth(), RenderSize.Height));
-            RedrawLines(drawingContext);
+        private void EditorLoaded(object sender, RoutedEventArgs e) {
+            SetAdorners();
+            //RedrawLines(drawingContext);
         }
 
         #endregion
@@ -79,10 +82,18 @@ namespace CodeEditor {
 
         protected override Visual GetVisualChild(int index) => textArea;
 
-        private void TextPropertyChanged(string text) {
-            //Text = text;
+        private void SetAdorners() {
+            var adornerLayer = AdornerLayer.GetAdornerLayer(textArea);
+            var foldingAdorner = new Adorners.FoldingAdorner.Adorner(textArea);
+            var linesAdorner = new Adorners.LinesAdorner.Adorner(textArea);
 
-            //RedrawLines();
+            adornerLayer.Add(foldingAdorner);
+            adornerLayer.Add(linesAdorner);
+            textArea.Adorners = new ReactiveAdorner[] { foldingAdorner };
+        }
+
+        private void TextPropertyChanged(string text) {
+            
         }
 
         private void RedrawLines(DrawingContext drawingContext) {
@@ -100,7 +111,7 @@ namespace CodeEditor {
         }
 
         private void ConfigureLooks() {
-            textArea.Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth(), 0, 0, 0);
+            textArea.Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth() * 2, 0, 0, 0);
         }
 
         #endregion

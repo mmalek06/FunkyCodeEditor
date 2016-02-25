@@ -3,21 +3,16 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.TextProperties;
+using CodeEditor.Visuals;
 
-namespace CodeEditor.Views.FoldingView {
+namespace CodeEditor.Adorners.FoldingAdorner {
     internal class VisualElementSymbol : VisualElementSymbolBase {
 
         public void DrawFolding(TextRunProperties runProperties, FoldingStates state, int top) {
             string symbol = state == FoldingStates.EXPANDED ? "-" : "+";
             var textSource = new SimpleTextSource(symbol, runProperties);
-            double textHeight = 0;
-
-            using (TextLine textLine = GetLine(runProperties, textSource)) {
-                textHeight = textLine.Height;
-            }
-
             var formattedText = GetFormattedText(symbol, runProperties);
-            var textLocation = new Point(0, top * textHeight);
+            var textLocation = new Point(0, top);
 
             using (var drawingContext = RenderOpen()) {
                 drawingContext.DrawText(formattedText, textLocation);

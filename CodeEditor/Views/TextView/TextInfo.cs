@@ -49,6 +49,9 @@ namespace CodeEditor.Views.TextView {
         }
 
         public bool IsInTextRange(TextPosition position) {
+            if (position.Column < 0 || position.Line < 0) {
+                return false;
+            }
             if (position.Line >= GetTextLinesCount()) {
                 return false;
             }

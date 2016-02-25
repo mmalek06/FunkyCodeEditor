@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <Border Margin="10" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.Row="0">
-            <local:Editor Width="730" Height="730" />
+            <local:Editor Width="730" Height="200" />
         </Border>
         <TextBox Grid.Column="0" Grid.Row="1"></TextBox>
     </Grid>

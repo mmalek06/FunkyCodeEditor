@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 
-namespace CodeEditor.Views {
+namespace CodeEditor.Visuals {
     internal abstract class VisualElementSymbolBase : DrawingVisual {
         protected TextLine GetLine(TextRunProperties runProperties, TextSource textSource, int column = 0) {
             return TextFormatter.Create().FormatLine(

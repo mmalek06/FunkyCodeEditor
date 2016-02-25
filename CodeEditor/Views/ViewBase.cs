@@ -12,9 +12,7 @@ namespace CodeEditor.Views {
 
         #region properties
 
-        protected override int VisualChildrenCount {
-            get { return visuals.Count; }
-        }
+        protected override int VisualChildrenCount => visuals.Count; 
 
         #endregion
 
@@ -29,14 +27,10 @@ namespace CodeEditor.Views {
 
         #region methods
 
-        protected override void OnRender(DrawingContext drawingContext) {
-            drawingContext.DrawRectangle(Brushes.Transparent, null,
-                new Rect(Margin.Left, Margin.Top, RenderSize.Width - Margin.Right, RenderSize.Height - Margin.Bottom));
-        }
+        protected override void OnRender(DrawingContext drawingContext) => 
+            drawingContext.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Black, 1), new Rect(0, 0, Width, Height));
 
-        protected override Visual GetVisualChild(int index) {
-            return visuals[index];
-        }
+        protected override Visual GetVisualChild(int index) => visuals[index];
 
         #endregion
 

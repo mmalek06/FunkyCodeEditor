@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using CodeEditor.Adorners;
 using CodeEditor.Commands;
-using CodeEditor.Configuration;
+using CodeEditor.Core.Controls;
 using CodeEditor.DataStructures;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 using LocalViewBase = CodeEditor.Views.ViewBase;
 
 namespace CodeEditor.Controls {
-    public class TextArea : Control {
+    internal class ViewsWrapper : StackablePanel {
 
         #region fields
 
@@ -21,7 +21,6 @@ namespace CodeEditor.Controls {
         private Views.TextView.View textView;
         private Views.CaretView.View caretView;
         private Views.SelectionView.View selectionView;
-        private Views.FoldingView.View foldingView;
 
         #endregion
 
@@ -29,7 +28,9 @@ namespace CodeEditor.Controls {
 
         public TextPosition CaretPosition => caretView.CaretPosition;
 
-        internal LocalTextInfo TextInfo => textInfo;
+        public LocalTextInfo TextInfo => textInfo;
+
+        public IEnumerable<ReactiveAdorner> Adorners { get; set; }
 
         protected override int VisualChildrenCount => views.Count;
 
@@ -37,11 +38,13 @@ namespace CodeEditor.Controls {
 
         #region constructor
 
-        public TextArea(Editor parent) {
+        public ViewsWrapper(Editor parent) : base() {
             master = parent;
             views = new List<LocalViewBase>();
-            
-            SetViews();
+            Width = parent.Width;
+            Height = parent.Height;
+
+            SetupViews();
             InitEvents();
         }
 
@@ -49,8 +52,15 @@ namespace CodeEditor.Controls {
 
         #region event handlers
 
-        protected override void OnRender(DrawingContext drawingContext) =>
-            drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, RenderSize.Width, RenderSize.Height));
+        protected override void OnRender(DrawingContext drawingContext) {
+            Pen pen = null;
+
+#if DEBUG
+            pen = new Pen(Brushes.Black, 1);
+#endif
+
+            drawingContext.DrawRectangle(Brushes.Transparent, pen, new Rect(0, 0, Width, Height));
+        }
 
         protected override void OnKeyDown(KeyEventArgs e) {
             var removeTextCmd = new RemoveTextCommand(selectionView, textView, textInfo);
@@ -64,6 +74,8 @@ namespace CodeEditor.Controls {
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
                 deselectionCmd.Execute();
+
+                e.Handled = true;
             } else if (selectionCmd.CanExecute(e)) {
                 selectionCmd.Execute(e);
             }
@@ -75,9 +87,8 @@ namespace CodeEditor.Controls {
 
             if (enterTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
-
                 deselectionCmd.Execute();
-                foldingView.HandleTextInput(e, textView.ActivePosition);
+                RunAdorners(e);
             }
         }
 
@@ -106,17 +117,20 @@ namespace CodeEditor.Controls {
 
         protected override Visual GetVisualChild(int index) => views[index];
 
-        private void SetViews() {
+        private void SetupViews() {
             textView = new Views.TextView.View();
             textInfo = new LocalTextInfo(textView);
             selectionView = new Views.SelectionView.View(textInfo);
             caretView = new Views.CaretView.View(textInfo);
-            foldingView = new Views.FoldingView.View(textInfo, EditorConfiguration.GetFoldingAlgorithm());
 
-            foreach (var view in new LocalViewBase[] { selectionView, textView, caretView, foldingView }) {
+            foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
+                view.Margin = new Thickness(Configuration.EditorConfiguration.GetTextAreaLeftMargin(), 0, 0, 0);
+                view.Width = Width - Configuration.EditorConfiguration.GetTextAreaLeftMargin();
+                view.Height = Height;
+
                 views.Add(view);
-                AddVisualChild(view);
-                AddLogicalChild(view);
+
+                Children.Add(view);
             }
         }
 
@@ -126,6 +140,12 @@ namespace CodeEditor.Controls {
             // custom editor events
             textView.TextChanged += caretView.HandleTextChange;
             caretView.CaretMoved += textView.HandleCaretMove;
+        }
+
+        private void RunAdorners(TextCompositionEventArgs e) {
+            foreach (var adorner in Adorners) {
+                adorner.HandleTextInput(e, textView.ActivePosition);
+            }
         }
 
         private void ExecuteTextCommand(BaseTextViewCommand doCommand, BaseTextViewCommand undoCommand, EventArgs e) {

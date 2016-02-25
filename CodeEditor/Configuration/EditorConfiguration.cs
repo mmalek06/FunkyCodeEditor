@@ -5,7 +5,11 @@ using CodeEditor.Extensions;
 namespace CodeEditor.Configuration {
     internal static class EditorConfiguration {
 
-        public static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) + 10;
+        public static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) * 4;
+
+        public static int GetFoldingColumnWidth() => ((int)StringExtensions.GetCharWidth()) * 2;
+
+        public static int GetTextAreaLeftMargin() => GetLinesColumnWidth() + GetFoldingColumnWidth();
 
         public static Brush GetLinesColumnBrush() {
             return Brushes.Black;
