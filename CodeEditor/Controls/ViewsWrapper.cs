@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.Adorners;
 using CodeEditor.Commands;
+using CodeEditor.Configuration;
 using CodeEditor.Core.Controls;
 using CodeEditor.DataStructures;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
@@ -52,15 +53,8 @@ namespace CodeEditor.Controls {
 
         #region event handlers
 
-        protected override void OnRender(DrawingContext drawingContext) {
-            Pen pen = null;
-
-#if DEBUG
-            pen = new Pen(Brushes.Black, 1);
-#endif
-
-            drawingContext.DrawRectangle(Brushes.Transparent, pen, new Rect(0, 0, Width, Height));
-        }
+        protected override void OnRender(DrawingContext drawingContext) => 
+            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, Width, Height));
 
         protected override void OnKeyDown(KeyEventArgs e) {
             var removeTextCmd = new RemoveTextCommand(selectionView, textView, textInfo);
@@ -74,8 +68,6 @@ namespace CodeEditor.Controls {
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
                 deselectionCmd.Execute();
-
-                e.Handled = true;
             } else if (selectionCmd.CanExecute(e)) {
                 selectionCmd.Execute(e);
             }
@@ -124,8 +116,8 @@ namespace CodeEditor.Controls {
             caretView = new Views.CaretView.View(textInfo);
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
-                view.Margin = new Thickness(Configuration.EditorConfiguration.GetTextAreaLeftMargin(), 0, 0, 0);
-                view.Width = Width - Configuration.EditorConfiguration.GetTextAreaLeftMargin();
+                view.Margin = new Thickness(EditorConfiguration.GetTextAreaLeftMargin() + 2, 0, 0, 0);
+                view.Width = Width - EditorConfiguration.GetTextAreaLeftMargin() - 2;
                 view.Height = Height;
 
                 views.Add(view);

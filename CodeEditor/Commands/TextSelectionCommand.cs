@@ -63,6 +63,8 @@ namespace CodeEditor.Commands {
             
             if (keyboardEvent != null) {
                 ExecuteKeyboard(keyboardEvent);
+
+                keyboardEvent.Handled = true;
             } else if (mouseEvent != null) {
                 ExecuteMouse(mouseEvent);
             }

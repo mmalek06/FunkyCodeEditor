@@ -28,7 +28,7 @@ namespace CodeEditor.Views {
         #region methods
 
         protected override void OnRender(DrawingContext drawingContext) => 
-            drawingContext.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Black, 1), new Rect(0, 0, Width, Height));
+            drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, Width, Height));
 
         protected override Visual GetVisualChild(int index) => visuals[index];
 

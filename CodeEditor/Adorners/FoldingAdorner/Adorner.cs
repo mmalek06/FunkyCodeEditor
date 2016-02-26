@@ -70,7 +70,7 @@ namespace CodeEditor.Adorners.FoldingAdorner {
         protected override Visual GetVisualChild(int index) => visuals[index];
 
         protected override void OnRender(DrawingContext drawingContext) =>
-            drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(
+            drawingContext.DrawRectangle(EditorConfiguration.GetFoldingColumnBrush(), null, new Rect(
                 0, 0, EditorConfiguration.GetFoldingColumnWidth(), RenderSize.Height));
 
         private void RedrawFolds() {

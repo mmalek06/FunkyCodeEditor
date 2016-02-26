@@ -55,6 +55,7 @@ namespace CodeEditor.Commands {
 
             if (keyboardEvent != null) {
                 newPos = caretView.GetNextPosition(keyboardEvent.Key);
+                keyboardEvent.Handled = true;
             } else if (mouseEvent != null) {
                 newPos = mouseEvent.GetPosition(textView).GetDocumentPosition();
             }

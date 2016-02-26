@@ -5,9 +5,9 @@ using CodeEditor.Extensions;
 namespace CodeEditor.Configuration {
     internal static class EditorConfiguration {
 
-        public static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) * 4;
+        public static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharWidth()) * 5;
 
-        public static int GetFoldingColumnWidth() => ((int)StringExtensions.GetCharWidth()) * 2;
+        public static int GetFoldingColumnWidth() => ((int)StringExtensions.GetCharWidth()) * 3;
 
         public static int GetTextAreaLeftMargin() => GetLinesColumnWidth() + GetFoldingColumnWidth();
 
@@ -17,6 +17,18 @@ namespace CodeEditor.Configuration {
 
         public static Brush GetLinesColumnFontColor() {
             return Brushes.White;
+        }
+
+        public static Brush GetFoldingColumnBrush() {
+            return GetEditorBrush();
+        }
+
+        public static Brush GetFoldingColumnFontColor() {
+            return Brushes.LightBlue;
+        }
+
+        public static Brush GetEditorBrush() {
+            return Brushes.LightGray;
         }
 
         public static double GetFontHeight() => StringExtensions.GetCharSize().Height;
