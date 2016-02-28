@@ -62,6 +62,8 @@ namespace CodeEditor.Controls {
             var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView, textInfo);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
+            RunAdorners(e);
+
             if (removeTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
@@ -135,6 +137,12 @@ namespace CodeEditor.Controls {
         }
 
         private void RunAdorners(TextCompositionEventArgs e) {
+            foreach (var adorner in Adorners) {
+                adorner.HandleTextInput(e, textView.ActivePosition);
+            }
+        }
+
+        private void RunAdorners(KeyEventArgs e) {
             foreach (var adorner in Adorners) {
                 adorner.HandleTextInput(e, textView.ActivePosition);
             }

@@ -4,7 +4,7 @@ namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewAddingTextTests {
         private Views.TextView.View tv;
-        private new Views.TextView.TextInfo ti;
+        private Views.TextView.TextInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {

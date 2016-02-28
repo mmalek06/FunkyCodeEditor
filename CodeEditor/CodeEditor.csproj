@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Adorners\FoldingAdorner\Adorner.cs" />
     <Compile Include="Adorners\LinesAdorner\Adorner.cs" />
+    <Compile Include="Adorners\LinesAdorner\VisualElement.cs" />
     <Compile Include="Adorners\ReactiveAdorner.cs" />
     <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />

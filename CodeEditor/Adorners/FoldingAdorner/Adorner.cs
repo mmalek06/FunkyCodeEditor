@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -14,26 +13,15 @@ namespace CodeEditor.Adorners.FoldingAdorner {
 
         #region fields
 
-        private readonly VisualCollection visuals;
-
         private readonly List<VisualElementSymbol> symbols;
-
         private IFoldingAlgorithm foldingAlgorithm;
-
         private Dictionary<TextPosition, TextPosition> foldingPositions;
-
-        #endregion
-
-        #region properties
-
-        protected override int VisualChildrenCount => visuals.Count;
 
         #endregion
 
         #region constructor
 
         public Adorner(UIElement adornedElement) : base(adornedElement) {
-            visuals = new VisualCollection(this);
             symbols = new List<VisualElementSymbol>();
             foldingAlgorithm = EditorConfiguration.GetFoldingAlgorithm();
             foldingPositions = new Dictionary<TextPosition, TextPosition>();
@@ -43,6 +31,10 @@ namespace CodeEditor.Adorners.FoldingAdorner {
         #endregion
 
         #region event handlers
+
+        public override void HandleTextInput(KeyEventArgs e, TextPosition activePosition) {
+            
+        }
 
         public override void HandleTextInput(TextCompositionEventArgs e, TextPosition activePosition) {
             char character = e.Text[0];
@@ -63,15 +55,13 @@ namespace CodeEditor.Adorners.FoldingAdorner {
             RedrawFolds();
         }
 
-        #endregion
-
-        #region methods
-
-        protected override Visual GetVisualChild(int index) => visuals[index];
-
         protected override void OnRender(DrawingContext drawingContext) =>
             drawingContext.DrawRectangle(EditorConfiguration.GetFoldingColumnBrush(), null, new Rect(
                 0, 0, EditorConfiguration.GetFoldingColumnWidth(), RenderSize.Height));
+
+        #endregion
+
+        #region methods
 
         private void RedrawFolds() {
             visuals.Clear();

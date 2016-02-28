@@ -17,7 +17,7 @@ namespace CodeEditor {
 
         #region fields
 
-        private ViewsWrapper textArea;
+        private ViewsWrapper viewsWrapper;
 
         #endregion
 
@@ -63,55 +63,40 @@ namespace CodeEditor {
         protected override void OnInitialized(EventArgs e) {
             base.OnInitialized(e);
 
-            textArea = new ViewsWrapper(this);
+            viewsWrapper = new ViewsWrapper(this);
 
-            AddVisualChild(textArea);
-            AddLogicalChild(textArea);
+            AddVisualChild(viewsWrapper);
+            AddLogicalChild(viewsWrapper);
 
             ConfigureLooks();
         }
 
         private void EditorLoaded(object sender, RoutedEventArgs e) {
             SetAdorners();
-            //RedrawLines(drawingContext);
         }
 
         #endregion
 
         #region methods
 
-        protected override Visual GetVisualChild(int index) => textArea;
+        protected override Visual GetVisualChild(int index) => viewsWrapper;
 
         private void SetAdorners() {
-            var adornerLayer = AdornerLayer.GetAdornerLayer(textArea);
-            var foldingAdorner = new Adorners.FoldingAdorner.Adorner(textArea);
-            var linesAdorner = new Adorners.LinesAdorner.Adorner(textArea);
+            var adornerLayer = AdornerLayer.GetAdornerLayer(viewsWrapper);
+            var foldingAdorner = new Adorners.FoldingAdorner.Adorner(viewsWrapper);
+            var linesAdorner = new Adorners.LinesAdorner.Adorner(viewsWrapper);
 
             adornerLayer.Add(foldingAdorner);
             adornerLayer.Add(linesAdorner);
-            textArea.Adorners = new ReactiveAdorner[] { foldingAdorner };
+            viewsWrapper.Adorners = new ReactiveAdorner[] { linesAdorner, foldingAdorner };
         }
 
         private void TextPropertyChanged(string text) {
             
         }
 
-        private void RedrawLines(DrawingContext drawingContext) {
-            int linesCount = textArea.TextInfo.GetTextLinesCount();
-            var lineNumbers = Enumerable.Range(1, linesCount).ToArray();
-            var fontColor = EditorConfiguration.GetLinesColumnFontColor();
-            double fontHeight = EditorConfiguration.GetFontHeight();
-            var typeface = EditorConfiguration.GetTypeface();
-            
-            foreach (int num in lineNumbers) {
-                drawingContext.DrawText(
-                    new FormattedText(num.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, fontHeight, fontColor), 
-                    new Point(0, fontHeight * (num - 1)));
-            }
-        }
-
         private void ConfigureLooks() {
-            textArea.Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth() * 2, 0, 0, 0);
+            viewsWrapper.Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth() * 2, 0, 0, 0);
         }
 
         #endregion

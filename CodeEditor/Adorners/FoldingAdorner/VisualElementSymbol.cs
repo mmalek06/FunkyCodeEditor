@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.Folding;
-using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Adorners.FoldingAdorner {
@@ -10,7 +9,6 @@ namespace CodeEditor.Adorners.FoldingAdorner {
 
         public void DrawFolding(TextRunProperties runProperties, FoldingStates state, int top) {
             string symbol = state == FoldingStates.EXPANDED ? "-" : "+";
-            var textSource = new SimpleTextSource(symbol, runProperties);
             var formattedText = GetFormattedText(symbol, runProperties);
             var textLocation = new Point(0, top);
 
