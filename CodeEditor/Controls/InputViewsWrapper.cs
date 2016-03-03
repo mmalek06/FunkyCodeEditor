@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using CodeEditor.Adorners;
 using CodeEditor.Commands;
 using CodeEditor.Configuration;
 using CodeEditor.Core.Controls;
 using CodeEditor.DataStructures;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
-using LocalViewBase = CodeEditor.Views.ViewBase;
+using LocalViewBase = CodeEditor.Views.InputViewBase;
 
 namespace CodeEditor.Controls {
-    internal class ViewsWrapper : StackablePanel {
+    internal class InputViewsWrapper : StackablePanel {
 
         #region fields
 
-        private Editor master;
+        private InputPanel master;
         private List<LocalViewBase> views;
         private LocalTextInfo textInfo;
         private Views.TextView.View textView;
@@ -31,15 +30,13 @@ namespace CodeEditor.Controls {
 
         public LocalTextInfo TextInfo => textInfo;
 
-        public IEnumerable<ReactiveAdorner> Adorners { get; set; }
-
         protected override int VisualChildrenCount => views.Count;
 
         #endregion
 
         #region constructor
 
-        public ViewsWrapper(Editor parent) : base() {
+        public InputViewsWrapper(InputPanel parent) : base() {
             master = parent;
             views = new List<LocalViewBase>();
             Width = parent.Width;
@@ -62,8 +59,6 @@ namespace CodeEditor.Controls {
             var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView, textInfo);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
-            RunAdorners(e);
-
             if (removeTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
@@ -82,7 +77,6 @@ namespace CodeEditor.Controls {
             if (enterTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
-                RunAdorners(e);
             }
         }
 
@@ -108,7 +102,7 @@ namespace CodeEditor.Controls {
         #endregion
 
         #region methods
-
+        
         protected override Visual GetVisualChild(int index) => views[index];
 
         private void SetupViews() {
@@ -118,8 +112,8 @@ namespace CodeEditor.Controls {
             caretView = new Views.CaretView.View(textInfo);
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
-                view.Margin = new Thickness(EditorConfiguration.GetTextAreaLeftMargin() + 2, 0, 0, 0);
-                view.Width = Width - EditorConfiguration.GetTextAreaLeftMargin() - 2;
+                view.Margin = new Thickness(2, 0, 0, 0);
+                view.Width = Width - 2;
                 view.Height = Height;
 
                 views.Add(view);
@@ -134,18 +128,6 @@ namespace CodeEditor.Controls {
             // custom editor events
             textView.TextChanged += caretView.HandleTextChange;
             caretView.CaretMoved += textView.HandleCaretMove;
-        }
-
-        private void RunAdorners(TextCompositionEventArgs e) {
-            foreach (var adorner in Adorners) {
-                adorner.HandleTextInput(e, textView.ActivePosition);
-            }
-        }
-
-        private void RunAdorners(KeyEventArgs e) {
-            foreach (var adorner in Adorners) {
-                adorner.HandleTextInput(e, textView.ActivePosition);
-            }
         }
 
         private void ExecuteTextCommand(BaseTextViewCommand doCommand, BaseTextViewCommand undoCommand, EventArgs e) {

@@ -2,7 +2,7 @@
 using System.Windows.Media;
 
 namespace CodeEditor.Views {
-    public abstract class ViewBase : FrameworkElement {
+    public abstract class InputViewBase : FrameworkElement {
 
         #region fields
 
@@ -18,7 +18,7 @@ namespace CodeEditor.Views {
 
         #region constructor
 
-        public ViewBase() {
+        public InputViewBase() {
             Focusable = true;
             visuals = new VisualCollection(this);
         }

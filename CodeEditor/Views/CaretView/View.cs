@@ -10,7 +10,7 @@ using CodeEditor.Events;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
 namespace CodeEditor.Views.CaretView {
-    internal class View : ViewBase {
+    internal class View : InputViewBase {
 
         #region constants
 

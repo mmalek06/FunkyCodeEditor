@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using CodeEditor.Configuration;
 
-namespace CodeEditor.Adorners.LinesAdorner {
+namespace CodeEditor.Views.LinesView {
     internal class VisualElement : DrawingVisual {
 
         #region constructor

@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlHelpers\ScrollSynchronizer.cs" />
     <Compile Include="Controls\StackablePanel.cs" />
     <Compile Include="DataStructures\AutoTrimmingStack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

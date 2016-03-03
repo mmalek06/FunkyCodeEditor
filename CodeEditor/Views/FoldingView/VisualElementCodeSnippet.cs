@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CodeEditor.Visuals;
 
-namespace CodeEditor.Adorners.FoldingAdorner {
+namespace CodeEditor.Views.FoldingView {
     internal class VisualElementCodeSnippet : VisualElementSymbolBase {
     }
 }

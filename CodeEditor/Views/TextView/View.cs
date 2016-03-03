@@ -9,7 +9,7 @@ using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
 
 namespace CodeEditor.Views.TextView {
-    internal class View : ViewBase {
+    internal class View : InputViewBase {
 
         #region events
 

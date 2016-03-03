@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Input;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
 using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
 
 namespace CodeEditor.Views.SelectionView {
-    internal class View : ViewBase {
+    internal class View : InputViewBase {
 
         #region fields
 

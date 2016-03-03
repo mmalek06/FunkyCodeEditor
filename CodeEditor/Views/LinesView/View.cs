@@ -7,8 +7,8 @@ using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
 
-namespace CodeEditor.Adorners.LinesAdorner {
-    internal class Adorner : ReactiveAdorner {
+namespace CodeEditor.Views.LinesView {
+    internal class View : HelperViewBase {
 
         #region fields
 
@@ -20,7 +20,7 @@ namespace CodeEditor.Adorners.LinesAdorner {
 
         #region constructor
 
-        public Adorner(UIElement adornedElement) : base(adornedElement) {
+        public View() : base() {
             linesCount = 1;
             formatter = TextFormatter.Create();
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties() };
@@ -52,7 +52,7 @@ namespace CodeEditor.Adorners.LinesAdorner {
 
         protected override void OnRender(DrawingContext drawingContext) {
             drawingContext.DrawRectangle(EditorConfiguration.GetLinesColumnBrush(), null, new Rect(
-                0, 0, EditorConfiguration.GetLinesColumnWidth(), RenderSize.Height));
+                0, 0, EditorConfiguration.GetLinesColumnWidth(), Height));
             RedrawLines();
         }
 

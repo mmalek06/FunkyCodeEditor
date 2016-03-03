@@ -8,8 +8,8 @@ using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
 
-namespace CodeEditor.Adorners.FoldingAdorner {
-    internal class Adorner : ReactiveAdorner {
+namespace CodeEditor.Views.FoldingView {
+    internal class View : HelperViewBase {
 
         #region fields
 
@@ -21,7 +21,7 @@ namespace CodeEditor.Adorners.FoldingAdorner {
 
         #region constructor
 
-        public Adorner(UIElement adornedElement) : base(adornedElement) {
+        public View() : base() {
             symbols = new List<VisualElementSymbol>();
             foldingAlgorithm = EditorConfiguration.GetFoldingAlgorithm();
             foldingPositions = new Dictionary<TextPosition, TextPosition>();
@@ -57,7 +57,7 @@ namespace CodeEditor.Adorners.FoldingAdorner {
 
         protected override void OnRender(DrawingContext drawingContext) =>
             drawingContext.DrawRectangle(EditorConfiguration.GetFoldingColumnBrush(), null, new Rect(
-                0, 0, EditorConfiguration.GetFoldingColumnWidth(), RenderSize.Height));
+                0, 0, EditorConfiguration.GetFoldingColumnWidth(), Height));
 
         #endregion
 

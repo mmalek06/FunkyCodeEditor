@@ -1,11 +1,10 @@
 ﻿using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.DataStructures;
 
-namespace CodeEditor.Adorners {
-    internal abstract class ReactiveAdorner : Adorner {
+namespace CodeEditor.Views {
+    internal abstract class HelperViewBase : FrameworkElement {
 
         #region fields
 
@@ -21,7 +20,7 @@ namespace CodeEditor.Adorners {
 
         #region constructor
 
-        public ReactiveAdorner(UIElement adornedElement) : base(adornedElement) {
+        public HelperViewBase() {
             visuals = new VisualCollection(this);
         }
 
