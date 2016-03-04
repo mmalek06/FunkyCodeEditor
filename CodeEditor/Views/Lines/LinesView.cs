@@ -44,7 +44,7 @@ namespace CodeEditor.Views.Lines {
         }
 
         public override void HandleTextInput(TextCompositionEventArgs e, TextPosition activePosition) {
-            if (e.Text == TextProperties.TextConfiguration.NEWLINE) {
+            if (e.Text == TextProperties.Properties.NEWLINE) {
                 linesCount++;
                 RedrawLines();
             }

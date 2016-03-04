@@ -4,6 +4,12 @@ using System.Windows.Controls;
 namespace CodeEditor.Core.Controls {
     public abstract class StackablePanel : StackPanel {
 
+        #region properties
+
+        protected abstract FrameworkElement MeasurementElement { get; }
+
+        #endregion
+
         #region methods
 
         protected override Size ArrangeOverride(Size arrangeSize) {
@@ -27,11 +33,11 @@ namespace CodeEditor.Core.Controls {
             double h = finalSize.Height;
             double w = finalSize.Width;
 
-            if (h > ((FrameworkElement)Children[0]).Height) {
-                h = ((FrameworkElement)Children[0]).Height;
+            if (h > MeasurementElement.Height) {
+                h = MeasurementElement.Height;
             }
-            if (w > ((FrameworkElement)Children[0]).Width) {
-                w = ((FrameworkElement)Children[0]).Width;
+            if (w > MeasurementElement.Width) {
+                w = MeasurementElement.Width;
             }
 
             return new Size(w, h);

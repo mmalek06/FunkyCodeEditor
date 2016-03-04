@@ -99,7 +99,7 @@
     <Compile Include="Views\Selection\VisualElement.cs" />
     <Compile Include="Views\Selection\SelectionView.cs" />
     <Compile Include="Algorithms\TextManipulation\LinesRemoveInfo.cs" />
-    <Compile Include="TextProperties\TextConfiguration.cs" />
+    <Compile Include="TextProperties\Properties.cs" />
     <Compile Include="Views\Text\TextInfo.cs" />
     <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
     <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />

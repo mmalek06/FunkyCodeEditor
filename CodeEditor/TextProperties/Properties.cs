@@ -1,5 +1,5 @@
 ﻿namespace CodeEditor.TextProperties {
-    public static class TextConfiguration {
+    public static class Properties {
 
         #region constants
 
@@ -17,7 +17,7 @@
 
         #region constructor
 
-        static TextConfiguration() {
+        static Properties() {
             TabSize = GetTabSize();
         }
 

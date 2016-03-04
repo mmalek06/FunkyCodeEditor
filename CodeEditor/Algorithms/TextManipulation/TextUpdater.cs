@@ -27,9 +27,9 @@ namespace CodeEditor.Algorithms.TextManipulation {
         public IDictionary<int, string> UpdateLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, string text) {
             var replacedText = SpecialCharsRegex.Replace(text, string.Empty);
 
-            if (text == TextConfiguration.NEWLINE) {
+            if (text == TextProperties.Properties.NEWLINE) {
                 return LineAdded(textSources, text, startingTextPosition);
-            } else if (text == TextConfiguration.TAB) {
+            } else if (text == TextProperties.Properties.TAB) {
                 return TabPressed(textSources, text, startingTextPosition);
             } else if (replacedText.Length == 1) {
                 return CharacterEntered(textSources, replacedText, startingTextPosition);
@@ -58,7 +58,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
         }
 
         private IDictionary<int, string> TextPasted(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) =>
-            text.Split(TextConfiguration.NEWLINE[0])
+            text.Split(TextProperties.Properties.NEWLINE[0])
                 .Select((line, index) => GetPositionWithText(line, index, startingTextPosition.Line, startingTextPosition.Column))
                 .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
 
@@ -67,7 +67,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             string textAfterCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
 
             return new Dictionary<int, string> {
-                [startingTextPosition.Line] = textBeforeCursorPosition + new string(' ', TextConfiguration.TabSize) + textAfterCursorPosition
+                [startingTextPosition.Line] = textBeforeCursorPosition + new string(' ', TextProperties.Properties.TabSize) + textAfterCursorPosition
             };
         }
 
@@ -102,10 +102,10 @@ namespace CodeEditor.Algorithms.TextManipulation {
         private string NormalizeText(string text) {
             string normalizedText = text;
 
-            if (text == TextConfiguration.NEWLINE) {
+            if (text == TextProperties.Properties.NEWLINE) {
                 normalizedText = string.Empty;
-            } else if (text == TextConfiguration.TAB) {
-                normalizedText = new string(' ', TextConfiguration.TabSize);
+            } else if (text == TextProperties.Properties.TAB) {
+                normalizedText = new string(' ', TextProperties.Properties.TabSize);
             }
 
             return normalizedText;

@@ -7,6 +7,7 @@ using CodeEditor.DataStructures;
 using CodeEditor.Events;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
+using CodeEditor.Configuration;
 
 namespace CodeEditor.Views.Text {
     internal class TextView : InputViewBase {
@@ -39,8 +40,8 @@ namespace CodeEditor.Views.Text {
 
         public TextView() : base() {
             formatter = TextFormatter.Create();
-            textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, Configuration.TextConfiguration.GetGlobalTextRunProperties()) };
-            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties() };
+            textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()) };
+            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = TextConfiguration.GetGlobalTextRunProperties() };
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
         }
@@ -71,6 +72,7 @@ namespace CodeEditor.Views.Text {
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
+                UpdateSize();
             }
         }
 
@@ -79,6 +81,7 @@ namespace CodeEditor.Views.Text {
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
+                UpdateSize();
             }
         }
 
@@ -98,6 +101,7 @@ namespace CodeEditor.Views.Text {
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
             DrawLines(newLines.Select(lineInfo => lineInfo.Key));
+            UpdateSize();
         }
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
@@ -107,6 +111,11 @@ namespace CodeEditor.Views.Text {
             DrawLines(removalInfo.LinesToChange.Select(lineInfo => lineInfo.Key.Line));
         }
 
+        private void UpdateSize() {
+            //Height = Lines.Count * EditorConfiguration.GetFontHeight();
+            //Width = Lines.Max(line => line.Length);
+        }
+
         private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
 
         private void UpdateCursorPosition(string text) {
@@ -114,15 +123,15 @@ namespace CodeEditor.Views.Text {
             int column = -1;
             int line = -1;
 
-            if (text == TextConfiguration.NEWLINE) {
+            if (text == TextProperties.Properties.NEWLINE) {
                 column = 0;
                 line = ActivePosition.Line + 1;
-            } else if (text == TextConfiguration.TAB) {
-                column = ActivePosition.Column + TextConfiguration.TabSize;
+            } else if (text == TextProperties.Properties.TAB) {
+                column = ActivePosition.Column + TextProperties.Properties.TabSize;
             } else if (replacedText.Length == 1) {
                 column = ActivePosition.Column + 1;
             } else {
-                var parts = text.Split(TextConfiguration.NEWLINE[0]);
+                var parts = text.Split(TextProperties.Properties.NEWLINE[0]);
 
                 column = parts.Last().Length;
                 line = ActivePosition.Line + parts.Length - 1;

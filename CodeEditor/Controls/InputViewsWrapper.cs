@@ -35,6 +35,8 @@ namespace CodeEditor.Controls {
 
         protected override int VisualChildrenCount => views.Count;
 
+        protected override FrameworkElement MeasurementElement => textView;
+
         #endregion
 
         #region constructor
