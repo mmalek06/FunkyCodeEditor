@@ -20,6 +20,7 @@ namespace CodeEditor.Views {
 
         public InputViewBase() {
             Focusable = true;
+            FocusVisualStyle = null;
             visuals = new VisualCollection(this);
         }
 
