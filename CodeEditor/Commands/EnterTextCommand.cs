@@ -1,18 +1,20 @@
 ﻿using System.Windows.Input;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using CodeEditor.Views.Selection;
+using CodeEditor.Views.Text;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class EnterTextCommand : BaseTextViewCommand {
 
         #region fields
 
-        private Views.SelectionView.View selectionView;
+        private SelectionView selectionView;
 
         #endregion
 
         #region constructor
 
-        public EnterTextCommand(Views.SelectionView.View selectionView, Views.TextView.View view, LocalTextInfo textInfo) : base(view, textInfo) {
+        public EnterTextCommand(SelectionView selectionView, TextView view, LocalTextInfo textInfo) : base(view, textInfo) {
             this.selectionView = selectionView;
         }
 

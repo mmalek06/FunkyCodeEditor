@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Windows.Input;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using CodeEditor.Views.Text;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal abstract class BaseTextViewCommand : ICommand {
 
         #region fields
 
-        protected Views.TextView.View view;
+        protected TextView view;
 
         protected LocalTextInfo textInfo;
 
@@ -29,7 +30,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public BaseTextViewCommand(Views.TextView.View view, LocalTextInfo info) {
+        public BaseTextViewCommand(TextView view, LocalTextInfo info) {
             this.view = view;
             textInfo = info;
             BeforeCommandExecutedState = new ViewState();

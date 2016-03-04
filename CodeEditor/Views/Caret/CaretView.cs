@@ -7,10 +7,10 @@ using System.Windows.Threading;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Events;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
-namespace CodeEditor.Views.CaretView {
-    internal class View : InputViewBase {
+namespace CodeEditor.Views.Caret {
+    internal class CaretView : InputViewBase {
 
         #region constants
 
@@ -49,7 +49,7 @@ namespace CodeEditor.Views.CaretView {
 
         #region constructor
 
-        public View(LocalTextInfo textInfo) : base() {
+        public CaretView(LocalTextInfo textInfo) : base() {
             this.textInfo = textInfo;
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });

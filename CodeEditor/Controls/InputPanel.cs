@@ -60,21 +60,17 @@ namespace CodeEditor.Controls {
             AddLogicalChild(viewsWrapper);
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e) {
+            viewsWrapper.Focus();
+
+            e.Handled = true;
+        }
+
         #endregion
 
         #region methods
 
         protected override Visual GetVisualChild(int index) => viewsWrapper;
-
-        /*private void SetAdorners() {
-            var adornerLayer = AdornerLayer.GetAdornerLayer(viewsWrapper);
-            var foldingAdorner = new Adorners.FoldingAdorner.Adorner(viewsWrapper) { Height = Height };
-            var linesAdorner = new Adorners.LinesAdorner.Adorner(viewsWrapper) { Height = Height };
-
-            adornerLayer.Add(foldingAdorner);
-            adornerLayer.Add(linesAdorner);
-            viewsWrapper.Adorners = new ReactiveAdorner[] { linesAdorner, foldingAdorner };
-        }*/
 
         private void TextPropertyChanged(string text) {
             

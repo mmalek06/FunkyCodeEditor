@@ -2,10 +2,10 @@
 using System.Windows.Input;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
-namespace CodeEditor.Views.SelectionView {
-    internal class View : InputViewBase {
+namespace CodeEditor.Views.Selection {
+    internal class SelectionView : InputViewBase {
 
         #region fields
 
@@ -18,7 +18,7 @@ namespace CodeEditor.Views.SelectionView {
 
         #region constructor
 
-        public View(LocalTextInfo textInfo) : base() {
+        public SelectionView(LocalTextInfo textInfo) : base() {
             this.textInfo = textInfo;
             isSelecting = false;
         }

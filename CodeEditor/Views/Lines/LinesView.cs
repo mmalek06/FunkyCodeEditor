@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
@@ -7,8 +6,8 @@ using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
 
-namespace CodeEditor.Views.LinesView {
-    internal class View : HelperViewBase {
+namespace CodeEditor.Views.Lines {
+    internal class LinesView : HelperViewBase {
 
         #region fields
 
@@ -20,7 +19,8 @@ namespace CodeEditor.Views.LinesView {
 
         #region constructor
 
-        public View() : base() {
+        public LinesView() : base() {
+            bgBrush = EditorConfiguration.GetLinesColumnBrush();
             linesCount = 1;
             formatter = TextFormatter.Create();
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties() };
@@ -51,10 +51,12 @@ namespace CodeEditor.Views.LinesView {
         }
 
         protected override void OnRender(DrawingContext drawingContext) {
-            drawingContext.DrawRectangle(EditorConfiguration.GetLinesColumnBrush(), null, new Rect(
-                0, 0, EditorConfiguration.GetLinesColumnWidth(), Height));
+            base.OnRender(drawingContext);
+
             RedrawLines();
         }
+
+        protected override double GetWidth() => EditorConfiguration.GetLinesColumnWidth();
 
         #endregion
 

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using CodeEditor.DataStructures;
 
-namespace CodeEditor.Views.SelectionView {
+namespace CodeEditor.Views.Selection {
     internal class VisualElement : DrawingVisual {
         private Brush brush;
 

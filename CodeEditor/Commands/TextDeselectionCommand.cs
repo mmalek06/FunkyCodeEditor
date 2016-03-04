@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Windows.Input;
-using CodeEditor.Views.SelectionView;
+using CodeEditor.Views.Selection;
 
 namespace CodeEditor.Commands {
     internal class TextDeselectionCommand : ICommand {
 
         #region fields
 
-        private View selectionView;
+        private SelectionView selectionView;
 
         #endregion
 
@@ -19,7 +19,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public TextDeselectionCommand(View selectionView) {
+        public TextDeselectionCommand(SelectionView selectionView) {
             this.selectionView = selectionView;
         }
 

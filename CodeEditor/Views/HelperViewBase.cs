@@ -10,6 +10,8 @@ namespace CodeEditor.Views {
 
         protected VisualCollection visuals;
 
+        protected Brush bgBrush;
+
         #endregion
 
         #region properties
@@ -22,6 +24,7 @@ namespace CodeEditor.Views {
 
         public HelperViewBase() {
             visuals = new VisualCollection(this);
+            bgBrush = Brushes.Transparent;
         }
 
         #endregion
@@ -32,11 +35,16 @@ namespace CodeEditor.Views {
 
         public abstract void HandleTextInput(TextCompositionEventArgs e, TextPosition activePosition);
 
+        protected override void OnRender(DrawingContext drawingContext) =>
+            drawingContext.DrawRectangle(bgBrush, null, new Rect(0, 0, GetWidth(), ActualHeight));
+
         #endregion
 
         #region methods
 
         protected override Visual GetVisualChild(int index) => visuals[index];
+
+        protected abstract double GetWidth();
 
         #endregion
 

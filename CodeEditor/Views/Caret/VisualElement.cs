@@ -6,7 +6,7 @@ using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
-namespace CodeEditor.Views.CaretView {
+namespace CodeEditor.Views.Caret {
     internal class VisualElement : VisualElementSymbolBase {
 
         #region fields

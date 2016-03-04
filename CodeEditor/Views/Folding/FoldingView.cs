@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
 
-namespace CodeEditor.Views.FoldingView {
-    internal class View : HelperViewBase {
+namespace CodeEditor.Views.Folding {
+    internal class FoldingView : HelperViewBase {
 
         #region fields
 
@@ -21,7 +20,8 @@ namespace CodeEditor.Views.FoldingView {
 
         #region constructor
 
-        public View() : base() {
+        public FoldingView() : base() {
+            bgBrush = EditorConfiguration.GetFoldingColumnBrush();
             symbols = new List<VisualElementSymbol>();
             foldingAlgorithm = EditorConfiguration.GetFoldingAlgorithm();
             foldingPositions = new Dictionary<TextPosition, TextPosition>();
@@ -55,13 +55,11 @@ namespace CodeEditor.Views.FoldingView {
             RedrawFolds();
         }
 
-        protected override void OnRender(DrawingContext drawingContext) =>
-            drawingContext.DrawRectangle(EditorConfiguration.GetFoldingColumnBrush(), null, new Rect(
-                0, 0, EditorConfiguration.GetFoldingColumnWidth(), Height));
-
         #endregion
 
         #region methods
+
+        protected override double GetWidth() => EditorConfiguration.GetFoldingColumnWidth();
 
         private void RedrawFolds() {
             visuals.Clear();

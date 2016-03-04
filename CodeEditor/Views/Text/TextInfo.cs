@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.DataStructures;
 
-namespace CodeEditor.Views.TextView {
+namespace CodeEditor.Views.Text {
     internal class TextInfo {
 
         #region fields
 
-        private View textView;
+        private TextView textView;
 
         #endregion
 
         #region constructor
 
-        public TextInfo(View textView) {
+        public TextInfo(TextView textView) {
             this.textView = textView;
         }
 

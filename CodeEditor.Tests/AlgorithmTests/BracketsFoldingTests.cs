@@ -2,20 +2,21 @@
 using System.Linq;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.DataStructures;
+using CodeEditor.Views.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests {
     [TestClass]
     public class BracketsFoldingTests {
         private BracketsFoldingAlgorithm fa;
-        private Views.TextView.View tv;
-        private Views.TextView.TextInfo ti;
+        private TextView tv;
+        private TextInfo ti;
         private Dictionary<TextPosition, TextPosition> foldingPositions;
 
         [TestInitialize]
         public void InitializeTest() {
-            tv = new Views.TextView.View();
-            ti = new Views.TextView.TextInfo(tv);
+            tv = new TextView();
+            ti = new TextInfo(tv);
             fa = new BracketsFoldingAlgorithm();
             foldingPositions = new Dictionary<TextPosition, TextPosition>();
         }

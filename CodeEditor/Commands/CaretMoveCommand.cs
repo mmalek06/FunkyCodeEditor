@@ -2,16 +2,18 @@
 using System.Windows.Input;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using CodeEditor.Views.Caret;
+using CodeEditor.Views.Text;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class CaretMoveCommand : ICommand {
 
         #region fields
 
-        private Views.TextView.View textView;
+        private TextView textView;
 
-        private Views.CaretView.View caretView;
+        private CaretView caretView;
 
         private LocalTextInfo textInfo;
 
@@ -25,7 +27,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(Views.TextView.View textView, Views.CaretView.View caretView, LocalTextInfo info) {
+        public CaretMoveCommand(TextView textView, CaretView caretView, LocalTextInfo info) {
             this.textView = textView;
             this.caretView = caretView;
             textInfo = info;

@@ -3,17 +3,18 @@ using System;
 using System.Windows.Input;
 using System.Windows.Interop;
 using CodeEditor.Events;
+using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewRemovingTextTests {
-        private Views.TextView.View tv;
-        private Views.TextView.TextInfo ti;
+        private TextView tv;
+        private TextInfo ti;
 
         [TestInitialize]
         public void InitializeTests() {
-            tv = new Views.TextView.View();
-            ti = new Views.TextView.TextInfo(tv);
+            tv = new TextView();
+            ti = new TextInfo(tv);
         }
 
         [TestMethod]

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace CodeEditor.Views.FoldingView {
+namespace CodeEditor.Views.Folding {
     internal class VisualElementLine : DrawingVisual {
     }
 }

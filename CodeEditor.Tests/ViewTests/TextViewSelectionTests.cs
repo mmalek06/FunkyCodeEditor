@@ -1,20 +1,23 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using CodeEditor.Views.Caret;
+using CodeEditor.Views.Selection;
+using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests.TextViewTests {
     [TestClass]
     public class TextViewSelectionTests {
-        private Views.TextView.View tv;
-        private Views.SelectionView.View sv;
-        private Views.TextView.TextInfo ti;
-        private Views.CaretView.View cv;
+        private TextView tv;
+        private SelectionView sv;
+        private TextInfo ti;
+        private CaretView cv;
 
         [TestInitialize]
         public void InitializeTests() {
-            tv = new Views.TextView.View();
-            ti = new Views.TextView.TextInfo(tv);
-            sv = new Views.SelectionView.View(ti);
-            cv = new Views.CaretView.View(ti);
+            tv = new TextView();
+            ti = new TextInfo(tv);
+            sv = new SelectionView(ti);
+            cv = new CaretView(ti);
         }
 
         [TestMethod]

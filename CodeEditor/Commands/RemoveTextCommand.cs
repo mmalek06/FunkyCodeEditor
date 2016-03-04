@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using CodeEditor.Views.Selection;
+using CodeEditor.Views.Text;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class RemoveTextCommand : BaseTextViewCommand {
@@ -9,13 +11,13 @@ namespace CodeEditor.Commands {
 
         private HashSet<Key> removalKeys = new HashSet<Key> { Key.Delete, Key.Back };
 
-        private Views.SelectionView.View selectionView;
+        private SelectionView selectionView;
 
         #endregion
 
         #region constructor
 
-        public RemoveTextCommand(Views.SelectionView.View selectionView, Views.TextView.View view, LocalTextInfo textInfo) : base(view, textInfo) {
+        public RemoveTextCommand(SelectionView selectionView, TextView view, LocalTextInfo textInfo) : base(view, textInfo) {
             this.selectionView = selectionView;
         }
 

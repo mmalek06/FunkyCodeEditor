@@ -8,8 +8,8 @@ using CodeEditor.Events;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
 
-namespace CodeEditor.Views.TextView {
-    internal class View : InputViewBase {
+namespace CodeEditor.Views.Text {
+    internal class TextView : InputViewBase {
 
         #region events
 
@@ -37,7 +37,7 @@ namespace CodeEditor.Views.TextView {
 
         #region constructor
 
-        public View() : base() {
+        public TextView() : base() {
             formatter = TextFormatter.Create();
             textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, Configuration.TextConfiguration.GetGlobalTextRunProperties()) };
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties() };

@@ -56,9 +56,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\HelperViewsWrapper.cs" />
-    <Compile Include="Views\FoldingView\View.cs" />
-    <Compile Include="Views\LinesView\View.cs" />
-    <Compile Include="Views\LinesView\VisualElement.cs" />
+    <Compile Include="Views\Folding\FoldingView.cs" />
+    <Compile Include="Views\Lines\LinesView.cs" />
+    <Compile Include="Views\Lines\VisualElement.cs" />
     <Compile Include="Views\HelperViewBase.cs" />
     <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />
@@ -88,19 +88,19 @@
     <Compile Include="DataStructures\TextPosition.cs" />
     <Compile Include="Commands\ViewState.cs" />
     <Compile Include="Extensions\TextPositionExtensions.cs" />
-    <Compile Include="Views\CaretView\VisualElement.cs" />
+    <Compile Include="Views\Caret\VisualElement.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
     <Compile Include="Algorithms\Folding\FoldingStates.cs" />
-    <Compile Include="Views\FoldingView\VisualElementCodeSnippet.cs" />
-    <Compile Include="Views\FoldingView\VisualElementLine.cs" />
-    <Compile Include="Views\FoldingView\VisualElementSymbol.cs" />
-    <Compile Include="Views\SelectionView\VisualElement.cs" />
-    <Compile Include="Views\SelectionView\View.cs" />
+    <Compile Include="Views\Folding\VisualElementCodeSnippet.cs" />
+    <Compile Include="Views\Folding\VisualElementLine.cs" />
+    <Compile Include="Views\Folding\VisualElementSymbol.cs" />
+    <Compile Include="Views\Selection\VisualElement.cs" />
+    <Compile Include="Views\Selection\SelectionView.cs" />
     <Compile Include="Algorithms\TextManipulation\LinesRemoveInfo.cs" />
     <Compile Include="TextProperties\TextConfiguration.cs" />
-    <Compile Include="Views\TextView\TextInfo.cs" />
+    <Compile Include="Views\Text\TextInfo.cs" />
     <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
     <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
     <Compile Include="Views\InputViewBase.cs" />
@@ -108,9 +108,9 @@
     <Compile Include="Controls\InputViewsWrapper.cs" />
     <Compile Include="TextProperties\SimpleTextSource.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
-    <Compile Include="Views\CaretView\View.cs" />
-    <Compile Include="Views\TextView\VisualElement.cs" />
-    <Compile Include="Views\TextView\View.cs" />
+    <Compile Include="Views\Caret\CaretView.cs" />
+    <Compile Include="Views\Text\VisualElement.cs" />
+    <Compile Include="Views\Text\TextView.cs" />
     <Compile Include="Visuals\VisualElementSymbolBase.cs" />
     <Page Include="Editor.xaml">
       <SubType>Designer</SubType>

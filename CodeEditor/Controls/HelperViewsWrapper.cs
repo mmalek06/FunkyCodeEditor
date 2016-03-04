@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using CodeEditor.Configuration;
 using CodeEditor.Views;
+using CodeEditor.Views.Folding;
+using CodeEditor.Views.Lines;
 
 namespace CodeEditor.Controls {
     internal class HelperViewsWrapper : StackPanel {
@@ -12,8 +14,8 @@ namespace CodeEditor.Controls {
         #region fields
 
         private List<HelperViewBase> views;
-        private Views.LinesView.View linesView;
-        private Views.FoldingView.View foldingView;
+        private LinesView linesView;
+        private FoldingView foldingView;
 
         #endregion
 
@@ -35,7 +37,7 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnRender(DrawingContext drawingContext) {
-            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, Width, Height));
+            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
 
             if (linesView == null && foldingView == null) {
                 SetupViews();
@@ -51,8 +53,8 @@ namespace CodeEditor.Controls {
         }
 
         private void SetupViews() {
-            linesView = new Views.LinesView.View { Width = EditorConfiguration.GetLinesColumnWidth(), Height = ActualHeight };
-            foldingView = new Views.FoldingView.View { Width = EditorConfiguration.GetFoldingColumnWidth(), Height = ActualHeight };
+            linesView = new LinesView();
+            foldingView = new FoldingView();
 
             views.Add(linesView);
             views.Add(foldingView);

@@ -7,7 +7,10 @@ using CodeEditor.Commands;
 using CodeEditor.Configuration;
 using CodeEditor.Core.Controls;
 using CodeEditor.DataStructures;
-using LocalTextInfo = CodeEditor.Views.TextView.TextInfo;
+using CodeEditor.Views.Caret;
+using CodeEditor.Views.Selection;
+using CodeEditor.Views.Text;
+using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 using LocalViewBase = CodeEditor.Views.InputViewBase;
 
 namespace CodeEditor.Controls {
@@ -18,9 +21,9 @@ namespace CodeEditor.Controls {
         private InputPanel master;
         private List<LocalViewBase> views;
         private LocalTextInfo textInfo;
-        private Views.TextView.View textView;
-        private Views.CaretView.View caretView;
-        private Views.SelectionView.View selectionView;
+        private TextView textView;
+        private CaretView caretView;
+        private SelectionView selectionView;
 
         #endregion
 
@@ -39,19 +42,20 @@ namespace CodeEditor.Controls {
         public InputViewsWrapper(InputPanel parent) : base() {
             master = parent;
             views = new List<LocalViewBase>();
-            Width = parent.Width;
-            Height = parent.Height;
-
-            SetupViews();
-            InitEvents();
         }
 
         #endregion
 
         #region event handlers
 
-        protected override void OnRender(DrawingContext drawingContext) => 
-            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, Width, Height));
+        protected override void OnRender(DrawingContext drawingContext) {
+            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
+
+            if (textView == null && selectionView == null && caretView == null) {
+                SetupViews();
+                InitEvents();
+            }
+        }
 
         protected override void OnKeyDown(KeyEventArgs e) {
             var removeTextCmd = new RemoveTextCommand(selectionView, textView, textInfo);
@@ -102,19 +106,17 @@ namespace CodeEditor.Controls {
         #endregion
 
         #region methods
-        
+
         protected override Visual GetVisualChild(int index) => views[index];
 
         private void SetupViews() {
-            textView = new Views.TextView.View();
+            textView = new TextView();
             textInfo = new LocalTextInfo(textView);
-            selectionView = new Views.SelectionView.View(textInfo);
-            caretView = new Views.CaretView.View(textInfo);
+            selectionView = new SelectionView(textInfo);
+            caretView = new CaretView(textInfo);
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 view.Margin = new Thickness(2, 0, 0, 0);
-                view.Width = Width - 2;
-                view.Height = Height;
 
                 views.Add(view);
 

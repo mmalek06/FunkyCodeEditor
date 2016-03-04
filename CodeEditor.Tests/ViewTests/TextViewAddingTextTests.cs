@@ -1,15 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CodeEditor.Views.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewAddingTextTests {
-        private Views.TextView.View tv;
-        private Views.TextView.TextInfo ti;
+        private TextView tv;
+        private TextInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {
-            tv = new Views.TextView.View();
-            ti = new Views.TextView.TextInfo(tv);
+            tv = new TextView();
+            ti = new TextInfo(tv);
         }
 
         [TestMethod]

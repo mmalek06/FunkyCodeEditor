@@ -5,18 +5,19 @@ using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.TextProperties;
+using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests {
     [TestClass]
     public class RemovingTextAlgTests {
         private static TextRemover algorithm;
-        private static Views.TextView.View view;
+        private static TextView view;
         private static TextRunProperties runProperties;
 
         [ClassInitialize]
         public static void Initialize(TestContext context) {
             algorithm = new TextRemover();
-            view = new Views.TextView.View();
+            view = new TextView();
             runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
         }
 

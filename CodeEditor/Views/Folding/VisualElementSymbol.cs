@@ -4,7 +4,7 @@ using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Visuals;
 
-namespace CodeEditor.Views.FoldingView {
+namespace CodeEditor.Views.Folding {
     internal class VisualElementSymbol : VisualElementSymbolBase {
 
         public void DrawFolding(TextRunProperties runProperties, FoldingStates state, int top) {
