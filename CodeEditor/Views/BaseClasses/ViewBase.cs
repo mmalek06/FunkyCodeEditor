@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace CodeEditor.Views {
-    public abstract class InputViewBase : FrameworkElement {
-
+namespace CodeEditor.Views.BaseClasses {
+    internal abstract class ViewBase : FrameworkElement {
+        
         #region fields
 
         protected VisualCollection visuals;
@@ -12,14 +12,13 @@ namespace CodeEditor.Views {
 
         #region properties
 
-        protected override int VisualChildrenCount => visuals.Count; 
+        protected override int VisualChildrenCount => visuals.Count;
 
         #endregion
 
         #region constructor
 
-        public InputViewBase() {
-            Focusable = true;
+        public ViewBase() {
             FocusVisualStyle = null;
             visuals = new VisualCollection(this);
         }
@@ -27,9 +26,6 @@ namespace CodeEditor.Views {
         #endregion
 
         #region methods
-
-        protected override void OnRender(DrawingContext drawingContext) => 
-            drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, Width, Height));
 
         protected override Visual GetVisualChild(int index) => visuals[index];
 

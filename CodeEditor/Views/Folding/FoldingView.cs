@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -6,6 +7,7 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
+using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Folding {
     internal class FoldingView : HelperViewBase {
@@ -32,18 +34,14 @@ namespace CodeEditor.Views.Folding {
 
         #region event handlers
 
-        public override void HandleTextInput(KeyEventArgs e, TextPosition activePosition) {
-            
-        }
+        public override void HandleTextInput(string text, TextPosition activePosition) {
+            char character = text[0];
 
-        public override void HandleTextInput(TextCompositionEventArgs e, TextPosition activePosition) {
-            char character = e.Text[0];
-
-            if (!foldingAlgorithm.CanRun(e.Text)) {
+            if (!foldingAlgorithm.CanRun(text)) {
                 return;
             }
 
-            var folds = foldingAlgorithm.CreateFolds(e.Text, activePosition, foldingPositions);
+            var folds = foldingAlgorithm.CreateFolds(text, activePosition, foldingPositions);
 
             if (folds == null || !folds.Any()) {
                 return;
@@ -53,6 +51,10 @@ namespace CodeEditor.Views.Folding {
             }
 
             RedrawFolds();
+        }
+
+        public override void HandleTextRemove(Key key, TextPosition activePosition) {
+            
         }
 
         #endregion

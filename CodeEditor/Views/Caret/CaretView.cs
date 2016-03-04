@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Events;
+using CodeEditor.Views.BaseClasses;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Views.Caret {

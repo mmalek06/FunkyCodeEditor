@@ -9,6 +9,7 @@ using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Configuration;
 using CodeEditor.Extensions;
+using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Text {
     internal class TextView : InputViewBase {
@@ -89,6 +90,12 @@ namespace CodeEditor.Views.Text {
         public void TriggerTextChanged() {
             if (TextChanged != null) {
                 TextChanged(this, new TextChangedEventArgs { CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
+            }
+        }
+
+        public void TriggerTextChanged(string text) {
+            if (TextChanged != null) {
+                TextChanged(this, new TextChangedEventArgs { Text = text, CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
             }
         }
 

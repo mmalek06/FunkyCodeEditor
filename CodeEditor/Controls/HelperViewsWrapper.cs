@@ -4,12 +4,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CodeEditor.Configuration;
-using CodeEditor.Views;
+using CodeEditor.Messaging;
+using CodeEditor.Views.BaseClasses;
 using CodeEditor.Views.Folding;
 using CodeEditor.Views.Lines;
 
 namespace CodeEditor.Controls {
-    internal class HelperViewsWrapper : StackPanel {
+    internal class HelperViewsWrapper : StackPanel, IMessageReceiver {
 
         #region fields
 
@@ -24,6 +25,28 @@ namespace CodeEditor.Controls {
         public HelperViewsWrapper() : base() {
             views = new List<HelperViewBase>();
             Orientation = Orientation.Horizontal;
+
+            Postbox.Subscribe(this);
+        }
+
+        #endregion
+
+        #region public methods
+
+        public void Receive<TMessage>(TMessage message) {
+            if (message is TextAddedMessage) {
+                var m = message as TextAddedMessage;
+
+                foreach (var view in views) {
+                    view.HandleTextInput(m.Text, m.Position);
+                }
+            } else if (message is TextRemovedMessage) {
+                var m = message as TextRemovedMessage;
+
+                foreach (var view in views) {
+                    view.HandleTextRemove(m.Key, m.Position);
+                }
+            }
         }
 
         #endregion

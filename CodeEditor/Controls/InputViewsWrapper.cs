@@ -7,11 +7,12 @@ using CodeEditor.Commands;
 using CodeEditor.Configuration;
 using CodeEditor.Core.Controls;
 using CodeEditor.DataStructures;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
-using LocalViewBase = CodeEditor.Views.InputViewBase;
+using LocalViewBase = CodeEditor.Views.BaseClasses.InputViewBase;
 
 namespace CodeEditor.Controls {
     internal class InputViewsWrapper : StackablePanel {
@@ -68,6 +69,11 @@ namespace CodeEditor.Controls {
             if (removeTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
+
+                Postbox.Send(new TextRemovedMessage {
+                    Key = e.Key,
+                    Position = textView.ActivePosition
+                });
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
                 deselectionCmd.Execute();
@@ -83,6 +89,11 @@ namespace CodeEditor.Controls {
             if (enterTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
+
+                Postbox.Send(new TextAddedMessage {
+                    Text = e.Text,
+                    Position = textView.ActivePosition
+                });
             }
         }
 

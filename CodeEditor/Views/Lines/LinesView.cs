@@ -5,6 +5,7 @@ using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
+using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Lines {
     internal class LinesView : HelperViewBase {
@@ -30,21 +31,21 @@ namespace CodeEditor.Views.Lines {
 
         #region event handlers
 
-        public override void HandleTextInput(KeyEventArgs e, TextPosition activePosition) {
-            if (activePosition.Line == 0 && activePosition.Column == 0 && e.Key == Key.Back) {
+        public override void HandleTextRemove(Key key, TextPosition activePosition) {
+            if (activePosition.Line == 0 && activePosition.Column == 0 && key == Key.Back) {
                 return;
             }
-            if (e.Key == Key.Back && activePosition.Column == 0) {
+            if (key == Key.Back && activePosition.Column == 0) {
                 linesCount--;
                 RedrawLines();
-            } else if (e.Key == Key.Delete) {
+            } else if (key == Key.Delete) {
                 linesCount--;
                 RedrawLines();
             }
         }
 
-        public override void HandleTextInput(TextCompositionEventArgs e, TextPosition activePosition) {
-            if (e.Text == TextProperties.Properties.NEWLINE) {
+        public override void HandleTextInput(string text, TextPosition activePosition) {
+            if (text == TextProperties.Properties.NEWLINE) {
                 linesCount++;
                 RedrawLines();
             }

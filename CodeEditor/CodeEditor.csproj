@@ -56,10 +56,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\HelperViewsWrapper.cs" />
+    <Compile Include="Messaging\IMessageReceiver.cs" />
+    <Compile Include="Messaging\TextAddedMessage.cs" />
+    <Compile Include="Messaging\Postbox.cs" />
+    <Compile Include="Messaging\TextRemovedMessage.cs" />
+    <Compile Include="Views\BaseClasses\ViewBase.cs" />
     <Compile Include="Views\Folding\FoldingView.cs" />
     <Compile Include="Views\Lines\LinesView.cs" />
     <Compile Include="Views\Lines\VisualElement.cs" />
-    <Compile Include="Views\HelperViewBase.cs" />
+    <Compile Include="Views\BaseClasses\HelperViewBase.cs" />
     <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\Autoformatting.cs" />
@@ -103,7 +108,7 @@
     <Compile Include="Views\Text\TextInfo.cs" />
     <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
     <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
-    <Compile Include="Views\InputViewBase.cs" />
+    <Compile Include="Views\BaseClasses\InputViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
     <Compile Include="Controls\InputViewsWrapper.cs" />
     <Compile Include="TextProperties\SimpleTextSource.cs" />

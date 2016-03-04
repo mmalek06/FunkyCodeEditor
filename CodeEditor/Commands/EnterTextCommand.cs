@@ -46,7 +46,7 @@ namespace CodeEditor.Commands {
 
             UpdateCommandState(AfterCommandExecutedState);
 
-            view.TriggerTextChanged();
+            view.TriggerTextChanged(e.Text);
         }
 
         #endregion
