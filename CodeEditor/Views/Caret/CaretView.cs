@@ -129,7 +129,7 @@ namespace CodeEditor.Views.Caret {
 
             var caret = new VisualElement();
 
-            caret.Draw(TextConfiguration.GetGlobalTextRunProperties(), caretPosition);
+            caret.Draw(caretPosition);
             visuals.Clear();
             visuals.Add(caret);
 
@@ -191,7 +191,7 @@ namespace CodeEditor.Views.Caret {
                     if (isCaretVisible) {
                         var caret = new VisualElement();
 
-                        caret.Draw(TextConfiguration.GetGlobalTextRunProperties(), CaretPosition);
+                        caret.Draw(CaretPosition);
                         visuals.Add(caret);
                     } else {
                         visuals.Clear();

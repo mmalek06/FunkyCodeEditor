@@ -71,7 +71,7 @@ namespace CodeEditor.Views.Folding {
                 var symbol = new VisualElementSymbol();
                 int top = (int)kvp.Key.GetPositionRelativeToParent().Y;
 
-                symbol.DrawFolding(TextConfiguration.GetGlobalTextRunProperties(), FoldingStates.EXPANDED, top);
+                symbol.DrawFolding(FoldingStates.EXPANDED, top);
 
                 symbols.Add(symbol);
                 visuals.Add(symbol);

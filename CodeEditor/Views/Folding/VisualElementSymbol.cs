@@ -2,13 +2,15 @@
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.Folding;
+using CodeEditor.Configuration;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Folding {
     internal class VisualElementSymbol : VisualElementSymbolBase {
 
-        public void DrawFolding(TextRunProperties runProperties, FoldingStates state, int top) {
+        public void DrawFolding(FoldingStates state, int top) {
             string symbol = state == FoldingStates.EXPANDED ? "-" : "+";
+            var runProperties = TextConfiguration.GetGlobalTextRunProperties();
             var formattedText = GetFormattedText(symbol, runProperties);
             var textLocation = new Point(0, top);
 

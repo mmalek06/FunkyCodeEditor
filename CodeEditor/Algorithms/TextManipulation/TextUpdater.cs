@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
@@ -72,23 +73,23 @@ namespace CodeEditor.Algorithms.TextManipulation {
         }
 
         private IDictionary<int, string> CharacterEntered(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
-            string currentTextLine = string.Empty;
+            var currentTextLine = new StringBuilder();
 
             if (textSources.Any()) {
                 if (startingTextPosition.Column >= textSources[startingTextPosition.Line].Text.Length) {
-                    currentTextLine = textSources[startingTextPosition.Line].Text + text;
+                    currentTextLine.Append(textSources[startingTextPosition.Line].Text);
+                    currentTextLine.Append(text);
                 } else {
-                    currentTextLine = 
-                        string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column)) + 
-                        text + 
-                        string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
+                    currentTextLine.Append(string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column)));
+                    currentTextLine.Append(text);
+                    currentTextLine.Append(string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column)));
                 }
             } else {
-                currentTextLine = text;
+                currentTextLine.Append(text);
             }
 
             return new Dictionary<int, string> {
-                [startingTextPosition.Line] = currentTextLine
+                [startingTextPosition.Line] = currentTextLine.ToString()
             };
         }
 

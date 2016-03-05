@@ -172,7 +172,7 @@ namespace CodeEditor.Views.Text {
                 if (kvp.Key < textSources.Count) {
                     textSources[kvp.Key].Text = kvp.Value;
                 } else {
-                    textSources.Add(new SimpleTextSource(kvp.Value, Configuration.TextConfiguration.GetGlobalTextRunProperties()));
+                    textSources.Add(new SimpleTextSource(kvp.Value, TextConfiguration.GetGlobalTextRunProperties()));
                 }
             }
         }
