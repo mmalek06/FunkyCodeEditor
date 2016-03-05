@@ -5,8 +5,6 @@ namespace CodeEditor.Messaging {
 
         #region fields
 
-        private static List<TextAddedMessage> messages = new List<TextAddedMessage>();
-
         private static List<IMessageReceiver> receivers = new List<IMessageReceiver>();
 
         #endregion

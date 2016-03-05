@@ -1,19 +1,39 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Media.TextFormatting;
 
 namespace CodeEditor.TextProperties {
     internal sealed class SimpleTextSource : TextSource {
-        public string Text { get; set; }
+
+        #region fields
+
+        private StringBuilder sb;
         private readonly TextRunProperties properties;
 
+        #endregion
+
+        #region properties
+
+        public string Text => sb.ToString();
+
+        #endregion
+
+        #region constructor
+
         public SimpleTextSource(string text, TextRunProperties properties) {
-            Text = text;
+            sb = new StringBuilder(300).Append(text);
             this.properties = properties;
         }
 
+        #endregion
+
+        #region public methods
+
         public override TextRun GetTextRun(int textSourceCharacterIndex) {
-            if (textSourceCharacterIndex < Text.Length && textSourceCharacterIndex >= 0) {
-                return new TextCharacters(Text, textSourceCharacterIndex, Text.Length - textSourceCharacterIndex, properties);
+            string text = sb.ToString();
+
+            if (textSourceCharacterIndex < text.Length && textSourceCharacterIndex >= 0) {
+                return new TextCharacters(text, textSourceCharacterIndex, text.Length - textSourceCharacterIndex, properties);
             } else {
                 return new TextEndOfParagraph(1);
             }
@@ -26,5 +46,12 @@ namespace CodeEditor.TextProperties {
         public override TextSpan<CultureSpecificCharacterBufferRange> GetPrecedingText(int textSourceCharacterIndexLimit) {
             throw new NotImplementedException();
         }
+
+        public void Append(string text) => sb.Append(text);
+
+        public void Replace(string newText) => sb.Clear().Append(newText);
+
+        #endregion
+
     }
 }

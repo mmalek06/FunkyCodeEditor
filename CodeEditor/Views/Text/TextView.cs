@@ -62,11 +62,15 @@ namespace CodeEditor.Views.Text {
 
         #region public methods
 
-        public void EnterText(string enteredText) => InputText(enteredText);
+        public void EnterText(string enteredText) {
+            InputText(enteredText);
+            UpdateSize();
+        }
 
         public void ReplaceText(string enteredText, TextPositionsPair range) {
             RemoveText(range);
             InputText(enteredText);
+            UpdateSize();
         }
 
         public void RemoveText(Key key) {
@@ -109,7 +113,6 @@ namespace CodeEditor.Views.Text {
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
             DrawLines(newLines.Select(lineInfo => lineInfo.Key));
-            UpdateSize();
         }
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
@@ -170,7 +173,7 @@ namespace CodeEditor.Views.Text {
         private void UpdateTextData(IDictionary<int, string> changedLines) {
             foreach (var kvp in changedLines) {
                 if (kvp.Key < textSources.Count) {
-                    textSources[kvp.Key].Text = kvp.Value;
+                    textSources[kvp.Key].Replace(kvp.Value);
                 } else {
                     textSources.Add(new SimpleTextSource(kvp.Value, TextConfiguration.GetGlobalTextRunProperties()));
                 }
@@ -184,12 +187,7 @@ namespace CodeEditor.Views.Text {
         }
 
         private void DrawLine(int index) {
-            using (TextLine textLine = formatter.FormatLine(
-                                textSources[index],
-                                0,
-                                96 * 6,
-                                paragraphProperties,
-                                null)) {
+            using (TextLine textLine = formatter.FormatLine(textSources[index], 0, 96 * 6, paragraphProperties, null)) {
                 double top = index * textLine.Height;
 
                 if (index < visuals.Count) {

@@ -77,12 +77,9 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
             if (textSources.Any()) {
                 if (startingTextPosition.Column >= textSources[startingTextPosition.Line].Text.Length) {
-                    currentTextLine.Append(textSources[startingTextPosition.Line].Text);
-                    currentTextLine.Append(text);
+                    currentTextLine.Append(textSources[startingTextPosition.Line].Text).Append(text);
                 } else {
-                    currentTextLine.Append(string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column)));
-                    currentTextLine.Append(text);
-                    currentTextLine.Append(string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column)));
+                    currentTextLine.Append(textSources[startingTextPosition.Line].Text).Insert(startingTextPosition.Column, text);
                 }
             } else {
                 currentTextLine.Append(text);
