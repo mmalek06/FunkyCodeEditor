@@ -13,7 +13,9 @@ namespace CodeEditor.Core.ControlHelpers {
             typeof(Autoscroll), 
             new PropertyMetadata(false, AlwaysScrollToEndChanged));
 
-        private static bool _autoScroll;
+        private static bool autoScrollVertical;
+
+        private static bool autoScrollHorizontal;
 
         #endregion
 
@@ -65,12 +67,18 @@ namespace CodeEditor.Core.ControlHelpers {
 
             // User scroll event : set or unset autoscroll mode
             if (e.ExtentHeightChange == 0) {
-                _autoScroll = scroll.VerticalOffset == scroll.ScrollableHeight;
+                autoScrollVertical = Math.Round(scroll.VerticalOffset) == Math.Round(scroll.ScrollableHeight);
+            }
+            if (e.ExtentWidthChange == 0) {
+                autoScrollHorizontal = Math.Round(scroll.HorizontalOffset) == Math.Round(scroll.ScrollableWidth);
             }
 
             // Content scroll event : autoscroll eventually
-            if (_autoScroll && e.ExtentHeightChange != 0) {
+            if (autoScrollVertical && e.ExtentHeightChange != 0) {
                 scroll.ScrollToVerticalOffset(scroll.ExtentHeight);
+            }
+            if (autoScrollHorizontal && e.ExtentWidthChange != 0) {
+                scroll.ScrollToHorizontalOffset(scroll.ExtentWidth);
             }
         }
 
