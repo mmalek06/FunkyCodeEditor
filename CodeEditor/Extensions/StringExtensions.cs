@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -6,6 +7,15 @@ using CodeEditor.Configuration;
 
 namespace CodeEditor.Extensions {
     public static class StringExtensions {
+
+        #region fields
+
+        private static Size? charSize;
+
+        #endregion
+
+        #region public methods
+
         public static Size GetScreenSize(this string text, FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch) {
             fontFamily = fontFamily ?? new TextBlock().FontFamily;
             fontSize = fontSize > 0 ? fontSize : new TextBlock().FontSize;
@@ -16,17 +26,22 @@ namespace CodeEditor.Extensions {
             return new Size(ft.Width, ft.Height);
         }
 
-        public static double GetCharWidth() {
-            return GetCharSize().Width;
+        public static Size GetCharSize() {
+            if (charSize == null) {
+                var s = "X".GetScreenSize(
+                    TextConfiguration.GetFontFamily(),
+                    TextConfiguration.GetFontSize(),
+                    TextConfiguration.GetFontStyle(),
+                    TextConfiguration.GetFontWeight(),
+                    TextConfiguration.GetFontStretch());
+
+                charSize = new Size(s.Width, s.Height);
+            }
+
+            return charSize.Value;
         }
 
-        public static Size GetCharSize() {
-            return "X".GetScreenSize(
-                TextConfiguration.GetFontFamily(),
-                TextConfiguration.GetFontSize(),
-                TextConfiguration.GetFontStyle(),
-                TextConfiguration.GetFontWeight(),
-                TextConfiguration.GetFontStretch());
-        }
+        #endregion
+
     }
 }

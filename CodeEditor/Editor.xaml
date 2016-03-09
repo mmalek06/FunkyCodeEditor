@@ -26,11 +26,12 @@
         </ScrollViewer>
         <ScrollViewer Grid.Row="0" Grid.Column="1"  
                       CanContentScroll="True" 
-                      VerticalScrollBarVisibility="Visible" 
-                      HorizontalScrollBarVisibility="Visible" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Auto" 
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
-                      scroll:ScrollSynchronizer.ScrollGroup="Group1">
+                      scroll:ScrollSynchronizer.ScrollGroup="Group1"
+                      scroll:Autoscroll.AlwaysScrollToEnd="True">
             <local:InputPanel />
         </ScrollViewer>
     </Grid>

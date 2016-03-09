@@ -14,9 +14,6 @@ namespace CodeEditor.Core.ControlHelpers {
         private static Dictionary<ScrollViewer, string> scrollViewers =
             new Dictionary<ScrollViewer, string>();
 
-        private static Dictionary<string, double> horizontalScrollOffsets =
-            new Dictionary<string, double>();
-
         private static Dictionary<string, double> verticalScrollOffsets =
             new Dictionary<string, double>();
 
@@ -57,16 +54,6 @@ namespace CodeEditor.Core.ControlHelpers {
                 }
 
                 if (!string.IsNullOrEmpty((string)e.NewValue)) {
-                    // If group already exists, set scrollposition of 
-                    // new scrollviewer to the scrollposition of the group
-                    if (horizontalScrollOffsets.Keys.Contains((string)e.NewValue)) {
-                        scrollViewer.ScrollToHorizontalOffset(
-                                      horizontalScrollOffsets[(string)e.NewValue]);
-                    } else {
-                        horizontalScrollOffsets.Add((string)e.NewValue,
-                                                scrollViewer.HorizontalOffset);
-                    }
-
                     if (verticalScrollOffsets.Keys.Contains((string)e.NewValue)) {
                         scrollViewer.ScrollToVerticalOffset(verticalScrollOffsets[(string)e.NewValue]);
                     } else {
@@ -75,8 +62,7 @@ namespace CodeEditor.Core.ControlHelpers {
 
                     // Add scrollviewer
                     scrollViewers.Add(scrollViewer, (string)e.NewValue);
-                    scrollViewer.ScrollChanged +=
-                        new ScrollChangedEventHandler(ScrollViewer_ScrollChanged);
+                    scrollViewer.ScrollChanged += new ScrollChangedEventHandler(ScrollViewer_ScrollChanged);
                 }
             }
         }
@@ -84,23 +70,20 @@ namespace CodeEditor.Core.ControlHelpers {
         private static void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
             if (e.VerticalChange != 0 || e.HorizontalChange != 0) {
                 var changedScrollViewer = sender as ScrollViewer;
+
                 Scroll(changedScrollViewer);
             }
         }
 
         private static void Scroll(ScrollViewer changedScrollViewer) {
             var group = scrollViewers[changedScrollViewer];
+
             verticalScrollOffsets[group] = changedScrollViewer.VerticalOffset;
-            horizontalScrollOffsets[group] = changedScrollViewer.HorizontalOffset;
 
             foreach (var scrollViewer in scrollViewers.Where((s) => s.Value ==
                                               group && s.Key != changedScrollViewer)) {
                 if (scrollViewer.Key.VerticalOffset != changedScrollViewer.VerticalOffset) {
                     scrollViewer.Key.ScrollToVerticalOffset(changedScrollViewer.VerticalOffset);
-                }
-
-                if (scrollViewer.Key.HorizontalOffset != changedScrollViewer.HorizontalOffset) {
-                    scrollViewer.Key.ScrollToHorizontalOffset(changedScrollViewer.HorizontalOffset);
                 }
             }
         }

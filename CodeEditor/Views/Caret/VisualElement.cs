@@ -12,8 +12,7 @@ namespace CodeEditor.Views.Caret {
 
         #region fields
 
-        private static double charWidth;
-        private static double charHeight;
+        private static Size charSize;
         private static TextRunProperties runProperties;
         private static SimpleTextSource textSource;
 
@@ -28,13 +27,10 @@ namespace CodeEditor.Views.Caret {
         #region constructor
 
         static VisualElement() {
-            var charSize = StringExtensions.GetCharSize();
-
-            charWidth = charSize.Width;
-            charHeight = charSize.Height;
             Symbol = GetSymbol();
             runProperties = TextConfiguration.GetGlobalTextRunProperties(); 
             textSource = new SimpleTextSource(Symbol, runProperties);
+            charSize = StringExtensions.GetCharSize();
         }
 
         #endregion
@@ -43,7 +39,7 @@ namespace CodeEditor.Views.Caret {
 
         public void Draw(TextPosition position) {
             var formattedText = GetFormattedText(Symbol, runProperties);
-            var textLocation = new Point(position.Column * charWidth - charWidth / 2, position.Line * charHeight);
+            var textLocation = new Point(position.Column * charSize.Width, position.Line * charSize.Height);
 
             using (var drawingContext = RenderOpen()) {
                 drawingContext.DrawText(formattedText, textLocation);

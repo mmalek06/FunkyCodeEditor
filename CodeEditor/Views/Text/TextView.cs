@@ -10,6 +10,7 @@ using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Configuration;
 using CodeEditor.Extensions;
 using CodeEditor.Views.BaseClasses;
+using System;
 
 namespace CodeEditor.Views.Text {
     internal class TextView : InputViewBase {
@@ -123,8 +124,8 @@ namespace CodeEditor.Views.Text {
         }
 
         private void UpdateSize() {
-            Height = Lines.Count * EditorConfiguration.GetFontHeight();
-            Width = Lines.Max(line => line.Length) * StringExtensions.GetCharWidth();
+            Height = Convert.ToInt32(Lines.Count * StringExtensions.GetCharSize().Height);
+            Width = Lines.Max(line => line.Length) * StringExtensions.GetCharSize().Width;
         }
 
         private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);

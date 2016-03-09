@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 
@@ -38,9 +40,11 @@ namespace CodeEditor.Views.Lines {
             if (key == Key.Back && activePosition.Column == 0) {
                 linesCount--;
                 RedrawLines();
+                UpdateSize();
             } else if (key == Key.Delete) {
                 linesCount--;
                 RedrawLines();
+                UpdateSize();
             }
         }
 
@@ -48,6 +52,7 @@ namespace CodeEditor.Views.Lines {
             if (text == TextProperties.Properties.NEWLINE) {
                 linesCount++;
                 RedrawLines();
+                UpdateSize();
             }
         }
 
@@ -62,6 +67,14 @@ namespace CodeEditor.Views.Lines {
         #endregion
 
         #region methods
+
+        private void UpdateSize() {
+            double h = linesCount * StringExtensions.GetCharSize().Height;
+
+            if (h > ActualHeight) {
+                Height = h;
+            }
+        }
 
         private void RedrawLines() {
             var lineNumbers = Enumerable.Range(1, linesCount).ToArray();
