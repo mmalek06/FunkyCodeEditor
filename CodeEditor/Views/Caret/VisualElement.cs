@@ -39,7 +39,7 @@ namespace CodeEditor.Views.Caret {
 
         public void Draw(TextPosition position) {
             var formattedText = GetFormattedText(Symbol, runProperties);
-            var textLocation = new Point(position.Column * charSize.Width, position.Line * charSize.Height);
+            var textLocation = new Point(position.Column * charSize.Width - charSize.Width / 2, position.Line * charSize.Height);
 
             using (var drawingContext = RenderOpen()) {
                 drawingContext.DrawText(formattedText, textLocation);
