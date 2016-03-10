@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Windows.Media.TextFormatting;
 
 namespace CodeEditor.TextProperties {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
@@ -11,6 +10,12 @@ using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Lines {
     internal class LinesView : HelperViewBase {
+
+        #region enums
+
+        private enum TextInputType { ADD, REMOVE };
+
+        #endregion
 
         #region fields
 
@@ -26,7 +31,7 @@ namespace CodeEditor.Views.Lines {
             bgBrush = EditorConfiguration.GetLinesColumnBrush();
             linesCount = 1;
             formatter = TextFormatter.Create();
-            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties() };
+            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = TextConfiguration.GetGlobalTextRunProperties() };
         }
 
         #endregion
@@ -39,11 +44,11 @@ namespace CodeEditor.Views.Lines {
             }
             if (key == Key.Back && activePosition.Column == 0) {
                 linesCount--;
-                RedrawLines();
+                RedrawLines(TextInputType.REMOVE);
                 UpdateSize();
             } else if (key == Key.Delete) {
                 linesCount--;
-                RedrawLines();
+                RedrawLines(TextInputType.REMOVE);
                 UpdateSize();
             }
         }
@@ -51,7 +56,7 @@ namespace CodeEditor.Views.Lines {
         public override void HandleTextInput(string text, TextPosition activePosition) {
             if (text == TextProperties.Properties.NEWLINE) {
                 linesCount++;
-                RedrawLines();
+                RedrawLines(TextInputType.ADD);
                 UpdateSize();
             }
         }
@@ -59,7 +64,7 @@ namespace CodeEditor.Views.Lines {
         protected override void OnRender(DrawingContext drawingContext) {
             base.OnRender(drawingContext);
 
-            RedrawLines();
+            RedrawLines(TextInputType.ADD);
         }
 
         protected override double GetWidth() => EditorConfiguration.GetLinesColumnWidth();
@@ -76,15 +81,13 @@ namespace CodeEditor.Views.Lines {
             }
         }
 
-        private void RedrawLines() {
-            var lineNumbers = Enumerable.Range(1, linesCount).ToArray();
+        private void RedrawLines(TextInputType inputType) {
+            if (inputType == TextInputType.ADD) {
+                visuals.Add(new VisualElement(linesCount));
+            } else {
+                var lastNum = visuals[visuals.Count - 1];
 
-            visuals.Clear();
-
-            foreach (int num in lineNumbers) {
-                var el = new VisualElement(num);
-
-                visuals.Add(el);
+                visuals.Remove(lastNum);
             }
         }
 
