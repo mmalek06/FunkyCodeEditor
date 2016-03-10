@@ -7,21 +7,20 @@ namespace CodeEditor.TextProperties {
 
         #region fields
 
-        private StringBuilder sb;
         private readonly TextRunProperties properties;
 
         #endregion
 
         #region properties
 
-        public string Text => sb.ToString();
+        public string Text { get; set; }
 
         #endregion
 
         #region constructor
 
         public SimpleTextSource(string text, TextRunProperties properties) {
-            sb = new StringBuilder(300).Append(text);
+            Text = text;
             this.properties = properties;
         }
 
@@ -30,10 +29,8 @@ namespace CodeEditor.TextProperties {
         #region public methods
 
         public override TextRun GetTextRun(int textSourceCharacterIndex) {
-            string text = sb.ToString();
-
-            if (textSourceCharacterIndex < text.Length && textSourceCharacterIndex >= 0) {
-                return new TextCharacters(text, textSourceCharacterIndex, text.Length - textSourceCharacterIndex, properties);
+            if (textSourceCharacterIndex < Text.Length && textSourceCharacterIndex >= 0) {
+                return new TextCharacters(Text, textSourceCharacterIndex, Text.Length - textSourceCharacterIndex, properties);
             } else {
                 return new TextEndOfParagraph(1);
             }
@@ -46,10 +43,6 @@ namespace CodeEditor.TextProperties {
         public override TextSpan<CultureSpecificCharacterBufferRange> GetPrecedingText(int textSourceCharacterIndexLimit) {
             throw new NotImplementedException();
         }
-
-        public void Append(string text) => sb.Append(text);
-
-        public void Replace(string newText) => sb.Clear().Append(newText);
 
         #endregion
 

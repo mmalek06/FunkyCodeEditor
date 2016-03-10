@@ -174,7 +174,7 @@ namespace CodeEditor.Views.Text {
         private void UpdateTextData(IDictionary<int, string> changedLines) {
             foreach (var kvp in changedLines) {
                 if (kvp.Key < textSources.Count) {
-                    textSources[kvp.Key].Replace(kvp.Value);
+                    textSources[kvp.Key].Text = kvp.Value;
                 } else {
                     textSources.Add(new SimpleTextSource(kvp.Value, TextConfiguration.GetGlobalTextRunProperties()));
                 }
