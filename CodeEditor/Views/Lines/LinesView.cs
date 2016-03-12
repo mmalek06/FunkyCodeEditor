@@ -39,9 +39,10 @@ namespace CodeEditor.Views.Lines {
         #region event handlers
 
         public override void HandleTextRemove(Key key, TextPosition activePosition) {
-            if (activePosition.Line == 0 && activePosition.Column == 0 && key == Key.Back) {
+            if (visuals.Count <= 1) {
                 return;
             }
+
             if (key == Key.Back && activePosition.Column == 0) {
                 linesCount--;
                 RedrawLines(TextInputType.REMOVE);
