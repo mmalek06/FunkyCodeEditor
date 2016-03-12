@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
@@ -31,6 +32,9 @@ namespace CodeEditor.Commands {
             if (e != null && removalKeys.Contains(e.Key)) {
                 return textInfo.GetTextLinesCount() > 0;
             }
+            if (view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
+                return false;
+            }
 
             return false;
         }
@@ -39,6 +43,8 @@ namespace CodeEditor.Commands {
             var e = parameter as KeyEventArgs;
             var key = e.Key;
             var selectionArea = selectionView.GetCurrentSelectionArea();
+            var prevPosition = view.ActivePosition;
+            int linesCountBeforeRemove = textInfo.GetTextLinesCount();
 
             UpdateCommandState(BeforeCommandExecutedState);
 
@@ -47,6 +53,18 @@ namespace CodeEditor.Commands {
             } else {
                 view.RemoveText(selectionArea);
             }
+            if (textInfo.GetTextLinesCount() < linesCountBeforeRemove) {
+                Postbox.Send(new LineRemovedMessage {
+                    Key = key,
+                    Position = prevPosition,
+                    LineLength = textInfo.GetTextLineLength(prevPosition.Line)
+                });
+            }
+
+            Postbox.Send(new TextRemovedMessage {
+                Key = e.Key,
+                Position = view.ActivePosition
+            });
 
             UpdateCommandState(AfterCommandExecutedState);
 

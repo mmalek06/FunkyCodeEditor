@@ -46,6 +46,12 @@ namespace CodeEditor.Controls {
                 foreach (var view in views) {
                     view.HandleTextRemove(m.Key, m.Position);
                 }
+            } else if (message is LineRemovedMessage) {
+                var m = message as LineRemovedMessage;
+
+                foreach (var view in views) {
+                    view.HandleLineRemove(m.Key, m.Position, m.LineLength);
+                }
             }
         }
 

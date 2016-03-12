@@ -22,9 +22,11 @@ namespace CodeEditor.Views.BaseClasses {
 
         #region event handlers
 
-        public abstract void HandleTextInput(string text, TextPosition activePosition);
+        public virtual void HandleTextInput(string text, TextPosition activePosition) { }
 
-        public abstract void HandleTextRemove(Key key, TextPosition activePosition);
+        public virtual void HandleTextRemove(Key key, TextPosition activePosition) { }
+
+        public virtual void HandleLineRemove(Key key, TextPosition activePosition, int lineLen) { }
 
         protected override void OnRender(DrawingContext drawingContext) =>
             drawingContext.DrawRectangle(bgBrush, null, new Rect(0, 0, GetWidth(), ActualHeight));

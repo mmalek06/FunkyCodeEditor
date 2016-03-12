@@ -69,11 +69,6 @@ namespace CodeEditor.Controls {
             if (removeTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
-
-                Postbox.Send(new TextRemovedMessage {
-                    Key = e.Key,
-                    Position = textView.ActivePosition
-                });
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
                 deselectionCmd.Execute();
@@ -89,11 +84,6 @@ namespace CodeEditor.Controls {
             if (enterTextCmd.CanExecute(e)) {
                 ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
                 deselectionCmd.Execute();
-
-                Postbox.Send(new TextAddedMessage {
-                    Text = e.Text,
-                    Position = textView.ActivePosition
-                });
             }
         }
 

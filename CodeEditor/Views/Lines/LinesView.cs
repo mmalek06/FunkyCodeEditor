@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
@@ -38,7 +37,13 @@ namespace CodeEditor.Views.Lines {
 
         #region event handlers
 
-        public override void HandleTextRemove(Key key, TextPosition activePosition) {
+        public override void HandleLineRemove(Key key, TextPosition activePosition, int lineLen) {
+            if (key == Key.Back && activePosition.Column != 0) {
+                return;
+            }
+            if (key == Key.Delete && activePosition.Column < lineLen) {
+                return;
+            }
             if (visuals.Count <= 1) {
                 return;
             }

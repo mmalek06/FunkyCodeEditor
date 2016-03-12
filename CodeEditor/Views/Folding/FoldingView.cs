@@ -53,10 +53,6 @@ namespace CodeEditor.Views.Folding {
             RedrawFolds();
         }
 
-        public override void HandleTextRemove(Key key, TextPosition activePosition) {
-            
-        }
-
         #endregion
 
         #region methods

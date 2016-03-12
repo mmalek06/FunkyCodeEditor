@@ -42,7 +42,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 bool isStartEqZero = startingTextPosition.Column == 0;
 
                 if (isStartEqZero && startingTextPosition.Line == 0) {
-                    return new LinesRemovalInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
+                    return new LinesRemovalInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new[] { startingTextPosition.Line } };
                 }
                 if (isStartEqZero) {
                     return RemoveThisLine(textSources, startingTextPosition);

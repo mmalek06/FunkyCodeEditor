@@ -80,6 +80,9 @@ namespace CodeEditor.Views.Text {
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
                 UpdateSize();
+            } else if (removalInfo.LinesToRemove.Any()) {
+                DeleteLines(removalInfo.LinesToRemove);
+                UpdateSize();
             }
         }
 
@@ -121,6 +124,14 @@ namespace CodeEditor.Views.Text {
             UpdateTextData(removalInfo.LinesToChange.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
             UpdateCursorPosition(removalInfo.LinesToChange.First().Key);
             DrawLines(removalInfo.LinesToChange.Select(lineInfo => lineInfo.Key.Line));
+        }
+
+        private void DeleteLines(IEnumerable<int> linesToRemove) {
+            RemoveLines(linesToRemove);
+
+            int textLen = textSources[linesToRemove.Min() - 1].Text.Length;
+
+            UpdateCursorPosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: linesToRemove.Min() - 1));
         }
 
         private void UpdateSize() {

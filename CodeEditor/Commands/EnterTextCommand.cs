@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
@@ -47,6 +48,10 @@ namespace CodeEditor.Commands {
             UpdateCommandState(AfterCommandExecutedState);
 
             view.TriggerTextChanged(e.Text);
+            Postbox.Send(new TextAddedMessage {
+                Text = e.Text,
+                Position = view.ActivePosition
+            });
         }
 
         #endregion
