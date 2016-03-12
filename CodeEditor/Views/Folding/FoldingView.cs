@@ -41,7 +41,7 @@ namespace CodeEditor.Views.Folding {
                 return;
             }
 
-            var folds = foldingAlgorithm.CreateFolds(text, activePosition, foldingPositions);
+            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), foldingPositions);
 
             if (folds == null || !folds.Any()) {
                 return;
@@ -51,6 +51,20 @@ namespace CodeEditor.Views.Folding {
             }
 
             RedrawFolds();
+        }
+
+        public override void HandleTextRemove(string removedText, Key key, TextPosition activePosition) {
+            if (removedText == string.Empty) {
+                return;
+            }
+
+            var removedKey = foldingAlgorithm.DeleteFolds(removedText, activePosition, foldingPositions);
+
+            if (removedKey != null) {
+                foldingPositions[removedKey] = null;
+
+                RedrawFolds();
+            }
         }
 
         #endregion

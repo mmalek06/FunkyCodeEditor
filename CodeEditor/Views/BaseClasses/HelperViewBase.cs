@@ -24,7 +24,7 @@ namespace CodeEditor.Views.BaseClasses {
 
         public virtual void HandleTextInput(string text, TextPosition activePosition) { }
 
-        public virtual void HandleTextRemove(Key key, TextPosition activePosition) { }
+        public virtual void HandleTextRemove(string removedText, Key key, TextPosition activePosition) { }
 
         public virtual void HandleLineRemove(Key key, TextPosition activePosition, int lineLen) { }
 

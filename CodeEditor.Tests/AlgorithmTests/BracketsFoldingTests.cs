@@ -135,6 +135,13 @@ namespace CodeEditor.Tests {
             Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[2].Value);
         }
 
+        [TestMethod]
+        public void ClosingBracketAdded_ShouldBeNoFolding() {
+            var folds = Fold("}", 0, 0);
+
+            Assert.AreEqual(0, folds.Count);
+        }
+
         private List<KeyValuePair<TextPosition, TextPosition>> Fold(string bracket, int col, int line) {
             var folds = fa.CreateFolds(bracket, new TextPosition(column: col, line: line), foldingPositions);
 

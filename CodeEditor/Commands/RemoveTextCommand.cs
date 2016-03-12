@@ -29,11 +29,11 @@ namespace CodeEditor.Commands {
         public override bool CanExecute(object parameter) {
             var e = parameter as KeyEventArgs;
 
+            if (e.Key == Key.Back && view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
+                return false;
+            }
             if (e != null && removalKeys.Contains(e.Key)) {
                 return textInfo.GetTextLinesCount() > 0;
-            }
-            if (view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
-                return false;
             }
 
             return false;
@@ -45,12 +45,17 @@ namespace CodeEditor.Commands {
             var selectionArea = selectionView.GetCurrentSelectionArea();
             var prevPosition = view.ActivePosition;
             int linesCountBeforeRemove = textInfo.GetTextLinesCount();
+            string removedText = string.Empty;
 
             UpdateCommandState(BeforeCommandExecutedState);
 
             if (selectionArea == null) {
+                removedText = GetRemovedText(key);
+
                 view.RemoveText(key);
             } else {
+                removedText = string.Join("", textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
+
                 view.RemoveText(selectionArea);
             }
             if (textInfo.GetTextLinesCount() < linesCountBeforeRemove) {
@@ -63,7 +68,8 @@ namespace CodeEditor.Commands {
 
             Postbox.Send(new TextRemovedMessage {
                 Key = e.Key,
-                Position = view.ActivePosition
+                Position = view.ActivePosition,
+                RemovedText = removedText
             });
 
             UpdateCommandState(AfterCommandExecutedState);
@@ -71,6 +77,23 @@ namespace CodeEditor.Commands {
             view.TriggerTextChanged();
 
             e.Handled = true;
+        }
+
+        #endregion
+
+        #region methods
+
+        private string GetRemovedText(Key key) {
+            if (key == Key.Delete) {
+                return textInfo.GetCharAt(view.ActivePosition).ToString();
+            } else {
+                if (textInfo.GetTextLineLength(view.ActivePosition.Line) == 0) {
+                    return string.Empty;
+                }
+
+                return textInfo.GetCharAt(
+                    new DataStructures.TextPosition(column: view.ActivePosition.Column > 0 ? view.ActivePosition.Column - 1 : 0, line: view.ActivePosition.Line)).ToString();
+            }
         }
 
         #endregion

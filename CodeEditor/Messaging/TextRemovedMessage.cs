@@ -10,6 +10,8 @@ namespace CodeEditor.Messaging {
 
         public TextPosition Position { get; set; }
 
+        public string RemovedText { get; set; }
+
         #endregion
 
     }

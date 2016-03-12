@@ -44,7 +44,7 @@ namespace CodeEditor.Controls {
                 var m = message as TextRemovedMessage;
 
                 foreach (var view in views) {
-                    view.HandleTextRemove(m.Key, m.Position);
+                    view.HandleTextRemove(m.RemovedText, m.Key, m.Position);
                 }
             } else if (message is LineRemovedMessage) {
                 var m = message as LineRemovedMessage;

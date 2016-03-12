@@ -50,14 +50,18 @@ namespace CodeEditor.Algorithms.Folding {
             return null;
         }
 
-        public void GetFoldsToDelete(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+        public TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             char bracket = text[0];
 
             if (bracket == OPENING_BRACKET) {
                 DeleteFoldForOpenPosition(position);
+
+                return position;
             } else if (bracket == CLOSING_BRACKET) {
-                DeleteFoldForClosePosition(position, foldingPositions);
+                return DeleteFoldForClosePosition(position, foldingPositions);
             }
+
+            return null;
         }
 
         #endregion
@@ -83,10 +87,12 @@ namespace CodeEditor.Algorithms.Folding {
             var candidates = foldingPositions.Where(kvp => position > kvp.Key && (kvp.Value == null || position < kvp.Value));
             var closestCandidate = candidates.Max(kvp => kvp.Key);
 
-            if (newFolds[closestCandidate] == null) {
-                newFolds[closestCandidate] = position;
-            } else {
-                newFolds = UpdateFolds(newFolds, closestCandidate, position);
+            if (closestCandidate != null) {
+                if (newFolds[closestCandidate] == null) {
+                    newFolds[closestCandidate] = position;
+                } else {
+                    newFolds = UpdateFolds(newFolds, closestCandidate, position);
+                }
             }
 
             return newFolds;
@@ -108,16 +114,16 @@ namespace CodeEditor.Algorithms.Folding {
             return newFolds;
         }
 
-        private void DeleteFoldForOpenPosition(TextPosition position) {
-            mappedPositions.Remove(position);
-        }
+        private void DeleteFoldForOpenPosition(TextPosition position) => mappedPositions.Remove(position);
 
-        private void DeleteFoldForClosePosition(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+        private TextPosition DeleteFoldForClosePosition(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             var pair = foldingPositions.Where(kvp => kvp.Value == position).FirstOrDefault();
 
-            if (!pair.Equals(default(KeyValuePair<TextPosition, TextPosition>))) {
+            if (pair.Key != null && pair.Value != null) {
                 mappedPositions.Remove(pair.Key);
             }
+
+            return pair.Key;
         }
 
         #endregion
