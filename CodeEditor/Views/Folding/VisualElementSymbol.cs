@@ -12,9 +12,10 @@ namespace CodeEditor.Views.Folding {
             string symbol = state == FoldingStates.EXPANDED ? "-" : "+";
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
             var formattedText = GetFormattedText(symbol, runProperties);
-            var textLocation = new Point(0, top);
+            var textLocation = new Point(5, top);
 
             using (var drawingContext = RenderOpen()) {
+                drawingContext.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Black, 1), new Rect(4, top + 2, 10, 9));
                 drawingContext.DrawText(formattedText, textLocation);
             }
         }
