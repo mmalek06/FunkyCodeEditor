@@ -33,7 +33,6 @@ namespace CodeEditor.Tests {
 
             Assert.AreEqual(0, tv.ActivePosition.Column);
             Assert.AreEqual(0, tv.ActivePosition.Line);
-            Assert.AreEqual(1, ti.GetTextLinesCount());
         }
 
         [TestMethod]
@@ -61,6 +60,78 @@ namespace CodeEditor.Tests {
             tv.RemoveText(Key.Delete);
 
             Assert.AreEqual(1, ti.GetTextLinesCount());
+        }
+
+        [TestMethod]
+        public void ThreeEmptyLinesEnteredAndDelPressed_LinesShouldBe3() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.RemoveText(Key.Delete);
+
+            Assert.AreEqual(3, ti.GetTextLinesCount());
+        }
+
+        [TestMethod]
+        public void ThreeEmptyLinesEnteredAndDelPressed_CursorShouldBeAt20() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.RemoveText(Key.Delete);
+
+            Assert.AreEqual(2, tv.ActivePosition.Line);
+            Assert.AreEqual(0, tv.ActivePosition.Column);
+        }
+
+        [TestMethod]
+        public void ThreeEmptyLinesEnteredCursorMovedToSecondOneBackspacePressed_LinesShouldBe2() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
+            tv.RemoveText(Key.Back);
+
+            Assert.AreEqual(2, ti.GetTextLinesCount());
+        }
+
+        [TestMethod]
+        public void ThreeEmptyLinesEnteredCursorMovedToSecondOneBackspacePressed_CursorShouldBeAt00() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
+            tv.RemoveText(Key.Back);
+
+            Assert.AreEqual(0, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
+        }
+
+        [TestMethod]
+        public void ThreeEmptyLinesEnteredCursorMovedToSecondOneDeletePressed_LinesShouldBe2() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
+            tv.RemoveText(Key.Delete);
+
+            Assert.AreEqual(2, ti.GetTextLinesCount());
+        }
+
+        [TestMethod]
+        public void ThreeEmptyLinesEnteredCursorMovedToSecondOneDeletePressed_CursorShouldBeAt01() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
+            tv.RemoveText(Key.Delete);
+
+            Assert.AreEqual(0, tv.ActivePosition.Column);
+            Assert.AreEqual(1, tv.ActivePosition.Line);
+        }
+
+        [TestMethod]
+        public void ThreeLinesEnteredCursorMovedToSecondDeletePressed_LinesShouldBe2() {
+            tv.EnterText("\r");
+            tv.EnterText("\r");
+            tv.EnterText("asdf");
+            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
+            tv.RemoveText(Key.Delete);
+
+            Assert.AreEqual(2, ti.GetTextLinesCount());
         }
 
         [TestMethod]

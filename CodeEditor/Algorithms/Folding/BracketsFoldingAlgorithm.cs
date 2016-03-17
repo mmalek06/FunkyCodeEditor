@@ -71,15 +71,13 @@ namespace CodeEditor.Algorithms.Folding {
         private IDictionary<TextPosition, TextPosition> CreateEmptyFold(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             TextPosition outVal;
 
-            if (!foldingPositions.TryGetValue(position, out outVal)) {
-                var tmpDict = new Dictionary<TextPosition, TextPosition>(foldingPositions);
+            foldingPositions.TryGetValue(position, out outVal);
 
-                tmpDict[position] = null;
+            var tmpDict = new Dictionary<TextPosition, TextPosition>(foldingPositions);
 
-                return tmpDict;
-            }
+            tmpDict[position] = outVal;
 
-            return null;
+            return tmpDict;
         }
 
         private IDictionary<TextPosition, TextPosition> RebuildFolds(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {

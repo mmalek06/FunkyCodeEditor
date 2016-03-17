@@ -38,16 +38,6 @@ namespace CodeEditor.Views.Lines {
         #region event handlers
 
         public override void HandleLineRemove(Key key, TextPosition activePosition, int lineLen) {
-            if (key == Key.Back && activePosition.Column != 0) {
-                return;
-            }
-            if (key == Key.Delete && activePosition.Column < lineLen) {
-                return;
-            }
-            if (visuals.Count <= 1) {
-                return;
-            }
-
             if (key == Key.Back && activePosition.Column == 0) {
                 linesCount--;
                 RedrawLines(TextInputType.REMOVE);

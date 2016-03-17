@@ -116,7 +116,7 @@ namespace CodeEditor.Views.Text {
 
             UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
-            DrawLines(newLines.Select(lineInfo => lineInfo.Key));
+            DrawLines(newLines.Keys);
         }
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
