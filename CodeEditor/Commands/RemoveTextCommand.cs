@@ -99,11 +99,11 @@ namespace CodeEditor.Commands {
         #region methods
 
         private string GetRemovedText(Key key) {
-            if (textInfo.GetTextLineLength(view.ActivePosition.Line) == 0) {
+            if (textInfo.GetTextLineLength(view.ActivePosition.Line) == 0 || (key == Key.Delete && view.ActivePosition.Column >= textInfo.GetTextLine(view.ActivePosition.Line).Length)) {
                 return string.Empty;
             }
             if (key == Key.Delete) {
-                return  textInfo.GetCharAt(view.ActivePosition).ToString();
+                return textInfo.GetCharAt(view.ActivePosition).ToString();
             } else {
                 return textInfo.GetCharAt(
                     new DataStructures.TextPosition(column: view.ActivePosition.Column > 0 ? view.ActivePosition.Column - 1 : 0, line: view.ActivePosition.Line)).ToString();

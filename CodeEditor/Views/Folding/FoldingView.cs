@@ -41,13 +41,22 @@ namespace CodeEditor.Views.Folding {
                 return;
             }
             
-            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), GetTextPositions());
+            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), GetPotentialFoldingPositions());
 
             if (folds == null || !folds.Any()) {
                 return;
             }
             foreach (var kvp in folds) {
-                foldingPositions[new FoldingPositionInfo { Position = kvp.Key, Deleted = false }] = new FoldingPositionInfo { Position = kvp.Value, Deleted = false };
+                var tmpKey = new FoldingPositionInfo { Deleted = false, Position = kvp.Key };
+                var existingKey = foldingPositions.Keys.FirstOrDefault(k => k.Equals(tmpKey));
+
+                if (existingKey != null) {
+                    existingKey.Deleted = false;
+                } else {
+                    existingKey = tmpKey;
+                }
+
+                foldingPositions[existingKey] = new FoldingPositionInfo { Deleted = false, Position = kvp.Value };
             }
 
             RedrawFolds();
@@ -58,17 +67,25 @@ namespace CodeEditor.Views.Folding {
                 return;
             }
 
-            var removedKey = foldingAlgorithm.DeleteFolds(removedText, activePosition, GetTextPositions());
+            var removedKey = foldingAlgorithm.DeleteFolds(removedText, activePosition, GetClosedFoldingPositions());
 
-            if (removedKey != null) {
-                var info = foldingPositions.Keys.First(k => k.Position == removedKey);
-
-                info.Deleted = true;
-
-                foldingPositions[new FoldingPositionInfo { Position = removedKey, Deleted = true }] = null;
-
-                RedrawFolds();
+            if (removedKey == null) {
+                return;
             }
+
+            var info = foldingPositions.Keys.First(k => k.Position == removedKey);
+
+            if (foldingAlgorithm.IsOpeningTag(removedText)) {
+                if (foldingPositions[info] == null || foldingPositions[info].Deleted || foldingPositions[info].Position == null) {
+                    foldingPositions.Remove(info);
+                } else {
+                    info.Deleted = true;
+                }
+            } else {
+                foldingPositions[info].Deleted = true;
+            }
+
+            RedrawFolds();
         }
 
         #endregion
@@ -77,16 +94,19 @@ namespace CodeEditor.Views.Folding {
 
         protected override double GetWidth() => EditorConfiguration.GetFoldingColumnWidth();
 
-        private IDictionary<TextPosition, TextPosition> GetTextPositions() =>
-            foldingPositions.Where(kvp => !kvp.Key.Deleted && kvp.Value.Position != null && !kvp.Value.Deleted)
-                            .Select(kvp => new KeyValuePair<TextPosition, TextPosition>(kvp.Key.Position, kvp.Value.Position))
-                            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        private IDictionary<TextPosition, TextPosition> GetPotentialFoldingPositions() =>
+            foldingPositions.Where(pair => pair.Key.Deleted || pair.Value == null || pair.Value.Deleted || pair.Value.Position == null)
+                            .ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
+
+        private IDictionary<TextPosition, TextPosition> GetClosedFoldingPositions() =>
+            foldingPositions.Where(pair => !pair.Key.Deleted && pair.Value != null && !pair.Value.Deleted && pair.Value.Position != null)
+                            .ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
 
         private void RedrawFolds() {
             visuals.Clear();
             symbols.Clear();
 
-            foreach (var kvp in GetTextPositions().Where(kvp => kvp.Value != null)) {
+            foreach (var kvp in GetClosedFoldingPositions()) {
                 var symbol = new VisualElementSymbol();
                 int top = (int)kvp.Key.GetPositionRelativeToParent().Y;
 
@@ -113,8 +133,22 @@ namespace CodeEditor.Views.Folding {
 
             #region public methods
 
+            public override bool Equals(object obj) {
+                var other = (FoldingPositionInfo)obj;
+
+                if (other == null || other.Position == null) {
+                    return false;
+                }
+
+                return Position.Equals(other.Position);
+            }
+
             public override int GetHashCode() {
                 return Position.GetHashCode();
+            }
+
+            public override string ToString() {
+                return Position.ToString() + ", Deleted: " + Deleted.ToString();
             }
 
             #endregion

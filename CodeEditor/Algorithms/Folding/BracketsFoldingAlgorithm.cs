@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.DataStructures;
 
@@ -37,6 +36,8 @@ namespace CodeEditor.Algorithms.Folding {
 
             return bracket == OPENING_BRACKET || bracket == CLOSING_BRACKET;
         }
+
+        public bool IsOpeningTag(string text) => text[0] == OPENING_BRACKET;
 
         public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             char bracket = text[0];

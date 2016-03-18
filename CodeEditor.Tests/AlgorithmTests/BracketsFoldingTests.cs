@@ -27,7 +27,7 @@ namespace CodeEditor.Tests {
 
             Assert.IsNull(folds);
         }
-
+        
         [TestMethod]
         public void EnterTwoOpeningBrackets_ShouldHaveTwoEmptyFolds() {
             Fold("{", 0, 0);
@@ -39,6 +39,16 @@ namespace CodeEditor.Tests {
             Assert.IsNull(folds[0].Value);
             Assert.AreEqual(new TextPosition(column: 1, line: 0), folds[1].Key);
             Assert.IsNull(folds[1].Value);
+        }
+
+        [TestMethod]
+        public void EnterOpeningAndClosingBrackets_ShouldHaveOneFold() {
+            Fold("{", 0, 0);
+
+            var folds = Fold("}", 0, 1);
+
+            Assert.AreEqual(1, folds.Count);
+            Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
         }
 
         [TestMethod]

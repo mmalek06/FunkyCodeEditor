@@ -8,6 +8,8 @@ namespace CodeEditor.Algorithms.Folding {
 
         bool CanRun(string text);
 
+        bool IsOpeningTag(string text);
+
         TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 
         IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
