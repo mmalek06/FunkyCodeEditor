@@ -7,6 +7,7 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Extensions;
+using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Folding {
@@ -67,7 +68,8 @@ namespace CodeEditor.Views.Folding {
                 return;
             }
 
-            var removedKey = foldingAlgorithm.DeleteFolds(removedText, activePosition, GetClosedFoldingPositions());
+            var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
+            var removedKey = foldingAlgorithm.DeleteFolds(removedText, activePosition, positions);
 
             if (removedKey == null) {
                 return;
@@ -88,6 +90,23 @@ namespace CodeEditor.Views.Folding {
             RedrawFolds();
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e) {
+            var position = e.GetPosition(this).GetDocumentPosition();
+            var folding = foldingPositions.Keys.FirstOrDefault(foldingInfo => foldingInfo.Position.Line == position.Line);
+
+            if (folding != null) {
+                var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
+
+                Postbox.Send(new FoldClickedMessage {
+                    Line = position.Line,
+                    State = state
+                });
+                folding.State = state;
+
+                RedrawFolds();
+            }
+        }
+
         #endregion
 
         #region methods
@@ -98,19 +117,19 @@ namespace CodeEditor.Views.Folding {
             foldingPositions.Where(pair => pair.Key.Deleted || pair.Value == null || pair.Value.Deleted || pair.Value.Position == null)
                             .ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
 
-        private IDictionary<TextPosition, TextPosition> GetClosedFoldingPositions() =>
+        private IDictionary<FoldingPositionInfo, FoldingPositionInfo> GetClosedFoldingInfos() =>
             foldingPositions.Where(pair => !pair.Key.Deleted && pair.Value != null && !pair.Value.Deleted && pair.Value.Position != null)
-                            .ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
+                            .ToDictionary(pair => pair.Key, pair => pair.Value);
 
         private void RedrawFolds() {
             visuals.Clear();
             symbols.Clear();
 
-            foreach (var kvp in GetClosedFoldingPositions()) {
+            foreach (var kvp in GetClosedFoldingInfos()) {
                 var symbol = new VisualElementSymbol();
-                int top = (int)kvp.Key.GetPositionRelativeToParent().Y;
+                int top = (int)kvp.Key.Position.GetPositionRelativeToParent().Y;
 
-                symbol.DrawFolding(FoldingStates.EXPANDED, top);
+                symbol.DrawFolding(kvp.Key.State, top);
 
                 symbols.Add(symbol);
                 visuals.Add(symbol);
@@ -126,6 +145,8 @@ namespace CodeEditor.Views.Folding {
             #region properties
 
             public TextPosition Position { get; set; }
+
+            public FoldingStates State { get; set; }
 
             public bool Deleted { get; set; }
 
