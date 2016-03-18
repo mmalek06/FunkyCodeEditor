@@ -6,7 +6,7 @@ using System.Windows.Media;
 using CodeEditor.Commands;
 using CodeEditor.Configuration;
 using CodeEditor.Core.Controls;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;

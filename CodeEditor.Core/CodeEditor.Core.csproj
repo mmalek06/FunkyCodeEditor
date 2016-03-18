@@ -52,6 +52,9 @@
     <Compile Include="ControlHelpers\ScrollSynchronizer.cs" />
     <Compile Include="Controls\StackablePanel.cs" />
     <Compile Include="DataStructures\AutoTrimmingStack.cs" />
+    <Compile Include="DataStructures\PointsPair.cs" />
+    <Compile Include="DataStructures\TextPosition.cs" />
+    <Compile Include="DataStructures\TextPositionsPair.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

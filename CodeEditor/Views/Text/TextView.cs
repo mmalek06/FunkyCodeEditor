@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Events;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;

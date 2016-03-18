@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Messaging {
     internal class LineRemovedMessage {

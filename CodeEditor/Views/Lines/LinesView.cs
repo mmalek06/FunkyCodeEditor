@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;

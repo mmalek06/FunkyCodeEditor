@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Extensions;
 using CodeEditor.Views.BaseClasses;
 

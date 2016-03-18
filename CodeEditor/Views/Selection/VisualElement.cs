@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Views.Selection {
     internal class VisualElement : DrawingVisual {

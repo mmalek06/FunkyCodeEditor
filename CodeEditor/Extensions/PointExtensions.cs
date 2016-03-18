@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Extensions {
     public static class PointExtensions {

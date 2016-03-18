@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 
-namespace CodeEditor.DataStructures {
-    internal struct PointsPair {
+namespace CodeEditor.Core.DataStructures {
+    public struct PointsPair {
         public Point StartingPoint { get; set; }
         public Point EndingPoint { get; set; }
     }

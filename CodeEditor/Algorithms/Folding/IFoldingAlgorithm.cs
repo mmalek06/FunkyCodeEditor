@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Algorithms.Folding {
     internal interface IFoldingAlgorithm {

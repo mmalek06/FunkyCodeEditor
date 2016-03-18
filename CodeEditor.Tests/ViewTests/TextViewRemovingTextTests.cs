@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Input;
 using System.Windows.Interop;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Events;
 using CodeEditor.Views.Text;
 
@@ -203,9 +204,9 @@ namespace CodeEditor.Tests {
             tv.EnterText(text2);
             tv.EnterText("\r");
             tv.EnterText(text3);
-            tv.RemoveText(new DataStructures.TextPositionsPair {
-                StartPosition = new DataStructures.TextPosition(column: 0, line: 0),
-                EndPosition = new DataStructures.TextPosition(column: 21, line: 2)
+            tv.RemoveText(new TextPositionsPair {
+                StartPosition = new TextPosition(column: 0, line: 0),
+                EndPosition = new TextPosition(column: 21, line: 2)
             });
 
             Assert.AreEqual(1, ti.GetTextLinesCount());
@@ -259,7 +260,7 @@ namespace CodeEditor.Tests {
         }
 
         private CaretMovedEventArgs CreateCaretMovedEventArgs(int col, int line) {
-            return new CaretMovedEventArgs { NewPosition = new CodeEditor.DataStructures.TextPosition(column: col, line: line) };
+            return new CaretMovedEventArgs { NewPosition = new TextPosition(column: col, line: line) };
         }
     }
 }

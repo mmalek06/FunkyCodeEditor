@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
@@ -42,9 +43,9 @@ namespace CodeEditor.Commands {
             selectionView.Select(view.ActivePosition);
 
             if (e.Key == Key.Delete) {
-                selectionView.Select(new DataStructures.TextPosition(column: textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1), line: textInfo.GetTextLinesCount() - 1));
+                selectionView.Select(new Core.DataStructures.TextPosition(column: textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1), line: textInfo.GetTextLinesCount() - 1));
             } else {
-                selectionView.Select(new DataStructures.TextPosition(column: 0, line: 0));
+                selectionView.Select(new Core.DataStructures.TextPosition(column: 0, line: 0));
             }
 
             var area = selectionView.GetCurrentSelectionArea();
@@ -106,7 +107,7 @@ namespace CodeEditor.Commands {
                 return textInfo.GetCharAt(view.ActivePosition).ToString();
             } else {
                 return textInfo.GetCharAt(
-                    new DataStructures.TextPosition(column: view.ActivePosition.Column > 0 ? view.ActivePosition.Column - 1 : 0, line: view.ActivePosition.Line)).ToString();
+                    new TextPosition(column: view.ActivePosition.Column > 0 ? view.ActivePosition.Column - 1 : 0, line: view.ActivePosition.Line)).ToString();
             }
         }
 

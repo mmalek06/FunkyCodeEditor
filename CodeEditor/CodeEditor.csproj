@@ -78,7 +78,6 @@
     <Compile Include="Commands\TextSelectionCommand.cs" />
     <Compile Include="Commands\UndoEnterTextCommand.cs" />
     <Compile Include="Commands\UndoRemoveTextCommand.cs" />
-    <Compile Include="DataStructures\TextPositionsPair.cs" />
     <Compile Include="Controls\InputPanel.cs" />
     <Compile Include="Configuration\EditorConfiguration.cs" />
     <Compile Include="Editor.xaml.cs">
@@ -91,8 +90,6 @@
     <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
-    <Compile Include="DataStructures\PointsPair.cs" />
-    <Compile Include="DataStructures\TextPosition.cs" />
     <Compile Include="Commands\ViewState.cs" />
     <Compile Include="Extensions\TextPositionExtensions.cs" />
     <Compile Include="Views\Caret\VisualElement.cs" />
@@ -169,6 +166,7 @@
       <Name>CodeEditor.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

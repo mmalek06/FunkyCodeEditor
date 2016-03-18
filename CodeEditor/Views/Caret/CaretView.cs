@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CodeEditor.Configuration;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Events;
 using CodeEditor.Views.BaseClasses;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;

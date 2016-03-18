@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
@@ -25,8 +26,8 @@ namespace CodeEditor.Tests.TextViewTests {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
-            var startingPosition = new DataStructures.TextPosition(line: 0, column: 4);
-            var endingPosition = new DataStructures.TextPosition(line: 0, column: 8);
+            var startingPosition = new TextPosition(line: 0, column: 4);
+            var endingPosition = new TextPosition(line: 0, column: 8);
 
             tv.EnterText(text1 + text2 + text3);
             tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
@@ -46,8 +47,8 @@ namespace CodeEditor.Tests.TextViewTests {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
-            var startingPosition = new DataStructures.TextPosition(line: 0, column: 8);
-            var endingPosition = new DataStructures.TextPosition(line: 0, column: 4);
+            var startingPosition = new TextPosition(line: 0, column: 8);
+            var endingPosition = new TextPosition(line: 0, column: 4);
 
             tv.EnterText(text1 + text2 + text3);
             tv.HandleCaretMove(this, new Events.CaretMovedEventArgs {
@@ -68,8 +69,8 @@ namespace CodeEditor.Tests.TextViewTests {
             string text2 = " saw Susie sitting in a shoe shine shop.";
             string text3 = "Where she ";
             string text4 = "sits she shines, and where she shines she sits.";
-            var startingPosition = new DataStructures.TextPosition(line: 0, column: 1);
-            var endingPosition = new DataStructures.TextPosition(line: 1, column: 10);
+            var startingPosition = new TextPosition(line: 0, column: 1);
+            var endingPosition = new TextPosition(line: 1, column: 10);
 
             tv.EnterText(text1 + text2);
             tv.EnterText("\r");
@@ -91,8 +92,8 @@ namespace CodeEditor.Tests.TextViewTests {
         public void SelectTwoOfFourLinesBottomToTop_CursorPositionIsAtTheEndOfText1() {
             string text1 = "shop";
             string text2 = "Where she sits she shines, and where she shines she sits.";
-            var startingPosition = new DataStructures.TextPosition(line: 1, column: text2.Length);
-            var endingPosition = new DataStructures.TextPosition(line: 0, column: text1.Length);
+            var startingPosition = new TextPosition(line: 1, column: text2.Length);
+            var endingPosition = new TextPosition(line: 0, column: text1.Length);
 
             cv.CaretMoved += tv.HandleCaretMove;
 
@@ -111,8 +112,8 @@ namespace CodeEditor.Tests.TextViewTests {
         public void SelectTwoOfFourLinesTopToBottom_CursorPositionIsAtTheEndOfText2() {
             string text1 = "Where she sits she shines, and where she shines she sits.";
             string text2 = "shop";
-            var startingPosition = new DataStructures.TextPosition(line: 0, column: text1.Length);
-            var endingPosition = new DataStructures.TextPosition(line: 1, column: text2.Length);
+            var startingPosition = new TextPosition(line: 0, column: text1.Length);
+            var endingPosition = new TextPosition(line: 1, column: text2.Length);
 
             cv.CaretMoved += tv.HandleCaretMove;
 

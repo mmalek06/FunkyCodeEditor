@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using CodeEditor.DataStructures;
+using CodeEditor.Core.DataStructures;
 using CodeEditor.Extensions;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
