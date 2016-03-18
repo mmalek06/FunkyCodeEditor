@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -36,30 +35,17 @@ namespace CodeEditor.Views.Folding {
         #region event handlers
 
         public override void HandleTextInput(string text, TextPosition activePosition) {
-            char character = text[0];
-
             if (!foldingAlgorithm.CanRun(text)) {
                 return;
             }
-            
+
             var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), GetPotentialFoldingPositions());
 
             if (folds == null || !folds.Any()) {
                 return;
             }
-            foreach (var kvp in folds) {
-                var tmpKey = new FoldingPositionInfo { Deleted = false, Position = kvp.Key };
-                var existingKey = foldingPositions.Keys.FirstOrDefault(k => k.Equals(tmpKey));
 
-                if (existingKey != null) {
-                    existingKey.Deleted = false;
-                } else {
-                    existingKey = tmpKey;
-                }
-
-                foldingPositions[existingKey] = new FoldingPositionInfo { Deleted = false, Position = kvp.Value };
-            }
-
+            CreateFolds(folds);
             RedrawFolds();
         }
 
@@ -75,18 +61,7 @@ namespace CodeEditor.Views.Folding {
                 return;
             }
 
-            var info = foldingPositions.Keys.First(k => k.Position == removedKey);
-
-            if (foldingAlgorithm.IsOpeningTag(removedText)) {
-                if (foldingPositions[info] == null || foldingPositions[info].Deleted || foldingPositions[info].Position == null) {
-                    foldingPositions.Remove(info);
-                } else {
-                    info.Deleted = true;
-                }
-            } else {
-                foldingPositions[info].Deleted = true;
-            }
-
+            DeleteFolds(removedKey, removedText);
             RedrawFolds();
         }
 
@@ -120,6 +95,35 @@ namespace CodeEditor.Views.Folding {
         private IDictionary<FoldingPositionInfo, FoldingPositionInfo> GetClosedFoldingInfos() =>
             foldingPositions.Where(pair => !pair.Key.Deleted && pair.Value != null && !pair.Value.Deleted && pair.Value.Position != null)
                             .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+        private void CreateFolds(IDictionary<TextPosition, TextPosition> folds) {
+            foreach (var kvp in folds) {
+                var tmpKey = new FoldingPositionInfo { Deleted = false, Position = kvp.Key };
+                var existingKey = foldingPositions.Keys.FirstOrDefault(k => k.Equals(tmpKey));
+
+                if (existingKey != null) {
+                    existingKey.Deleted = false;
+                } else {
+                    existingKey = tmpKey;
+                }
+
+                foldingPositions[existingKey] = new FoldingPositionInfo { Deleted = false, Position = kvp.Value };
+            }
+        }
+
+        private void DeleteFolds(TextPosition removedKey, string removedText) {
+            var info = foldingPositions.Keys.First(k => k.Position == removedKey);
+
+            if (foldingAlgorithm.IsOpeningTag(removedText)) {
+                if (foldingPositions[info] == null || foldingPositions[info].Deleted || foldingPositions[info].Position == null) {
+                    foldingPositions.Remove(info);
+                } else {
+                    info.Deleted = true;
+                }
+            } else {
+                foldingPositions[info].Deleted = true;
+            }
+        }
 
         private void RedrawFolds() {
             visuals.Clear();
