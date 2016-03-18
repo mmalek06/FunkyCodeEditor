@@ -169,7 +169,7 @@ namespace CodeEditor.Views.Folding {
             }
 
             public override string ToString() {
-                return Position.ToString() + ", Deleted: " + Deleted.ToString();
+                return string.Format("{0}, Deleted: {1}, State: {2}", Position.ToString(), Deleted.ToString(), State.ToString());
             }
 
             #endregion
