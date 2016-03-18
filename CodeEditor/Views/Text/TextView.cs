@@ -11,6 +11,8 @@ using CodeEditor.Configuration;
 using CodeEditor.Extensions;
 using CodeEditor.Views.BaseClasses;
 using System;
+using CodeEditor.Messaging;
+using CodeEditor.Algorithms.Folding;
 
 namespace CodeEditor.Views.Text {
     internal class TextView : InputViewBase {
@@ -58,6 +60,14 @@ namespace CodeEditor.Views.Text {
         public void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
+
+        public void HandleTextFolding(FoldClickedMessage message) {
+            if (message.State == FoldingStates.EXPANDED) {
+                ExpandTextRange(message.Area, message.OpeningTag, message.ClosingTag);
+            } else {
+                CollapseTextRange(message.Area, message.OpeningTag, message.ClosingTag);
+            }
+        }
 
         #endregion
 
@@ -190,6 +200,14 @@ namespace CodeEditor.Views.Text {
                     textSources.Add(new SimpleTextSource(kvp.Value, TextConfiguration.GetGlobalTextRunProperties()));
                 }
             }
+        }
+
+        private void CollapseTextRange(TextPositionsPair area, string openingTag, string closingTag) {
+            
+        }
+
+        private void ExpandTextRange(TextPositionsPair area, string openingTag, string closingTag) {
+            
         }
 
         private void DrawLines(IEnumerable<int> lineIndices) {

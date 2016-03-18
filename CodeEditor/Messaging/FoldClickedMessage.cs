@@ -1,4 +1,5 @@
 ﻿using CodeEditor.Algorithms.Folding;
+using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Messaging {
     internal class FoldClickedMessage {
@@ -7,7 +8,11 @@ namespace CodeEditor.Messaging {
 
         public FoldingStates State { get; set; }
 
-        public int Line { get; set; }
+        public TextPositionsPair Area { get; set; }
+
+        public string OpeningTag { get; set; }
+
+        public string ClosingTag { get; set; }
 
         #endregion
 

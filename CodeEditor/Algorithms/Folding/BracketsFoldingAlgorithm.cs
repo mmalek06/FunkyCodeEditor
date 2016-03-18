@@ -5,46 +5,26 @@ using CodeEditor.Core.DataStructures;
 namespace CodeEditor.Algorithms.Folding {
     internal class BracketsFoldingAlgorithm : IFoldingAlgorithm {
 
-        #region fields
-
-        private const char OPENING_BRACKET = '{';
-
-        private const char CLOSING_BRACKET = '}';
-
-        // mappedPositions are a part of this algorithm's internal logic
-        // and therefore it belongs to this class
-        private HashSet<TextPosition> mappedPositions;
-        
-        #endregion
-
-        #region constructor
-
-        public BracketsFoldingAlgorithm() {
-            mappedPositions = new HashSet<TextPosition>();
-        }
-
-        #endregion
-
         #region public methods
 
         public bool CanRun(string text) {
             if (text.Length == 0) {
-                return true;
+                return false;
             }
 
-            char bracket = text[0];
-
-            return bracket == OPENING_BRACKET || bracket == CLOSING_BRACKET;
+            return text == GetOpeningTag() || text == GetClosingTag();
         }
 
-        public bool IsOpeningTag(string text) => text[0] == OPENING_BRACKET;
+        public bool IsOpeningTag(string text) => text == GetOpeningTag();
+
+        public string GetOpeningTag() => "{";
+
+        public string GetClosingTag() => "}";
 
         public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
-            char bracket = text[0];
-
-            if (bracket == OPENING_BRACKET) {
+            if (text == GetOpeningTag()) {
                 return CreateEmptyFold(position, foldingPositions);
-            } else if (bracket == CLOSING_BRACKET) {
+            } else if (text == GetClosingTag()) {
                 return RebuildFolds(position, foldingPositions);
             }
 
@@ -52,13 +32,9 @@ namespace CodeEditor.Algorithms.Folding {
         }
 
         public TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
-            char bracket = text[0];
-
-            if (bracket == OPENING_BRACKET) {
-                DeleteFoldForOpenPosition(position);
-
+            if (text == GetOpeningTag()) {
                 return position;
-            } else if (bracket == CLOSING_BRACKET) {
+            } else if (text == GetClosingTag()) {
                 return DeleteFoldForClosePosition(position, foldingPositions);
             }
 
@@ -113,16 +89,10 @@ namespace CodeEditor.Algorithms.Folding {
             return newFolds;
         }
 
-        private void DeleteFoldForOpenPosition(TextPosition position) => mappedPositions.Remove(position);
-
         private TextPosition DeleteFoldForClosePosition(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             var pair = foldingPositions.Where(kvp => kvp.Value == position).FirstOrDefault();
 
-            if (pair.Key != null && pair.Value != null) {
-                mappedPositions.Remove(pair.Key);
-            }
-
-            return pair.Key;
+            return !pair.Equals(default(KeyValuePair<TextPosition, TextPosition>)) ? pair.Key : null;
         }
 
         #endregion

@@ -15,7 +15,7 @@ using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 using LocalViewBase = CodeEditor.Views.BaseClasses.InputViewBase;
 
 namespace CodeEditor.Controls {
-    internal class InputViewsWrapper : StackablePanel {
+    internal class InputViewsWrapper : StackablePanel, IMessageReceiver {
 
         #region fields
 
@@ -45,6 +45,18 @@ namespace CodeEditor.Controls {
         public InputViewsWrapper(InputPanel parent) : base() {
             master = parent;
             views = new List<LocalViewBase>();
+        }
+
+        #endregion
+
+        #region public methods
+
+        public void Receive<TMessage>(TMessage message) {
+            if (message is FoldClickedMessage) {
+                var m = message as FoldClickedMessage;
+
+                textView.HandleTextFolding(m);
+            }
         }
 
         #endregion
