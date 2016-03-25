@@ -111,7 +111,6 @@
     <Compile Include="Controls\InputViewsWrapper.cs" />
     <Compile Include="Visuals\SimpleTextSource.cs" />
     <Compile Include="Views\Caret\CaretView.cs" />
-    <Compile Include="Views\Text\VisualElement.cs" />
     <Compile Include="Views\Text\TextView.cs" />
     <Compile Include="Visuals\VisualElementSymbolBase.cs" />
     <Compile Include="Visuals\VisualTextLine.cs" />
