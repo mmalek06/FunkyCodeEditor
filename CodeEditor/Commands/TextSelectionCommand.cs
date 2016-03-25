@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
@@ -100,7 +100,7 @@ namespace CodeEditor.Commands {
 
         private bool CanExecuteMouse(MouseEventArgs mouseEvent) => 
             mouseEvent.LeftButton == MouseButtonState.Pressed && 
-            textInfo.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition());
+            textInfo.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize()));
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
             TextPosition endingPosition = null;
@@ -140,7 +140,7 @@ namespace CodeEditor.Commands {
         }
 
         private void ExecuteMouse(MouseEventArgs mouseEvent) {
-            var endPosition = mouseEvent.GetPosition(selectionView).GetDocumentPosition();
+            var endPosition = mouseEvent.GetPosition(selectionView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
             selectionView.Select(endPosition);
             caretView.MoveCursor(endPosition);

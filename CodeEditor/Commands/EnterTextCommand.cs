@@ -48,7 +48,7 @@ namespace CodeEditor.Commands {
             UpdateCommandState(AfterCommandExecutedState);
 
             view.TriggerTextChanged(e.Text);
-            Postbox.Send(new TextAddedMessage {
+            Postbox.Instance.Send(new TextAddedMessage {
                 Text = e.Text,
                 Position = view.ActivePosition
             });

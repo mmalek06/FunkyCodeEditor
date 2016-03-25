@@ -1,24 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CodeEditor.Messaging {
-    internal static class Postbox {
+    internal class Postbox {
 
         #region fields
 
-        private static List<IMessageReceiver> receivers = new List<IMessageReceiver>();
+        private Dictionary<Type, List<Action<object>>> messageToMethodsMap;
+
+        private Type lastMessageType;
+
+        private static Postbox self;
+
+        #endregion
+
+        #region properties
+
+        public static Postbox Instance {
+            get {
+                if (self == null) {
+                    self = new Postbox();
+                }
+
+                return self;
+            }
+        }
+
+        #endregion
+
+        #region constructor
+
+        private Postbox() {
+            messageToMethodsMap = new Dictionary<Type, List<Action<object>>>();
+        }
 
         #endregion
 
         #region public methods
 
-        public static void Subscribe(IMessageReceiver receiver) {
-            receivers.Add(receiver);
+        public Postbox For(Type messageType) {
+            messageToMethodsMap[messageType] = new List<Action<object>>();
+            lastMessageType = messageType;
+
+            return this;
         }
 
-        public static void Send<TMessage>(TMessage message) {
-            foreach(var receiver in receivers) {
-                receiver.Receive(message);
+        public Postbox Invoke(Action<object> action) {
+            messageToMethodsMap[lastMessageType].Add(action);
+
+            return this;
+        }
+
+        public Postbox Send<TMessage>(TMessage message) {
+            if (messageToMethodsMap.ContainsKey(typeof(TMessage))) {
+                foreach (var action in messageToMethodsMap[typeof(TMessage)]) {
+                    action(message);
+                }
             }
+
+            return this;
         }
 
         #endregion

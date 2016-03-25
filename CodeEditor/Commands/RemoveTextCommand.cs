@@ -75,14 +75,14 @@ namespace CodeEditor.Commands {
                 view.RemoveText(selectionArea);
             }
             if (textInfo.GetTextLinesCount() < linesCountBeforeRemove) {
-                Postbox.Send(new LineRemovedMessage {
+                Postbox.Instance.Send(new LineRemovedMessage {
                     Key = key,
                     Position = prevPosition,
                     LineLength = textInfo.GetTextLineLength(prevPosition.Line)
                 });
             }
 
-            Postbox.Send(new TextRemovedMessage {
+            Postbox.Instance.Send(new TextRemovedMessage {
                 Key = e.Key,
                 Position = view.ActivePosition,
                 RemovedText = removedText

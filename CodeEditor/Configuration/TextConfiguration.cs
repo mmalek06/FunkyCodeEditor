@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
+using CodeEditor.Core.Extensions;
 using CodeEditor.TextProperties;
 
 namespace CodeEditor.Configuration {
@@ -14,6 +15,8 @@ namespace CodeEditor.Configuration {
         private static Typeface typeface;
 
         private static TextRunProperties textRunProperties;
+        
+        private static Size? charSize;
 
         #endregion
 
@@ -72,6 +75,21 @@ namespace CodeEditor.Configuration {
             p.cultureInfo = CultureInfo.CurrentCulture;
 
             return p;
+        }
+
+        public static Size GetCharSize() {
+            if (charSize == null) {
+                var s = "X".GetScreenSize(
+                    GetFontFamily(),
+                    GetFontSize(),
+                    GetFontStyle(),
+                    GetFontWeight(),
+                    GetFontStretch());
+
+                charSize = new Size(s.Width, s.Height);
+            }
+
+            return charSize.Value;
         }
 
         #endregion

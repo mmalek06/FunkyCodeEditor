@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media.TextFormatting;
 
-namespace CodeEditor.TextProperties {
+namespace CodeEditor.Visuals {
     internal sealed class SimpleTextSource : TextSource {
 
         #region fields

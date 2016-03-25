@@ -8,11 +8,11 @@ using CodeEditor.Events;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Configuration;
-using CodeEditor.Extensions;
 using CodeEditor.Views.BaseClasses;
 using System;
 using CodeEditor.Messaging;
 using CodeEditor.Algorithms.Folding;
+using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
     internal class TextView : InputViewBase {
@@ -26,16 +26,18 @@ namespace CodeEditor.Views.Text {
         #region fields
 
         private List<SimpleTextSource> textSources;
-        private TextFormatter formatter;
-        private SimpleParagraphProperties paragraphProperties;
+        private Dictionary<TextPositionsPair, List<string>> collapsedLines;
         private TextUpdater updatingAlgorithm;
         private TextRemover removingAlgorithm;
+        private TextCollapser collapsingAlgorithm;
 
         #endregion
 
         #region properties
 
-        public IList<string> Lines => textSources.Select(ts => string.Copy(ts.Text)).ToList();
+        public IEnumerable<string> VisibleTextLines => textSources.Select(source => source.Text);
+
+        public IEnumerable<string> AllTextLines => textSources.Select(source => source.Text);
 
         public TextPosition ActivePosition { get; private set; } = new TextPosition(column: 0, line: 0);
 
@@ -44,11 +46,11 @@ namespace CodeEditor.Views.Text {
         #region constructor
 
         public TextView() : base() {
-            formatter = TextFormatter.Create();
+            collapsedLines = new Dictionary<TextPositionsPair, List<string>>();
             textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()) };
-            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = TextConfiguration.GetGlobalTextRunProperties() };
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
+            collapsingAlgorithm = new TextCollapser();
         }
 
         #endregion
@@ -62,11 +64,16 @@ namespace CodeEditor.Views.Text {
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
         public void HandleTextFolding(FoldClickedMessage message) {
+            IEnumerable<int> linesToRedraw;
+
             if (message.State == FoldingStates.EXPANDED) {
-                ExpandTextRange(message.Area, message.OpeningTag, message.ClosingTag);
+                linesToRedraw = collapsingAlgorithm.ExpandTextRange(message, textSources);
             } else {
-                CollapseTextRange(message.Area, message.OpeningTag, message.ClosingTag);
+                linesToRedraw = collapsingAlgorithm.CollapseTextRange(message, textSources);
             }
+
+            UpdateTextData(null);
+            DrawLines(linesToRedraw);
         }
 
         #endregion
@@ -145,8 +152,8 @@ namespace CodeEditor.Views.Text {
         }
 
         private void UpdateSize() {
-            Height = Convert.ToInt32(Lines.Count * StringExtensions.GetCharSize().Height);
-            Width = Lines.Max(line => line.Length) * StringExtensions.GetCharSize().Width;
+            Height = Convert.ToInt32(VisibleTextLines.Count() * TextConfiguration.GetCharSize().Height);
+            Width = VisibleTextLines.Max(line => line.Length) * TextConfiguration.GetCharSize().Width;
         }
 
         private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
@@ -202,14 +209,6 @@ namespace CodeEditor.Views.Text {
             }
         }
 
-        private void CollapseTextRange(TextPositionsPair area, string openingTag, string closingTag) {
-            
-        }
-
-        private void ExpandTextRange(TextPositionsPair area, string openingTag, string closingTag) {
-            
-        }
-
         private void DrawLines(IEnumerable<int> lineIndices) {
             foreach (int index in lineIndices) {
                 DrawLine(index);
@@ -217,14 +216,10 @@ namespace CodeEditor.Views.Text {
         }
 
         private void DrawLine(int index) {
-            using (TextLine textLine = formatter.FormatLine(textSources[index], 0, 96 * 6, paragraphProperties, null)) {
-                double top = index * textLine.Height;
-
-                if (index < visuals.Count) {
-                    ((VisualElement)visuals[index]).Redraw(textLine, top);
-                } else {
-                    visuals.Add(new VisualElement(textLine, top, index));
-                }
+            if (index < visuals.Count) {
+                ((VisualTextLine)visuals[index]).Redraw();
+            } else {
+                visuals.Add(VisualTextLine.Create(textSources[index], index));
             }
         }
 

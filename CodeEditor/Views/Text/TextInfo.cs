@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Views.Text {
@@ -20,29 +21,29 @@ namespace CodeEditor.Views.Text {
 
         #region public methods
 
-        public char GetCharAt(TextPosition position) => textView.Lines[position.Line][position.Column];
+        public char GetCharAt(TextPosition position) => textView.VisibleTextLines.ElementAt(position.Line)[position.Column];
 
-        public int GetTextLinesCount() => textView.Lines.Count;
+        public int GetTextLinesCount() => textView.VisibleTextLines.Count();
 
-        public int GetTextLineLength(int index) => index < textView.Lines.Count ? textView.Lines[index].Length : 0;
+        public int GetTextLineLength(int index) => index < textView.VisibleTextLines.Count() ? textView.VisibleTextLines.ElementAt(index).Length : 0;
 
-        public string GetTextLine(int index) => index >= textView.Lines.Count ? string.Empty : textView.Lines[index];
+        public string GetTextLine(int index) => index >= textView.VisibleTextLines.Count() ? string.Empty : textView.VisibleTextLines.ElementAt(index);
 
-        public IEnumerable<string> GetAllTextLines() => textView.Lines;
+        public IEnumerable<string> GetAllTextLines() => textView.VisibleTextLines;
 
         public IEnumerable<string> GetTextPartsBetweenPositions(TextPosition startPosition, TextPosition endPosition) {
             var parts = new string[(endPosition.Line - startPosition.Line) + 1];
             int middleIndex = 0;
 
             if (startPosition.Line == endPosition.Line) {
-                parts[0] = textView.Lines[startPosition.Line].Substring(startPosition.Column, endPosition.Column - startPosition.Column);
+                parts[0] = textView.VisibleTextLines.ElementAt(startPosition.Line).Substring(startPosition.Column, endPosition.Column - startPosition.Column);
             } else {
-                parts[0] = textView.Lines[startPosition.Line].Substring(startPosition.Column);
-                parts[parts.Length - 1] = textView.Lines[endPosition.Line].Substring(0, endPosition.Column);
+                parts[0] = textView.VisibleTextLines.ElementAt(startPosition.Line).Substring(startPosition.Column);
+                parts[parts.Length - 1] = textView.VisibleTextLines.ElementAt(endPosition.Line).Substring(0, endPosition.Column);
                 middleIndex = 1;
             }
             for (int i = startPosition.Line + 1; i < endPosition.Line; i++, middleIndex++) {
-                parts[middleIndex] = textView.Lines[i];
+                parts[middleIndex] = textView.VisibleTextLines.ElementAt(i);
             }
 
             return parts;

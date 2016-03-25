@@ -1,13 +1,13 @@
 ﻿using System.Windows.Media;
 using CodeEditor.Algorithms.Folding;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 
 namespace CodeEditor.Configuration {
     internal static class EditorConfiguration {
 
-        public static int GetLinesColumnWidth() => ((int)StringExtensions.GetCharSize().Width) * 5;
+        public static int GetLinesColumnWidth() => ((int)TextConfiguration.GetCharSize().Width) * 5;
 
-        public static int GetFoldingColumnWidth() => ((int)StringExtensions.GetCharSize().Width) * 3;
+        public static int GetFoldingColumnWidth() => ((int)TextConfiguration.GetCharSize().Width) * 3;
 
         public static int GetTextAreaLeftMargin() => GetLinesColumnWidth() + GetFoldingColumnWidth();
 

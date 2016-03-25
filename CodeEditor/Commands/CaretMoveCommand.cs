@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
@@ -59,7 +60,7 @@ namespace CodeEditor.Commands {
                 newPos = caretView.GetNextPosition(keyboardEvent.Key);
                 keyboardEvent.Handled = true;
             } else if (mouseEvent != null) {
-                newPos = mouseEvent.GetPosition(textView).GetDocumentPosition();
+                newPos = mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize());
             }
             if (newPos == null) {
                 return;
@@ -104,7 +105,7 @@ namespace CodeEditor.Commands {
         }
 
         private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
-            var docPosition = mouseEvent.GetPosition(textView).GetDocumentPosition();
+            var docPosition = mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
             if (docPosition.Line < 0 || docPosition.Line >= textInfo.GetTextLinesCount()) {
                 return false;

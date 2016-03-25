@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 using CodeEditor.Views.BaseClasses;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
@@ -111,8 +112,10 @@ namespace CodeEditor.Views.Selection {
                 }
 
                 pairs.Add(new PointsPair {
-                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent().AlignToVisualLineTop(),
-                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent().AlignToVisualLineBottom()
+                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                                  .AlignToVisualLineTop(TextConfiguration.GetCharSize()),
+                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                            .AlignToVisualLineBottom(TextConfiguration.GetCharSize())
                 });
             }
 
@@ -140,8 +143,10 @@ namespace CodeEditor.Views.Selection {
                 }
 
                 pairs.Add(new PointsPair {
-                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent().AlignToVisualLineTop(),
-                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent().AlignToVisualLineBottom()
+                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                                  .AlignToVisualLineTop(TextConfiguration.GetCharSize()),
+                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                            .AlignToVisualLineBottom(TextConfiguration.GetCharSize())
                 });
             }
 

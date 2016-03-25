@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 
@@ -70,7 +70,7 @@ namespace CodeEditor.Views.Lines {
         #region methods
 
         private void UpdateSize() {
-            double h = linesCount * StringExtensions.GetCharSize().Height;
+            double h = linesCount * TextConfiguration.GetCharSize().Height;
 
             if (h > ActualHeight) {
                 Height = h;

@@ -5,8 +5,8 @@ using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.TextProperties;
 using CodeEditor.Views.Text;
+using CodeEditor.Visuals;
 
 namespace CodeEditor.Tests {
     [TestClass]

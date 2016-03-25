@@ -1,18 +1,10 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using CodeEditor.Configuration;
 
-namespace CodeEditor.Extensions {
+namespace CodeEditor.Core.Extensions {
     public static class StringExtensions {
-
-        #region fields
-
-        private static Size? charSize;
-
-        #endregion
 
         #region public methods
 
@@ -24,21 +16,6 @@ namespace CodeEditor.Extensions {
             var ft = new FormattedText(text ?? string.Empty, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, fontSize, Brushes.Black);
 
             return new Size(ft.Width, ft.Height);
-        }
-
-        public static Size GetCharSize() {
-            if (charSize == null) {
-                var s = "X".GetScreenSize(
-                    TextConfiguration.GetFontFamily(),
-                    TextConfiguration.GetFontSize(),
-                    TextConfiguration.GetFontStyle(),
-                    TextConfiguration.GetFontWeight(),
-                    TextConfiguration.GetFontStretch());
-
-                charSize = new Size(s.Width, s.Height);
-            }
-
-            return charSize.Value;
         }
 
         #endregion

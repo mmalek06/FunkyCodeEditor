@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
@@ -30,7 +30,7 @@ namespace CodeEditor.Views.Caret {
             Symbol = GetSymbol();
             runProperties = TextConfiguration.GetGlobalTextRunProperties(); 
             textSource = new SimpleTextSource(Symbol, runProperties);
-            charSize = StringExtensions.GetCharSize();
+            charSize = TextConfiguration.GetCharSize();
         }
 
         #endregion

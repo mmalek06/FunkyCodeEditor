@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.TextProperties;
+using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextUpdater {

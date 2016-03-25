@@ -55,14 +55,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithms\TextManipulation\TextCollapser.cs" />
+    <Compile Include="Configuration\EditorConfiguration.cs" />
+    <Compile Include="Configuration\GlobalConstants.cs" />
+    <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Messaging\FoldClickedMessage.cs" />
     <Compile Include="Messaging\LineRemovedMessage.cs" />
     <Compile Include="Controls\HelperViewsWrapper.cs" />
-    <Compile Include="Messaging\IMessageReceiver.cs" />
     <Compile Include="Messaging\LineClickedMessage.cs" />
     <Compile Include="Messaging\TextAddedMessage.cs" />
     <Compile Include="Messaging\Postbox.cs" />
     <Compile Include="Messaging\TextRemovedMessage.cs" />
+    <Compile Include="Visuals\CollapsedVisualTextLine.cs" />
+    <Compile Include="Visuals\SingleVisualTextLine.cs" />
     <Compile Include="Views\BaseClasses\ViewBase.cs" />
     <Compile Include="Views\Folding\FoldingView.cs" />
     <Compile Include="Views\Lines\LinesView.cs" />
@@ -80,7 +85,6 @@
     <Compile Include="Commands\UndoEnterTextCommand.cs" />
     <Compile Include="Commands\UndoRemoveTextCommand.cs" />
     <Compile Include="Controls\InputPanel.cs" />
-    <Compile Include="Configuration\EditorConfiguration.cs" />
     <Compile Include="Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
@@ -88,14 +92,8 @@
     <Compile Include="Events\CaretMovedEventHandler.cs" />
     <Compile Include="Events\TextChangedEventArgs.cs" />
     <Compile Include="Events\TextChangedEventHandler.cs" />
-    <Compile Include="Extensions\HashSetExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Commands\ViewState.cs" />
-    <Compile Include="Extensions\TextPositionExtensions.cs" />
     <Compile Include="Views\Caret\VisualElement.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
     <Compile Include="Algorithms\Folding\FoldingStates.cs" />
     <Compile Include="Views\Folding\VisualElementCodeSnippet.cs" />
@@ -111,12 +109,12 @@
     <Compile Include="Views\BaseClasses\InputViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
     <Compile Include="Controls\InputViewsWrapper.cs" />
-    <Compile Include="TextProperties\SimpleTextSource.cs" />
-    <Compile Include="Configuration\TextConfiguration.cs" />
+    <Compile Include="Visuals\SimpleTextSource.cs" />
     <Compile Include="Views\Caret\CaretView.cs" />
     <Compile Include="Views\Text\VisualElement.cs" />
     <Compile Include="Views\Text\TextView.cs" />
     <Compile Include="Visuals\VisualElementSymbolBase.cs" />
+    <Compile Include="Visuals\VisualTextLine.cs" />
     <Page Include="Editor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

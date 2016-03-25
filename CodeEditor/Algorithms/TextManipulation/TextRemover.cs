@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.TextProperties;
+using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextRemover {

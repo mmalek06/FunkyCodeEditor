@@ -10,7 +10,7 @@ using CodeEditor.Views.Folding;
 using CodeEditor.Views.Lines;
 
 namespace CodeEditor.Controls {
-    internal class HelperViewsWrapper : StackPanel, IMessageReceiver {
+    internal class HelperViewsWrapper : StackPanel {
 
         #region fields
 
@@ -26,33 +26,12 @@ namespace CodeEditor.Controls {
             views = new List<HelperViewBase>();
             Orientation = Orientation.Horizontal;
 
-            Postbox.Subscribe(this);
-        }
-
-        #endregion
-
-        #region public methods
-
-        public void Receive<TMessage>(TMessage message) {
-            if (message is TextAddedMessage) {
-                var m = message as TextAddedMessage;
-
-                foreach (var view in views) {
-                    view.HandleTextInput(m.Text, m.Position);
-                }
-            } else if (message is TextRemovedMessage) {
-                var m = message as TextRemovedMessage;
-
-                foreach (var view in views) {
-                    view.HandleTextRemove(m.RemovedText, m.Key, m.Position);
-                }
-            } else if (message is LineRemovedMessage) {
-                var m = message as LineRemovedMessage;
-
-                foreach (var view in views) {
-                    view.HandleLineRemove(m.Key, m.Position, m.LineLength);
-                }
-            }
+            Postbox.Instance.For(typeof(TextAddedMessage))
+                            .Invoke(OnTextAdded)
+                            .For(typeof(TextRemovedMessage))
+                            .Invoke(OnTextRemoved)
+                            .For(typeof(LineRemovedMessage))
+                            .Invoke(OnLineRemoved);
         }
 
         #endregion
@@ -70,6 +49,30 @@ namespace CodeEditor.Controls {
 
             if (linesView == null && foldingView == null) {
                 SetupViews();
+            }
+        }
+
+        private void OnLineRemoved(object message) {
+            var m = message as LineRemovedMessage;
+
+            foreach (var view in views) {
+                view.HandleLineRemove(m.Key, m.Position, m.LineLength);
+            }
+        }
+
+        private void OnTextRemoved(object message) {
+            var m = message as TextRemovedMessage;
+
+            foreach (var view in views) {
+                view.HandleTextRemove(m.RemovedText, m.Key, m.Position);
+            }
+        }
+
+        private void OnTextAdded(object message) {
+            var m = message as TextAddedMessage;
+
+            foreach (var view in views) {
+                view.HandleTextInput(m.Text, m.Position);
             }
         }
 

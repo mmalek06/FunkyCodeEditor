@@ -5,7 +5,7 @@ using System.Windows.Input;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Extensions;
+using CodeEditor.Core.Extensions;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 
@@ -66,13 +66,13 @@ namespace CodeEditor.Views.Folding {
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
-            var position = e.GetPosition(this).GetDocumentPosition();
+            var position = e.GetPosition(this).GetDocumentPosition(TextConfiguration.GetCharSize());
             var folding = foldingPositions.Keys.FirstOrDefault(foldingInfo => foldingInfo.Position.Line == position.Line);
 
             if (folding != null) {
                 var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
 
-                Postbox.Send(new FoldClickedMessage {
+                Postbox.Instance.Send(new FoldClickedMessage {
                     Area = new TextPositionsPair {
                         StartPosition = folding.Position,
                         EndPosition = foldingPositions[folding].Position
@@ -136,7 +136,7 @@ namespace CodeEditor.Views.Folding {
 
             foreach (var kvp in GetClosedFoldingInfos()) {
                 var symbol = new VisualElementSymbol();
-                int top = (int)kvp.Key.Position.GetPositionRelativeToParent().Y;
+                int top = (int)kvp.Key.Position.GetPositionRelativeToParent(TextConfiguration.GetCharSize()).Y;
 
                 symbol.DrawFolding(kvp.Key.State, top);
 
