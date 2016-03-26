@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using CodeEditor.Messaging;
 
 namespace CodeEditor.Views.BaseClasses {
     internal abstract class InputViewBase : ViewBase {
@@ -9,6 +10,12 @@ namespace CodeEditor.Views.BaseClasses {
         public InputViewBase() : base() {
             Focusable = true;
         }
+
+        #endregion
+
+        #region public methods
+
+        public abstract void HandleTextFolding(FoldClickedMessage message);
 
         #endregion
 

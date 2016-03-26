@@ -62,7 +62,10 @@ namespace CodeEditor.Views.Lines {
 
             if (m.State == Algorithms.Folding.FoldingStates.FOLDED) {
                 linesCount -= diff;
-                RedrawLines(TextInputType.REMOVE);
+
+                for (int i = 0; i < diff; i++) {
+                    RedrawLines(TextInputType.REMOVE);
+                }
             } else {
                 linesCount += diff;
                 RedrawLines(TextInputType.ADD);

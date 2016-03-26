@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
+using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
@@ -65,6 +66,8 @@ namespace CodeEditor.Views.Selection {
         #region event handlers
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Deselect();
+
+        public override void HandleTextFolding(FoldClickedMessage message) => Deselect();
 
         #endregion
 

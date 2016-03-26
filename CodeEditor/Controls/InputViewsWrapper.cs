@@ -112,7 +112,9 @@ namespace CodeEditor.Controls {
         private void OnFoldClicked(object message) {
             var m = message as FoldClickedMessage;
 
-            textView.HandleTextFolding(m);
+            foreach (var view in views) {
+                view.HandleTextFolding(m);
+            }
         }
 
         #endregion

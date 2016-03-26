@@ -61,7 +61,7 @@ namespace CodeEditor.Views.Text {
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
-        public void HandleTextFolding(FoldClickedMessage message) {
+        public override void HandleTextFolding(FoldClickedMessage message) {
             if (message.State == FoldingStates.EXPANDED) {
                 ExpandText(message);
             } else {
@@ -118,6 +118,7 @@ namespace CodeEditor.Views.Text {
             visuals[message.Area.StartPosition.Line] = collapsedLine;
 
             DrawLine(message.Area.StartPosition.Line);
+            UpdateCursorPosition(message.Area.StartPosition);
         }
 
         public void ExpandText(FoldClickedMessage message) {

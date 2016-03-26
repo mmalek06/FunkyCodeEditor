@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Events;
+using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
@@ -66,6 +67,8 @@ namespace CodeEditor.Views.Caret {
         #region event handlers
 
         public void HandleTextChange(object sender, TextChangedEventArgs e) => MoveCaret(new TextPosition(column: e.CurrentColumn, line: e.CurrentLine));
+
+        public override void HandleTextFolding(FoldClickedMessage message) => MoveCaret(message.Area.StartPosition);
 
         #endregion
 
