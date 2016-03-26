@@ -36,14 +36,15 @@ namespace CodeEditor.Commands {
             if (!removalKeys.Contains(e.Key)) {
                 return false;
             }
-            if (e.Key == Key.Delete && view.ActivePosition.Line == textInfo.GetTextLinesCount() - 1 && view.ActivePosition.Column == textInfo.GetTextLineLength(view.ActivePosition.Line)) { 
+
+            var area = selectionView.GetCurrentSelectionArea();
+
+            if (e.Key == Key.Delete && view.ActivePosition.Line == textInfo.GetTextLinesCount() - 1 && view.ActivePosition.Column == textInfo.GetTextLineLength(view.ActivePosition.Line) && area == null) { 
                 return false;
             }
             if (e.Key == Key.Back && view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
                 return false;
             }
-
-            var area = selectionView.GetCurrentSelectionArea();
 
             if (area != null && area.StartPosition != null && area.EndPosition != null) {
                 return area.StartPosition != area.EndPosition;
@@ -66,6 +67,10 @@ namespace CodeEditor.Commands {
             if (selectionArea == null) {
                 removedText = GetRemovedText(key);
                 
+                if (removedText == string.Empty) {
+                    removedLinesCount = 1;
+                }
+
                 view.RemoveText(key);
             } else {
                 removedText = string.Join("", textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
