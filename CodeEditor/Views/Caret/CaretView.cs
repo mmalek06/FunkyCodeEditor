@@ -77,7 +77,6 @@ namespace CodeEditor.Views.Caret {
         public void MoveCursor(TextPosition newPos) {
             var oldPos = caretPosition;
 
-            GetCursorNotExceedingTextBounds(newPos);
             MoveCaret(newPos);
             TriggerCaretMoved(newPos, oldPos);
         }
@@ -107,24 +106,6 @@ namespace CodeEditor.Views.Caret {
         #endregion
 
         #region methods
-
-        private TextPosition GetCursorNotExceedingTextBounds(TextPosition newPos) {
-            int column = -1;
-            int line = -1;
-
-            if (newPos.Line < 0) {
-                line = 0;
-                column = textInfo.GetTextLineLength(0);
-            } else if (newPos.Line >= textInfo.GetTextLinesCount()) {
-                line = textInfo.GetTextLinesCount() - 1;
-                column = textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1);
-            }
-            if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
-                column = textInfo.GetTextLineLength(newPos.Line);
-            }
-
-            return new TextPosition(column: column > -1 ? column : newPos.Column, line: line > -1 ? line : newPos.Line);
-        }
 
         private void DrawCaret() {
             blinkTimer.Stop();
