@@ -58,7 +58,7 @@ namespace CodeEditor.Tests.TextViewTests {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.EndPosition, selectionArea.StartPosition);
+            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }

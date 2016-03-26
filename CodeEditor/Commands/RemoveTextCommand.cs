@@ -39,18 +39,14 @@ namespace CodeEditor.Commands {
             if (e.Key == Key.Delete && view.ActivePosition.Line == textInfo.GetTextLinesCount() - 1 && view.ActivePosition.Column == textInfo.GetTextLineLength(view.ActivePosition.Line)) { 
                 return false;
             }
-            
-            selectionView.Select(view.ActivePosition);
-
-            if (e.Key == Key.Delete) {
-                selectionView.Select(new TextPosition(column: textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1), line: textInfo.GetTextLinesCount() - 1));
-            } else {
-                selectionView.Select(new TextPosition(column: 0, line: 0));
-            }
 
             var area = selectionView.GetCurrentSelectionArea();
 
-            return area.StartPosition != area.EndPosition;
+            if (area != null && area.StartPosition != null && area.EndPosition != null) {
+                return area.StartPosition != area.EndPosition;
+            }
+
+            return true;
         }
 
         public override void Execute(object parameter) {

@@ -65,7 +65,23 @@ namespace CodeEditor.Tests {
             });
 
             Assert.AreEqual(text4, newLines.LinesToChange.First().Value);
-            Assert.IsTrue(Enumerable.SequenceEqual((new[] { 0, 1 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.OrderBy(key => key).ToArray()));
+            Assert.IsTrue(Enumerable.SequenceEqual((new[] { 0, 1, 2 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.OrderBy(key => key).ToArray()));
+        }
+
+        [TestMethod]
+        public void OneNonEmptyLineEnteredText2SelectedBackspacePressed_LineShouldBeText1Text3() {
+            string text1 = "some ";
+            string text2 = "text";
+            string text3 = " asdf";
+            var textSources = new List<SimpleTextSource> {
+                new SimpleTextSource(text1 + text2 + text3, runProperties)
+            };
+            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+                StartPosition = new TextPosition(column: 5, line: 0),
+                EndPosition = new TextPosition(column: 9, line: 0)
+            });
+
+            Assert.AreEqual(text1 + text3, newLines.LinesToChange.First().Value);
         }
 
         [TestMethod]
@@ -189,7 +205,7 @@ namespace CodeEditor.Tests {
             });
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
-            Assert.AreEqual(3, removedLinesIndexes.Length);
+            Assert.AreEqual(4, removedLinesIndexes.Length);
             Assert.AreEqual(1, newLines.LinesToChange.Count());
             Assert.AreEqual(text1 + text6, newLines.LinesToChange.ElementAt(0).Value);
         }

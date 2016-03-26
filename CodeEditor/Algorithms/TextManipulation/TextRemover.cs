@@ -15,6 +15,13 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 StartPosition = orderedRanges[0],
                 EndPosition = orderedRanges[1]
             };
+            int rangeEnd = -1;
+
+            if (pair.StartPosition.Line == pair.EndPosition.Line) {
+                rangeEnd = pair.EndPosition.Line;
+            } else {
+                rangeEnd = pair.EndPosition.Line + 1;
+            }
 
             return new LinesRemovalInfo {
                 LinesToChange = new Dictionary<TextPosition, string> {
@@ -22,7 +29,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                         string.Concat(textSources[pair.StartPosition.Line].Text.Take(pair.StartPosition.Column)) +
                         string.Concat(textSources[pair.EndPosition.Line].Text.Skip(pair.EndPosition.Column))
                 },
-                LinesToRemove = Enumerable.Range(pair.StartPosition.Line, pair.EndPosition.Line)
+                LinesToRemove = Enumerable.Range(pair.StartPosition.Line, rangeEnd)
             };
         }
 

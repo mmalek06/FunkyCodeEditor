@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
@@ -50,10 +51,10 @@ namespace CodeEditor.Views.Selection {
             if (lastSelectionStart == null || lastSelectionEnd == null) {
                 return null;
             }
-
+            
             return new TextPositionsPair {
-                StartPosition = lastSelectionStart,
-                EndPosition = lastSelectionEnd
+                StartPosition = lastSelectionStart <= lastSelectionEnd ? lastSelectionStart : lastSelectionEnd,
+                EndPosition = lastSelectionStart <= lastSelectionEnd ? lastSelectionEnd : lastSelectionStart
             };
         }
 
