@@ -43,14 +43,12 @@ namespace CodeEditor.Commands {
             selectionView.Select(view.ActivePosition);
 
             if (e.Key == Key.Delete) {
-                selectionView.Select(new Core.DataStructures.TextPosition(column: textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1), line: textInfo.GetTextLinesCount() - 1));
+                selectionView.Select(new TextPosition(column: textInfo.GetTextLineLength(textInfo.GetTextLinesCount() - 1), line: textInfo.GetTextLinesCount() - 1));
             } else {
-                selectionView.Select(new Core.DataStructures.TextPosition(column: 0, line: 0));
+                selectionView.Select(new TextPosition(column: 0, line: 0));
             }
 
             var area = selectionView.GetCurrentSelectionArea();
-
-            selectionView.Deselect();
 
             return area.StartPosition != area.EndPosition;
         }
