@@ -85,7 +85,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.TransformLines(textSources, ActivePosition, key);
+            var removalInfo = removingAlgorithm.RemoveLines(textSources, ActivePosition, key);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -97,7 +97,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(TextPositionsPair ranges) {
-            var removalInfo = removingAlgorithm.TransformLines(textSources, ranges);
+            var removalInfo = removingAlgorithm.RemoveLines(textSources, ranges);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);

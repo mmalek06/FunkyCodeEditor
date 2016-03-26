@@ -30,7 +30,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text1, runProperties),
                 new SimpleTextSource(text2, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
 
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value);
         }
@@ -43,7 +43,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text1, runProperties),
                 new SimpleTextSource(text2, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPosition(column: 0, line: 1), Key.Back);
+            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 0, line: 1), Key.Back);
 
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value);
         }
@@ -59,13 +59,30 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text2, runProperties),
                 new SimpleTextSource(text3 + text4, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new Core.DataStructures.TextPositionsPair {
+            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 0, line: 0),
                 EndPosition = new TextPosition(column: 24, line: 2)
             });
 
             Assert.AreEqual(text4, newLines.LinesToChange.First().Value);
             Assert.IsTrue(Enumerable.SequenceEqual((new[] { 0, 1 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.OrderBy(key => key).ToArray()));
+        }
+
+        [TestMethod]
+        public void ThreeLinesEnteredBackspacePressedOnTheSecondOne_LinesShouldBeText1Text3AndLinesToRemoveShouldBeLast() {
+            string text1 = "a";
+            string text2 = "";
+            string text3 = "b";
+            var textSources = new List<SimpleTextSource> {
+                new SimpleTextSource(text1, runProperties),
+                new SimpleTextSource(text2, runProperties),
+                new SimpleTextSource(text3, runProperties)
+            };
+            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 0, line: 1), Key.Back);
+
+            Assert.IsTrue(Enumerable.SequenceEqual((new[] { 2 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.ToArray()));
+            Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
+            Assert.AreEqual(text3, newLines.LinesToChange.Last().Value);
         }
 
         [TestMethod]
@@ -79,7 +96,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text2, runProperties),
                 new SimpleTextSource(text3, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -101,9 +118,9 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text3, runProperties)
             };
 
-            algorithm.TransformLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
 
-            var newLines = algorithm.TransformLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -121,7 +138,7 @@ namespace CodeEditor.Tests {
             var textSources = new List<SimpleTextSource> {
                 new SimpleTextSource(text1 + text2 + text3, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 4, line: 0),
                 EndPosition = new TextPosition(column: 8, line: 0)
             });
@@ -141,7 +158,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text1 + text2 + text3, runProperties),
                 new SimpleTextSource(text4, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 6, line: 0)
             });
@@ -166,7 +183,7 @@ namespace CodeEditor.Tests {
                 new SimpleTextSource(text4, runProperties),
                 new SimpleTextSource(text5 + text6, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 2, line: 3)
             });
@@ -184,7 +201,7 @@ namespace CodeEditor.Tests {
             var textSources = new List<SimpleTextSource> {
                 new SimpleTextSource(text1 + text2, runProperties)
             };
-            var newLines = algorithm.TransformLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 4, line: 0)
             });

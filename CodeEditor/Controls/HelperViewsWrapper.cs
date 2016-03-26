@@ -55,7 +55,7 @@ namespace CodeEditor.Controls {
         }
 
         private void OnLineRemoved(object message) {
-            var m = message as LineRemovedMessage;
+            var m = (LineRemovedMessage)message;
 
             foreach (var view in views) {
                 view.HandleLineRemove(m.Key, m.Position, m.LineLength);
@@ -63,7 +63,7 @@ namespace CodeEditor.Controls {
         }
 
         private void OnTextRemoved(object message) {
-            var m = message as TextRemovedMessage;
+            var m = (TextRemovedMessage)message;
 
             foreach (var view in views) {
                 view.HandleTextRemove(m.RemovedText, m.Key, m.Position);
@@ -71,15 +71,15 @@ namespace CodeEditor.Controls {
         }
 
         private void OnTextAdded(object message) {
-            var m = message as TextAddedMessage;
+            var m = (TextAddedMessage)message;
 
             foreach (var view in views) {
                 view.HandleTextInput(m.Text, m.Position);
             }
         }
 
-        private void OnFoldClicked(object obj) {
-            var m = obj as FoldClickedMessage;
+        private void OnFoldClicked(object message) {
+            var m = (FoldClickedMessage)message;
 
             linesView.HandleFoldRemove(m);
         }

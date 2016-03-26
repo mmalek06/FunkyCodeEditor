@@ -9,7 +9,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public LinesRemovalInfo TransformLines(IList<SimpleTextSource> textSources, TextPositionsPair range) {
+        public LinesRemovalInfo RemoveLines(IList<SimpleTextSource> textSources, TextPositionsPair range) {
             var orderedRanges = (new[] { range.StartPosition, range.EndPosition }).OrderBy(elem => elem.Line).ThenBy(elem => elem.Column).ToArray();
             var pair = new TextPositionsPair {
                 StartPosition = orderedRanges[0],
@@ -26,7 +26,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        public LinesRemovalInfo TransformLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, Key key) {
+        public LinesRemovalInfo RemoveLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, Key key) {
             if (key == Key.Delete) {
                 bool isStartEqToTextLen = startingTextPosition.Column == textSources[startingTextPosition.Line].Text.Length;
 
@@ -92,7 +92,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
             return new LinesRemovalInfo {
                 LinesToChange = linesAffected,
-                LinesToRemove = new[] { startingTextPosition.Line }
+                LinesToRemove = new[] { textSources.Count - 1 }
             };
         }
 
