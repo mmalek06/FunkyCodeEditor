@@ -31,7 +31,9 @@ namespace CodeEditor.Controls {
                             .For(typeof(TextRemovedMessage))
                             .Invoke(OnTextRemoved)
                             .For(typeof(LineRemovedMessage))
-                            .Invoke(OnLineRemoved);
+                            .Invoke(OnLineRemoved)
+                            .For(typeof(FoldClickedMessage))
+                            .Invoke(OnFoldClicked);
         }
 
         #endregion
@@ -74,6 +76,12 @@ namespace CodeEditor.Controls {
             foreach (var view in views) {
                 view.HandleTextInput(m.Text, m.Position);
             }
+        }
+
+        private void OnFoldClicked(object obj) {
+            var m = obj as FoldClickedMessage;
+
+            linesView.HandleFoldRemove(m);
         }
 
         #endregion

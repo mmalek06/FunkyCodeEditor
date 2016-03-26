@@ -1,9 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
+using CodeEditor.Messaging;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 
@@ -55,6 +57,20 @@ namespace CodeEditor.Views.Lines {
                 RedrawLines(TextInputType.ADD);
                 UpdateSize();
             }
+        }
+
+        public void HandleFoldRemove(FoldClickedMessage m) {
+            int diff = m.Area.EndPosition.Line - m.Area.StartPosition.Line;
+
+            if (m.State == Algorithms.Folding.FoldingStates.FOLDED) {
+                linesCount -= diff;
+                RedrawLines(TextInputType.REMOVE);
+            } else {
+                linesCount += diff;
+                RedrawLines(TextInputType.ADD);
+            }
+
+            UpdateSize();
         }
 
         protected override void OnRender(DrawingContext drawingContext) {

@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Events;
-using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Configuration;
 using CodeEditor.Views.BaseClasses;
-using System;
 using CodeEditor.Messaging;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Visuals;
@@ -64,16 +62,11 @@ namespace CodeEditor.Views.Text {
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
         public void HandleTextFolding(FoldClickedMessage message) {
-            IEnumerable<int> linesToRedraw;
-
             if (message.State == FoldingStates.EXPANDED) {
-                linesToRedraw = collapsingAlgorithm.ExpandTextRange(message, textSources);
+                ExpandText(message);
             } else {
-                linesToRedraw = collapsingAlgorithm.CollapseTextRange(message, textSources);
+                CollapseText(message);
             }
-
-            UpdateTextData(null);
-            DrawLines(linesToRedraw);
         }
 
         #endregion
@@ -110,6 +103,25 @@ namespace CodeEditor.Views.Text {
                 DeleteText(removalInfo);
                 UpdateSize();
             }
+        }
+
+        public void CollapseText(FoldClickedMessage message) {
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, textSources, message.Area.StartPosition.Line);
+            var removeTextRange = new TextPositionsPair {
+                StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
+                EndPosition = new TextPosition(column: textSources[message.Area.EndPosition.Line].Text.Length, line: message.Area.EndPosition.Line)
+            };
+
+            RemoveText(removeTextRange);
+
+            visuals[message.Area.StartPosition.Line] = null;
+            visuals[message.Area.StartPosition.Line] = collapsedLine;
+
+            DrawLine(message.Area.StartPosition.Line);
+        }
+
+        public void ExpandText(FoldClickedMessage message) {
+            collapsingAlgorithm.ExpandTextRange(message.Area, textSources, ActivePosition.Line);
         }
 
         public void TriggerTextChanged() {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Messaging;
-using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
@@ -13,11 +8,15 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public IEnumerable<int> CollapseTextRange(FoldClickedMessage message, IEnumerable<SimpleTextSource> textSources) {
-            return null;
+        public VisualTextLine CollapseTextRange(TextPositionsPair area, IEnumerable<SimpleTextSource> textSources, int index) {
+            var middlePart = textSources.Skip(area.StartPosition.Line).Take(area.EndPosition.Line - area.StartPosition.Line);
+            string precedingText = new string(textSources.ElementAt(area.StartPosition.Line).Text.Take(area.StartPosition.Column).ToArray());
+            string followingText = new string(textSources.ElementAt(area.EndPosition.Line).Text.Skip(area.EndPosition.Column).ToArray());
+
+            return VisualTextLine.Create(middlePart, precedingText, followingText, index);
         }
 
-        public IEnumerable<int> ExpandTextRange(FoldClickedMessage message, IEnumerable<SimpleTextSource> textSources) {
+        public IEnumerable<VisualTextLine> ExpandTextRange(TextPositionsPair area, IEnumerable<SimpleTextSource> textSources, int index) {
             return null;
         }
 

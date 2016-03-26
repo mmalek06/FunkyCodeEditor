@@ -39,7 +39,10 @@ namespace CodeEditor.Messaging {
         #region public methods
 
         public Postbox For(Type messageType) {
-            messageToMethodsMap[messageType] = new List<Action<object>>();
+            if (!messageToMethodsMap.ContainsKey(messageType)) {
+                messageToMethodsMap[messageType] = new List<Action<object>>();
+            }
+
             lastMessageType = messageType;
 
             return this;

@@ -92,7 +92,7 @@ namespace CodeEditor.Algorithms.Folding {
         private TextPosition DeleteFoldForClosePosition(TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             var pair = foldingPositions.Where(kvp => kvp.Value == position).FirstOrDefault();
 
-            return !pair.Equals(default(KeyValuePair<TextPosition, TextPosition>)) ? pair.Key : null;
+            return pair.Key;
         }
 
         #endregion

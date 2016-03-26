@@ -13,11 +13,18 @@ namespace CodeEditor.Visuals {
 
         private static SimpleParagraphProperties paragraphProperties;
 
+        protected string text;
+
         #endregion
 
         #region properties
 
         public int Index { get; set; }
+
+        public string Text {
+            get { return text; }
+            protected set { text = value; }
+        }
 
         protected TextFormatter Formatter => formatter;
 
@@ -37,6 +44,8 @@ namespace CodeEditor.Visuals {
         #region public methods
 
         public abstract void Redraw();
+
+        public abstract IEnumerable<SimpleTextSource> GetTextSources();
 
         public static VisualTextLine Create(string text, int index) {
             return Create(new SimpleTextSource(text, TextConfiguration.GetGlobalTextRunProperties()), index);

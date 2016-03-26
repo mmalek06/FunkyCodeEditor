@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media.TextFormatting;
 
 namespace CodeEditor.Visuals {
@@ -7,20 +8,20 @@ namespace CodeEditor.Visuals {
 
         #region fields
 
-        private SimpleTextSource textSourceBeforeCollapse;
+        private string textBeforeCollapse;
 
-        private SimpleTextSource textSourceAfterCollapse;
+        private string textAfterCollapse;
 
-        private List<SimpleTextSource> collapsedContent;
+        private List<string> collapsedContent;
 
         #endregion
 
         #region constructor
 
         public CollapsedVisualTextLine(IEnumerable<SimpleTextSource> textSourcesToCollapse, SimpleTextSource precedingSource, SimpleTextSource followingSource, int index) {
-            collapsedContent = new List<SimpleTextSource>(textSourcesToCollapse);
-            textSourceBeforeCollapse = precedingSource;
-            textSourceAfterCollapse = followingSource;
+            collapsedContent = new List<string>(textSourcesToCollapse.Select(source => source.Text));
+            textBeforeCollapse = precedingSource.Text;
+            textAfterCollapse = followingSource.Text;
             Index = index;
 
             Redraw();
@@ -30,16 +31,28 @@ namespace CodeEditor.Visuals {
 
         #region public methods
 
-        public IEnumerable<VisualTextLine> Expand() => collapsedContent.Select(source => Create(source, Index));
-
         public override void Redraw() {
-            /*using (TextLine textLine = Formatter.FormatLine(textSource, 0, 96 * 6, ParagraphProperties, null)) {
+            var runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
+
+            using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource("{...}", runProperties), 0, 96 * 6, ParagraphProperties, null)) {
                 double top = Index * textLine.Height;
 
                 using (var drawingContext = RenderOpen()) {
                     textLine.Draw(drawingContext, new Point(0, top), InvertAxes.None);
                 }
-            }*/
+            }
+        }
+
+        public override IEnumerable<SimpleTextSource> GetTextSources() {
+            var textSources = new List<SimpleTextSource>();
+            var runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
+
+            textSources.Add(new SimpleTextSource(textBeforeCollapse + collapsedContent[0], runProperties));
+            textSources.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 2)
+                                 select new SimpleTextSource(text, runProperties));
+            textSources.Add(new SimpleTextSource(collapsedContent.Last() + textAfterCollapse, runProperties));
+
+            return textSources;
         }
 
         #endregion
