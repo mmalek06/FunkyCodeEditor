@@ -60,7 +60,7 @@
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Messaging\FoldClickedMessage.cs" />
-    <Compile Include="Messaging\LineRemovedMessage.cs" />
+    <Compile Include="Messaging\LinesRemovedMessage.cs" />
     <Compile Include="Controls\HelperViewsWrapper.cs" />
     <Compile Include="Messaging\LineClickedMessage.cs" />
     <Compile Include="Messaging\TextAddedMessage.cs" />

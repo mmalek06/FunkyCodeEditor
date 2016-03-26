@@ -26,7 +26,7 @@ namespace CodeEditor.Views.BaseClasses {
 
         public virtual void HandleTextRemove(string removedText, Key key, TextPosition activePosition) { }
 
-        public virtual void HandleLineRemove(Key key, TextPosition activePosition, int lineLen) { }
+        public virtual void HandleLinesRemove(int count) { }
 
         protected override void OnRender(DrawingContext drawingContext) =>
             drawingContext.DrawRectangle(bgBrush, null, new Rect(0, 0, GetWidth(), ActualHeight));

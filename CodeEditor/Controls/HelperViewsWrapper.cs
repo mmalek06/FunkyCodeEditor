@@ -30,7 +30,7 @@ namespace CodeEditor.Controls {
                             .Invoke(OnTextAdded)
                             .For(typeof(TextRemovedMessage))
                             .Invoke(OnTextRemoved)
-                            .For(typeof(LineRemovedMessage))
+                            .For(typeof(LinesRemovedMessage))
                             .Invoke(OnLineRemoved)
                             .For(typeof(FoldClickedMessage))
                             .Invoke(OnFoldClicked);
@@ -55,10 +55,10 @@ namespace CodeEditor.Controls {
         }
 
         private void OnLineRemoved(object message) {
-            var m = (LineRemovedMessage)message;
+            var m = (LinesRemovedMessage)message;
 
             foreach (var view in views) {
-                view.HandleLineRemove(m.Key, m.Position, m.LineLength);
+                view.HandleLinesRemove(m.Count);
             }
         }
 

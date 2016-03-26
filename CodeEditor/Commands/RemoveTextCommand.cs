@@ -39,6 +39,9 @@ namespace CodeEditor.Commands {
             if (e.Key == Key.Delete && view.ActivePosition.Line == textInfo.GetTextLinesCount() - 1 && view.ActivePosition.Column == textInfo.GetTextLineLength(view.ActivePosition.Line)) { 
                 return false;
             }
+            if (e.Key == Key.Back && view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
+                return false;
+            }
 
             var area = selectionView.GetCurrentSelectionArea();
 
@@ -55,24 +58,24 @@ namespace CodeEditor.Commands {
             var selectionArea = selectionView.GetCurrentSelectionArea();
             var prevPosition = view.ActivePosition;
             int linesCountBeforeRemove = textInfo.GetTextLinesCount();
+            int removedLinesCount = 0;
             string removedText = string.Empty;
 
             UpdateCommandState(BeforeCommandExecutedState);
 
             if (selectionArea == null) {
                 removedText = GetRemovedText(key);
-
+                
                 view.RemoveText(key);
             } else {
                 removedText = string.Join("", textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
+                removedLinesCount = selectionArea.EndPosition.Line - selectionArea.StartPosition.Line;
 
                 view.RemoveText(selectionArea);
             }
             if (textInfo.GetTextLinesCount() < linesCountBeforeRemove) {
-                Postbox.Instance.Send(new LineRemovedMessage {
-                    Key = key,
-                    Position = prevPosition,
-                    LineLength = textInfo.GetTextLineLength(prevPosition.Line)
+                Postbox.Instance.Send(new LinesRemovedMessage {
+                    Count = removedLinesCount
                 });
             }
 

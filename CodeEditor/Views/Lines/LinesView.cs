@@ -39,16 +39,14 @@ namespace CodeEditor.Views.Lines {
 
         #region event handlers
 
-        public override void HandleLineRemove(Key key, TextPosition activePosition, int lineLen) {
-            if (key == Key.Back && activePosition.Column == 0) {
-                linesCount--;
+        public override void HandleLinesRemove(int count) {
+            linesCount -= count;
+
+            for (int i = 0; i < count; i++) {
                 RedrawLines(TextInputType.REMOVE);
-                UpdateSize();
-            } else if (key == Key.Delete) {
-                linesCount--;
-                RedrawLines(TextInputType.REMOVE);
-                UpdateSize();
             }
+
+            UpdateSize();
         }
 
         public override void HandleTextInput(string text, TextPosition activePosition) {
