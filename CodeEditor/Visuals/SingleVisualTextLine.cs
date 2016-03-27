@@ -47,9 +47,9 @@ namespace CodeEditor.Visuals {
             }
         }
 
-        public override IEnumerable<string> GetStringContents() => new[] { Text };
+        public override IReadOnlyCollection<string> GetStringContents() => new[] { Text };
 
-        public override IEnumerable<SimpleTextSource> GetTextSources() => new[] { textSource };
+        public override IReadOnlyCollection<SimpleTextSource> GetTextSources() => new[] { textSource };
 
         #endregion
 

@@ -3,7 +3,7 @@ using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class LinesRemovalInfo {
-        public IEnumerable<int> LinesToRemove { get; set; }
-        public IEnumerable<KeyValuePair<TextPosition, string>> LinesToChange { get; set; }
+        public IReadOnlyCollection<int> LinesToRemove { get; set; }
+        public IReadOnlyCollection<KeyValuePair<TextPosition, string>> LinesToChange { get; set; }
     }
 }

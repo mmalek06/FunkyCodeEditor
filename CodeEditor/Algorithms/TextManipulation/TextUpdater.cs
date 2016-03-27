@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextUpdater {
@@ -25,7 +24,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public IDictionary<int, string> UpdateLines(IList<string> lines, TextPosition startingTextPosition, string text) {
+        public IReadOnlyDictionary<int, string> UpdateLines(IReadOnlyList<string> lines, TextPosition startingTextPosition, string text) {
             var replacedText = SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextProperties.Properties.NEWLINE) {
@@ -43,7 +42,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region methods
 
-        private IDictionary<int, string> LineAdded(IList<string> lines, string text, TextPosition startingTextPosition) {
+        private IReadOnlyDictionary<int, string> LineAdded(IReadOnlyList<string> lines, string text, TextPosition startingTextPosition) {
             string textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
             string textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
             var transformations = new Dictionary<int, string> {
@@ -58,12 +57,12 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return transformations;
         }
 
-        private IDictionary<int, string> TextPasted(IList<string> lines, string text, TextPosition startingTextPosition) =>
+        private IReadOnlyDictionary<int, string> TextPasted(IReadOnlyList<string> lines, string text, TextPosition startingTextPosition) =>
             text.Split(TextProperties.Properties.NEWLINE[0])
                 .Select((line, index) => GetPositionWithText(line, index, startingTextPosition.Line, startingTextPosition.Column))
                 .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
 
-        private IDictionary<int, string> TabPressed(IList<string> lines, string text, TextPosition startingTextPosition) {
+        private IReadOnlyDictionary<int, string> TabPressed(IReadOnlyList<string> lines, string text, TextPosition startingTextPosition) {
             string textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
             string textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
 
@@ -72,7 +71,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private IDictionary<int, string> CharacterEntered(IList<string> lines, string text, TextPosition startingTextPosition) {
+        private IReadOnlyDictionary<int, string> CharacterEntered(IReadOnlyList<string> lines, string text, TextPosition startingTextPosition) {
             var currentTextLine = new StringBuilder();
 
             if (lines.Any()) {

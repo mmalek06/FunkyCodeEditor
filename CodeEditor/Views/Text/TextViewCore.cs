@@ -153,12 +153,13 @@ namespace CodeEditor.Views.Text {
             DrawLines(removalInfo.LinesToChange.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
         }
 
-        private void DeleteLines(IEnumerable<int> linesToRemove) {
+        private void DeleteLines(IReadOnlyCollection<int> linesToRemove) {
             RemoveLines(linesToRemove);
 
-            int textLen = Lines[linesToRemove.Min() - 1].Length;
+            int minLine = linesToRemove.Min() - 1;
+            int textLen = Lines[minLine].Length;
 
-            UpdateActivePosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: linesToRemove.Min() - 1));
+            UpdateActivePosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: minLine));
         }
 
         private void UpdateSize() {
@@ -200,7 +201,7 @@ namespace CodeEditor.Views.Text {
             ActivePosition = new TextPosition(column: column > -1 ? column : ActivePosition.Column, line: line > -1 ? line : ActivePosition.Line);
         }
 
-        private void RemoveLines(IEnumerable<int> indices) {
+        private void RemoveLines(IReadOnlyCollection<int> indices) {
             var visualsToRemove = new List<VisualTextLine>();
 
             foreach (var visual in visuals) {
@@ -215,7 +216,7 @@ namespace CodeEditor.Views.Text {
             }
         }
 
-        private void DrawLines(IDictionary<int, string> linesData) {
+        private void DrawLines(IReadOnlyDictionary<int, string> linesData) {
             foreach (var pair in linesData) {
                 DrawLine(pair.Key, pair.Value);
             }

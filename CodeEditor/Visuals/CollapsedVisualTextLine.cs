@@ -66,7 +66,7 @@ namespace CodeEditor.Visuals {
             }
         }
 
-        public override IEnumerable<string> GetStringContents() {
+        public override IReadOnlyCollection<string> GetStringContents() {
             var contents = new List<string>();
 
             contents.Add(textBeforeCollapse + collapsedContent[0]);
@@ -77,7 +77,7 @@ namespace CodeEditor.Visuals {
             return contents;
         }
 
-        public override IEnumerable<SimpleTextSource> GetTextSources() {
+        public override IReadOnlyCollection<SimpleTextSource> GetTextSources() {
             var textSources = new List<SimpleTextSource>();
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
 

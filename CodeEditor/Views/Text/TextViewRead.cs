@@ -13,7 +13,7 @@ namespace CodeEditor.Views.Text {
 
         public int LinesCount => visuals.Count;
 
-        public IList<string> Lines => GetTextPartsBetweenPositions(new TextPosition(column: 0, line: 0), new TextPosition(column: GetLineLength(LinesCount - 1), line: LinesCount - 1)).ToList();
+        public IReadOnlyList<string> Lines => GetTextPartsBetweenPositions(new TextPosition(column: 0, line: 0), new TextPosition(column: GetLineLength(LinesCount - 1), line: LinesCount - 1)).ToList();
 
         #endregion
 

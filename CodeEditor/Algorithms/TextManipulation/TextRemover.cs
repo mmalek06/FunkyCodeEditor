@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextRemover {
 
         #region public methods
 
-        public LinesRemovalInfo RemoveLines(IList<string> lines, TextPositionsPair range) {
+        public LinesRemovalInfo RemoveLines(IReadOnlyList<string> lines, TextPositionsPair range) {
             var orderedRanges = (new[] { range.StartPosition, range.EndPosition }).OrderBy(elem => elem.Line).ThenBy(elem => elem.Column).ToArray();
             var pair = new TextPositionsPair {
                 StartPosition = orderedRanges[0],
@@ -29,11 +28,11 @@ namespace CodeEditor.Algorithms.TextManipulation {
                         string.Concat(lines[pair.StartPosition.Line].Take(pair.StartPosition.Column)) +
                         string.Concat(lines[pair.EndPosition.Line].Skip(pair.EndPosition.Column))
                 },
-                LinesToRemove = Enumerable.Range(pair.StartPosition.Line, rangeEnd)
+                LinesToRemove = Enumerable.Range(pair.StartPosition.Line, rangeEnd).ToList()
             };
         }
 
-        public LinesRemovalInfo RemoveLines(IList<string> lines, TextPosition startingTextPosition, Key key) {
+        public LinesRemovalInfo RemoveLines(IReadOnlyList<string> lines, TextPosition startingTextPosition, Key key) {
             if (key == Key.Delete) {
                 bool isStartEqToTextLen = startingTextPosition.Column == lines[startingTextPosition.Line].Length;
 
@@ -63,7 +62,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region methods
 
-        private LinesRemovalInfo RemoveFromActiveLine(IList<string> lines, TextPosition startingTextPosition) {
+        private LinesRemovalInfo RemoveFromActiveLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
             string lineToModify = lines[startingTextPosition.Line];
             bool attachRest = startingTextPosition.Column < lines[startingTextPosition.Line].Length;
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column - 1) + (attachRest ? lineToModify.Substring(startingTextPosition.Column) : string.Empty);
@@ -75,7 +74,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private LinesRemovalInfo DeleteFromActiveLine(IList<string> lines, TextPosition startingTextPosition) {
+        private LinesRemovalInfo DeleteFromActiveLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
             string lineToModify = lines[startingTextPosition.Line];
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column) + lineToModify.Substring(startingTextPosition.Column + 1);
 
@@ -86,7 +85,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private LinesRemovalInfo RemoveThisLine(IList<string> lines, TextPosition startingTextPosition) {
+        private LinesRemovalInfo RemoveThisLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
                     new TextPosition(lines[startingTextPosition.Line - 1].Length, startingTextPosition.Line - 1),
@@ -103,7 +102,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private LinesRemovalInfo DeleteNextLine(IList<string> lines, TextPosition startingTextPosition) {
+        private LinesRemovalInfo DeleteNextLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
                     new TextPosition(startingTextPosition.Column, startingTextPosition.Line),
@@ -120,7 +119,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private string GetText(IList<string> lines, int lineIdx) {
+        private string GetText(IReadOnlyList<string> lines, int lineIdx) {
             if (lineIdx < lines.Count && !string.IsNullOrEmpty(lines[lineIdx])) {
                 return lines[lineIdx];
             }

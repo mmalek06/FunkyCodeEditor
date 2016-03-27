@@ -50,9 +50,9 @@ namespace CodeEditor.Visuals {
 
         public abstract void Draw();
 
-        public abstract IEnumerable<SimpleTextSource> GetTextSources();
+        public abstract IReadOnlyCollection<SimpleTextSource> GetTextSources();
 
-        public abstract IEnumerable<string> GetStringContents();
+        public abstract IReadOnlyCollection<string> GetStringContents();
 
         public char GetCharAt(int column) => Text[column];
 
