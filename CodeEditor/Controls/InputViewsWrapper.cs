@@ -42,8 +42,7 @@ namespace CodeEditor.Controls {
             master = parent;
             views = new List<LocalViewBase>();
 
-            Postbox.Instance.For(typeof(FoldClickedMessage))
-                            .Invoke(OnFoldClicked);
+            Postbox.Instance.For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
         }
 
         #endregion

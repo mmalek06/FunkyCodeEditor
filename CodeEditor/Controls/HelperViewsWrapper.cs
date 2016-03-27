@@ -26,14 +26,10 @@ namespace CodeEditor.Controls {
             views = new List<HelperViewBase>();
             Orientation = Orientation.Horizontal;
 
-            Postbox.Instance.For(typeof(TextAddedMessage))
-                            .Invoke(OnTextAdded)
-                            .For(typeof(TextRemovedMessage))
-                            .Invoke(OnTextRemoved)
-                            .For(typeof(LinesRemovedMessage))
-                            .Invoke(OnLineRemoved)
-                            .For(typeof(FoldClickedMessage))
-                            .Invoke(OnFoldClicked);
+            Postbox.Instance.For(typeof(TextAddedMessage)).Invoke(OnTextAdded)
+                            .For(typeof(TextRemovedMessage)).Invoke(OnTextRemoved)
+                            .For(typeof(LinesRemovedMessage)).Invoke(OnLineRemoved)
+                            .For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
         }
 
         #endregion
