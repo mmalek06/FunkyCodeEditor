@@ -48,7 +48,7 @@ namespace CodeEditor.Visuals {
 
         public abstract void UpdateText(string text);
 
-        public abstract void Redraw();
+        public abstract void Draw();
 
         public abstract IEnumerable<SimpleTextSource> GetTextSources();
 

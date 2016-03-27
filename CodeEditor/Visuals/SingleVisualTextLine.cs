@@ -29,8 +29,6 @@ namespace CodeEditor.Visuals {
             this.textSource = textSource;
             Text = textSource.Text;
             Index = index;
-                        
-            Redraw();
         }
 
         #endregion
@@ -39,7 +37,7 @@ namespace CodeEditor.Visuals {
 
         public override void UpdateText(string text) => textSource.Text = text;
 
-        public override void Redraw() {
+        public override void Draw() {
             using (TextLine textLine = Formatter.FormatLine(textSource, 0, 96 * 6, ParagraphProperties, null)) {
                 double top = Index * textLine.Height;
 

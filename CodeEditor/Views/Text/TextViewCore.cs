@@ -220,13 +220,18 @@ namespace CodeEditor.Views.Text {
         }
 
         private void DrawLine(int index, string newText) {
+            VisualTextLine line;
+
             if (index < visuals.Count) {
-                var line = (VisualTextLine)visuals[index];
+                line = (VisualTextLine)visuals[index];
 
                 line.UpdateText(newText);
-                line.Redraw();
+                line.Draw();
             } else {
-                visuals.Add(VisualTextLine.Create(newText, index));
+                line = VisualTextLine.Create(newText, index);
+                line.Draw();
+
+                visuals.Add(line);
             }
         }
 

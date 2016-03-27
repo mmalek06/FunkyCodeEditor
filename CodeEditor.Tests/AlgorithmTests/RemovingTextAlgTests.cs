@@ -19,18 +19,17 @@ namespace CodeEditor.Tests {
         public static void Initialize(TestContext context) {
             algorithm = new TextRemover();
             view = new TextView();
-            runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
         }
 
         [TestMethod]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_LineShouldBeEqualToText1Text2() {
             string text1 = "asdf";
             string text2 = "zxcv";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1, runProperties),
-                new SimpleTextSource(text2, runProperties)
+            var lines = new List<string> {
+                text1,
+                text2
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
 
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value);
         }
@@ -39,11 +38,11 @@ namespace CodeEditor.Tests {
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_LineShouldBeEqualToText1Text2() {
             string text1 = "asdf";
             string text2 = "zxcv";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1, runProperties),
-                new SimpleTextSource(text2, runProperties)
+            var lines = new List<string> {
+                text1,
+                text2
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 0, line: 1), Key.Back);
+            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 0, line: 1), Key.Back);
 
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value);
         }
@@ -54,12 +53,12 @@ namespace CodeEditor.Tests {
             string text2 = "";
             string text3 = "totally unimportant text";
             string text4 = "text that stays";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1, runProperties),
-                new SimpleTextSource(text2, runProperties),
-                new SimpleTextSource(text3 + text4, runProperties)
+            var lines = new List<string> {
+                text1,
+                text2,
+                text3 + text4
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(lines, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 0, line: 0),
                 EndPosition = new TextPosition(column: 24, line: 2)
             });
@@ -73,10 +72,10 @@ namespace CodeEditor.Tests {
             string text1 = "some ";
             string text2 = "text";
             string text3 = " asdf";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1 + text2 + text3, runProperties)
+            var lines = new List<string> {
+                text1 + text2 + text3
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(lines, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 5, line: 0),
                 EndPosition = new TextPosition(column: 9, line: 0)
             });
@@ -89,12 +88,12 @@ namespace CodeEditor.Tests {
             string text1 = "a";
             string text2 = "";
             string text3 = "b";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1, runProperties),
-                new SimpleTextSource(text2, runProperties),
-                new SimpleTextSource(text3, runProperties)
+            var lines = new List<string> {
+                text1,
+                text2,
+                text3
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 0, line: 1), Key.Back);
+            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 0, line: 1), Key.Back);
 
             Assert.IsTrue(Enumerable.SequenceEqual((new[] { 2 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.ToArray()));
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -106,13 +105,13 @@ namespace CodeEditor.Tests {
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1, runProperties),
-                new SimpleTextSource(string.Empty, runProperties),
-                new SimpleTextSource(text2, runProperties),
-                new SimpleTextSource(text3, runProperties)
+            var lines = new List<string> {
+                text1,
+                string.Empty,
+                text2,
+                text3,
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -127,16 +126,16 @@ namespace CodeEditor.Tests {
             string text1 = "asdf";
             string text2 = "zxcv";
             string text3 = "qwer";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1, runProperties),
-                new SimpleTextSource(string.Empty, runProperties),
-                new SimpleTextSource(text2, runProperties),
-                new SimpleTextSource(text3, runProperties)
+            var lines = new List<string> {
+                text1,
+                string.Empty,
+                text2,
+                text3
             };
 
-            algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
 
-            var newLines = algorithm.RemoveLines(textSources, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -151,10 +150,10 @@ namespace CodeEditor.Tests {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1 + text2 + text3, runProperties)
+            var lines = new List<string> {
+                text1 + text2 + text3
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(lines, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 4, line: 0),
                 EndPosition = new TextPosition(column: 8, line: 0)
             });
@@ -170,11 +169,11 @@ namespace CodeEditor.Tests {
             string text2 = " df ";
             string text3 = "qwer";
             string text4 = "zxcv";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1 + text2 + text3, runProperties),
-                new SimpleTextSource(text4, runProperties)
+            var lines = new List<string> {
+                text1 + text2 + text3,
+                text4
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(lines, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 6, line: 0)
             });
@@ -193,13 +192,13 @@ namespace CodeEditor.Tests {
             string text4 = "zxcv";
             string text5 = "fg";
             string text6 = "hj";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1 + text2, runProperties),
-                new SimpleTextSource(text3, runProperties),
-                new SimpleTextSource(text4, runProperties),
-                new SimpleTextSource(text5 + text6, runProperties)
+            var lines = new List<string> {
+                text1 + text2,
+                text3,
+                text4,
+                text5 + text6
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(lines, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 2, line: 3)
             });
@@ -214,10 +213,10 @@ namespace CodeEditor.Tests {
         public void FourCharactersEnteredSelectionForLastTwo_LineShouldBeText1() {
             string text1 = "as";
             string text2 = "df";
-            var textSources = new List<SimpleTextSource> {
-                new SimpleTextSource(text1 + text2, runProperties)
+            var lines = new List<string> {
+                text1 + text2
             };
-            var newLines = algorithm.RemoveLines(textSources, new TextPositionsPair {
+            var newLines = algorithm.RemoveLines(lines, new TextPositionsPair {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 4, line: 0)
             });

@@ -36,8 +36,6 @@ namespace CodeEditor.Visuals {
             textBeforeCollapse = precedingSource.Text;
             textAfterCollapse = followingSource.Text;
             Index = index;
-
-            Redraw();
         }
 
         #endregion
@@ -46,7 +44,7 @@ namespace CodeEditor.Visuals {
 
         public override void UpdateText(string text) { }
 
-        public override void Redraw() {
+        public override void Draw() {
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
             double top = 0;
             string collapse = "{...}";
