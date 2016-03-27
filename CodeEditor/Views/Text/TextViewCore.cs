@@ -198,8 +198,7 @@ namespace CodeEditor.Views.Text {
         }
 
         private void RemoveLines(IEnumerable<int> indices) {
-            var textSourcesToRemove = Lines.Select((obj, index) => new { index, obj }).Where(obj => indices.Contains(obj.index)).ToArray();
-            List<VisualTextLine> visualsToRemove = new List<VisualTextLine>();
+            var visualsToRemove = new List<VisualTextLine>();
 
             foreach (var visual in visuals) {
                 var line = (VisualTextLine)visual;

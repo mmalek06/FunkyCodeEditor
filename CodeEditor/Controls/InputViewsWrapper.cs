@@ -129,7 +129,6 @@ namespace CodeEditor.Controls {
                 view.VerticalAlignment = VerticalAlignment.Top;
 
                 views.Add(view);
-
                 Children.Add(view);
             }
         }
