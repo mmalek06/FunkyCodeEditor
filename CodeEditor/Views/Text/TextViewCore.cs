@@ -13,7 +13,7 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
-    internal class TextView : InputViewBase {
+    internal partial class TextView : InputViewBase {
 
         #region events
 

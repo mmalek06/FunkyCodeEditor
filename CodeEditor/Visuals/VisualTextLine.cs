@@ -47,6 +47,8 @@ namespace CodeEditor.Visuals {
 
         public abstract IEnumerable<SimpleTextSource> GetTextSources();
 
+        public abstract IEnumerable<string> GetStringContents();
+
         public static VisualTextLine Create(string text, int index) {
             return Create(new SimpleTextSource(text, TextConfiguration.GetGlobalTextRunProperties()), index);
         }

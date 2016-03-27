@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.TextFormatting;
+using CodeEditor.Configuration;
 
 namespace CodeEditor.Visuals {
     internal class CollapsedVisualTextLine : VisualTextLine {
@@ -32,20 +33,41 @@ namespace CodeEditor.Visuals {
         #region public methods
 
         public override void Redraw() {
-            var runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
+            var runProperties = TextConfiguration.GetGlobalTextRunProperties();
+            double top = 0;
+            string collapse = "{...}";
 
-            using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource("{...}", runProperties), 0, 96 * 6, ParagraphProperties, null)) {
-                double top = Index * textLine.Height;
+            using (var drawingContext = RenderOpen()) {
+                using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(textBeforeCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
+                    top = Index * textLine.Height;
 
-                using (var drawingContext = RenderOpen()) {
                     textLine.Draw(drawingContext, new Point(0, top), InvertAxes.None);
+                }
+                using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(collapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {    
+                    textLine.Draw(drawingContext, new Point(TextConfiguration.GetCharSize().Width * textBeforeCollapse.Length, top), InvertAxes.None);
+                }
+                using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(textAfterCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
+                    textLine.Draw(drawingContext, 
+                        new Point(TextConfiguration.GetCharSize().Width * textBeforeCollapse.Length + TextConfiguration.GetCharSize().Width * collapse.Length, top), 
+                        InvertAxes.None);
                 }
             }
         }
 
+        public override IEnumerable<string> GetStringContents() {
+            var contents = new List<string>();
+
+            contents.Add(textBeforeCollapse + collapsedContent[0]);
+            contents.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 2)
+                              select text);
+            contents.Add(collapsedContent.Last() + textAfterCollapse);
+
+            return contents;
+        }
+
         public override IEnumerable<SimpleTextSource> GetTextSources() {
             var textSources = new List<SimpleTextSource>();
-            var runProperties = Configuration.TextConfiguration.GetGlobalTextRunProperties();
+            var runProperties = TextConfiguration.GetGlobalTextRunProperties();
 
             textSources.Add(new SimpleTextSource(textBeforeCollapse + collapsedContent[0], runProperties));
             textSources.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 2)

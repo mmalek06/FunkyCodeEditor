@@ -6,7 +6,6 @@ using CodeEditor.Core.Extensions;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class TextSelectionCommand : ICommand {
@@ -18,8 +17,6 @@ namespace CodeEditor.Commands {
         private CaretView caretView;
 
         private SelectionView selectionView;
-
-        private LocalTextInfo textInfo;
         
         #endregion
 
@@ -34,13 +31,11 @@ namespace CodeEditor.Commands {
         public TextSelectionCommand(
             TextView textView, 
             SelectionView selectionView, 
-            CaretView caretView,
-            LocalTextInfo textInfo) 
+            CaretView caretView) 
         {
             this.textView = textView;
             this.selectionView = selectionView;
             this.caretView = caretView;
-            this.textInfo = textInfo;
         }
 
         #endregion
@@ -81,13 +76,13 @@ namespace CodeEditor.Commands {
             if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Left && caretView.CaretPosition.Column == 0) {
                 return false;
             }
-            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Right && caretView.CaretPosition.Column == textInfo.GetTextLineLength(caretView.CaretPosition.Line)) {
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Right && caretView.CaretPosition.Column == textView.GetLineLength(caretView.CaretPosition.Line)) {
                 return false;
             }
             if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Up && caretView.CaretPosition.Line == 0) {
                 return false;
             }
-            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == textInfo.GetTextLinesCount() - 1) {
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == textView.GetLinesCount() - 1) {
                 return false;
             }
 
@@ -99,8 +94,8 @@ namespace CodeEditor.Commands {
         }
 
         private bool CanExecuteMouse(MouseEventArgs mouseEvent) => 
-            mouseEvent.LeftButton == MouseButtonState.Pressed && 
-            textInfo.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize()));
+            mouseEvent.LeftButton == MouseButtonState.Pressed &&
+            textView.IsInTextRange(mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize()));
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
             TextPosition endingPosition = null;
@@ -116,7 +111,7 @@ namespace CodeEditor.Commands {
                     endingPosition = new TextPosition(column: textView.ActivePosition.Column + 1, line: textView.ActivePosition.Line);
                     break;
                 case Key.End:
-                    endingPosition = new TextPosition(column: textInfo.GetTextLineLength(textView.ActivePosition.Line), line: textView.ActivePosition.Line);
+                    endingPosition = new TextPosition(column: textView.GetLineLength(textView.ActivePosition.Line), line: textView.ActivePosition.Line);
                     break;
                 case Key.Up:
                     endingPosition = new TextPosition(column: textView.ActivePosition.Column, line: textView.ActivePosition.Line - 1);

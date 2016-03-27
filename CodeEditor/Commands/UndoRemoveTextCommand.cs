@@ -1,10 +1,9 @@
 ﻿using CodeEditor.Views.Text;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class UndoRemoveTextCommand : BaseTextViewCommand {
 
-        public UndoRemoveTextCommand(TextView view, LocalTextInfo textInfo) : base(view, textInfo) { }
+        public UndoRemoveTextCommand(TextView view) : base(view) { }
 
         public override bool CanExecute(object parameter) => true;
 

@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithms\Folding\MarkupFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\TextCollapser.cs" />
     <Compile Include="Configuration\EditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
@@ -103,7 +104,7 @@
     <Compile Include="Views\Selection\SelectionView.cs" />
     <Compile Include="Algorithms\TextManipulation\LinesRemoveInfo.cs" />
     <Compile Include="TextProperties\Properties.cs" />
-    <Compile Include="Views\Text\TextInfo.cs" />
+    <Compile Include="Views\Text\TextViewRead.cs" />
     <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
     <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
     <Compile Include="Views\BaseClasses\InputViewBase.cs" />
@@ -111,7 +112,7 @@
     <Compile Include="Controls\InputViewsWrapper.cs" />
     <Compile Include="Visuals\SimpleTextSource.cs" />
     <Compile Include="Views\Caret\CaretView.cs" />
-    <Compile Include="Views\Text\TextView.cs" />
+    <Compile Include="Views\Text\TextViewCore.cs" />
     <Compile Include="Visuals\VisualElementSymbolBase.cs" />
     <Compile Include="Visuals\VisualTextLine.cs" />
     <Page Include="Editor.xaml">

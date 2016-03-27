@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
+using CodeEditor.Views.Text;
 
 namespace CodeEditor.Views.Selection {
     internal class SelectionView : InputViewBase {
@@ -14,17 +13,20 @@ namespace CodeEditor.Views.Selection {
         #region fields
 
         private TextPosition lastSelectionStart;
+
         private TextPosition lastSelectionEnd;
-        private LocalTextInfo textInfo;
+
+        private TextView textView;
+
         private bool isSelecting;
 
         #endregion
 
         #region constructor
 
-        public SelectionView(LocalTextInfo textInfo) : base() {
-            this.textInfo = textInfo;
+        public SelectionView(TextView textView) : base() {
             isSelecting = false;
+            this.textView = textView;
         }
 
         #endregion
@@ -107,7 +109,7 @@ namespace CodeEditor.Views.Selection {
                     tmpStartColumn = start.Column;
                 }
 
-                int lineLen = textInfo.GetTextLineLength(i);
+                int lineLen = textView.GetLineLength(i);
 
                 if (i == end.Line) {
                     tmpEndColumn = end.Column > lineLen ? lineLen : end.Column;
@@ -134,7 +136,7 @@ namespace CodeEditor.Views.Selection {
                 int tmpStartLine = i;
                 int tmpEndColumn = 0;
                 int tmpEndLine = i;
-                int lineLen = textInfo.GetTextLineLength(i);
+                int lineLen = textView.GetLineLength(i);
 
                 if (i == start.Line) {
                     tmpStartColumn = start.Column;

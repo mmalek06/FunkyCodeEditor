@@ -35,6 +35,8 @@ namespace CodeEditor.Visuals {
             }
         }
 
+        public override IEnumerable<string> GetStringContents() => new[] { Text };
+
         public override IEnumerable<SimpleTextSource> GetTextSources() => new[] { textSource };
 
         #endregion

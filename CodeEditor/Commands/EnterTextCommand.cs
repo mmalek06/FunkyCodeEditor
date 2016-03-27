@@ -2,7 +2,6 @@
 using CodeEditor.Messaging;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class EnterTextCommand : BaseTextViewCommand {
@@ -15,7 +14,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public EnterTextCommand(SelectionView selectionView, TextView view, LocalTextInfo textInfo) : base(view, textInfo) {
+        public EnterTextCommand(SelectionView selectionView, TextView view) : base(view) {
             this.selectionView = selectionView;
         }
 

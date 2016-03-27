@@ -4,7 +4,6 @@ using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class RemoveTextCommand : BaseTextViewCommand {
@@ -19,7 +18,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public RemoveTextCommand(SelectionView selectionView, TextView view, LocalTextInfo textInfo) : base(view, textInfo) {
+        public RemoveTextCommand(SelectionView selectionView, TextView view) : base(view) {
             this.selectionView = selectionView;
         }
 
@@ -39,7 +38,7 @@ namespace CodeEditor.Commands {
 
             var area = selectionView.GetCurrentSelectionArea();
 
-            if (e.Key == Key.Delete && view.ActivePosition.Line == textInfo.GetTextLinesCount() - 1 && view.ActivePosition.Column == textInfo.GetTextLineLength(view.ActivePosition.Line) && area == null) { 
+            if (e.Key == Key.Delete && view.ActivePosition.Line == view.GetLinesCount() - 1 && view.ActivePosition.Column == view.GetLineLength(view.ActivePosition.Line) && area == null) { 
                 return false;
             }
             if (e.Key == Key.Back && view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
@@ -58,7 +57,7 @@ namespace CodeEditor.Commands {
             var key = e.Key;
             var selectionArea = selectionView.GetCurrentSelectionArea();
             var prevPosition = view.ActivePosition;
-            int linesCountBeforeRemove = textInfo.GetTextLinesCount();
+            int linesCountBeforeRemove = view.GetLinesCount();
             int removedLinesCount = 0;
             string removedText = string.Empty;
 
@@ -73,12 +72,12 @@ namespace CodeEditor.Commands {
 
                 view.RemoveText(key);
             } else {
-                removedText = string.Join("", textInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
+                removedText = string.Join("", view.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
                 removedLinesCount = selectionArea.EndPosition.Line - selectionArea.StartPosition.Line;
 
                 view.RemoveText(selectionArea);
             }
-            if (textInfo.GetTextLinesCount() < linesCountBeforeRemove) {
+            if (view.GetLinesCount() < linesCountBeforeRemove) {
                 Postbox.Instance.Send(new LinesRemovedMessage {
                     Count = removedLinesCount
                 });
@@ -102,13 +101,13 @@ namespace CodeEditor.Commands {
         #region methods
 
         private string GetRemovedText(Key key) {
-            if (textInfo.GetTextLineLength(view.ActivePosition.Line) == 0 || (key == Key.Delete && view.ActivePosition.Column >= textInfo.GetTextLine(view.ActivePosition.Line).Length)) {
+            if (view.GetLineLength(view.ActivePosition.Line) == 0 || (key == Key.Delete && view.ActivePosition.Column >= view.GetLine(view.ActivePosition.Line).Length)) {
                 return string.Empty;
             }
             if (key == Key.Delete) {
-                return textInfo.GetCharAt(view.ActivePosition).ToString();
+                return view.GetCharAt(view.ActivePosition).ToString();
             } else {
-                return textInfo.GetCharAt(
+                return view.GetCharAt(
                     new TextPosition(column: view.ActivePosition.Column > 0 ? view.ActivePosition.Column - 1 : 0, line: view.ActivePosition.Line)).ToString();
             }
         }

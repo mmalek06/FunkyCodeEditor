@@ -9,7 +9,6 @@ using CodeEditor.Core.DataStructures;
 using CodeEditor.Events;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Views.Caret {
     internal class CaretView : InputViewBase {
@@ -22,10 +21,12 @@ namespace CodeEditor.Views.Caret {
 
         #region fields
 
-        private LocalTextInfo textInfo;
         private DispatcherTimer blinkTimer;
+
         private Timer checkTimer;
+
         private TextPosition caretPosition;
+
         private bool isCaretVisible;
 
         #endregion
@@ -51,8 +52,7 @@ namespace CodeEditor.Views.Caret {
 
         #region constructor
 
-        public CaretView(LocalTextInfo textInfo) : base() {
-            this.textInfo = textInfo;
+        public CaretView() : base() {
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });
             caretPosition = TextPosition.Zero;

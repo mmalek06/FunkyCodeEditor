@@ -11,7 +11,6 @@ using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 using LocalViewBase = CodeEditor.Views.BaseClasses.InputViewBase;
 
 namespace CodeEditor.Controls {
@@ -21,7 +20,6 @@ namespace CodeEditor.Controls {
 
         private InputPanel master;
         private List<LocalViewBase> views;
-        private LocalTextInfo textInfo;
         private TextView textView;
         private CaretView caretView;
         private SelectionView selectionView;
@@ -31,8 +29,6 @@ namespace CodeEditor.Controls {
         #region properties
 
         public TextPosition CaretPosition => caretView.CaretPosition;
-
-        public LocalTextInfo TextInfo => textInfo;
 
         protected override int VisualChildrenCount => views.Count;
 
@@ -64,13 +60,13 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            var removeTextCmd = new RemoveTextCommand(selectionView, textView, textInfo);
-            var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
-            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView, textInfo);
+            var removeTextCmd = new RemoveTextCommand(selectionView, textView);
+            var caretMoveCmd = new CaretMoveCommand(textView, caretView);
+            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (removeTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, textInfo), e);
+                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView), e);
                 deselectionCmd.Execute();
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
@@ -81,17 +77,17 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
-            var enterTextCmd = new EnterTextCommand(selectionView, textView, textInfo);
+            var enterTextCmd = new EnterTextCommand(selectionView, textView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (enterTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, textInfo), e);
+                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView), e);
                 deselectionCmd.Execute();
             }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
-            var caretMoveCmd = new CaretMoveCommand(textView, caretView, textInfo);
+            var caretMoveCmd = new CaretMoveCommand(textView, caretView);
 
             if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
@@ -102,7 +98,7 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
-            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView, textInfo);
+            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
 
             if (selectionCmd.CanExecute(e)) {
                 selectionCmd.Execute(e);
@@ -125,9 +121,8 @@ namespace CodeEditor.Controls {
 
         private void SetupViews() {
             textView = new TextView();
-            textInfo = new LocalTextInfo(textView);
-            selectionView = new SelectionView(textInfo);
-            caretView = new CaretView(textInfo);
+            selectionView = new SelectionView(textView);
+            caretView = new CaretView();
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 view.Margin = new Thickness(2, 0, 0, 0);

@@ -6,19 +6,17 @@ namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewAddingTextTests {
         private TextView tv;
-        private TextInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {
             tv = new TextView();
-            ti = new TextInfo(tv);
         }
 
         [TestMethod]
         public void FourCharsPasted_LinesShouldBe1() {
             tv.EnterText("asdf");
 
-            Assert.AreEqual(1, ti.GetTextLinesCount());
+            Assert.AreEqual(1, tv.GetLinesCount());
         }
 
         [TestMethod]
@@ -36,7 +34,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("d");
 
-            Assert.AreEqual(4, ti.GetTextLineLength(0));
+            Assert.AreEqual(4, tv.GetLineLength(0));
         }
 
         [TestMethod]
@@ -63,7 +61,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(3, ti.GetTextLinesCount());
+            Assert.AreEqual(3, tv.GetLinesCount());
         }
 
         [TestMethod]
@@ -89,7 +87,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(3, ti.GetTextLinesCount());
+            Assert.AreEqual(3, tv.GetLinesCount());
         }
 
         [TestMethod]
@@ -113,8 +111,8 @@ namespace CodeEditor.Tests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(text1, ti.GetTextLine(0));
-            Assert.AreEqual(text2, ti.GetTextLine(1));
+            Assert.AreEqual(text1, tv.GetLine(0));
+            Assert.AreEqual(text2, tv.GetLine(1));
         }
 
         [TestMethod]
@@ -128,11 +126,11 @@ namespace CodeEditor.Tests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(4, ti.GetTextLinesCount());
-            Assert.AreEqual("a", ti.GetTextLine(0));
-            Assert.AreEqual(string.Empty, ti.GetTextLine(1));
-            Assert.AreEqual(string.Empty, ti.GetTextLine(2));
-            Assert.AreEqual("z", ti.GetTextLine(3));
+            Assert.AreEqual(4, tv.GetLinesCount());
+            Assert.AreEqual("a", tv.GetLine(0));
+            Assert.AreEqual(string.Empty, tv.GetLine(1));
+            Assert.AreEqual(string.Empty, tv.GetLine(2));
+            Assert.AreEqual("z", tv.GetLine(3));
         }
     }
 }

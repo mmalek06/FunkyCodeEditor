@@ -5,7 +5,6 @@ using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
-using LocalTextInfo = CodeEditor.Views.Text.TextInfo;
 
 namespace CodeEditor.Commands {
     internal class CaretMoveCommand : ICommand {
@@ -15,8 +14,6 @@ namespace CodeEditor.Commands {
         private TextView textView;
 
         private CaretView caretView;
-
-        private LocalTextInfo textInfo;
 
         #endregion
 
@@ -28,10 +25,9 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(TextView textView, CaretView caretView, LocalTextInfo info) {
+        public CaretMoveCommand(TextView textView, CaretView caretView) {
             this.textView = textView;
             this.caretView = caretView;
-            textInfo = info;
         }
 
         #endregion
@@ -68,11 +64,11 @@ namespace CodeEditor.Commands {
 
             int column = -1, line = -1;
 
-            if (newPos.Column > textInfo.GetTextLineLength(newPos.Line)) {
-                column = textInfo.GetTextLineLength(newPos.Line);
+            if (newPos.Column > textView.GetLineLength(newPos.Line)) {
+                column = textView.GetLineLength(newPos.Line);
             }
-            if (newPos.Line >= textInfo.GetTextLinesCount()) {
-                line = textInfo.GetTextLinesCount() - 1;
+            if (newPos.Line >= textView.GetLinesCount()) {
+                line = textView.GetLinesCount() - 1;
             }
 
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
@@ -94,7 +90,7 @@ namespace CodeEditor.Commands {
 
             var nextPosition = caretView.GetNextPosition(e.Key);
 
-            if (nextPosition.Line < 0 || nextPosition.Line >= textInfo.GetTextLinesCount()) {
+            if (nextPosition.Line < 0 || nextPosition.Line >= textView.GetLinesCount()) {
                 return false;
             }
             if (nextPosition.Column < 0) {
@@ -107,7 +103,7 @@ namespace CodeEditor.Commands {
         private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
             var docPosition = mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
-            if (docPosition.Line < 0 || docPosition.Line >= textInfo.GetTextLinesCount()) {
+            if (docPosition.Line < 0 || docPosition.Line >= textView.GetLinesCount()) {
                 return false;
             }
             if (docPosition.Column < 0) {

@@ -10,15 +10,13 @@ namespace CodeEditor.Tests.TextViewTests {
     public class TextViewSelectionTests {
         private TextView tv;
         private SelectionView sv;
-        private TextInfo ti;
         private CaretView cv;
 
         [TestInitialize]
         public void InitializeTests() {
             tv = new TextView();
-            ti = new TextInfo(tv);
-            sv = new SelectionView(ti);
-            cv = new CaretView(ti);
+            sv = new SelectionView(tv);
+            cv = new CaretView();
         }
 
         [TestMethod]
@@ -37,7 +35,7 @@ namespace CodeEditor.Tests.TextViewTests {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = tv.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }
@@ -58,7 +56,7 @@ namespace CodeEditor.Tests.TextViewTests {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = tv.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }
@@ -82,7 +80,7 @@ namespace CodeEditor.Tests.TextViewTests {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = tv.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
             Assert.AreEqual(text3, selectedParts.Last());
