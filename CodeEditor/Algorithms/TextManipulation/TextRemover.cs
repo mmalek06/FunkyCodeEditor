@@ -9,7 +9,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public LinesRemovalInfo RemoveLines(IList<SimpleTextSource> textSources, TextPositionsPair range) {
+        public LinesRemovalInfo RemoveLines(IList<string> lines, TextPositionsPair range) {
             var orderedRanges = (new[] { range.StartPosition, range.EndPosition }).OrderBy(elem => elem.Line).ThenBy(elem => elem.Column).ToArray();
             var pair = new TextPositionsPair {
                 StartPosition = orderedRanges[0],
@@ -26,24 +26,24 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return new LinesRemovalInfo {
                 LinesToChange = new Dictionary<TextPosition, string> {
                     [new TextPosition(pair.StartPosition.Column, pair.StartPosition.Line)] =
-                        string.Concat(textSources[pair.StartPosition.Line].Text.Take(pair.StartPosition.Column)) +
-                        string.Concat(textSources[pair.EndPosition.Line].Text.Skip(pair.EndPosition.Column))
+                        string.Concat(lines[pair.StartPosition.Line].Take(pair.StartPosition.Column)) +
+                        string.Concat(lines[pair.EndPosition.Line].Skip(pair.EndPosition.Column))
                 },
                 LinesToRemove = Enumerable.Range(pair.StartPosition.Line, rangeEnd)
             };
         }
 
-        public LinesRemovalInfo RemoveLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, Key key) {
+        public LinesRemovalInfo RemoveLines(IList<string> lines, TextPosition startingTextPosition, Key key) {
             if (key == Key.Delete) {
-                bool isStartEqToTextLen = startingTextPosition.Column == textSources[startingTextPosition.Line].Text.Length;
+                bool isStartEqToTextLen = startingTextPosition.Column == lines[startingTextPosition.Line].Length;
 
-                if (isStartEqToTextLen && startingTextPosition.Line == textSources.Count - 1) {
+                if (isStartEqToTextLen && startingTextPosition.Line == lines.Count - 1) {
                     return new LinesRemovalInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
                 }
                 if (isStartEqToTextLen) {
-                    return DeleteNextLine(textSources, startingTextPosition);
+                    return DeleteNextLine(lines, startingTextPosition);
                 } else {
-                    return DeleteFromActiveLine(textSources, startingTextPosition);
+                    return DeleteFromActiveLine(lines, startingTextPosition);
                 }
             } else {
                 bool isStartEqZero = startingTextPosition.Column == 0;
@@ -52,9 +52,9 @@ namespace CodeEditor.Algorithms.TextManipulation {
                     return new LinesRemovalInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new[] { startingTextPosition.Line } };
                 }
                 if (isStartEqZero) {
-                    return RemoveThisLine(textSources, startingTextPosition);
+                    return RemoveThisLine(lines, startingTextPosition);
                 } else {
-                    return RemoveFromActiveLine(textSources, startingTextPosition);
+                    return RemoveFromActiveLine(lines, startingTextPosition);
                 }
             }
         }
@@ -63,9 +63,9 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region methods
 
-        private LinesRemovalInfo RemoveFromActiveLine(IList<SimpleTextSource> textSources, TextPosition startingTextPosition) {
-            string lineToModify = textSources[startingTextPosition.Line].Text;
-            bool attachRest = startingTextPosition.Column < textSources[startingTextPosition.Line].Text.Length;
+        private LinesRemovalInfo RemoveFromActiveLine(IList<string> lines, TextPosition startingTextPosition) {
+            string lineToModify = lines[startingTextPosition.Line];
+            bool attachRest = startingTextPosition.Column < lines[startingTextPosition.Line].Length;
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column - 1) + (attachRest ? lineToModify.Substring(startingTextPosition.Column) : string.Empty);
 
             return new LinesRemovalInfo {
@@ -75,8 +75,8 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private LinesRemovalInfo DeleteFromActiveLine(IList<SimpleTextSource> textSources, TextPosition startingTextPosition) {
-            string lineToModify = textSources[startingTextPosition.Line].Text;
+        private LinesRemovalInfo DeleteFromActiveLine(IList<string> lines, TextPosition startingTextPosition) {
+            string lineToModify = lines[startingTextPosition.Line];
             string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column) + lineToModify.Substring(startingTextPosition.Column + 1);
 
             return new LinesRemovalInfo {
@@ -86,43 +86,43 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private LinesRemovalInfo RemoveThisLine(IList<SimpleTextSource> textSources, TextPosition startingTextPosition) {
+        private LinesRemovalInfo RemoveThisLine(IList<string> lines, TextPosition startingTextPosition) {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
-                    new TextPosition(textSources[startingTextPosition.Line - 1].Text.Length, startingTextPosition.Line - 1),
-                    GetText(textSources, startingTextPosition.Line - 1) + textSources[startingTextPosition.Line].Text)
+                    new TextPosition(lines[startingTextPosition.Line - 1].Length, startingTextPosition.Line - 1),
+                    GetText(lines, startingTextPosition.Line - 1) + lines[startingTextPosition.Line])
             };
 
-            for (int i = startingTextPosition.Line + 1; i < textSources.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), textSources[i].Text));
+            for (int i = startingTextPosition.Line + 1; i < lines.Count; i++) {
+                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), lines[i]));
             }
 
             return new LinesRemovalInfo {
                 LinesToChange = linesAffected,
-                LinesToRemove = new[] { textSources.Count - 1 }
+                LinesToRemove = new[] { lines.Count - 1 }
             };
         }
 
-        private LinesRemovalInfo DeleteNextLine(IList<SimpleTextSource> textSources, TextPosition startingTextPosition) {
+        private LinesRemovalInfo DeleteNextLine(IList<string> lines, TextPosition startingTextPosition) {
             var linesAffected = new List<KeyValuePair<TextPosition, string>> {
                 new KeyValuePair<TextPosition, string>(
                     new TextPosition(startingTextPosition.Column, startingTextPosition.Line),
-                    textSources[startingTextPosition.Line].Text + GetText(textSources, startingTextPosition.Line + 1))
+                    lines[startingTextPosition.Line] + GetText(lines, startingTextPosition.Line + 1))
             };
             
-            for (int i = startingTextPosition.Line + 2; i < textSources.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), textSources[i].Text));
+            for (int i = startingTextPosition.Line + 2; i < lines.Count; i++) {
+                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), lines[i]));
             }
 
             return new LinesRemovalInfo {
                 LinesToChange = linesAffected,
-                LinesToRemove = new[] { textSources.Count - 1 }
+                LinesToRemove = new[] { lines.Count - 1 }
             };
         }
 
-        private string GetText(IList<SimpleTextSource> textSources, int lineIdx) {
-            if (lineIdx < textSources.Count && !string.IsNullOrEmpty(textSources[lineIdx].Text)) {
-                return textSources[lineIdx].Text;
+        private string GetText(IList<string> lines, int lineIdx) {
+            if (lineIdx < lines.Count && !string.IsNullOrEmpty(lines[lineIdx])) {
+                return lines[lineIdx];
             }
 
             return string.Empty;

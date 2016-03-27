@@ -47,7 +47,7 @@ namespace CodeEditor.Commands {
 
         protected void UpdateCommandState(ViewState stateToUpdate) {
             if (view.ActivePosition.Line >= 0) {
-                stateToUpdate.LineCount = view.GetLinesCount();
+                stateToUpdate.LineCount = view.LinesCount;
                 stateToUpdate.ActiveLineIndex = view.ActivePosition.Line;
                 stateToUpdate.ActiveColumnIndex = view.ActivePosition.Column;
                 stateToUpdate.LineStates[view.ActivePosition.Line] = view.GetLine(view.ActivePosition.Line);

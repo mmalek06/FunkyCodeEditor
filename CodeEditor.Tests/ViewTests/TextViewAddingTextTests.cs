@@ -16,7 +16,7 @@ namespace CodeEditor.Tests {
         public void FourCharsPasted_LinesShouldBe1() {
             tv.EnterText("asdf");
 
-            Assert.AreEqual(1, tv.GetLinesCount());
+            Assert.AreEqual(1, tv.LinesCount);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(3, tv.GetLinesCount());
+            Assert.AreEqual(3, tv.LinesCount);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(3, tv.GetLinesCount());
+            Assert.AreEqual(3, tv.LinesCount);
         }
 
         [TestMethod]
@@ -126,7 +126,7 @@ namespace CodeEditor.Tests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(4, tv.GetLinesCount());
+            Assert.AreEqual(4, tv.LinesCount);
             Assert.AreEqual("a", tv.GetLine(0));
             Assert.AreEqual(string.Empty, tv.GetLine(1));
             Assert.AreEqual(string.Empty, tv.GetLine(2));

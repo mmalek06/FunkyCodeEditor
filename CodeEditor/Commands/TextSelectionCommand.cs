@@ -82,7 +82,7 @@ namespace CodeEditor.Commands {
             if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Up && caretView.CaretPosition.Line == 0) {
                 return false;
             }
-            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == textView.GetLinesCount() - 1) {
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == textView.LinesCount - 1) {
                 return false;
             }
 

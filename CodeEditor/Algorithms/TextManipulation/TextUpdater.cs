@@ -25,17 +25,17 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public IDictionary<int, string> UpdateLines(IList<SimpleTextSource> textSources, TextPosition startingTextPosition, string text) {
+        public IDictionary<int, string> UpdateLines(IList<string> lines, TextPosition startingTextPosition, string text) {
             var replacedText = SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextProperties.Properties.NEWLINE) {
-                return LineAdded(textSources, text, startingTextPosition);
+                return LineAdded(lines, text, startingTextPosition);
             } else if (text == TextProperties.Properties.TAB) {
-                return TabPressed(textSources, text, startingTextPosition);
+                return TabPressed(lines, text, startingTextPosition);
             } else if (replacedText.Length == 1) {
-                return CharacterEntered(textSources, replacedText, startingTextPosition);
+                return CharacterEntered(lines, replacedText, startingTextPosition);
             } else {
-                return TextPasted(textSources, text, startingTextPosition);
+                return TextPasted(lines, text, startingTextPosition);
             }
         }
 
@@ -43,43 +43,43 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region methods
 
-        private IDictionary<int, string> LineAdded(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
-            string textBeforeCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column));
-            string textAfterCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
+        private IDictionary<int, string> LineAdded(IList<string> lines, string text, TextPosition startingTextPosition) {
+            string textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
+            string textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
             var transformations = new Dictionary<int, string> {
                 [startingTextPosition.Line] = textBeforeCursorPosition,
                 [startingTextPosition.Line + 1] = textAfterCursorPosition
             };
 
-            for (int i = startingTextPosition.Line + 1; i < textSources.Count; i++) {
-                transformations[i + 1] = textSources[i].Text;
+            for (int i = startingTextPosition.Line + 1; i < lines.Count; i++) {
+                transformations[i + 1] = lines[i];
             }
 
             return transformations;
         }
 
-        private IDictionary<int, string> TextPasted(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) =>
+        private IDictionary<int, string> TextPasted(IList<string> lines, string text, TextPosition startingTextPosition) =>
             text.Split(TextProperties.Properties.NEWLINE[0])
                 .Select((line, index) => GetPositionWithText(line, index, startingTextPosition.Line, startingTextPosition.Column))
                 .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
 
-        private IDictionary<int, string> TabPressed(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
-            string textBeforeCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Take(startingTextPosition.Column));
-            string textAfterCursorPosition = string.Concat(textSources[startingTextPosition.Line].Text.Skip(startingTextPosition.Column));
+        private IDictionary<int, string> TabPressed(IList<string> lines, string text, TextPosition startingTextPosition) {
+            string textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
+            string textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
 
             return new Dictionary<int, string> {
                 [startingTextPosition.Line] = textBeforeCursorPosition + new string(' ', TextProperties.Properties.TabSize) + textAfterCursorPosition
             };
         }
 
-        private IDictionary<int, string> CharacterEntered(IList<SimpleTextSource> textSources, string text, TextPosition startingTextPosition) {
+        private IDictionary<int, string> CharacterEntered(IList<string> lines, string text, TextPosition startingTextPosition) {
             var currentTextLine = new StringBuilder();
 
-            if (textSources.Any()) {
-                if (startingTextPosition.Column >= textSources[startingTextPosition.Line].Text.Length) {
-                    currentTextLine.Append(textSources[startingTextPosition.Line].Text).Append(text);
+            if (lines.Any()) {
+                if (startingTextPosition.Column >= lines[startingTextPosition.Line].Length) {
+                    currentTextLine.Append(lines[startingTextPosition.Line]).Append(text);
                 } else {
-                    currentTextLine.Append(textSources[startingTextPosition.Line].Text).Insert(startingTextPosition.Column, text);
+                    currentTextLine.Append(lines[startingTextPosition.Line]).Insert(startingTextPosition.Column, text);
                 }
             } else {
                 currentTextLine.Append(text);

@@ -67,8 +67,8 @@ namespace CodeEditor.Commands {
             if (newPos.Column > textView.GetLineLength(newPos.Line)) {
                 column = textView.GetLineLength(newPos.Line);
             }
-            if (newPos.Line >= textView.GetLinesCount()) {
-                line = textView.GetLinesCount() - 1;
+            if (newPos.Line >= textView.LinesCount) {
+                line = textView.LinesCount - 1;
             }
 
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
@@ -90,7 +90,7 @@ namespace CodeEditor.Commands {
 
             var nextPosition = caretView.GetNextPosition(e.Key);
 
-            if (nextPosition.Line < 0 || nextPosition.Line >= textView.GetLinesCount()) {
+            if (nextPosition.Line < 0 || nextPosition.Line >= textView.LinesCount) {
                 return false;
             }
             if (nextPosition.Column < 0) {
@@ -103,7 +103,7 @@ namespace CodeEditor.Commands {
         private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
             var docPosition = mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
-            if (docPosition.Line < 0 || docPosition.Line >= textView.GetLinesCount()) {
+            if (docPosition.Line < 0 || docPosition.Line >= textView.LinesCount) {
                 return false;
             }
             if (docPosition.Column < 0) {

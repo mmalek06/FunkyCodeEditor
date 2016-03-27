@@ -23,19 +23,15 @@ namespace CodeEditor.Views.Text {
 
         #region fields
 
-        private List<SimpleTextSource> textSources;
-        private Dictionary<TextPositionsPair, List<string>> collapsedLines;
         private TextUpdater updatingAlgorithm;
+
         private TextRemover removingAlgorithm;
+
         private TextCollapser collapsingAlgorithm;
 
         #endregion
 
         #region properties
-
-        public IEnumerable<string> VisibleTextLines => textSources.Select(source => source.Text);
-
-        public IEnumerable<string> AllTextLines => textSources.Select(source => source.Text);
 
         public TextPosition ActivePosition { get; private set; } = new TextPosition(column: 0, line: 0);
 
@@ -44,11 +40,11 @@ namespace CodeEditor.Views.Text {
         #region constructor
 
         public TextView() : base() {
-            collapsedLines = new Dictionary<TextPositionsPair, List<string>>();
-            textSources = new List<SimpleTextSource> { new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()) };
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
             collapsingAlgorithm = new TextCollapser();
+
+            visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
         }
 
         #endregion
@@ -85,7 +81,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.RemoveLines(textSources, ActivePosition, key);
+            var removalInfo = removingAlgorithm.RemoveLines(Lines, ActivePosition, key);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -97,7 +93,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(TextPositionsPair ranges) {
-            var removalInfo = removingAlgorithm.RemoveLines(textSources, ranges);
+            var removalInfo = removingAlgorithm.RemoveLines(Lines, ranges);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -106,10 +102,10 @@ namespace CodeEditor.Views.Text {
         }
 
         public void CollapseText(FoldClickedMessage message) {
-            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, textSources, message.Area.StartPosition.Line);
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Lines, message.Area.StartPosition.Line);
             var removeTextRange = new TextPositionsPair {
                 StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
-                EndPosition = new TextPosition(column: textSources[message.Area.EndPosition.Line].Text.Length, line: message.Area.EndPosition.Line)
+                EndPosition = new TextPosition(column: Lines[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
             };
 
             RemoveText(removeTextRange);
@@ -117,12 +113,12 @@ namespace CodeEditor.Views.Text {
             visuals[message.Area.StartPosition.Line] = null;
             visuals[message.Area.StartPosition.Line] = collapsedLine;
 
-            DrawLine(message.Area.StartPosition.Line);
+            //DrawLine(message.Area.StartPosition.Line);
             UpdateCursorPosition(message.Area.StartPosition);
         }
 
         public void ExpandText(FoldClickedMessage message) {
-            collapsingAlgorithm.ExpandTextRange(message.Area, textSources, ActivePosition.Line);
+            collapsingAlgorithm.ExpandTextRange(message.Area, Lines, ActivePosition.Line);
         }
 
         public void TriggerTextChanged() {
@@ -142,31 +138,39 @@ namespace CodeEditor.Views.Text {
         #region methods
 
         private void InputText(string enteredText) {
-            var newLines = updatingAlgorithm.UpdateLines(textSources, ActivePosition, enteredText);
+            var newLines = updatingAlgorithm.UpdateLines(Lines, ActivePosition, enteredText);
 
-            UpdateTextData(newLines);
             UpdateCursorPosition(enteredText);
-            DrawLines(newLines.Keys);
+            DrawLines(newLines);
         }
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);
-            UpdateTextData(removalInfo.LinesToChange.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
             UpdateCursorPosition(removalInfo.LinesToChange.First().Key);
-            DrawLines(removalInfo.LinesToChange.Select(lineInfo => lineInfo.Key.Line));
+            DrawLines(removalInfo.LinesToChange.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
         }
 
         private void DeleteLines(IEnumerable<int> linesToRemove) {
             RemoveLines(linesToRemove);
 
-            int textLen = textSources[linesToRemove.Min() - 1].Text.Length;
+            int textLen = Lines[linesToRemove.Min() - 1].Length;
 
             UpdateCursorPosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: linesToRemove.Min() - 1));
         }
 
         private void UpdateSize() {
-            Height = Convert.ToInt32(VisibleTextLines.Count() * TextConfiguration.GetCharSize().Height);
-            Width = VisibleTextLines.Max(line => line.Length) * TextConfiguration.GetCharSize().Width;
+            int maxLineLen = 0;
+
+            foreach (var visual in visuals) {
+                var line = (VisualTextLine)visual;
+
+                if (line.Text.Length > maxLineLen) {
+                    maxLineLen = line.Text.Length;
+                }
+            }
+
+            Width = maxLineLen * TextConfiguration.GetCharSize().Width;
+            Height = Convert.ToInt32(visuals.Count * TextConfiguration.GetCharSize().Height);
         }
 
         private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
@@ -194,12 +198,9 @@ namespace CodeEditor.Views.Text {
         }
 
         private void RemoveLines(IEnumerable<int> indices) {
-            var textSourcesToRemove = textSources.Select((obj, index) => new { index, obj }).Where(obj => indices.Contains(obj.index)).ToArray();
+            var textSourcesToRemove = Lines.Select((obj, index) => new { index, obj }).Where(obj => indices.Contains(obj.index)).ToArray();
             List<VisualTextLine> visualsToRemove = new List<VisualTextLine>();
 
-            foreach (var txtSource in textSourcesToRemove) {
-                textSources.Remove(txtSource.obj);
-            }
             foreach (var visual in visuals) {
                 var line = (VisualTextLine)visual;
 
@@ -212,27 +213,20 @@ namespace CodeEditor.Views.Text {
             }
         }
 
-        private void UpdateTextData(IDictionary<int, string> changedLines) {
-            foreach (var kvp in changedLines) {
-                if (kvp.Key < textSources.Count) {
-                    textSources[kvp.Key].Text = kvp.Value;
-                } else {
-                    textSources.Add(new SimpleTextSource(kvp.Value, TextConfiguration.GetGlobalTextRunProperties()));
-                }
+        private void DrawLines(IDictionary<int, string> linesData) {
+            foreach (var pair in linesData) {
+                DrawLine(pair.Key, pair.Value);
             }
         }
 
-        private void DrawLines(IEnumerable<int> lineIndices) {
-            foreach (int index in lineIndices) {
-                DrawLine(index);
-            }
-        }
-
-        private void DrawLine(int index) {
+        private void DrawLine(int index, string newText) {
             if (index < visuals.Count) {
-                ((VisualTextLine)visuals[index]).Redraw();
+                var line = (VisualTextLine)visuals[index];
+
+                line.UpdateText(newText);
+                line.Redraw();
             } else {
-                visuals.Add(VisualTextLine.Create(textSources[index], index));
+                visuals.Add(VisualTextLine.Create(newText, index));
             }
         }
 

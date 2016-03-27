@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.TextFormatting;
@@ -17,6 +18,17 @@ namespace CodeEditor.Visuals {
 
         #endregion
 
+        #region properties
+
+        public override string Text {
+            get { return $"{textBeforeCollapse} {textAfterCollapse}"; }
+            protected set { base.Text = value; }
+        }
+
+        public override int Length => Text.Length;
+
+        #endregion
+
         #region constructor
 
         public CollapsedVisualTextLine(IEnumerable<SimpleTextSource> textSourcesToCollapse, SimpleTextSource precedingSource, SimpleTextSource followingSource, int index) {
@@ -31,6 +43,8 @@ namespace CodeEditor.Visuals {
         #endregion
 
         #region public methods
+
+        public override void UpdateText(string text) { }
 
         public override void Redraw() {
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
