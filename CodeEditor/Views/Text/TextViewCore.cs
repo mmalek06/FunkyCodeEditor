@@ -113,7 +113,7 @@ namespace CodeEditor.Views.Text {
             visuals[message.Area.StartPosition.Line] = null;
             visuals[message.Area.StartPosition.Line] = collapsedLine;
 
-            //DrawLine(message.Area.StartPosition.Line);
+            collapsedLine.Draw();
             UpdateCursorPosition(message.Area.StartPosition);
         }
 
