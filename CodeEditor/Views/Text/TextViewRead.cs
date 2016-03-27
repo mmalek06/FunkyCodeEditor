@@ -4,6 +4,9 @@ using CodeEditor.Core.DataStructures;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
+    /// <summary>
+    /// provides 'readonly' methods and properties that could be used by other views, controls or tests
+    /// </summary>
     internal partial class TextView {
 
         #region properties

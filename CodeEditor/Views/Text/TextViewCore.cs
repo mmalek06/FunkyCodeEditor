@@ -13,6 +13,9 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
+    /// <summary>
+    /// provides core functionality for entering text
+    /// </summary>
     internal partial class TextView : InputViewBase {
 
         #region events
@@ -51,7 +54,7 @@ namespace CodeEditor.Views.Text {
 
         #region event handlers
 
-        public void HandleCaretMove(object sender, CaretMovedEventArgs e) => UpdateCursorPosition(e.NewPosition);
+        public void HandleCaretMove(object sender, CaretMovedEventArgs e) => UpdateActivePosition(e.NewPosition);
 
         public void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
@@ -114,7 +117,7 @@ namespace CodeEditor.Views.Text {
             visuals[message.Area.StartPosition.Line] = collapsedLine;
 
             collapsedLine.Draw();
-            UpdateCursorPosition(message.Area.StartPosition);
+            UpdateActivePosition(message.Area.StartPosition);
         }
 
         public void ExpandText(FoldClickedMessage message) {
@@ -140,13 +143,13 @@ namespace CodeEditor.Views.Text {
         private void InputText(string enteredText) {
             var newLines = updatingAlgorithm.UpdateLines(Lines, ActivePosition, enteredText);
 
-            UpdateCursorPosition(enteredText);
+            UpdateActivePosition(enteredText);
             DrawLines(newLines);
         }
 
         private void DeleteText(LinesRemovalInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);
-            UpdateCursorPosition(removalInfo.LinesToChange.First().Key);
+            UpdateActivePosition(removalInfo.LinesToChange.First().Key);
             DrawLines(removalInfo.LinesToChange.ToDictionary(pair => pair.Key.Line, pair => pair.Value));
         }
 
@@ -155,7 +158,7 @@ namespace CodeEditor.Views.Text {
 
             int textLen = Lines[linesToRemove.Min() - 1].Length;
 
-            UpdateCursorPosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: linesToRemove.Min() - 1));
+            UpdateActivePosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: linesToRemove.Min() - 1));
         }
 
         private void UpdateSize() {
@@ -173,9 +176,9 @@ namespace CodeEditor.Views.Text {
             Height = Convert.ToInt32(visuals.Count * TextConfiguration.GetCharSize().Height);
         }
 
-        private void UpdateCursorPosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
+        private void UpdateActivePosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
 
-        private void UpdateCursorPosition(string text) {
+        private void UpdateActivePosition(string text) {
             var replacedText = updatingAlgorithm.SpecialCharsRegex.Replace(text, string.Empty);
             int column = -1;
             int line = -1;
