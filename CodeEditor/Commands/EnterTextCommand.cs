@@ -10,11 +10,14 @@ namespace CodeEditor.Commands {
 
         private SelectionView selectionView;
 
+        private TextView textView;
+
         #endregion
 
         #region constructor
 
-        public EnterTextCommand(SelectionView selectionView, TextView view) : base(view) {
+        public EnterTextCommand(TextView textView, SelectionView selectionView, TextView.TextViewInfo textViewInfo) : base(textViewInfo) {
+            this.textView = textView;
             this.selectionView = selectionView;
         }
 
@@ -39,17 +42,17 @@ namespace CodeEditor.Commands {
             UpdateCommandState(BeforeCommandExecutedState);
 
             if (selectionArea == null) {
-                view.EnterText(e.Text);
+                textView.EnterText(e.Text);
             } else {
-                view.ReplaceText(e.Text, selectionArea);
+                textView.ReplaceText(e.Text, selectionArea);
             }
 
             UpdateCommandState(AfterCommandExecutedState);
 
-            view.TriggerTextChanged(e.Text);
+            textView.TriggerTextChanged(e.Text);
             Postbox.Instance.Send(new TextAddedMessage {
                 Text = e.Text,
-                Position = view.ActivePosition
+                Position = viewInfo.ActivePosition
             });
         }
 

@@ -16,7 +16,7 @@ namespace CodeEditor.Views.Selection {
 
         private TextPosition lastSelectionEnd;
 
-        private TextView textView;
+        private TextView.TextViewInfo textViewReader;
 
         private bool isSelecting;
 
@@ -24,9 +24,9 @@ namespace CodeEditor.Views.Selection {
 
         #region constructor
 
-        public SelectionView(TextView textView) : base() {
+        public SelectionView(TextView.TextViewInfo textViewInfo) : base() {
             isSelecting = false;
-            this.textView = textView;
+            textViewReader = textViewInfo;
         }
 
         #endregion
@@ -109,7 +109,7 @@ namespace CodeEditor.Views.Selection {
                     tmpStartColumn = start.Column;
                 }
 
-                int lineLen = textView.GetLineLength(i);
+                int lineLen = textViewReader.GetLineLength(i);
 
                 if (i == end.Line) {
                     tmpEndColumn = end.Column > lineLen ? lineLen : end.Column;
@@ -136,7 +136,7 @@ namespace CodeEditor.Views.Selection {
                 int tmpStartLine = i;
                 int tmpEndColumn = 0;
                 int tmpEndLine = i;
-                int lineLen = textView.GetLineLength(i);
+                int lineLen = textViewReader.GetLineLength(i);
 
                 if (i == start.Line) {
                     tmpStartColumn = start.Column;

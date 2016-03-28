@@ -10,10 +10,12 @@ namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewRemovingTextTests {
         private TextView tv;
+        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTests() {
             tv = new TextView();
+            ti = TextView.TextViewInfo.GetInstance(tv);
         }
 
         [TestMethod]
@@ -21,8 +23,8 @@ namespace CodeEditor.Tests {
             tv.EnterText("s");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(0, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(0, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -30,8 +32,8 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(0, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(0, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -39,7 +41,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(1, tv.LinesCount);
+            Assert.AreEqual(1, ti.LinesCount);
         }
 
         [TestMethod]
@@ -48,8 +50,8 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(0, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(0, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -58,7 +60,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(1, tv.LinesCount);
+            Assert.AreEqual(1, ti.LinesCount);
         }
 
         [TestMethod]
@@ -67,7 +69,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(3, tv.LinesCount);
+            Assert.AreEqual(3, ti.LinesCount);
         }
 
         [TestMethod]
@@ -76,8 +78,8 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(2, tv.ActivePosition.Line);
-            Assert.AreEqual(0, tv.ActivePosition.Column);
+            Assert.AreEqual(2, ti.ActivePosition.Line);
+            Assert.AreEqual(0, ti.ActivePosition.Column);
         }
 
         [TestMethod]
@@ -87,7 +89,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(2, tv.LinesCount);
+            Assert.AreEqual(2, ti.LinesCount);
         }
 
         [TestMethod]
@@ -97,8 +99,8 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(0, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(0, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -108,7 +110,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(2, tv.LinesCount);
+            Assert.AreEqual(2, ti.LinesCount);
         }
 
         [TestMethod]
@@ -118,8 +120,8 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(0, tv.ActivePosition.Column);
-            Assert.AreEqual(1, tv.ActivePosition.Line);
+            Assert.AreEqual(0, ti.ActivePosition.Column);
+            Assert.AreEqual(1, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -130,7 +132,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(2, tv.LinesCount);
+            Assert.AreEqual(2, ti.LinesCount);
         }
 
         [TestMethod]
@@ -144,7 +146,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(4, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(1, tv.LinesCount);
+            Assert.AreEqual(1, ti.LinesCount);
         }
 
         [TestMethod]
@@ -158,8 +160,8 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(4, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(4, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -173,7 +175,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(1, tv.LinesCount);
+            Assert.AreEqual(1, ti.LinesCount);
         }
 
         [TestMethod]
@@ -187,8 +189,8 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(4, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -207,7 +209,7 @@ namespace CodeEditor.Tests {
                 EndPosition = new TextPosition(column: 21, line: 2)
             });
 
-            Assert.AreEqual(1, tv.LinesCount);
+            Assert.AreEqual(1, ti.LinesCount);
         }
 
         [TestMethod]
@@ -225,7 +227,7 @@ namespace CodeEditor.Tests {
             tv.HandleCaretMove(this, CreateCaretMovedEventArgs(4, 0));
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(3, tv.LinesCount);
+            Assert.AreEqual(3, ti.LinesCount);
         }
 
         [TestMethod]
@@ -244,7 +246,7 @@ namespace CodeEditor.Tests {
             tv.RemoveText(Key.Delete);
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(2, tv.LinesCount);
+            Assert.AreEqual(2, ti.LinesCount);
         }
 
         private KeyEventArgs CreateKeyEventArgs(Key key) {

@@ -3,7 +3,7 @@
 namespace CodeEditor.Commands {
     internal class UndoEnterTextCommand : BaseTextViewCommand {
 
-        public UndoEnterTextCommand(TextView view) : base(view) { }
+        public UndoEnterTextCommand(TextView.TextViewInfo viewInfo) : base(viewInfo) { }
 
         public override bool CanExecute(object parameter) => true;
 

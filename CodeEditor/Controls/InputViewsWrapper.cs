@@ -59,13 +59,14 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            var removeTextCmd = new RemoveTextCommand(selectionView, textView);
-            var caretMoveCmd = new CaretMoveCommand(textView, caretView);
-            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
+            var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
+            var removeTextCmd = new RemoveTextCommand(textView, selectionView, textViewInfo);
+            var caretMoveCmd = new CaretMoveCommand(caretView, textViewInfo);
+            var selectionCmd = new TextSelectionCommand(textViewInfo, selectionView, caretView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (removeTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView), e);
+                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textViewInfo), e);
                 deselectionCmd.Execute();
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
@@ -76,17 +77,19 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
-            var enterTextCmd = new EnterTextCommand(selectionView, textView);
+            var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
+            var enterTextCmd = new EnterTextCommand(textView, selectionView, textViewInfo);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (enterTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView), e);
+                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textViewInfo), e);
                 deselectionCmd.Execute();
             }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
-            var caretMoveCmd = new CaretMoveCommand(textView, caretView);
+            var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
+            var caretMoveCmd = new CaretMoveCommand(caretView, textViewInfo);
 
             if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
@@ -97,7 +100,8 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
-            var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
+            var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
+            var selectionCmd = new TextSelectionCommand(textViewInfo, selectionView, caretView);
 
             if (selectionCmd.CanExecute(e)) {
                 selectionCmd.Execute(e);
@@ -120,7 +124,7 @@ namespace CodeEditor.Controls {
 
         private void SetupViews() {
             textView = new TextView();
-            selectionView = new SelectionView(textView);
+            selectionView = new SelectionView(TextView.TextViewInfo.GetInstance(textView));
             caretView = new CaretView();
 
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {

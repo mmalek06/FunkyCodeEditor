@@ -11,9 +11,9 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private TextView textView;
-
         private CaretView caretView;
+
+        private TextView.TextViewInfo textViewInfo;
 
         #endregion
 
@@ -25,9 +25,9 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(TextView textView, CaretView caretView) {
-            this.textView = textView;
+        public CaretMoveCommand(CaretView caretView, TextView.TextViewInfo textViewInfo) {
             this.caretView = caretView;
+            this.textViewInfo = textViewInfo;
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace CodeEditor.Commands {
                 newPos = caretView.GetNextPosition(keyboardEvent.Key);
                 keyboardEvent.Handled = true;
             } else if (mouseEvent != null) {
-                newPos = mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize());
+                newPos = mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize());
             }
             if (newPos == null) {
                 return;
@@ -64,11 +64,11 @@ namespace CodeEditor.Commands {
 
             int column = -1, line = -1;
 
-            if (newPos.Column > textView.GetLineLength(newPos.Line)) {
-                column = textView.GetLineLength(newPos.Line);
+            if (newPos.Column > textViewInfo.GetLineLength(newPos.Line)) {
+                column = textViewInfo.GetLineLength(newPos.Line);
             }
-            if (newPos.Line >= textView.LinesCount) {
-                line = textView.LinesCount - 1;
+            if (newPos.Line >= textViewInfo.LinesCount) {
+                line = textViewInfo.LinesCount - 1;
             }
 
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
@@ -90,7 +90,7 @@ namespace CodeEditor.Commands {
 
             var nextPosition = caretView.GetNextPosition(e.Key);
 
-            if (nextPosition.Line < 0 || nextPosition.Line >= textView.LinesCount) {
+            if (nextPosition.Line < 0 || nextPosition.Line >= textViewInfo.LinesCount) {
                 return false;
             }
             if (nextPosition.Column < 0) {
@@ -101,9 +101,9 @@ namespace CodeEditor.Commands {
         }
 
         private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
-            var docPosition = mouseEvent.GetPosition(textView).GetDocumentPosition(TextConfiguration.GetCharSize());
+            var docPosition = mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
-            if (docPosition.Line < 0 || docPosition.Line >= textView.LinesCount) {
+            if (docPosition.Line < 0 || docPosition.Line >= textViewInfo.LinesCount) {
                 return false;
             }
             if (docPosition.Column < 0) {

@@ -3,7 +3,7 @@
 namespace CodeEditor.Commands {
     internal class UndoRemoveTextCommand : BaseTextViewCommand {
 
-        public UndoRemoveTextCommand(TextView view) : base(view) { }
+        public UndoRemoveTextCommand(TextView.TextViewInfo viewInfo) : base(viewInfo) { }
 
         public override bool CanExecute(object parameter) => true;
 

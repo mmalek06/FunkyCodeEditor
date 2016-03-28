@@ -12,13 +12,16 @@ namespace CodeEditor.Commands {
 
         private HashSet<Key> removalKeys = new HashSet<Key> { Key.Delete, Key.Back };
 
+        private TextView textView;
+
         private SelectionView selectionView;
 
         #endregion
 
         #region constructor
 
-        public RemoveTextCommand(SelectionView selectionView, TextView view) : base(view) {
+        public RemoveTextCommand(TextView textView, SelectionView selectionView, TextView.TextViewInfo viewInfo) : base(viewInfo) {
+            this.textView = textView;
             this.selectionView = selectionView;
         }
 
@@ -38,10 +41,10 @@ namespace CodeEditor.Commands {
 
             var area = selectionView.GetCurrentSelectionArea();
 
-            if (e.Key == Key.Delete && view.ActivePosition.Line == view.LinesCount - 1 && view.ActivePosition.Column == view.GetLineLength(view.ActivePosition.Line) && area == null) { 
+            if (e.Key == Key.Delete && viewInfo.ActivePosition.Line == viewInfo.LinesCount - 1 && viewInfo.ActivePosition.Column == viewInfo.GetLineLength(viewInfo.ActivePosition.Line) && area == null) { 
                 return false;
             }
-            if (e.Key == Key.Back && view.ActivePosition.Line == 0 && view.ActivePosition.Column == 0) {
+            if (e.Key == Key.Back && viewInfo.ActivePosition.Line == 0 && viewInfo.ActivePosition.Column == 0) {
                 return false;
             }
 
@@ -56,8 +59,8 @@ namespace CodeEditor.Commands {
             var e = parameter as KeyEventArgs;
             var key = e.Key;
             var selectionArea = selectionView.GetCurrentSelectionArea();
-            var prevPosition = view.ActivePosition;
-            int linesCountBeforeRemove = view.LinesCount;
+            var prevPosition = viewInfo.ActivePosition;
+            int linesCountBeforeRemove = viewInfo.LinesCount;
             int removedLinesCount = 0;
             string removedText = string.Empty;
 
@@ -70,14 +73,14 @@ namespace CodeEditor.Commands {
                     removedLinesCount = 1;
                 }
 
-                view.RemoveText(key);
+                textView.RemoveText(key);
             } else {
-                removedText = string.Join("", view.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
+                removedText = string.Join("", viewInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
                 removedLinesCount = selectionArea.EndPosition.Line - selectionArea.StartPosition.Line;
 
-                view.RemoveText(selectionArea);
+                textView.RemoveText(selectionArea);
             }
-            if (view.LinesCount < linesCountBeforeRemove) {
+            if (viewInfo.LinesCount < linesCountBeforeRemove) {
                 Postbox.Instance.Send(new LinesRemovedMessage {
                     Count = removedLinesCount
                 });
@@ -85,13 +88,13 @@ namespace CodeEditor.Commands {
 
             Postbox.Instance.Send(new TextRemovedMessage {
                 Key = e.Key,
-                Position = view.ActivePosition,
+                Position = viewInfo.ActivePosition,
                 RemovedText = removedText
             });
 
             UpdateCommandState(AfterCommandExecutedState);
 
-            view.TriggerTextChanged();
+            textView.TriggerTextChanged();
 
             e.Handled = true;
         }
@@ -101,14 +104,14 @@ namespace CodeEditor.Commands {
         #region methods
 
         private string GetRemovedText(Key key) {
-            if (view.GetLineLength(view.ActivePosition.Line) == 0 || (key == Key.Delete && view.ActivePosition.Column >= view.GetLine(view.ActivePosition.Line).Length)) {
+            if (viewInfo.GetLineLength(viewInfo.ActivePosition.Line) == 0 || (key == Key.Delete && viewInfo.ActivePosition.Column >= viewInfo.GetLine(viewInfo.ActivePosition.Line).Length)) {
                 return string.Empty;
             }
             if (key == Key.Delete) {
-                return view.GetCharAt(view.ActivePosition).ToString();
+                return viewInfo.GetCharAt(viewInfo.ActivePosition).ToString();
             } else {
-                return view.GetCharAt(
-                    new TextPosition(column: view.ActivePosition.Column > 0 ? view.ActivePosition.Column - 1 : 0, line: view.ActivePosition.Line)).ToString();
+                return viewInfo.GetCharAt(
+                    new TextPosition(column: viewInfo.ActivePosition.Column > 0 ? viewInfo.ActivePosition.Column - 1 : 0, line: viewInfo.ActivePosition.Line)).ToString();
             }
         }
 

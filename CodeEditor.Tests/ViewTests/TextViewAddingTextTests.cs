@@ -6,25 +6,27 @@ namespace CodeEditor.Tests {
     [TestClass]
     public class TextViewAddingTextTests {
         private TextView tv;
+        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {
             tv = new TextView();
+            ti = TextView.TextViewInfo.GetInstance(tv);
         }
 
         [TestMethod]
         public void FourCharsPasted_LinesShouldBe1() {
             tv.EnterText("asdf");
 
-            Assert.AreEqual(1, tv.LinesCount);
+            Assert.AreEqual(1, ti.LinesCount);
         }
 
         [TestMethod]
         public void FourCharsPasted_CursorShouldBe40() {
             tv.EnterText("asdf");
 
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(4, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -34,7 +36,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("d");
 
-            Assert.AreEqual(4, tv.GetLineLength(0));
+            Assert.AreEqual(4, ti.GetLineLength(0));
         }
 
         [TestMethod]
@@ -44,8 +46,8 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("d");
             
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(4, ti.ActivePosition.Column);
+            Assert.AreEqual(0, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -61,7 +63,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(3, tv.LinesCount);
+            Assert.AreEqual(3, ti.LinesCount);
         }
 
         [TestMethod]
@@ -77,8 +79,8 @@ namespace CodeEditor.Tests {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(2, tv.ActivePosition.Line);
+            Assert.AreEqual(4, ti.ActivePosition.Column);
+            Assert.AreEqual(2, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -87,7 +89,7 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(3, tv.LinesCount);
+            Assert.AreEqual(3, ti.LinesCount);
         }
 
         [TestMethod]
@@ -96,8 +98,8 @@ namespace CodeEditor.Tests {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(2, tv.ActivePosition.Line);
+            Assert.AreEqual(4, ti.ActivePosition.Column);
+            Assert.AreEqual(2, ti.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -111,8 +113,8 @@ namespace CodeEditor.Tests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(text1, tv.GetLine(0));
-            Assert.AreEqual(text2, tv.GetLine(1));
+            Assert.AreEqual(text1, ti.GetLine(0));
+            Assert.AreEqual(text2, ti.GetLine(1));
         }
 
         [TestMethod]
@@ -126,11 +128,11 @@ namespace CodeEditor.Tests {
             });
             tv.EnterText("\r");
 
-            Assert.AreEqual(4, tv.LinesCount);
-            Assert.AreEqual("a", tv.GetLine(0));
-            Assert.AreEqual(string.Empty, tv.GetLine(1));
-            Assert.AreEqual(string.Empty, tv.GetLine(2));
-            Assert.AreEqual("z", tv.GetLine(3));
+            Assert.AreEqual(4, ti.LinesCount);
+            Assert.AreEqual("a", ti.GetLine(0));
+            Assert.AreEqual(string.Empty, ti.GetLine(1));
+            Assert.AreEqual(string.Empty, ti.GetLine(2));
+            Assert.AreEqual("z", ti.GetLine(3));
         }
     }
 }

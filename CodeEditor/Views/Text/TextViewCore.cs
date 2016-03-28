@@ -36,7 +36,9 @@ namespace CodeEditor.Views.Text {
 
         #region properties
 
-        public TextPosition ActivePosition { get; private set; } = new TextPosition(column: 0, line: 0);
+        public TextViewInfo Info { get; set; }
+
+        private TextPosition ActivePosition { get; set; } = new TextPosition(column: 0, line: 0);
 
         #endregion
 
@@ -46,6 +48,7 @@ namespace CodeEditor.Views.Text {
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
             collapsingAlgorithm = new TextCollapser();
+            Info = TextViewInfo.GetInstance(this);
 
             visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
         }
@@ -84,7 +87,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.RemoveLines(Lines, ActivePosition, key);
+            var removalInfo = removingAlgorithm.RemoveLines(Info.Lines, ActivePosition, key);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -96,7 +99,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(TextPositionsPair ranges) {
-            var removalInfo = removingAlgorithm.RemoveLines(Lines, ranges);
+            var removalInfo = removingAlgorithm.RemoveLines(Info.Lines, ranges);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -105,10 +108,10 @@ namespace CodeEditor.Views.Text {
         }
 
         public void CollapseText(FoldClickedMessage message) {
-            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Lines, message.Area.StartPosition.Line);
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Info.Lines, message.Area.StartPosition.Line);
             var removeTextRange = new TextPositionsPair {
                 StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
-                EndPosition = new TextPosition(column: Lines[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
+                EndPosition = new TextPosition(column: Info.Lines[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
             };
 
             RemoveText(removeTextRange);
@@ -121,7 +124,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void ExpandText(FoldClickedMessage message) {
-            collapsingAlgorithm.ExpandTextRange(message.Area, Lines, ActivePosition.Line);
+            collapsingAlgorithm.ExpandTextRange(message.Area, Info.Lines, ActivePosition.Line);
         }
 
         public void TriggerTextChanged() {
@@ -141,7 +144,7 @@ namespace CodeEditor.Views.Text {
         #region methods
 
         private void InputText(string enteredText) {
-            var newLines = updatingAlgorithm.UpdateLines(Lines, ActivePosition, enteredText);
+            var newLines = updatingAlgorithm.UpdateLines(Info.Lines, ActivePosition, enteredText);
 
             UpdateActivePosition(enteredText);
             DrawLines(newLines);
@@ -157,7 +160,7 @@ namespace CodeEditor.Views.Text {
             RemoveLines(linesToRemove);
 
             int minLine = linesToRemove.Min() - 1;
-            int textLen = Lines[minLine].Length;
+            int textLen = Info.Lines[minLine].Length;
 
             UpdateActivePosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: minLine));
         }
