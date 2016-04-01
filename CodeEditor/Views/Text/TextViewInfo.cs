@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Enums;
+using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
@@ -51,7 +54,22 @@ namespace CodeEditor.Views.Text {
 
             #region public methods
 
-            public char GetCharAt(TextPosition position) => ((VisualTextLine)parent.visuals[position.Line]).GetCharAt(position.Column);
+            public TextPosition AdjustStep(TextPosition newPosition, CaretMoveDirection moveDirection) {
+                var line = ((VisualTextLine)parent.visuals[newPosition.Line]);
+                CharInfo charInfo = line.Text != string.Empty && newPosition.Column < GetLineLength(newPosition.Line) ? line.GetCharInfoAt(newPosition.Column) : null;
+
+                if (charInfo != null) {
+                    if (charInfo.IsCharacter) {
+                        return newPosition;
+                    } else {
+                        return GetAdjustedPosition(charInfo, moveDirection);
+                    }
+                }
+
+                return newPosition;
+            }
+
+            public char GetCharAt(TextPosition position) => ((VisualTextLine)parent.visuals[position.Line]).GetCharInfoAt(position.Column).Character;
 
             public int GetLineLength(int index) => parent.visuals.Count == 0 ? 0 : ((VisualTextLine)parent.visuals[index]).Length;
 
@@ -92,6 +110,24 @@ namespace CodeEditor.Views.Text {
                 }
 
                 return true;
+            }
+
+            #endregion
+
+            #region methods
+
+            private TextPosition GetAdjustedPosition(CharInfo charInfo, CaretMoveDirection moveDirection) {
+                switch (moveDirection) {
+                    case CaretMoveDirection.LEFT:
+                        return charInfo.PrevCharPosition;
+                    case CaretMoveDirection.RIGHT:
+                        return charInfo.NextCharPosition;
+                    case CaretMoveDirection.BOTTOM:
+                    case CaretMoveDirection.TOP:
+                        return charInfo.PrevCharPosition;
+                }
+
+                throw new ArgumentException(nameof(moveDirection));
             }
 
             #endregion

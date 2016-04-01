@@ -14,18 +14,13 @@ namespace CodeEditor.Visuals {
 
         private static SimpleParagraphProperties paragraphProperties;
 
-        protected string text;
-
         #endregion
 
         #region properties
 
         public abstract int Length { get; }
 
-        public virtual string Text {
-            get { return text; }
-            protected set { text = value; }
-        }
+        public abstract string Text { get; protected set; }
 
         public int Index { get; set; }
 
@@ -54,18 +49,18 @@ namespace CodeEditor.Visuals {
 
         public abstract IReadOnlyCollection<string> GetStringContents();
 
-        public char GetCharAt(int column) => Text[column];
+        public abstract CharInfo GetCharInfoAt(int column);
 
         public static VisualTextLine Create(string text, int index) {
             return new SingleVisualTextLine(new SimpleTextSource(text, TextConfiguration.GetGlobalTextRunProperties()), index);
         }
 
-        public static VisualTextLine Create(IEnumerable<string> linesToCollapse, string precedingText, string followingText, int index) {
+        public static VisualTextLine Create(IEnumerable<string> linesToCollapse, string precedingText, string followingText, int index, string collapseRepresentation) {
             var textSourceBeforeCollapse = new SimpleTextSource(precedingText, TextConfiguration.GetGlobalTextRunProperties());
             var textSourceAfterCollapse = new SimpleTextSource(followingText, TextConfiguration.GetGlobalTextRunProperties());
 
             return new CollapsedVisualTextLine(
-                linesToCollapse.Select(line => new SimpleTextSource(line, TextConfiguration.GetGlobalTextRunProperties())), textSourceBeforeCollapse, textSourceAfterCollapse, index);
+                linesToCollapse.Select(line => new SimpleTextSource(line, TextConfiguration.GetGlobalTextRunProperties())), textSourceBeforeCollapse, textSourceAfterCollapse, index, collapseRepresentation);
         }
 
         #endregion

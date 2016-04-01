@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.TextFormatting;
+using CodeEditor.TextProperties;
 
 namespace CodeEditor.Visuals {
     internal class SingleVisualTextLine : VisualTextLine {
@@ -50,6 +51,8 @@ namespace CodeEditor.Visuals {
         public override IReadOnlyCollection<string> GetStringContents() => new[] { Text };
 
         public override IReadOnlyCollection<SimpleTextSource> GetTextSources() => new[] { textSource };
+
+        public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Character = Text[column] };
 
         #endregion
 

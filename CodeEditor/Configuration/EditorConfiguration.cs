@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 using CodeEditor.Algorithms.Folding;
-using CodeEditor.Core.Extensions;
+using CodeEditor.Enums;
 
 namespace CodeEditor.Configuration {
     internal static class EditorConfiguration {
@@ -35,6 +35,8 @@ namespace CodeEditor.Configuration {
             new Typeface(TextConfiguration.GetFontFamily(), TextConfiguration.GetFontStyle(), TextConfiguration.GetFontWeight(), TextConfiguration.GetFontStretch());
 
         public static IFoldingAlgorithm GetFoldingAlgorithm() => new BracketsFoldingAlgorithm();
+
+        public static LanguageFormattingType GetFormattingType() => LanguageFormattingType.BRACKETS;
 
     }
 }

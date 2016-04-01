@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
+using CodeEditor.Enums;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 
@@ -71,7 +72,9 @@ namespace CodeEditor.Commands {
                 line = textViewInfo.LinesCount - 1;
             }
 
+            CaretMoveDirection moveDir = GetMoveDirection(newPos, textViewInfo.ActivePosition);
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
+            newPos = textViewInfo.AdjustStep(newPos, moveDir);
 
             caretView.MoveCursor(newPos);
         }
@@ -111,6 +114,22 @@ namespace CodeEditor.Commands {
             }
 
             return true;
+        }
+
+        private CaretMoveDirection GetMoveDirection(TextPosition newPos, TextPosition activePosition) {
+            if (newPos.Line == activePosition.Line) {
+                if (newPos.Column > activePosition.Column) {
+                    return CaretMoveDirection.RIGHT;
+                }
+
+                return CaretMoveDirection.LEFT;
+            } else {
+                if (newPos.Line > activePosition.Line) {
+                    return CaretMoveDirection.BOTTOM;
+                }
+
+                return CaretMoveDirection.TOP;
+            }
         }
 
         #endregion

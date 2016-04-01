@@ -60,6 +60,8 @@
     <Compile Include="Configuration\EditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
+    <Compile Include="Enums\CaretMoveDirection.cs" />
+    <Compile Include="Enums\LanguageFormattingType.cs" />
     <Compile Include="Messaging\FoldClickedMessage.cs" />
     <Compile Include="Messaging\LinesRemovedMessage.cs" />
     <Compile Include="Controls\HelperViewsWrapper.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Messaging\TextAddedMessage.cs" />
     <Compile Include="Messaging\Postbox.cs" />
     <Compile Include="Messaging\TextRemovedMessage.cs" />
+    <Compile Include="TextProperties\CharInfo.cs" />
     <Compile Include="Visuals\CollapsedVisualTextLine.cs" />
     <Compile Include="Visuals\SingleVisualTextLine.cs" />
     <Compile Include="Views\BaseClasses\ViewBase.cs" />
@@ -110,7 +113,7 @@
     <Compile Include="Views\BaseClasses\InputViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
     <Compile Include="Controls\InputViewsWrapper.cs" />
-    <Compile Include="Visuals\SimpleTextSource.cs" />
+    <Compile Include="TextProperties\SimpleTextSource.cs" />
     <Compile Include="Views\Caret\CaretView.cs" />
     <Compile Include="Views\Text\TextViewCore.cs" />
     <Compile Include="Visuals\VisualElementSymbolBase.cs" />

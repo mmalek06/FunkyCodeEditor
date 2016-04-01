@@ -128,7 +128,7 @@ namespace CodeEditor.Views.Caret {
         }
 
         private void MoveCaret(TextPosition position) {
-            caretPosition = new TextPosition(column: position.Column, line: position.Line);
+            caretPosition = position;
 
             DrawCaret();
             RestartCheckTimer();

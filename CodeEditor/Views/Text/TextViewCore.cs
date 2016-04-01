@@ -11,6 +11,7 @@ using CodeEditor.Views.BaseClasses;
 using CodeEditor.Messaging;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Visuals;
+using CodeEditor.TextProperties;
 
 namespace CodeEditor.Views.Text {
     /// <summary>
