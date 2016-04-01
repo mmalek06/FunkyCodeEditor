@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Views.Text;
-using CodeEditor.Visuals;
 
 namespace CodeEditor.Tests {
     [TestClass]
-    public class RemovingTextAlgTests {
+    public class RemovingTextTests {
         private static TextRemover algorithm;
         private static TextView view;
-        private static TextRunProperties runProperties;
 
         [ClassInitialize]
         public static void Initialize(TestContext context) {

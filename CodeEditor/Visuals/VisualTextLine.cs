@@ -20,7 +20,7 @@ namespace CodeEditor.Visuals {
 
         public abstract int Length { get; }
 
-        public abstract string Text { get; protected set; }
+        public abstract string Text { get; }
 
         public int Index { get; set; }
 

@@ -17,10 +17,7 @@ namespace CodeEditor.Visuals {
 
         public override int Length => textSource.Text.Length;
 
-        public override string Text {
-            get { return textSource.Text; }
-            protected set { textSource.Text = value; }
-        }
+        public override string Text => textSource.Text;
 
         #endregion
 
@@ -28,7 +25,6 @@ namespace CodeEditor.Visuals {
 
         public SingleVisualTextLine(SimpleTextSource textSource, int index) {
             this.textSource = textSource;
-            Text = textSource.Text;
             Index = index;
         }
 

@@ -9,10 +9,25 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public VisualTextLine CollapseTextRange(TextPositionsPair area, IEnumerable<string> lines, int index) {
-            var middlePart = lines.Skip(area.StartPosition.Line).Take(area.EndPosition.Line - area.StartPosition.Line);
-            string precedingText = new string(lines.ElementAt(area.StartPosition.Line).Take(area.StartPosition.Column).ToArray());
-            string followingText = new string(lines.ElementAt(area.EndPosition.Line).Skip(area.EndPosition.Column + 1).ToArray());
+        public VisualTextLine CollapseTextRange(TextPositionsPair area, IReadOnlyList<string> lines, int index) {
+            string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
+            string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
+            var linesToStartFrom = lines.Skip(area.StartPosition.Line);
+            var middlePart = new List<string>();
+            int start = area.StartPosition.Line;
+            int end = area.EndPosition.Line - area.StartPosition.Line;
+
+            for (int i = start; i <= end; i++) {
+                string currentLine = lines[i];
+
+                if (i == start) {
+                    currentLine = string.Join("", currentLine.Skip(area.StartPosition.Column));
+                } else if (i == end) {
+                    currentLine = string.Join("", currentLine.Take(area.EndPosition.Column + 1));
+                }
+
+                middlePart.Add(currentLine);
+            }
 
             return VisualTextLine.Create(middlePart, precedingText, followingText, index, GetCollapseRepresentation());
         }

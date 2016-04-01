@@ -22,10 +22,7 @@ namespace CodeEditor.Visuals {
 
         #region properties
 
-        public override string Text {
-            get { return $"{textBeforeCollapse} {collapseRepresentation} {textAfterCollapse}"; }
-            protected set {  }
-        }
+        public override string Text => $"{textBeforeCollapse} {collapseRepresentation} {textAfterCollapse}";
 
         public override int Length => Text.Length;
 
