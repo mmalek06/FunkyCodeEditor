@@ -25,7 +25,7 @@ namespace CodeEditor.Tests.AlgorithmTests {
             var line = tc.CollapseTextRange(new TextPositionsPair { StartPosition = new TextPosition(column: 5, line: 0), EndPosition = new TextPosition(column: 0, line: 2) }, lines, 0);
 
             Assert.AreEqual(text1, string.Join("", line.Text.Take(5)));
-            Assert.AreEqual(text3, string.Join("", line.Text.Skip(11)));
+            Assert.AreEqual(text3, string.Join("", line.Text.Skip(10)));
         }
     }
 }

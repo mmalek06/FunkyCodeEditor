@@ -22,7 +22,7 @@ namespace CodeEditor.Visuals {
 
         #region properties
 
-        public override string Text => $"{textBeforeCollapse} {collapseRepresentation} {textAfterCollapse}";
+        public override string Text => $"{textBeforeCollapse}{collapseRepresentation}{textAfterCollapse}";
 
         public override int Length => Text.Length;
 
@@ -89,17 +89,17 @@ namespace CodeEditor.Visuals {
         }
 
         public override CharInfo GetCharInfoAt(int column) {
-            if (column < textBeforeCollapse.Length) {
-                return new CharInfo { IsCharacter = true, Character = textBeforeCollapse[column] };
+            if (column <= textBeforeCollapse.Length) {
+                return new CharInfo { IsCharacter = true, Character = column - 1 > 0 ? textBeforeCollapse[column - 1] : default(char) };
             }
-            if (column > textBeforeCollapse.Length && column > $"{textBeforeCollapse} {collapseRepresentation} ".Length) {
+            if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length) {
                 return new CharInfo { IsCharacter = true, Character = Text[column - 1] };
             }
 
             return new CharInfo {
                 IsCharacter = false,
                 PrevCharPosition = new Core.DataStructures.TextPosition(column: textBeforeCollapse.Length, line: Index),
-                NextCharPosition = new Core.DataStructures.TextPosition(column: $"{textBeforeCollapse} {collapseRepresentation} ".Length, line: Index)
+                NextCharPosition = new Core.DataStructures.TextPosition(column: $"{textBeforeCollapse}{collapseRepresentation}".Length, line: Index)
             };
         }
 
