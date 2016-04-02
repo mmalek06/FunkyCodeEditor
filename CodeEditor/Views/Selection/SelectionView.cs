@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
-using CodeEditor.Configuration;
+using CodeEditor.Algorithms.Selection;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Extensions;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 using CodeEditor.Views.Text;
@@ -16,9 +15,15 @@ namespace CodeEditor.Views.Selection {
 
         private TextPosition lastSelectionEnd;
 
-        private TextView.TextViewInfo textViewReader;
+        private TextSelector selectionAlgorithm;
 
         private bool isSelecting;
+
+        #endregion
+
+        #region properties
+
+        public TextSelector SelectionAlgorithm => selectionAlgorithm;
 
         #endregion
 
@@ -26,7 +31,7 @@ namespace CodeEditor.Views.Selection {
 
         public SelectionView(TextView.TextViewInfo textViewInfo) : base() {
             isSelecting = false;
-            textViewReader = textViewInfo;
+            selectionAlgorithm = new TextSelector(textViewInfo, this);
         }
 
         #endregion
@@ -90,73 +95,10 @@ namespace CodeEditor.Views.Selection {
             visuals.Clear();
 
             if (start.Line <= end.Line) {
-                return GetSelectionPointsForward(start, end);
+                return selectionAlgorithm.GetSelectionPointsForward(start, end);
             } else {
-                return GetSelectionPointsInverted(start, end);
+                return selectionAlgorithm.GetSelectionPointsInverted(start, end);
             }
-        }
-
-        private IEnumerable<PointsPair> GetSelectionPointsForward(TextPosition start, TextPosition end) {
-            var pairs = new List<PointsPair>();
-
-            for (int i = start.Line; i <= end.Line; i++) {
-                int tmpStartColumn = 0;
-                int tmpStartLine = i;
-                int tmpEndColumn = 0;
-                int tmpEndLine = i;
-
-                if (i == start.Line) {
-                    tmpStartColumn = start.Column;
-                }
-
-                int lineLen = textViewReader.GetLineLength(i);
-
-                if (i == end.Line) {
-                    tmpEndColumn = end.Column > lineLen ? lineLen : end.Column;
-                } else {
-                    tmpEndColumn = lineLen;
-                }
-
-                pairs.Add(new PointsPair {
-                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
-                                                                                                  .AlignToVisualLineTop(TextConfiguration.GetCharSize()),
-                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
-                                                                                            .AlignToVisualLineBottom(TextConfiguration.GetCharSize())
-                });
-            }
-
-            return pairs;
-        }
-
-        private IEnumerable<PointsPair> GetSelectionPointsInverted(TextPosition start, TextPosition end) {
-            var pairs = new List<PointsPair>();
-
-            for (int i = start.Line; i >= end.Line; i--) {
-                int tmpStartColumn = 0;
-                int tmpStartLine = i;
-                int tmpEndColumn = 0;
-                int tmpEndLine = i;
-                int lineLen = textViewReader.GetLineLength(i);
-
-                if (i == start.Line) {
-                    tmpStartColumn = start.Column;
-                } else if (i == end.Line) {
-                    tmpStartColumn = end.Column > lineLen ? lineLen : end.Column;
-                    tmpEndColumn = lineLen;
-                } else {
-                    tmpStartColumn = 0;
-                    tmpEndColumn = lineLen;
-                }
-
-                pairs.Add(new PointsPair {
-                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
-                                                                                                  .AlignToVisualLineTop(TextConfiguration.GetCharSize()),
-                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
-                                                                                            .AlignToVisualLineBottom(TextConfiguration.GetCharSize())
-                });
-            }
-
-            return pairs;
         }
 
         #endregion

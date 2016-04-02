@@ -44,7 +44,7 @@ namespace CodeEditor.Commands {
 
         public bool CanExecute(object parameter) {
             var keyboardEvent = parameter as KeyEventArgs;
-            var mouseEvent = parameter as MouseEventArgs;
+            var mouseEvent = parameter as MouseButtonEventArgs;
 
             if (keyboardEvent != null) {
                 return CanExecuteKeyboard(keyboardEvent);
@@ -57,7 +57,7 @@ namespace CodeEditor.Commands {
 
         public void Execute(object parameter) {
             var keyboardEvent = parameter as KeyEventArgs;
-            var mouseEvent = parameter as MouseEventArgs;
+            var mouseEvent = parameter as MouseButtonEventArgs;
             
             if (keyboardEvent != null) {
                 ExecuteKeyboard(keyboardEvent);
@@ -93,39 +93,15 @@ namespace CodeEditor.Commands {
                  keyboardEvent.Key == Key.PageUp || keyboardEvent.Key == Key.PageDown);
         }
 
-        private bool CanExecuteMouse(MouseEventArgs mouseEvent) => 
-            mouseEvent.LeftButton == MouseButtonState.Pressed &&
-            viewInfo.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()));
+        private bool CanExecuteMouse(MouseButtonEventArgs mouseEvent) => 
+            (mouseEvent.LeftButton == MouseButtonState.Pressed &&
+                viewInfo.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()))) ||
+            mouseEvent.ClickCount == 3 ||
+            mouseEvent.ClickCount == 2;
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
-            TextPosition endingPosition = null;
+            var endingPosition = selectionView.SelectionAlgorithm.GetSelectionPosition(keyboardEvent);
 
-            switch (keyboardEvent.Key) {
-                case Key.Left:
-                    endingPosition = new TextPosition(column: viewInfo.ActivePosition.Column - 1, line: viewInfo.ActivePosition.Line);
-                    break;
-                case Key.Home:
-                    endingPosition = new TextPosition(column: 0, line: viewInfo.ActivePosition.Line);
-                    break;
-                case Key.Right:
-                    endingPosition = new TextPosition(column: viewInfo.ActivePosition.Column + 1, line: viewInfo.ActivePosition.Line);
-                    break;
-                case Key.End:
-                    endingPosition = new TextPosition(column: viewInfo.GetLineLength(viewInfo.ActivePosition.Line), line: viewInfo.ActivePosition.Line);
-                    break;
-                case Key.Up:
-                    endingPosition = new TextPosition(column: viewInfo.ActivePosition.Column, line: viewInfo.ActivePosition.Line - 1);
-                    break;
-                case Key.PageUp:
-                    endingPosition = new TextPosition(column: viewInfo.ActivePosition.Column, line: viewInfo.ActivePosition.Line - GlobalConstants.PageSize);
-                    break;
-                case Key.Down:
-                    endingPosition = new TextPosition(column: viewInfo.ActivePosition.Column, line: viewInfo.ActivePosition.Line + 1);
-                    break;
-                case Key.PageDown:
-                    endingPosition = new TextPosition(column: viewInfo.ActivePosition.Column, line: viewInfo.ActivePosition.Line + GlobalConstants.PageSize);
-                    break;
-            }
             if (!selectionView.HasSelection()) {
                 selectionView.Select(new TextPosition(column: viewInfo.ActivePosition.Column, line: viewInfo.ActivePosition.Line));
             }
@@ -134,11 +110,25 @@ namespace CodeEditor.Commands {
             caretView.MoveCursor(endingPosition);
         }
 
-        private void ExecuteMouse(MouseEventArgs mouseEvent) {
-            var endPosition = mouseEvent.GetPosition(selectionView).GetDocumentPosition(TextConfiguration.GetCharSize());
+        private void ExecuteMouse(MouseButtonEventArgs mouseEvent) {
+            if (mouseEvent.ClickCount == 2) {
+                var selectionInfo = selectionView.SelectionAlgorithm.WordSelection(mouseEvent);
 
-            selectionView.Select(endPosition);
-            caretView.MoveCursor(endPosition);
+                selectionView.Select(selectionInfo.StartPosition);
+                selectionView.Select(selectionInfo.EndPosition);
+                caretView.MoveCursor(selectionInfo.CursorPosition);
+            } else if (mouseEvent.ClickCount == 3) {
+                var selectionInfo = selectionView.SelectionAlgorithm.LineSelection(mouseEvent);
+
+                selectionView.Select(selectionInfo.StartPosition);
+                selectionView.Select(selectionInfo.EndPosition);
+                caretView.MoveCursor(selectionInfo.CursorPosition);
+            } else {
+                var endPosition = selectionView.SelectionAlgorithm.StandardSelection(mouseEvent);
+
+                selectionView.Select(endPosition);
+                caretView.MoveCursor(endPosition);
+            }
         }
 
         #endregion

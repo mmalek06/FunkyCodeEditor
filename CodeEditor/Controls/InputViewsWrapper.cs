@@ -99,6 +99,15 @@ namespace CodeEditor.Controls {
             textView.HandleMouseDown(e);
         }
 
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+            var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
+            var selectionCmd = new TextSelectionCommand(textViewInfo, selectionView, caretView);
+
+            if (selectionCmd.CanExecute(e)) {
+                selectionCmd.Execute(e);
+            }
+        }
+
         protected override void OnMouseMove(MouseEventArgs e) {
             var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
             var selectionCmd = new TextSelectionCommand(textViewInfo, selectionView, caretView);

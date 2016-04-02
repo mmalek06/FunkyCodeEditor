@@ -1,0 +1,174 @@
+﻿using System.Collections.Generic;
+using System.Windows.Input;
+using CodeEditor.Configuration;
+using CodeEditor.Core.DataStructures;
+using CodeEditor.Core.Extensions;
+using CodeEditor.Views.Selection;
+using CodeEditor.Views.Text;
+
+namespace CodeEditor.Algorithms.Selection {
+    internal class TextSelector {
+
+        #region fields
+
+        private TextView.TextViewInfo textViewReader;
+
+        private SelectionView parent;
+
+        #endregion
+
+        #region constructor
+
+        public TextSelector(TextView.TextViewInfo textViewReader, SelectionView parent) {
+            this.textViewReader = textViewReader;
+            this.parent = parent;
+        }
+
+        #endregion
+
+        #region public methods
+
+        public TextPosition StandardSelection(MouseButtonEventArgs mouseEvent) => mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
+
+        public SelectionInfo WordSelection(MouseButtonEventArgs mouseEvent) {
+            var clickPosition = mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
+            var clickedLine = textViewReader.GetLine(clickPosition.Line);
+            int startColumn = clickPosition.Column;
+            int endColumn = clickPosition.Column;
+
+            for (int i = clickPosition.Column; i >= 0; i--) {
+                if (char.IsLetterOrDigit(clickedLine[i])) {
+                    startColumn = i;
+                } else {
+                    break;
+                }
+            }
+            for (int i = clickPosition.Column; i < clickedLine.Length; i++) {
+                if (char.IsLetterOrDigit(clickedLine[i])) {
+                    endColumn = i + 1;
+                } else {
+                    break;
+                }
+            }
+
+            return new SelectionInfo {
+                StartPosition = new TextPosition(column: startColumn, line: clickPosition.Line),
+                EndPosition = new TextPosition(column: endColumn, line: clickPosition.Line),
+                CursorPosition = new TextPosition(column: endColumn, line: clickPosition.Line)
+            };
+        }
+
+        public SelectionInfo LineSelection(MouseButtonEventArgs mouseEvent) {
+            var clickPosition = mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
+            var startPosition = new TextPosition(column: 0, line: clickPosition.Line);
+            var endPosition = new TextPosition(column: textViewReader.GetLineLength(clickPosition.Line), line: clickPosition.Line);
+            int cursorColumn = clickPosition.Line + 1 < textViewReader.LinesCount ? 0 : textViewReader.GetLineLength(clickPosition.Line);
+            int cursorLine = clickPosition.Line + 1 < textViewReader.LinesCount ? clickPosition.Line + 1 : clickPosition.Line;
+
+            return new SelectionInfo {
+                StartPosition = startPosition,
+                EndPosition = endPosition,
+                CursorPosition = new TextPosition(column: cursorColumn, line: cursorLine)
+            };
+        }
+
+        public TextPosition GetSelectionPosition(KeyEventArgs keyboardEvent) {
+            TextPosition endingPosition = null;
+
+            switch (keyboardEvent.Key) {
+                case Key.Left:
+                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column - 1, line: textViewReader.ActivePosition.Line);
+                    break;
+                case Key.Home:
+                    endingPosition = new TextPosition(column: 0, line: textViewReader.ActivePosition.Line);
+                    break;
+                case Key.Right:
+                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column + 1, line: textViewReader.ActivePosition.Line);
+                    break;
+                case Key.End:
+                    endingPosition = new TextPosition(column: textViewReader.GetLineLength(textViewReader.ActivePosition.Line), line: textViewReader.ActivePosition.Line);
+                    break;
+                case Key.Up:
+                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line - 1);
+                    break;
+                case Key.PageUp:
+                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line - GlobalConstants.PageSize);
+                    break;
+                case Key.Down:
+                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line + 1);
+                    break;
+                case Key.PageDown:
+                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line + GlobalConstants.PageSize);
+                    break;
+            }
+
+            return endingPosition;
+        }
+
+        public IEnumerable<PointsPair> GetSelectionPointsForward(TextPosition start, TextPosition end) {
+            var pairs = new List<PointsPair>();
+
+            for (int i = start.Line; i <= end.Line; i++) {
+                int tmpStartColumn = 0;
+                int tmpStartLine = i;
+                int tmpEndColumn = 0;
+                int tmpEndLine = i;
+
+                if (i == start.Line) {
+                    tmpStartColumn = start.Column;
+                }
+
+                int lineLen = textViewReader.GetLineLength(i);
+
+                if (i == end.Line) {
+                    tmpEndColumn = end.Column > lineLen ? lineLen : end.Column;
+                } else {
+                    tmpEndColumn = lineLen;
+                }
+
+                pairs.Add(new PointsPair {
+                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                                  .AlignToVisualLineTop(TextConfiguration.GetCharSize()),
+                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                            .AlignToVisualLineBottom(TextConfiguration.GetCharSize())
+                });
+            }
+
+            return pairs;
+        }
+
+        public IEnumerable<PointsPair> GetSelectionPointsInverted(TextPosition start, TextPosition end) {
+            var pairs = new List<PointsPair>();
+
+            for (int i = start.Line; i >= end.Line; i--) {
+                int tmpStartColumn = 0;
+                int tmpStartLine = i;
+                int tmpEndColumn = 0;
+                int tmpEndLine = i;
+                int lineLen = textViewReader.GetLineLength(i);
+
+                if (i == start.Line) {
+                    tmpStartColumn = start.Column;
+                } else if (i == end.Line) {
+                    tmpStartColumn = end.Column > lineLen ? lineLen : end.Column;
+                    tmpEndColumn = lineLen;
+                } else {
+                    tmpStartColumn = 0;
+                    tmpEndColumn = lineLen;
+                }
+
+                pairs.Add(new PointsPair {
+                    StartingPoint = (new TextPosition(column: tmpStartColumn, line: tmpStartLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                                  .AlignToVisualLineTop(TextConfiguration.GetCharSize()),
+                    EndingPoint = (new TextPosition(column: tmpEndColumn, line: tmpEndLine)).GetPositionRelativeToParent(TextConfiguration.GetCharSize())
+                                                                                            .AlignToVisualLineBottom(TextConfiguration.GetCharSize())
+                });
+            }
+
+            return pairs;
+        }
+
+        #endregion
+
+    }
+}
