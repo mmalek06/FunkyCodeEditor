@@ -89,7 +89,7 @@ namespace CodeEditor.Visuals {
         }
 
         public override CharInfo GetCharInfoAt(int column) {
-            if (column <= textBeforeCollapse.Length) {
+            if (column < textBeforeCollapse.Length) {
                 return new CharInfo { IsCharacter = true, Character = textBeforeCollapse[column] };
             }
             if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length) {
