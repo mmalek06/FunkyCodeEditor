@@ -40,12 +40,20 @@ namespace CodeEditor.Algorithms.Selection {
         public SelectionInfo WordSelection(MouseButtonEventArgs mouseEvent) {
             var clickPosition = mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
             var activeLine = textViewReader.GetVisualLine(clickPosition.Line);
+            int lineLength = textViewReader.GetLineLength(clickPosition.Line);
+            int[] selectionRange;
 
             if (!activeLine.GetCharInfoAt(clickPosition.Column).IsCharacter) {
-                return GetCollapseSelection(clickPosition, activeLine);
+                selectionRange = GetCollapseSelectionRange(clickPosition, activeLine, lineLength);
+            } else {
+                selectionRange = GetStandardWordSelectionRange(clickPosition, activeLine, lineLength);
             }
 
-            return GetStandardWordSelection(clickPosition, activeLine);
+            return new SelectionInfo {
+                StartPosition = new TextPosition(column: selectionRange[0], line: clickPosition.Line),
+                EndPosition = new TextPosition(column: selectionRange[1], line: clickPosition.Line),
+                CursorPosition = new TextPosition(column: selectionRange[1], line: clickPosition.Line)
+            };
         }
 
         public SelectionInfo LineSelection(MouseButtonEventArgs mouseEvent) {
@@ -162,10 +170,9 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region methods
 
-        private SelectionInfo GetStandardWordSelection(TextPosition clickPosition, VisualTextLine activeLine) {
+        private int[] GetStandardWordSelectionRange(TextPosition clickPosition, VisualTextLine activeLine, int lineLength) {
             int startColumn = clickPosition.Column;
             int endColumn = clickPosition.Column;
-            int lineLength = textViewReader.GetLineLength(clickPosition.Line);
 
             if (endColumn + 1 <= lineLength) {
                 endColumn += 1;
@@ -193,17 +200,12 @@ namespace CodeEditor.Algorithms.Selection {
                 }
             }
 
-            return new SelectionInfo {
-                StartPosition = new TextPosition(column: startColumn, line: clickPosition.Line),
-                EndPosition = new TextPosition(column: endColumn, line: clickPosition.Line),
-                CursorPosition = new TextPosition(column: endColumn, line: clickPosition.Line)
-            };
+            return new[] { startColumn, endColumn };
         }
 
-        private SelectionInfo GetCollapseSelection(TextPosition clickPosition, VisualTextLine activeLine) {
+        private int[] GetCollapseSelectionRange(TextPosition clickPosition, VisualTextLine activeLine, int lineLength) {
             int startColumn = clickPosition.Column;
             int endColumn = clickPosition.Column;
-            int lineLength = textViewReader.GetLineLength(clickPosition.Line);
 
             if (endColumn + 1 <= lineLength) {
                 endColumn += 1;
@@ -231,11 +233,7 @@ namespace CodeEditor.Algorithms.Selection {
                 }
             }
 
-            return new SelectionInfo {
-                StartPosition = new TextPosition(column: startColumn, line: clickPosition.Line),
-                EndPosition = new TextPosition(column: endColumn, line: clickPosition.Line),
-                CursorPosition = new TextPosition(column: endColumn, line: clickPosition.Line)
-            };
+            return new[] { startColumn, endColumn };
         }
 
         #endregion
