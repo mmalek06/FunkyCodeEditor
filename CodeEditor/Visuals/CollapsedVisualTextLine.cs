@@ -90,10 +90,10 @@ namespace CodeEditor.Visuals {
 
         public override CharInfo GetCharInfoAt(int column) {
             if (column <= textBeforeCollapse.Length) {
-                return new CharInfo { IsCharacter = true, Character = column - 1 > 0 ? textBeforeCollapse[column - 1] : default(char) };
+                return new CharInfo { IsCharacter = true, Character = textBeforeCollapse[column] };
             }
             if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length) {
-                return new CharInfo { IsCharacter = true, Character = Text[column - 1] };
+                return new CharInfo { IsCharacter = true, Character = Text[column] };
             }
 
             return new CharInfo {

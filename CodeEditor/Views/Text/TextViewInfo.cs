@@ -75,6 +75,8 @@ namespace CodeEditor.Views.Text {
 
             public string GetLine(int index) => index >= parent.visuals.Count ? string.Empty : ((VisualTextLine)parent.visuals[index]).Text;
 
+            public VisualTextLine GetVisualLine(int index) => index >= parent.visuals.Count ? null : ((VisualTextLine)parent.visuals[index]);
+
             public IEnumerable<string> GetTextPartsBetweenPositions(TextPosition startPosition, TextPosition endPosition) {
                 var parts = new List<string>();
                 string lastPart = null;

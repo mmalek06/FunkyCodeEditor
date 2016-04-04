@@ -86,12 +86,19 @@ namespace CodeEditor.Commands {
                 return false;
             }
 
-            return Keyboard.IsKeyDown(Key.RightShift) &&
-                (keyboardEvent.Key == Key.Left || keyboardEvent.Key == Key.Right ||
-                 keyboardEvent.Key == Key.Up || keyboardEvent.Key == Key.Down ||
-                 keyboardEvent.Key == Key.Home || keyboardEvent.Key == Key.End ||
-                 keyboardEvent.Key == Key.PageUp || keyboardEvent.Key == Key.PageDown);
+            return IsByCharSelectionRequested(keyboardEvent) || IsByWordSelectionRequested(keyboardEvent);
         }
+
+        private bool IsByCharSelectionRequested(KeyEventArgs keyboardEvent) =>
+            Keyboard.IsKeyDown(Key.RightShift) &&
+            (keyboardEvent.Key == Key.Left || keyboardEvent.Key == Key.Right ||
+            keyboardEvent.Key == Key.Up || keyboardEvent.Key == Key.Down ||
+            keyboardEvent.Key == Key.Home || keyboardEvent.Key == Key.End ||
+            keyboardEvent.Key == Key.PageUp || keyboardEvent.Key == Key.PageDown);
+
+        private bool IsByWordSelectionRequested(KeyEventArgs keyboardEvent) =>
+            Keyboard.IsKeyDown(Key.RightShift) && Keyboard.IsKeyDown(Key.RightCtrl) &&
+                (keyboardEvent.Key == Key.Right || keyboardEvent.Key == Key.Left);
 
         private bool CanExecuteMouse(MouseButtonEventArgs mouseEvent) => 
             (mouseEvent.LeftButton == MouseButtonState.Pressed &&

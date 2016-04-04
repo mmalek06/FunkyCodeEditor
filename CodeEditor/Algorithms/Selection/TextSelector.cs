@@ -30,21 +30,37 @@ namespace CodeEditor.Algorithms.Selection {
 
         public TextPosition StandardSelection(MouseButtonEventArgs mouseEvent) => mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
 
+        public SelectionInfo WordSelection(KeyEventArgs keyboardEvent) {
+            var activeLine = textViewReader.GetLine(textViewReader.ActivePosition.Line);
+
+            return null;
+        }
+
         public SelectionInfo WordSelection(MouseButtonEventArgs mouseEvent) {
             var clickPosition = mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
-            var clickedLine = textViewReader.GetLine(clickPosition.Line);
+            var activeLine = textViewReader.GetVisualLine(clickPosition.Line);
             int startColumn = clickPosition.Column;
             int endColumn = clickPosition.Column;
+            int lineLength = textViewReader.GetLineLength(clickPosition.Line);
 
+            if (endColumn + 1 <= lineLength) {
+                endColumn += 1;
+            } else {
+                startColumn -= 1;
+            }
             for (int i = clickPosition.Column; i >= 0; i--) {
-                if (char.IsLetterOrDigit(clickedLine[i])) {
+                var charInfo = activeLine.GetCharInfoAt(i);
+
+                if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Character)) {
                     startColumn = i;
                 } else {
                     break;
                 }
             }
-            for (int i = clickPosition.Column; i < clickedLine.Length; i++) {
-                if (char.IsLetterOrDigit(clickedLine[i])) {
+            for (int i = clickPosition.Column; i < lineLength; i++) {
+                var charInfo = activeLine.GetCharInfoAt(i);
+
+                if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Character)) {
                     endColumn = i + 1;
                 } else {
                     break;

@@ -15,7 +15,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             var linesToStartFrom = lines.Skip(area.StartPosition.Line);
             var middlePart = new List<string>();
             int start = area.StartPosition.Line;
-            int end = area.EndPosition.Line - area.StartPosition.Line;
+            int end = area.EndPosition.Line;
 
             for (int i = start; i <= end; i++) {
                 string currentLine = lines[i];

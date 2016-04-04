@@ -60,6 +60,7 @@
     <Compile Include="AlgorithmTests\RemovingTextTests.cs" />
     <Compile Include="ViewTests\TextViewAddingTextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewTests\TextViewCollapsingTextTests.cs" />
     <Compile Include="ViewTests\TextViewRemovingTextTests.cs" />
     <Compile Include="ViewTests\TextViewSelectionTests.cs" />
   </ItemGroup>
