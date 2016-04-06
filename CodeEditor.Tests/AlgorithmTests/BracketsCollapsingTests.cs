@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.AlgorithmTests {
     [TestClass]
-    public class BracketsCollapsingTextTests {
+    public class BracketsCollapsingTests {
         private TextCollapser tc;
 
         [TestInitialize]

@@ -114,18 +114,26 @@ namespace CodeEditor.Views.Text {
                 StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
                 EndPosition = new TextPosition(column: Info.Lines[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
             };
+            var linesToRedraw = GetLinesToRedrawAfterCollapse(collapsedLine, message.Area.EndPosition.Line);
 
             RemoveText(removeTextRange);
-
-            visuals[message.Area.StartPosition.Line] = null;
-            visuals[message.Area.StartPosition.Line] = collapsedLine;
-
-            collapsedLine.Draw();
+            RedrawCollapsedLine(collapsedLine, message.Area.StartPosition.Line);
+            RedrawLinesAfterCollapse(linesToRedraw);
             UpdateActivePosition(message.Area.StartPosition);
+            UpdateSize();
         }
 
         public void ExpandText(FoldClickedMessage message) {
-            collapsingAlgorithm.ExpandTextRange(message.Area, Info.Lines, ActivePosition.Line);
+            var expandedLines = collapsingAlgorithm.ExpandTextRange(message.Area, Info.Lines).ToArray();
+            var lastLine = expandedLines.LastOrDefault();
+
+            foreach (var line in expandedLines) {
+                visuals.Insert(line.Index, line);
+                line.Draw();
+            }
+            if (lastLine != null) {
+                UpdateActivePosition(new TextPosition(column: lastLine.Text.Length, line: lastLine.Index));
+            }
         }
 
         public void TriggerTextChanged() {
@@ -203,6 +211,34 @@ namespace CodeEditor.Views.Text {
             }
 
             ActivePosition = new TextPosition(column: column > -1 ? column : ActivePosition.Column, line: line > -1 ? line : ActivePosition.Line);
+        }
+
+        private IEnumerable<VisualTextLine> GetLinesToRedrawAfterCollapse(VisualTextLine collapsedLine, int collapseEndLine) {
+            var linesToRedraw = new List<VisualTextLine>();
+
+            for (int i = collapseEndLine + 1, newIndex = collapsedLine.Index + 1; i < visuals.Count; i++, newIndex++) {
+                var textLine = (VisualTextLine)visuals[i];
+
+                textLine.Index = newIndex;
+
+                linesToRedraw.Add(textLine);
+            }
+
+            return linesToRedraw;
+        }
+
+        private void RedrawCollapsedLine(VisualTextLine collapsedLine, int line) {
+            visuals[line] = null;
+            visuals[line] = collapsedLine;
+
+            collapsedLine.Draw();
+        }
+
+        private void RedrawLinesAfterCollapse(IEnumerable<VisualTextLine> linesToRedraw) {
+            foreach (var line in linesToRedraw) {
+                visuals.Add(line);
+                line.Draw();
+            }
         }
 
         private void RemoveLines(IReadOnlyCollection<int> indices) {

@@ -79,23 +79,31 @@ namespace CodeEditor.Views.Text {
 
             public IEnumerable<string> GetTextPartsBetweenPositions(TextPosition startPosition, TextPosition endPosition) {
                 var parts = new List<string>();
-                string lastPart = null;
 
-                if (startPosition.Line == endPosition.Line) {
-                    parts.Add(((VisualTextLine)parent.visuals[startPosition.Line]).Text.Substring(startPosition.Column, endPosition.Column - startPosition.Column));
-                } else {
-                    parts.Add(((VisualTextLine)parent.visuals[startPosition.Line]).Text.Substring(startPosition.Column));
-
-                    lastPart = ((VisualTextLine)parent.visuals[endPosition.Line]).Text.Substring(0, endPosition.Column);
-                }
-                for (int i = startPosition.Line + 1; i < endPosition.Line; i++) {
-                    var contents = ((VisualTextLine)parent.visuals[i]).GetStringContents();
+                foreach(var visual in parent.visuals) {
+                    var textLine = (VisualTextLine)visual;
+                    var contents = textLine.GetStringContents();
 
                     parts.AddRange(contents);
                 }
-                if (lastPart != null) {
-                    parts.Add(lastPart);
+                if (parts.Count == 0) {
+                    return parts;
                 }
+
+                if (startPosition.Line == endPosition.Line) {
+                    parts[0] = parts[0].Substring(startPosition.Column, endPosition.Column);
+                } else {
+                    parts[0] = parts[0].Substring(startPosition.Column);
+                }
+
+                int lastIndex = parts.Count - 1;
+                int substringTo = endPosition.Column;
+
+                if (startPosition.Line == endPosition.Line) {
+                    substringTo = endPosition.Column - startPosition.Column;
+                }
+
+                parts[lastIndex] = parts[lastIndex].Substring(0, substringTo);
 
                 return parts;
             }

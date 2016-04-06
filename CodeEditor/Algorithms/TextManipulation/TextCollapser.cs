@@ -32,9 +32,8 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return VisualTextLine.Create(middlePart, precedingText, followingText, index, GetCollapseRepresentation());
         }
 
-        public IEnumerable<VisualTextLine> ExpandTextRange(TextPositionsPair area, IEnumerable<string> lines, int index) {
-            return null;
-        }
+        public IEnumerable<VisualTextLine> ExpandTextRange(TextPositionsPair area, IEnumerable<string> lines) =>
+            lines.Skip(area.StartPosition.Line).Take(area.EndPosition.Line - area.StartPosition.Line).Select((line, index) => VisualTextLine.Create(line, index));
 
         #endregion
 

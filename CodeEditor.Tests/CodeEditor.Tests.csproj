@@ -55,7 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AlgorithmTests\BracketsCollapsingTextTests.cs" />
+    <Compile Include="AlgorithmTests\BracketsCollapsingTests.cs" />
     <Compile Include="AlgorithmTests\BracketsFoldingTests.cs" />
     <Compile Include="AlgorithmTests\RemovingTextTests.cs" />
     <Compile Include="ViewTests\TextViewAddingTextTests.cs" />
