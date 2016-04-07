@@ -81,14 +81,14 @@ namespace CodeEditor.Views.Text {
             UpdateSize();
         }
 
-        public void ReplaceText(string enteredText, TextPositionsPair range) {
+        public void ReplaceText(string enteredText, TextArea range) {
             RemoveText(range);
             InputText(enteredText);
             UpdateSize();
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.RemoveLines(Info.Lines, ActivePosition, key);
+            var removalInfo = removingAlgorithm.RemoveLines(Info.GetActualLines(), ActivePosition, key);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -99,8 +99,8 @@ namespace CodeEditor.Views.Text {
             }
         }
 
-        public void RemoveText(TextPositionsPair ranges) {
-            var removalInfo = removingAlgorithm.RemoveLines(Info.Lines, ranges);
+        public void RemoveText(TextArea ranges) {
+            var removalInfo = removingAlgorithm.RemoveLines(Info.GetActualLines(), ranges);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -109,31 +109,41 @@ namespace CodeEditor.Views.Text {
         }
 
         public void CollapseText(FoldClickedMessage message) {
-            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Info.Lines, message.Area.StartPosition.Line);
-            var removeTextRange = new TextPositionsPair {
-                StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
-                EndPosition = new TextPosition(column: Info.Lines[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
-            };
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Info.GetActualLines(), message.Area.StartPosition.Line);
             var linesToRedraw = GetLinesToRedrawAfterCollapse(collapsedLine, message.Area.EndPosition.Line);
+            var removeTextRange = new TextArea {
+                StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
+                EndPosition = new TextPosition(column: Info.GetActualLines()[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
+            };
 
             RemoveText(removeTextRange);
             RedrawCollapsedLine(collapsedLine, message.Area.StartPosition.Line);
-            RedrawLinesAfterCollapse(linesToRedraw);
-            UpdateActivePosition(message.Area.StartPosition);
+            DrawLines(linesToRedraw);
+
+            if (message.Area.Contains(ActivePosition)) {
+                UpdateActivePosition(message.Area.StartPosition);
+            }
+
             UpdateSize();
         }
 
         public void ExpandText(FoldClickedMessage message) {
-            var expandedLines = collapsingAlgorithm.ExpandTextRange(message.Area, Info.Lines).ToArray();
-            var lastLine = expandedLines.LastOrDefault();
+            var expandedLines = collapsingAlgorithm.ExpandTextRange(message.Area, Info.GetActualLines()).ToArray();
+            var linesToRedraw = GetLinesToRedrawAfterCollapse((VisualTextLine)visuals[message.Area.StartPosition.Line], message.Area.StartPosition.Line);
+            var removeTextRange = new TextArea {
+                StartPosition = new TextPosition(column: 0, line: message.Area.StartPosition.Line),
+                EndPosition = new TextPosition(column: Info.GetLineLength(Info.LinesCount - 1), line: Info.LinesCount - 1)
+            };
+
+            RemoveText(removeTextRange);
+            DrawLines(linesToRedraw);
 
             foreach (var line in expandedLines) {
                 visuals.Insert(line.Index, line);
                 line.Draw();
             }
-            if (lastLine != null) {
-                UpdateActivePosition(new TextPosition(column: lastLine.Text.Length, line: lastLine.Index));
-            }
+
+            UpdateSize();
         }
 
         public void TriggerTextChanged() {
@@ -153,7 +163,7 @@ namespace CodeEditor.Views.Text {
         #region methods
 
         private void InputText(string enteredText) {
-            var newLines = updatingAlgorithm.UpdateLines(Info.Lines, ActivePosition, enteredText);
+            var newLines = updatingAlgorithm.UpdateLines(Info.GetActualLines(), ActivePosition, enteredText);
 
             UpdateActivePosition(enteredText);
             DrawLines(newLines);
@@ -169,7 +179,7 @@ namespace CodeEditor.Views.Text {
             RemoveLines(linesToRemove);
 
             int minLine = linesToRemove.Min() - 1;
-            int textLen = Info.Lines[minLine].Length;
+            int textLen = Info.GetActualLines()[minLine].Length;
 
             UpdateActivePosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: minLine));
         }
@@ -180,8 +190,8 @@ namespace CodeEditor.Views.Text {
             foreach (var visual in visuals) {
                 var line = (VisualTextLine)visual;
 
-                if (line.Text.Length > maxLineLen) {
-                    maxLineLen = line.Text.Length;
+                if (line.RenderedText.Length > maxLineLen) {
+                    maxLineLen = line.RenderedText.Length;
                 }
             }
 
@@ -234,13 +244,6 @@ namespace CodeEditor.Views.Text {
             collapsedLine.Draw();
         }
 
-        private void RedrawLinesAfterCollapse(IEnumerable<VisualTextLine> linesToRedraw) {
-            foreach (var line in linesToRedraw) {
-                visuals.Add(line);
-                line.Draw();
-            }
-        }
-
         private void RemoveLines(IReadOnlyCollection<int> indices) {
             var visualsToRemove = new List<VisualTextLine>();
 
@@ -253,6 +256,13 @@ namespace CodeEditor.Views.Text {
             }
             foreach (var line in visualsToRemove) {
                 visuals.Remove(line);
+            }
+        }
+
+        private void DrawLines(IEnumerable<VisualTextLine> linesToDraw) {
+            foreach (var line in linesToDraw) {
+                visuals.Add(line);
+                line.Draw();
             }
         }
 

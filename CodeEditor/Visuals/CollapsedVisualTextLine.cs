@@ -22,9 +22,9 @@ namespace CodeEditor.Visuals {
 
         #region properties
 
-        public override string Text => $"{textBeforeCollapse}{collapseRepresentation}{textAfterCollapse}";
+        public override string RenderedText => $"{textBeforeCollapse}{collapseRepresentation}{textAfterCollapse}";
 
-        public override int Length => Text.Length;
+        public override int Length => RenderedText.Length;
 
         #endregion
 
@@ -93,7 +93,7 @@ namespace CodeEditor.Visuals {
                 return new CharInfo { IsCharacter = true, Character = textBeforeCollapse[column] };
             }
             if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length) {
-                return new CharInfo { IsCharacter = true, Character = Text[column] };
+                return new CharInfo { IsCharacter = true, Character = RenderedText[column] };
             }
 
             return new CharInfo {

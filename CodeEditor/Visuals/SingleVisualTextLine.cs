@@ -17,7 +17,7 @@ namespace CodeEditor.Visuals {
 
         public override int Length => textSource.Text.Length;
 
-        public override string Text => textSource.Text;
+        public override string RenderedText => textSource.Text;
 
         #endregion
 
@@ -44,11 +44,11 @@ namespace CodeEditor.Visuals {
             }
         }
 
-        public override IReadOnlyCollection<string> GetStringContents() => new[] { Text };
+        public override IReadOnlyCollection<string> GetStringContents() => new[] { RenderedText };
 
         public override IReadOnlyCollection<SimpleTextSource> GetTextSources() => new[] { textSource };
 
-        public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Character = Text[column] };
+        public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Character = RenderedText[column] };
 
         #endregion
 

@@ -53,13 +53,14 @@
     <Compile Include="Controls\StackablePanel.cs" />
     <Compile Include="DataStructures\AutoTrimmingStack.cs" />
     <Compile Include="DataStructures\PointsPair.cs" />
+    <Compile Include="DataStructures\TextArea.cs" />
     <Compile Include="DataStructures\TextPosition.cs" />
-    <Compile Include="DataStructures\TextPositionsPair.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\TextPositionExtensions.cs" />
+    <Compile Include="Extensions\VisualCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

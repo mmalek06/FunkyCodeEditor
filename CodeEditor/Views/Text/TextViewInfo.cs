@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Core.Extensions;
 using CodeEditor.Enums;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
@@ -29,8 +30,6 @@ namespace CodeEditor.Views.Text {
 
             public TextPosition ActivePosition => parent.ActivePosition;
 
-            public IReadOnlyList<string> Lines => GetTextPartsBetweenPositions(new TextPosition(column: 0, line: 0), new TextPosition(column: GetLineLength(LinesCount - 1), line: LinesCount - 1)).ToList();
-
             #endregion
 
             #region constructors
@@ -54,9 +53,15 @@ namespace CodeEditor.Views.Text {
 
             #region public methods
 
+            public IReadOnlyList<string> GetScreenLines() =>
+                parent.visuals.ToEnumerableOf<VisualTextLine>().Select(line => line.RenderedText).ToArray();
+
+            public IReadOnlyList<string> GetActualLines() => 
+                GetTextPartsBetweenPositions(new TextPosition(column: 0, line: 0), new TextPosition(column: GetLineLength(LinesCount - 1), line: LinesCount - 1)).ToArray();
+
             public TextPosition AdjustStep(TextPosition newPosition, CaretMoveDirection moveDirection) {
                 var line = ((VisualTextLine)parent.visuals[newPosition.Line]);
-                CharInfo charInfo = line.Text != string.Empty && newPosition.Column < GetLineLength(newPosition.Line) ? line.GetCharInfoAt(newPosition.Column) : null;
+                CharInfo charInfo = line.RenderedText != string.Empty && newPosition.Column < GetLineLength(newPosition.Line) ? line.GetCharInfoAt(newPosition.Column) : null;
 
                 if (charInfo != null) {
                     if (charInfo.IsCharacter) {
@@ -73,19 +78,13 @@ namespace CodeEditor.Views.Text {
 
             public int GetLineLength(int index) => parent.visuals.Count == 0 ? 0 : ((VisualTextLine)parent.visuals[index]).Length;
 
-            public string GetLine(int index) => index >= parent.visuals.Count ? string.Empty : ((VisualTextLine)parent.visuals[index]).Text;
+            public string GetLine(int index) => index >= parent.visuals.Count ? string.Empty : ((VisualTextLine)parent.visuals[index]).RenderedText;
 
             public VisualTextLine GetVisualLine(int index) => index >= parent.visuals.Count ? null : ((VisualTextLine)parent.visuals[index]);
 
             public IEnumerable<string> GetTextPartsBetweenPositions(TextPosition startPosition, TextPosition endPosition) {
-                var parts = new List<string>();
-
-                foreach(var visual in parent.visuals) {
-                    var textLine = (VisualTextLine)visual;
-                    var contents = textLine.GetStringContents();
-
-                    parts.AddRange(contents);
-                }
+                var parts = parent.visuals.ToEnumerableOf<VisualTextLine>().SelectMany(line => line.GetStringContents()).ToList();
+                
                 if (parts.Count == 0) {
                     return parts;
                 }

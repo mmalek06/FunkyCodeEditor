@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace CodeEditor.Core.DataStructures {
     public class TextPosition : IComparable {
@@ -23,6 +24,15 @@ namespace CodeEditor.Core.DataStructures {
         #endregion
 
         #region public methods and operators
+
+        public Point GetPositionRelativeToParent(Size charSize) {
+            var point = new Point {
+                X = Column * charSize.Width,
+                Y = Line * charSize.Height
+            };
+
+            return point;
+        }
 
         public override bool Equals(object obj) {
             var other = (TextPosition)obj;
@@ -76,7 +86,7 @@ namespace CodeEditor.Core.DataStructures {
         }
 
         public static bool operator !=(TextPosition @this, TextPosition other) {
-            if ((ReferenceEquals(@this, null) && !ReferenceEquals(other, null))|| (!ReferenceEquals(@this, null) && ReferenceEquals(other, null))) {
+            if ((ReferenceEquals(@this, null) && !ReferenceEquals(other, null)) || (!ReferenceEquals(@this, null) && ReferenceEquals(other, null))) {
                 return true;
             }
             if (ReferenceEquals(@this, null) && ReferenceEquals(other, null)) {

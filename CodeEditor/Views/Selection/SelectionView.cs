@@ -55,12 +55,12 @@ namespace CodeEditor.Views.Selection {
             visuals.Clear();
         }
 
-        public TextPositionsPair GetCurrentSelectionArea() {
+        public TextArea GetCurrentSelectionArea() {
             if (lastSelectionStart == null || lastSelectionEnd == null) {
                 return null;
             }
             
-            return new TextPositionsPair {
+            return new TextArea {
                 StartPosition = lastSelectionStart <= lastSelectionEnd ? lastSelectionStart : lastSelectionEnd,
                 EndPosition = lastSelectionStart <= lastSelectionEnd ? lastSelectionEnd : lastSelectionStart
             };

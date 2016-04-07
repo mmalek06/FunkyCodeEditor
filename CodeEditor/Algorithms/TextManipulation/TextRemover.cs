@@ -8,9 +8,9 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public LinesRemovalInfo RemoveLines(IReadOnlyList<string> lines, TextPositionsPair range) {
+        public LinesRemovalInfo RemoveLines(IReadOnlyList<string> lines, TextArea range) {
             var orderedRanges = (new[] { range.StartPosition, range.EndPosition }).OrderBy(elem => elem.Line).ThenBy(elem => elem.Column).ToArray();
-            var pair = new TextPositionsPair {
+            var pair = new TextArea {
                 StartPosition = orderedRanges[0],
                 EndPosition = orderedRanges[1]
             };

@@ -9,7 +9,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public VisualTextLine CollapseTextRange(TextPositionsPair area, IReadOnlyList<string> lines, int index) {
+        public VisualTextLine CollapseTextRange(TextArea area, IReadOnlyList<string> lines, int index) {
             string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
             string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
             var linesToStartFrom = lines.Skip(area.StartPosition.Line);
@@ -32,8 +32,8 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return VisualTextLine.Create(middlePart, precedingText, followingText, index, GetCollapseRepresentation());
         }
 
-        public IEnumerable<VisualTextLine> ExpandTextRange(TextPositionsPair area, IEnumerable<string> lines) =>
-            lines.Skip(area.StartPosition.Line).Take(area.EndPosition.Line - area.StartPosition.Line).Select((line, index) => VisualTextLine.Create(line, index));
+        public IEnumerable<VisualTextLine> ExpandTextRange(TextArea area, IEnumerable<string> lines) =>
+            lines.Skip(area.StartPosition.Line).Take(1 + area.EndPosition.Line - area.StartPosition.Line).Select((line, index) => VisualTextLine.Create(line, area.StartPosition.Line + index));
 
         #endregion
 
