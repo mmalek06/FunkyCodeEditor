@@ -69,9 +69,9 @@ namespace CodeEditor.Visuals {
             var contents = new List<string>();
 
             contents.Add(textBeforeCollapse + collapsedContent[0]);
-            contents.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 2)
+            contents.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 1)
                               select text);
-            contents.Add(collapsedContent.Last() + textAfterCollapse);
+            contents[contents.Count - 1] += textAfterCollapse;
 
             return contents;
         }

@@ -109,11 +109,11 @@ namespace CodeEditor.Views.Text {
         }
 
         public void CollapseText(FoldClickedMessage message) {
-            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Info.GetActualLines(), message.Area.StartPosition.Line);
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, Info.GetScreenLines(), message.Area.StartPosition.Line);
             var linesToRedraw = GetLinesToRedrawAfterCollapse(collapsedLine, message.Area.EndPosition.Line);
             var removeTextRange = new TextArea {
                 StartPosition = new TextPosition(column: message.Area.StartPosition.Column, line: message.Area.StartPosition.Line),
-                EndPosition = new TextPosition(column: Info.GetActualLines()[message.Area.EndPosition.Line].Length, line: message.Area.EndPosition.Line)
+                EndPosition = new TextPosition(column: Info.GetScreenLines().LastOrDefault().Length, line: visuals.Count - 1)
             };
 
             RemoveText(removeTextRange);
@@ -237,13 +237,6 @@ namespace CodeEditor.Views.Text {
             return linesToRedraw;
         }
 
-        private void RedrawCollapsedLine(VisualTextLine collapsedLine, int line) {
-            visuals[line] = null;
-            visuals[line] = collapsedLine;
-
-            collapsedLine.Draw();
-        }
-
         private void RemoveLines(IReadOnlyCollection<int> indices) {
             var visualsToRemove = new List<VisualTextLine>();
 
@@ -256,35 +249,6 @@ namespace CodeEditor.Views.Text {
             }
             foreach (var line in visualsToRemove) {
                 visuals.Remove(line);
-            }
-        }
-
-        private void DrawLines(IEnumerable<VisualTextLine> linesToDraw) {
-            foreach (var line in linesToDraw) {
-                visuals.Add(line);
-                line.Draw();
-            }
-        }
-
-        private void DrawLines(IReadOnlyDictionary<int, string> linesData) {
-            foreach (var pair in linesData) {
-                DrawLine(pair.Key, pair.Value);
-            }
-        }
-
-        private void DrawLine(int index, string newText) {
-            VisualTextLine line;
-
-            if (index < visuals.Count) {
-                line = (VisualTextLine)visuals[index];
-
-                line.UpdateText(newText);
-                line.Draw();
-            } else {
-                line = VisualTextLine.Create(newText, index);
-                line.Draw();
-
-                visuals.Add(line);
             }
         }
 

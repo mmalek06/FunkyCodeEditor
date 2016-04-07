@@ -51,6 +51,8 @@ namespace CodeEditor.Visuals {
 
         public abstract CharInfo GetCharInfoAt(int column);
 
+        public override string ToString() => $"{GetType().ToString()}, {RenderedText}";
+
         public static VisualTextLine Create(string text, int index) {
             return new SingleVisualTextLine(new SimpleTextSource(text, TextConfiguration.GetGlobalTextRunProperties()), index);
         }

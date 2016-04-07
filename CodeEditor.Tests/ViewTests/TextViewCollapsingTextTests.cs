@@ -1,4 +1,5 @@
-﻿using CodeEditor.Algorithms.Folding;
+﻿using System.Linq;
+using CodeEditor.Algorithms.Folding;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Text;
@@ -14,6 +15,19 @@ namespace CodeEditor.Tests.ViewTests {
         public void InitializeTest() {
             tv = new TextView();
             ti = TextView.TextViewInfo.GetInstance(tv);
+        }
+
+        [TestMethod]
+        public void EnterOpeningAndClosingBracket_LineStateShouldNotChange() {
+            string text1 = "{}";
+
+            tv.EnterText(text1);
+            tv.HandleTextFolding(GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.FOLDED));
+            tv.HandleTextFolding(GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.EXPANDED));
+
+            var renderedLines = ti.GetScreenLines();
+
+            Assert.AreEqual(renderedLines[0], text1);
         }
 
         [TestMethod]
@@ -48,6 +62,29 @@ namespace CodeEditor.Tests.ViewTests {
         }
 
         [TestMethod]
+        public void CreateTwoSimpleFoldsAndClickThreeTimes_StateAfterCollapseAndExpandShouldNotChange() {
+            string text1 = "{}";
+            string text2 = "{}";
+            var foldMessage = GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.FOLDED);
+            var unfoldMessage = GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.EXPANDED);
+
+            tv.EnterText(text1);
+            tv.EnterText("\r");
+            tv.EnterText(text2);
+            tv.HandleTextFolding(foldMessage);
+            tv.HandleTextFolding(unfoldMessage);
+            tv.HandleTextFolding(foldMessage);
+            tv.HandleTextFolding(unfoldMessage);
+            tv.HandleTextFolding(foldMessage);
+            tv.HandleTextFolding(unfoldMessage);
+
+            var renderedLines = ti.GetScreenLines();
+
+            Assert.AreEqual(text1, renderedLines[0]);
+            Assert.AreEqual(text2, renderedLines[1]);
+        }
+
+        [TestMethod]
         public void CreateTwoFolds_StateAfterCollapseAndExpandShouldNotChange() {
             string text1 = "asdf {";
             string text2 = "";
@@ -71,16 +108,14 @@ namespace CodeEditor.Tests.ViewTests {
             tv.EnterText("\r");
             tv.EnterText(text7);
             tv.EnterText("\r");
+
             tv.HandleTextFolding(GetFoldClickedMessage(5, 0, 0, 2, FoldingStates.FOLDED));
             tv.HandleTextFolding(GetFoldClickedMessage(5, 0, 0, 2, FoldingStates.EXPANDED));
 
-            Assert.AreEqual(text1, ti.GetActualLines()[0]);
-            Assert.AreEqual(text2, ti.GetActualLines()[1]);
-            Assert.AreEqual(text3, ti.GetActualLines()[2]);
-            Assert.AreEqual(text4, ti.GetActualLines()[3]);
-            Assert.AreEqual(text5, ti.GetActualLines()[4]);
-            Assert.AreEqual(text6, ti.GetActualLines()[5]);
-            Assert.AreEqual(text7, ti.GetActualLines()[6]);
+            var renderedLines = ti.GetScreenLines();
+            var actualLines = ti.GetActualLines();
+
+            Assert.IsTrue(Enumerable.SequenceEqual(renderedLines, actualLines));
         }
 
         private FoldClickedMessage GetFoldClickedMessage(int startingCol, int startingLine, int endingCol, int endingLine, FoldingStates state) {
