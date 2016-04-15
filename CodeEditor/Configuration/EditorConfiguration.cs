@@ -1,5 +1,8 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Media;
 using CodeEditor.Algorithms.Folding;
+using CodeEditor.Algorithms.Parsing.WordTypes;
 using CodeEditor.Enums;
 
 namespace CodeEditor.Configuration {
@@ -22,6 +25,15 @@ namespace CodeEditor.Configuration {
         public static Brush GetFoldingColumnBrush() {
             return GetEditorBrush();
         }
+
+        internal static IEnumerable<IWordType> GetWordParsers() =>
+            new List<IWordType> {
+                new CollapseWordType(),
+                new DefinitionWordType(),
+                new KeywordWordType(),
+                new StdWordType(),
+                new StringWordType()
+            };
 
         public static Brush GetFoldingColumnFontColor() {
             return Brushes.LightBlue;

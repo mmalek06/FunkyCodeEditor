@@ -9,7 +9,19 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public VisualTextLine CollapseTextRange(TextArea area, IReadOnlyList<string> lines, int index) {
+        public IEnumerable<VisualTextLine> GetLinesToRedrawAfterCollapse(IReadOnlyList<VisualTextLine> visuals, VisualTextLine collapsedLine, int collapseEndLine) {
+            var linesToRedraw = new List<VisualTextLine>();
+
+            for (int i = collapseEndLine + 1, newIndex = collapsedLine.Index + 1; i < visuals.Count; i++, newIndex++) {
+                var line = visuals[i].CloneWithIndexChange(newIndex);
+
+                linesToRedraw.Add(line);
+            }
+
+            return linesToRedraw;
+        }
+
+        public VisualTextLine CollapseTextRange(TextRange area, IReadOnlyList<string> lines, int index) {
             string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
             string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
             var linesToStartFrom = lines.Skip(area.StartPosition.Line);
@@ -32,7 +44,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return VisualTextLine.Create(middlePart, precedingText, followingText, index, GetCollapseRepresentation());
         }
 
-        public IEnumerable<VisualTextLine> ExpandTextRange(TextArea area, IEnumerable<string> lines) =>
+        public IEnumerable<VisualTextLine> ExpandTextRange(TextRange area, IEnumerable<string> lines) =>
             lines.Skip(area.StartPosition.Line).Take(1 + area.EndPosition.Line - area.StartPosition.Line).Select((line, index) => VisualTextLine.Create(line, area.StartPosition.Line + index));
 
         #endregion

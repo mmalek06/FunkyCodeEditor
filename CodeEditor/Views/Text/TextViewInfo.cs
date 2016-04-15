@@ -60,7 +60,7 @@ namespace CodeEditor.Views.Text {
                 GetTextPartsBetweenPositions(new TextPosition(column: 0, line: 0), new TextPosition(column: GetLineLength(LinesCount - 1), line: LinesCount - 1)).ToArray();
 
             public IReadOnlyList<VisualTextLine> GetVisualLines() =>
-                parent.visuals.ToEnumerableOf<VisualTextLine>().ToArray();
+                parent.visuals.ToEnumerableOf<VisualTextLine>().Select(line => line.CloneWithIndexChange(line.Index)).ToArray();
 
             public TextPosition AdjustStep(TextPosition newPosition, CaretMoveDirection moveDirection) {
                 var line = ((VisualTextLine)parent.visuals[newPosition.Line]);

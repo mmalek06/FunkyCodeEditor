@@ -26,6 +26,8 @@ namespace CodeEditor.Visuals {
 
         public override int Length => RenderedText.Length;
 
+        public string CollapseRepresentation => collapseRepresentation;
+
         #endregion
 
         #region constructor
@@ -41,8 +43,6 @@ namespace CodeEditor.Visuals {
         #endregion
 
         #region public methods
-
-        public override void UpdateText(string text) { }
 
         public override void Draw() {
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
@@ -65,7 +65,7 @@ namespace CodeEditor.Visuals {
             }
         }
 
-        public override IReadOnlyCollection<string> GetStringContents() {
+        public override IReadOnlyList<string> GetStringContents() {
             var contents = new List<string>();
 
             contents.Add(textBeforeCollapse + collapsedContent[0]);
@@ -76,14 +76,14 @@ namespace CodeEditor.Visuals {
             return contents;
         }
 
-        public override IReadOnlyCollection<SimpleTextSource> GetTextSources() {
+        public override IReadOnlyList<SimpleTextSource> GetTextSources() {
             var textSources = new List<SimpleTextSource>();
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
 
             textSources.Add(new SimpleTextSource(textBeforeCollapse + collapsedContent[0], runProperties));
-            textSources.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 2)
+            textSources.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 1)
                                  select new SimpleTextSource(text, runProperties));
-            textSources.Add(new SimpleTextSource(collapsedContent.Last() + textAfterCollapse, runProperties));
+            textSources[textSources.Count - 1].Text += textAfterCollapse;
 
             return textSources;
         }
@@ -102,6 +102,8 @@ namespace CodeEditor.Visuals {
                 NextCharPosition = new Core.DataStructures.TextPosition(column: $"{textBeforeCollapse}{collapseRepresentation}".Length, line: Index)
             };
         }
+
+        public override VisualTextLine CloneWithIndexChange(int index) => Create(collapsedContent, textBeforeCollapse, textAfterCollapse, index, collapseRepresentation);
 
         #endregion
 

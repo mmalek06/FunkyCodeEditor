@@ -121,7 +121,7 @@ namespace CodeEditor.Tests.ViewTests {
         private FoldClickedMessage GetFoldClickedMessage(int startingCol, int startingLine, int endingCol, int endingLine, FoldingStates state) {
             return new FoldClickedMessage {
                 State = state,
-                Area = new TextArea {
+                Area = new TextRange {
                     StartPosition = new TextPosition(startingCol, startingLine),
                     EndPosition = new TextPosition(endingCol, endingLine)
                 },

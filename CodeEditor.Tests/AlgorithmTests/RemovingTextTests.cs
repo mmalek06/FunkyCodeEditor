@@ -26,7 +26,7 @@ namespace CodeEditor.Tests {
                 text1,
                 text2
             };
-            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.GetChangeInLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
 
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value);
         }
@@ -39,7 +39,7 @@ namespace CodeEditor.Tests {
                 text1,
                 text2
             };
-            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 0, line: 1), Key.Back);
+            var newLines = algorithm.GetChangeInLines(lines, new TextPosition(column: 0, line: 1), Key.Back);
 
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value);
         }
@@ -55,7 +55,7 @@ namespace CodeEditor.Tests {
                 text2,
                 text3 + text4
             };
-            var newLines = algorithm.RemoveLines(lines, new TextArea {
+            var newLines = algorithm.GetChangeInLines(lines, new TextRange {
                 StartPosition = new TextPosition(column: 0, line: 0),
                 EndPosition = new TextPosition(column: 24, line: 2)
             });
@@ -72,7 +72,7 @@ namespace CodeEditor.Tests {
             var lines = new List<string> {
                 text1 + text2 + text3
             };
-            var newLines = algorithm.RemoveLines(lines, new TextArea {
+            var newLines = algorithm.GetChangeInLines(lines, new TextRange {
                 StartPosition = new TextPosition(column: 5, line: 0),
                 EndPosition = new TextPosition(column: 9, line: 0)
             });
@@ -90,7 +90,7 @@ namespace CodeEditor.Tests {
                 text2,
                 text3
             };
-            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 0, line: 1), Key.Back);
+            var newLines = algorithm.GetChangeInLines(lines, new TextPosition(column: 0, line: 1), Key.Back);
 
             Assert.IsTrue(Enumerable.SequenceEqual((new[] { 2 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.ToArray()));
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -108,7 +108,7 @@ namespace CodeEditor.Tests {
                 text2,
                 text3,
             };
-            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.GetChangeInLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -130,9 +130,9 @@ namespace CodeEditor.Tests {
                 text3
             };
 
-            algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
+            algorithm.GetChangeInLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
 
-            var newLines = algorithm.RemoveLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
+            var newLines = algorithm.GetChangeInLines(lines, new TextPosition(column: 4, line: 0), Key.Delete);
             var removedLinesIndexes = newLines.LinesToRemove.ToArray();
 
             Assert.AreEqual(text1, newLines.LinesToChange.First().Value);
@@ -150,7 +150,7 @@ namespace CodeEditor.Tests {
             var lines = new List<string> {
                 text1 + text2 + text3
             };
-            var newLines = algorithm.RemoveLines(lines, new TextArea {
+            var newLines = algorithm.GetChangeInLines(lines, new TextRange {
                 StartPosition = new TextPosition(column: 4, line: 0),
                 EndPosition = new TextPosition(column: 8, line: 0)
             });
@@ -170,7 +170,7 @@ namespace CodeEditor.Tests {
                 text1 + text2 + text3,
                 text4
             };
-            var newLines = algorithm.RemoveLines(lines, new TextArea {
+            var newLines = algorithm.GetChangeInLines(lines, new TextRange {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 6, line: 0)
             });
@@ -195,7 +195,7 @@ namespace CodeEditor.Tests {
                 text4,
                 text5 + text6
             };
-            var newLines = algorithm.RemoveLines(lines, new TextArea {
+            var newLines = algorithm.GetChangeInLines(lines, new TextRange {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 2, line: 3)
             });
@@ -213,7 +213,7 @@ namespace CodeEditor.Tests {
             var lines = new List<string> {
                 text1 + text2
             };
-            var newLines = algorithm.RemoveLines(lines, new TextArea {
+            var newLines = algorithm.GetChangeInLines(lines, new TextRange {
                 StartPosition = new TextPosition(column: 2, line: 0),
                 EndPosition = new TextPosition(column: 4, line: 0)
             });

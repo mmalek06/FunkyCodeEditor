@@ -53,8 +53,9 @@
     <Compile Include="Controls\StackablePanel.cs" />
     <Compile Include="DataStructures\AutoTrimmingStack.cs" />
     <Compile Include="DataStructures\PointsPair.cs" />
-    <Compile Include="DataStructures\TextArea.cs" />
+    <Compile Include="DataStructures\TextRange.cs" />
     <Compile Include="DataStructures\TextPosition.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Extensions\ICollectionExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

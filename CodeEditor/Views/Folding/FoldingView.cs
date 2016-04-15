@@ -73,7 +73,7 @@ namespace CodeEditor.Views.Folding {
                 var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
 
                 Postbox.Instance.Send(new FoldClickedMessage {
-                    Area = new TextArea {
+                    Area = new TextRange {
                         StartPosition = folding.Position,
                         EndPosition = foldingPositions[folding].Position
                     },

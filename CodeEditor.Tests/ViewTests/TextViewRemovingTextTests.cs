@@ -204,7 +204,7 @@ namespace CodeEditor.Tests {
             tv.EnterText(text2);
             tv.EnterText("\r");
             tv.EnterText(text3);
-            tv.RemoveText(new TextArea {
+            tv.RemoveText(new TextRange {
                 StartPosition = new TextPosition(column: 0, line: 0),
                 EndPosition = new TextPosition(column: 21, line: 2)
             });

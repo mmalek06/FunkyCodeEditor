@@ -56,6 +56,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Algorithms\Folding\MarkupFoldingAlgorithm.cs" />
+    <Compile Include="Algorithms\Parsing\ParsingInfo.cs" />
+    <Compile Include="Algorithms\Parsing\TextParser.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\TextType.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\CollapseWordType.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\DefinitionWordType.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\IWordType.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\KeywordWordType.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\StdWordType.cs" />
+    <Compile Include="Algorithms\Parsing\WordTypes\StringWordType.cs" />
     <Compile Include="Algorithms\Selection\SelectionInfo.cs" />
     <Compile Include="Algorithms\Selection\TextSelector.cs" />
     <Compile Include="Algorithms\TextManipulation\TextCollapser.cs" />
@@ -108,7 +117,7 @@
     <Compile Include="Views\Folding\VisualElementSymbol.cs" />
     <Compile Include="Views\Selection\VisualElement.cs" />
     <Compile Include="Views\Selection\SelectionView.cs" />
-    <Compile Include="Algorithms\TextManipulation\LinesRemoveInfo.cs" />
+    <Compile Include="Algorithms\TextManipulation\ChangeInLinesInfo.cs" />
     <Compile Include="TextProperties\Properties.cs" />
     <Compile Include="Views\Text\TextViewInfo.cs" />
     <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />

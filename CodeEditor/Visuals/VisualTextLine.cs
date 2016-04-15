@@ -22,7 +22,7 @@ namespace CodeEditor.Visuals {
 
         public abstract string RenderedText { get; }
 
-        public int Index { get; set; }
+        public int Index { get; protected set; }
 
         protected TextFormatter Formatter => formatter;
 
@@ -41,17 +41,17 @@ namespace CodeEditor.Visuals {
 
         #region public methods
 
-        public abstract void UpdateText(string text);
-
         public abstract void Draw();
 
-        public abstract IReadOnlyCollection<SimpleTextSource> GetTextSources();
+        public abstract IReadOnlyList<SimpleTextSource> GetTextSources();
 
-        public abstract IReadOnlyCollection<string> GetStringContents();
+        public abstract IReadOnlyList<string> GetStringContents();
 
         public abstract CharInfo GetCharInfoAt(int column);
 
-        public override string ToString() => $"{GetType().ToString()}, {RenderedText}";
+        public abstract VisualTextLine CloneWithIndexChange(int index);
+
+        public override string ToString() => $"{GetType().ToString()}, {RenderedText}, {Index}";
 
         public static VisualTextLine Create(string text, int index) {
             return new SingleVisualTextLine(new SimpleTextSource(text, TextConfiguration.GetGlobalTextRunProperties()), index);

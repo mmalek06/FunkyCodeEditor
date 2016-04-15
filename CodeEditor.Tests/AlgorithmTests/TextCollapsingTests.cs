@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.AlgorithmTests {
     [TestClass]
-    public class BracketsCollapsingTests {
+    public class TextCollapsingTests {
         private TextCollapser tc;
 
         [TestInitialize]
@@ -21,7 +21,7 @@ namespace CodeEditor.Tests.AlgorithmTests {
             string close = "}";
             string text3 = " xzcv";
             var lines = new[] { text1 + open, text2, close + text3 };
-            var line = tc.CollapseTextRange(new TextArea { StartPosition = new TextPosition(column: 5, line: 0), EndPosition = new TextPosition(column: 0, line: 2) }, lines, 0);
+            var line = tc.CollapseTextRange(new TextRange { StartPosition = new TextPosition(column: 5, line: 0), EndPosition = new TextPosition(column: 0, line: 2) }, lines, 0);
 
             Assert.AreEqual(text1, string.Join("", line.RenderedText.Take(5)));
             Assert.AreEqual(text3, string.Join("", line.RenderedText.Skip(10)));
@@ -35,7 +35,7 @@ namespace CodeEditor.Tests.AlgorithmTests {
             string close = "}";
             string text3 = "zxcv";
             var lines = new[] { text1, open, text2, close, text3 };
-            var line = tc.CollapseTextRange(new TextArea { StartPosition = new TextPosition(column: 0, line: 1), EndPosition = new TextPosition(column: 0, line: 3) }, lines, 1);
+            var line = tc.CollapseTextRange(new TextRange { StartPosition = new TextPosition(column: 0, line: 1), EndPosition = new TextPosition(column: 0, line: 3) }, lines, 1);
 
             Assert.AreEqual("{...}", line.RenderedText);
         }

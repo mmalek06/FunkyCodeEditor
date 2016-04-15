@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
@@ -7,38 +8,53 @@ namespace CodeEditor.Views.Text {
         #region methods
 
         private void RedrawCollapsedLine(VisualTextLine collapsedLine, int line) {
-            visuals[line] = null;
+            if (line >= visuals.Count) {
+                visuals.Add(null);
+            } else {
+                visuals[line] = null;
+            }
+
             visuals[line] = collapsedLine;
 
             collapsedLine.Draw();
         }
 
-        private void DrawLines(IEnumerable<VisualTextLine> linesToDraw) {
+        private void AddLines(IEnumerable<VisualTextLine> linesToDraw) {
             foreach (var line in linesToDraw) {
                 visuals.Add(line);
                 line.Draw();
             }
         }
 
-        private void DrawLines(IReadOnlyDictionary<int, string> linesData) {
-            foreach (var pair in linesData) {
-                DrawLine(pair.Key, pair.Value);
+        private void DrawLines(IEnumerable<VisualTextLine> linesToDraw) {
+            foreach (var line in linesToDraw) {
+                DrawLine(line);
             }
         }
 
-        private void DrawLine(int index, string newText) {
-            VisualTextLine line;
+        private void RemoveLines(IReadOnlyCollection<int> indices) {
+            var visualsToRemove = new List<VisualTextLine>();
 
-            if (index < visuals.Count) {
-                line = (VisualTextLine)visuals[index];
+            foreach (var visual in visuals) {
+                var line = (VisualTextLine)visual;
 
-                line.UpdateText(newText);
+                if (indices.Contains(line.Index)) {
+                    visualsToRemove.Add(line);
+                }
+            }
+            foreach (var line in visualsToRemove) {
+                visuals.Remove(line);
+            }
+        }
+
+        private void DrawLine(VisualTextLine line) {
+            if (line.Index < visuals.Count) {
+                visuals.Insert(line.Index, line);
+                visuals.RemoveAt(line.Index + 1);
                 line.Draw();
             } else {
-                line = VisualTextLine.Create(newText, index);
-                line.Draw();
-
                 visuals.Add(line);
+                line.Draw();
             }
         }
 

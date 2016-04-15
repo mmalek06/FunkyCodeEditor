@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.TextProperties;
@@ -32,8 +31,6 @@ namespace CodeEditor.Visuals {
 
         #region public methods
 
-        public override void UpdateText(string text) => textSource.Text = text;
-
         public override void Draw() {
             using (TextLine textLine = Formatter.FormatLine(textSource, 0, 96 * 6, ParagraphProperties, null)) {
                 double top = Index * textLine.Height;
@@ -44,11 +41,13 @@ namespace CodeEditor.Visuals {
             }
         }
 
-        public override IReadOnlyCollection<string> GetStringContents() => new[] { RenderedText };
+        public override IReadOnlyList<string> GetStringContents() => new[] { RenderedText };
 
-        public override IReadOnlyCollection<SimpleTextSource> GetTextSources() => new[] { textSource };
+        public override IReadOnlyList<SimpleTextSource> GetTextSources() => new[] { textSource };
 
         public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Character = RenderedText[column] };
+
+        public override VisualTextLine CloneWithIndexChange(int index) => Create(RenderedText, index);
 
         #endregion
 

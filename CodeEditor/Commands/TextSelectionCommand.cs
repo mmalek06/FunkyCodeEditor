@@ -44,12 +44,15 @@ namespace CodeEditor.Commands {
 
         public bool CanExecute(object parameter) {
             var keyboardEvent = parameter as KeyEventArgs;
-            var mouseEvent = parameter as MouseButtonEventArgs;
+            var mouseClickEvent = parameter as MouseButtonEventArgs;
+            var mouseMoveEvent = parameter as MouseEventArgs;
 
             if (keyboardEvent != null) {
                 return CanExecuteKeyboard(keyboardEvent);
-            } else if (mouseEvent != null) {
-                return CanExecuteMouse(mouseEvent);
+            } else if (mouseClickEvent != null) {
+                return CanExecuteMouse(mouseClickEvent);
+            } else if (mouseMoveEvent != null) {
+                return CanExecuteMouse(mouseMoveEvent);
             }
 
             return false;
@@ -57,14 +60,17 @@ namespace CodeEditor.Commands {
 
         public void Execute(object parameter) {
             var keyboardEvent = parameter as KeyEventArgs;
-            var mouseEvent = parameter as MouseButtonEventArgs;
-            
+            var mouseClickEvent = parameter as MouseButtonEventArgs;
+            var mouseMoveEvent = parameter as MouseEventArgs;
+
             if (keyboardEvent != null) {
                 ExecuteKeyboard(keyboardEvent);
 
                 keyboardEvent.Handled = true;
-            } else if (mouseEvent != null) {
-                ExecuteMouse(mouseEvent);
+            } else if (mouseClickEvent != null) {
+                ExecuteMouse(mouseClickEvent);
+            } else if (mouseMoveEvent != null) {
+                ExecuteMouse(mouseMoveEvent);
             }
         }
 
@@ -100,11 +106,11 @@ namespace CodeEditor.Commands {
             Keyboard.IsKeyDown(Key.RightShift) && Keyboard.IsKeyDown(Key.RightCtrl) &&
                 (keyboardEvent.Key == Key.Right || keyboardEvent.Key == Key.Left);
 
-        private bool CanExecuteMouse(MouseButtonEventArgs mouseEvent) => 
-            (mouseEvent.LeftButton == MouseButtonState.Pressed &&
-                viewInfo.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()))) ||
-            mouseEvent.ClickCount == 3 ||
-            mouseEvent.ClickCount == 2;
+        private bool CanExecuteMouse(MouseButtonEventArgs mouseEvent) => mouseEvent.ClickCount == 3 || mouseEvent.ClickCount == 2;
+
+        private bool CanExecuteMouse(MouseEventArgs mouseEvent) =>
+            mouseEvent.LeftButton == MouseButtonState.Pressed &&
+                viewInfo.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()));
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
             var endingPosition = selectionView.SelectionAlgorithm.GetSelectionPosition(keyboardEvent);
@@ -130,12 +136,14 @@ namespace CodeEditor.Commands {
                 selectionView.Select(selectionInfo.StartPosition);
                 selectionView.Select(selectionInfo.EndPosition);
                 caretView.MoveCursor(selectionInfo.CursorPosition);
-            } else {
-                var endPosition = selectionView.SelectionAlgorithm.StandardSelection(mouseEvent);
-
-                selectionView.Select(endPosition);
-                caretView.MoveCursor(endPosition);
             }
+        }
+
+        private void ExecuteMouse(MouseEventArgs mouseEvent) {
+            var endPosition = selectionView.SelectionAlgorithm.StandardSelection(mouseEvent);
+
+            selectionView.Select(endPosition);
+            caretView.MoveCursor(endPosition);
         }
 
         #endregion

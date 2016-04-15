@@ -8,7 +8,7 @@ namespace CodeEditor.Messaging {
 
         public FoldingStates State { get; set; }
 
-        public TextArea Area { get; set; }
+        public TextRange Area { get; set; }
 
         public string OpeningTag { get; set; }
 

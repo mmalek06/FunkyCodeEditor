@@ -111,8 +111,9 @@ namespace CodeEditor.Controls {
         protected override void OnMouseMove(MouseEventArgs e) {
             var textViewInfo = TextView.TextViewInfo.GetInstance(textView);
             var selectionCmd = new TextSelectionCommand(textViewInfo, selectionView, caretView);
-
-            if (selectionCmd.CanExecute(e)) {
+            bool canExecuteSelection = selectionCmd.CanExecute(e);
+            
+            if (canExecuteSelection) {
                 selectionCmd.Execute(e);
             }
         }

@@ -29,7 +29,7 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region public methods
 
-        public TextPosition StandardSelection(MouseButtonEventArgs mouseEvent) => mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
+        public TextPosition StandardSelection(MouseEventArgs mouseEvent) => mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
 
         public SelectionInfo WordSelection(KeyEventArgs keyboardEvent) {
             var activeLine = textViewReader.GetLine(textViewReader.ActivePosition.Line);

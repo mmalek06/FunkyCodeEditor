@@ -1,5 +1,5 @@
 ﻿namespace CodeEditor.Core.DataStructures {
-    public class TextArea {
+    public class TextRange {
 
         #region properties
 

@@ -24,7 +24,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public IReadOnlyDictionary<int, string> UpdateLines(IReadOnlyList<string> lines, TextPosition startingTextPosition, string text) {
+        public IReadOnlyDictionary<int, string> GetChangeInLines(IReadOnlyList<string> lines, TextPosition startingTextPosition, string text) {
             var replacedText = SpecialCharsRegex.Replace(text, string.Empty);
 
             if (text == TextProperties.Properties.NEWLINE) {
