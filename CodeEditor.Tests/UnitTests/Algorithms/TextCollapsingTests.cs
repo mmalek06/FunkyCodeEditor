@@ -3,7 +3,7 @@ using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodeEditor.Tests.AlgorithmTests {
+namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
     public class TextCollapsingTests {
         private TextCollapser tc;

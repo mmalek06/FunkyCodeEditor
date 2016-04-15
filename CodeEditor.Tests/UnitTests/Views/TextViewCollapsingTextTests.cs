@@ -5,7 +5,7 @@ using CodeEditor.Messaging;
 using CodeEditor.Views.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodeEditor.Tests.ViewTests {
+namespace CodeEditor.Tests.UnitTests.Views {
     [TestClass]
     public class TextViewCollapsingTextTests {
         private TextView tv;
@@ -59,29 +59,6 @@ namespace CodeEditor.Tests.ViewTests {
             Assert.AreEqual("", actualLines[2]);
             Assert.AreEqual(close, actualLines[3]);
             Assert.AreEqual(text3, actualLines[4]);
-        }
-
-        [TestMethod]
-        public void CreateTwoSimpleFoldsAndClickThreeTimes_StateAfterCollapseAndExpandShouldNotChange() {
-            string text1 = "{}";
-            string text2 = "{}";
-            var foldMessage = GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.FOLDED);
-            var unfoldMessage = GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.EXPANDED);
-
-            tv.EnterText(text1);
-            tv.EnterText("\r");
-            tv.EnterText(text2);
-            tv.HandleTextFolding(foldMessage);
-            tv.HandleTextFolding(unfoldMessage);
-            tv.HandleTextFolding(foldMessage);
-            tv.HandleTextFolding(unfoldMessage);
-            tv.HandleTextFolding(foldMessage);
-            tv.HandleTextFolding(unfoldMessage);
-
-            var renderedLines = ti.GetScreenLines();
-
-            Assert.AreEqual(text1, renderedLines[0]);
-            Assert.AreEqual(text2, renderedLines[1]);
         }
 
         [TestMethod]

@@ -55,14 +55,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AlgorithmTests\TextCollapsingTests.cs" />
-    <Compile Include="AlgorithmTests\BracketsFoldingTests.cs" />
-    <Compile Include="AlgorithmTests\RemovingTextTests.cs" />
-    <Compile Include="ViewTests\TextViewAddingTextTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewAddingTextTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewCollapsingTextTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewRemovingTextTests.cs" />
+    <Compile Include="UnitTests\Algorithms\TextCollapsingTests.cs" />
+    <Compile Include="UnitTests\Algorithms\BracketsFoldingTests.cs" />
+    <Compile Include="UnitTests\Algorithms\RemovingTextTests.cs" />
+    <Compile Include="UnitTests\Views\TextViewAddingTextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewTests\TextViewCollapsingTextTests.cs" />
-    <Compile Include="ViewTests\TextViewRemovingTextTests.cs" />
-    <Compile Include="ViewTests\TextViewSelectionTests.cs" />
+    <Compile Include="UnitTests\Views\TextViewCollapsingTextTests.cs" />
+    <Compile Include="UnitTests\Views\TextViewRemovingTextTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewSelectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeEditor.Core\CodeEditor.Core.csproj">
@@ -73,6 +76,9 @@
       <Project>{73a5df78-02d6-47e5-9f97-66619a8f9499}</Project>
       <Name>CodeEditor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ScenarioTests\Algorithms\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -5,7 +5,7 @@ using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 
-namespace CodeEditor.Tests.TextViewTests {
+namespace CodeEditor.Tests.ScenarioTests.Views {
     [TestClass]
     public class TextViewSelectionTests {
         private TextView tv;
@@ -22,7 +22,7 @@ namespace CodeEditor.Tests.TextViewTests {
         }
 
         [TestMethod]
-        public void SelectFourCharsInOneLineToTheRight_TextRangeIsText2() {
+        public void EnterOneLineSelectFourCharsInOneLineToTheRight_TextRangeIsText2() {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
@@ -43,7 +43,7 @@ namespace CodeEditor.Tests.TextViewTests {
         }
 
         [TestMethod]
-        public void SelectFourCharsInOneLineToTheLeft_TextRangeIsText2() {
+        public void EnterOneLineSelectFourCharsInOneLineToTheLeft_TextRangeIsText2() {
             string text1 = "asdf";
             string text2 = "qwer";
             string text3 = "zxcv";
@@ -64,7 +64,7 @@ namespace CodeEditor.Tests.TextViewTests {
         }
 
         [TestMethod]
-        public void SelectMultipleCharsInTwoLines_TextRangeIsText2Text3() {
+        public void EnterTwoLinesSelectMultipleCharsInTwoLines_TextRangeIsText2Text3() {
             string text1 = "I";
             string text2 = " saw Susie sitting in a shoe shine shop.";
             string text3 = "Where she ";
@@ -89,7 +89,7 @@ namespace CodeEditor.Tests.TextViewTests {
         }
               
         [TestMethod]
-        public void SelectTwoOfFourLinesBottomToTop_CursorPositionIsAtTheEndOfText1() {
+        public void EnterTwoLinesSelectTwoOfFourLinesBottomToTop_CursorPositionIsAtTheEndOfText1() {
             string text1 = "shop";
             string text2 = "Where she sits she shines, and where she shines she sits.";
             var startingPosition = new TextPosition(line: 1, column: text2.Length);
@@ -109,7 +109,7 @@ namespace CodeEditor.Tests.TextViewTests {
         }
 
         [TestMethod]
-        public void SelectTwoOfFourLinesTopToBottom_CursorPositionIsAtTheEndOfText2() {
+        public void EnterTwoLinesSelectTwoOfFourLinesTopToBottom_CursorPositionIsAtTheEndOfText2() {
             string text1 = "Where she sits she shines, and where she shines she sits.";
             string text2 = "shop";
             var startingPosition = new TextPosition(line: 0, column: text1.Length);

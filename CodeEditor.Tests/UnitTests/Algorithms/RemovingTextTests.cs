@@ -6,7 +6,7 @@ using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Views.Text;
 
-namespace CodeEditor.Tests {
+namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
     public class RemovingTextTests {
         private static TextRemover algorithm;
@@ -45,7 +45,7 @@ namespace CodeEditor.Tests {
         }
 
         [TestMethod]
-        public void ThreeNonEmptyLinesEnteredBackspacePressedAtCharOneBeforeTheLastOneInTheLastLine_LinesShouldBeText4AndShouldRemoveSelection() {
+        public void ThreeNonEmptyLinesEnteredBackspacePressedAtCharOneBeforeTheLastOneInTheLastLine_LinesShouldBeText4() {
             string text1 = "some text";
             string text2 = "";
             string text3 = "totally unimportant text";

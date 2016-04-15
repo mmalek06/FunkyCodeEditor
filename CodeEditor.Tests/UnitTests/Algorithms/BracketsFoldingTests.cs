@@ -4,7 +4,7 @@ using CodeEditor.Algorithms.Folding;
 using CodeEditor.Core.DataStructures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodeEditor.Tests {
+namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
     public class BracketsFoldingTests {
         private BracketsFoldingAlgorithm fa;
