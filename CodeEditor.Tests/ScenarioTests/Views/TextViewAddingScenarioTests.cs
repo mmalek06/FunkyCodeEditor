@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.ScenarioTests.Views {
     [TestClass]
-    public class TextViewAddingTextTests {
+    public class TextViewAddingScenarioTests {
         private TextView tv;
         private TextView.TextViewInfo ti;
 

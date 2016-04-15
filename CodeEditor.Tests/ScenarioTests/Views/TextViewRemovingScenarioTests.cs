@@ -8,7 +8,7 @@ using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests.ScenarioTests.Views {
     [TestClass]
-    public class TextViewRemovingTextTests {
+    public class TextViewRemovingScenarioTests {
         private TextView tv;
         private TextView.TextViewInfo ti;
 

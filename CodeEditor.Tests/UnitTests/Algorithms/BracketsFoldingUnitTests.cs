@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
-    public class BracketsFoldingTests {
+    public class BracketsFoldingUnitTests {
         private BracketsFoldingAlgorithm fa;
         private Dictionary<TextPosition, TextPosition> foldingPositions;
 

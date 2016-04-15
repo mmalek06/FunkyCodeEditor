@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.ScenarioTests.Views {
     [TestClass]
-    public class TextViewCollapsingTextTests {
+    public class TextViewCollapsingScenarioTests {
         private TextView tv;
         private TextView.TextViewInfo ti;
 

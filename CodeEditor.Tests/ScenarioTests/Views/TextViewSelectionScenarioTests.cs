@@ -7,7 +7,7 @@ using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests.ScenarioTests.Views {
     [TestClass]
-    public class TextViewSelectionTests {
+    public class TextViewSelectionScenarioTests {
         private TextView tv;
         private SelectionView sv;
         private CaretView cv;

@@ -8,7 +8,7 @@ using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
-    public class RemovingTextTests {
+    public class RemovingTextUnitTests {
         private static TextRemover algorithm;
         private static TextView view;
 

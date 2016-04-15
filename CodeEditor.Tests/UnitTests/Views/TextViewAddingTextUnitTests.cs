@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.UnitTests.Views {
     [TestClass]
-    public class TextViewAddingTextTests {
+    public class TextViewAddingTextUnitTests {
         private TextView tv;
         private TextView.TextViewInfo ti;
 

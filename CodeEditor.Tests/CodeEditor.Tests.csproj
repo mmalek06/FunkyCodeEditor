@@ -55,17 +55,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ScenarioTests\Views\TextViewAddingTextTests.cs" />
-    <Compile Include="ScenarioTests\Views\TextViewCollapsingTextTests.cs" />
-    <Compile Include="ScenarioTests\Views\TextViewRemovingTextTests.cs" />
-    <Compile Include="UnitTests\Algorithms\TextCollapsingTests.cs" />
-    <Compile Include="UnitTests\Algorithms\BracketsFoldingTests.cs" />
-    <Compile Include="UnitTests\Algorithms\RemovingTextTests.cs" />
-    <Compile Include="UnitTests\Views\TextViewAddingTextTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewAddingScenarioTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewCollapsingScenarioTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewRemovingScenarioTests.cs" />
+    <Compile Include="UnitTests\Algorithms\TextCollapsingUnitTests.cs" />
+    <Compile Include="UnitTests\Algorithms\BracketsFoldingUnitTests.cs" />
+    <Compile Include="UnitTests\Algorithms\RemovingTextUnitTests.cs" />
+    <Compile Include="UnitTests\Views\TextViewAddingTextUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTests\Views\TextViewCollapsingTextTests.cs" />
-    <Compile Include="UnitTests\Views\TextViewRemovingTextTests.cs" />
-    <Compile Include="ScenarioTests\Views\TextViewSelectionTests.cs" />
+    <Compile Include="UnitTests\Views\TextViewCollapsingTextUnitTests.cs" />
+    <Compile Include="UnitTests\Views\TextViewRemovingTextUnitTests.cs" />
+    <Compile Include="ScenarioTests\Views\TextViewSelectionScenarioTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeEditor.Core\CodeEditor.Core.csproj">
