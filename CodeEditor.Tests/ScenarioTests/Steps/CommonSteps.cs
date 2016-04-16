@@ -1,47 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Windows.Input;
-using CodeEditor.Commands;
-using CodeEditor.Views.Caret;
-using CodeEditor.Views.Selection;
-using CodeEditor.Views.Text;
+﻿using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
-    public class BreakNonEmptyLineSteps {
+    public class CommonSteps {
 
         #region fields
 
-        private List<string> textsToEnter;
-
-        private TextView tv;
-
-        private CaretView cv;
-
-        private SelectionView sv;
-
-        private TextView.TextViewInfo ti;
-
-        private EnterTextCommand etc;
-
-        private CaretMoveCommand cmc;
+        private EditorContext ctx;
 
         #endregion
 
         #region constructor
 
-        public BreakNonEmptyLineSteps() {
-            textsToEnter = new List<string>();
-            tv = new TextView();
-            ti = TextView.TextViewInfo.GetInstance(tv);
-            cv = new CaretView();
-            sv = new SelectionView(ti);
-            etc = new EnterTextCommand(tv, sv, ti);
-            cmc = new CaretMoveCommand(cv, ti);
-
-            tv.TextChanged += cv.HandleTextChange;
-            cv.CaretMoved += tv.HandleCaretMove;
+        public CommonSteps(EditorContext context) {
+            ctx = context;
         }
 
         #endregion
@@ -50,22 +24,22 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [Given(@"Text to enter is '(.*)'")]
         public void GivenTextToEnterIs(string textToEnter) {
-            textsToEnter.Add(textToEnter);
+            ctx.TextsToEnter.Add(textToEnter);
         }
 
         [Given(@"Text to enter is newline")]
         public void GivenTextToEnterIsNewline() {
-            textsToEnter.Add("\r");
+            ctx.TextsToEnter.Add("\r");
         }
 
         [When(@"I enter text")]
         public void WhenIEnterText() {
-            foreach (string text in textsToEnter) {
+            foreach (string text in ctx.TextsToEnter) {
                 foreach (char letter in text) {
                     var evtArgs = EventGenerator.CreateTextCompositionEventArgs(letter.ToString());
 
-                    if (etc.CanExecute(evtArgs)) {
-                        etc.Execute(evtArgs);
+                    if (ctx.EnterTextCommand.CanExecute(evtArgs)) {
+                        ctx.EnterTextCommand.Execute(evtArgs);
                     }
                 }
             }
@@ -73,57 +47,57 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [When(@"I move caret to column number '(.*)' in line '(.*)'")]
         public void WhenIMoveCaretToColumnNumberInLine(int column, int line) {
-            if (ti.ActivePosition.Line < line) {
+            if (ctx.TextInfo.ActivePosition.Line < line) {
                 // move up
-                int stopAt = line - ti.ActivePosition.Line;
+                int stopAt = line - ctx.TextInfo.ActivePosition.Line;
 
-                for (int i = 0; i < stopAt; i++) { 
+                for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Up);
                 }
-            } else if (ti.ActivePosition.Line > line) {
+            } else if (ctx.TextInfo.ActivePosition.Line > line) {
                 // move down
-                int stopAt = ti.ActivePosition.Line - line;
+                int stopAt = ctx.TextInfo.ActivePosition.Line - line;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Down);
                 }
             }
-            if (ti.ActivePosition.Column < column) {
+            if (ctx.TextInfo.ActivePosition.Column < column) {
                 // move right
-                int stopAt = column - ti.ActivePosition.Column;
+                int stopAt = column - ctx.TextInfo.ActivePosition.Column;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Right);
                 }
-            } else if (ti.ActivePosition.Column > column) {
+            } else if (ctx.TextInfo.ActivePosition.Column > column) {
                 // move left
-                int stopAt = ti.ActivePosition.Column - column;
+                int stopAt = ctx.TextInfo.ActivePosition.Column - column;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Left);
                 }
-            }            
+            }
         }
 
         [When(@"I hit enter key")]
         public void WhenIHitEnterKey() {
             var evtArgs = EventGenerator.CreateTextCompositionEventArgs("\r");
 
-            if (etc.CanExecute(evtArgs)) {
-                etc.Execute(evtArgs);
+            if (ctx.EnterTextCommand.CanExecute(evtArgs)) {
+                ctx.EnterTextCommand.Execute(evtArgs);
             }
         }
 
         [Then(@"I should see '(.*)' lines")]
         public void ThenIShouldSeeLines(int numberOfVisibleLines) {
-            var actualLinesCount = ti.GetScreenLines().Count;
+            var actualLinesCount = ctx.TextInfo.GetScreenLines().Count;
 
             Assert.AreEqual(numberOfVisibleLines, actualLinesCount);
         }
 
         [Then(@"The '(.*)' line should be equal to '(.*)'")]
         public void ThenTheLineShouldBeEqualTo(int lineNo, string text) {
-            var actualLines = ti.GetScreenLines();
+            var actualLines = ctx.TextInfo.GetScreenLines();
 
             Assert.AreEqual(text, actualLines[lineNo]);
         }
@@ -132,11 +106,11 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         #region helper methods
 
-        public void MoveCaret(Key key) {
+        private void MoveCaret(Key key) {
             var evtArgs = EventGenerator.CreateKeyEventArgs(key);
 
-            if (cmc.CanExecute(evtArgs)) {
-                cmc.Execute(evtArgs);
+            if (ctx.CaretMoveCommand.CanExecute(evtArgs)) {
+                ctx.CaretMoveCommand.Execute(evtArgs);
             }
         }
 
