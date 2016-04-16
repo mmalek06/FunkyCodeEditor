@@ -19,27 +19,6 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
         }
 
         [TestMethod]
-        public void ThreeEmptyLinesEnteredCursorMovedToSecondOneDeletePressed_LinesShouldBe2() {
-            tv.EnterText("\r");
-            tv.EnterText("\r");
-            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
-            tv.RemoveText(Key.Delete);
-
-            Assert.AreEqual(2, ti.LinesCount);
-        }
-
-        [TestMethod]
-        public void ThreeEmptyLinesEnteredCursorMovedToSecondOneDeletePressed_CursorShouldBeAt01() {
-            tv.EnterText("\r");
-            tv.EnterText("\r");
-            tv.HandleCaretMove(this, CreateCaretMovedEventArgs(0, 1));
-            tv.RemoveText(Key.Delete);
-
-            Assert.AreEqual(0, ti.ActivePosition.Column);
-            Assert.AreEqual(1, ti.ActivePosition.Line);
-        }
-
-        [TestMethod]
         public void ThreeLinesEnteredCursorMovedToSecondDeletePressed_LinesShouldBe2() {
             tv.EnterText("\r");
             tv.EnterText("\r");

@@ -23,19 +23,25 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [When(@"I hit delete key")]
         public void WhenIHitDeleteKey() {
-            var evtArgs = EventGenerator.CreateKeyEventArgs(Key.Delete);
+            var key = Key.Delete;
+            var evtArgs = EventGenerator.CreateKeyEventArgs(key);
 
             if (ctx.RemoveTextCommand.CanExecute(evtArgs)) {
                 ctx.RemoveTextCommand.Execute(evtArgs);
+                ctx.LinesView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
+                ctx.FoldingView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
             }
         }
 
         [When(@"I hit backspace key")]
         public void WhenIHitBackspaceKey() {
-            var evtArgs = EventGenerator.CreateKeyEventArgs(Key.Back);
+            var key = Key.Back;
+            var evtArgs = EventGenerator.CreateKeyEventArgs(key);
 
             if (ctx.RemoveTextCommand.CanExecute(evtArgs)) {
                 ctx.RemoveTextCommand.Execute(evtArgs);
+                ctx.LinesView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
+                ctx.FoldingView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
             }
         }
 
