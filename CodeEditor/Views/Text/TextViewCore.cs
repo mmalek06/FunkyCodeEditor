@@ -146,17 +146,11 @@ namespace CodeEditor.Views.Text {
             UpdateSize();
         }
 
-        public void TriggerTextChanged() {
-            if (TextChanged != null) {
-                TextChanged(this, new TextChangedEventArgs { CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
-            }
-        }
+        public void TriggerTextChanged() => 
+            TextChanged?.Invoke(this, new TextChangedEventArgs { CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
 
-        public void TriggerTextChanged(string text) {
-            if (TextChanged != null) {
-                TextChanged(this, new TextChangedEventArgs { Text = text, CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
-            }
-        }
+        public void TriggerTextChanged(string text) =>
+            TextChanged?.Invoke(this, new TextChangedEventArgs { Text = text, CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
 
         #endregion
 

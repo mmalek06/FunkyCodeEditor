@@ -120,12 +120,11 @@ namespace CodeEditor.Views.Caret {
             isCaretVisible = true;
         }
 
-        private void TriggerCaretMoved(TextPosition newPosition, TextPosition oldPosition) {
+        private void TriggerCaretMoved(TextPosition newPosition, TextPosition oldPosition) =>
             CaretMoved(this, new CaretMovedEventArgs {
                 NewPosition = newPosition,
                 OldPosition = oldPosition
             });
-        }
 
         private void MoveCaret(TextPosition position) {
             caretPosition = position;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using CodeEditor.Commands;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
@@ -6,8 +7,7 @@ using CodeEditor.Views.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
-namespace CodeEditor.Tests.ScenarioTests.Steps
-{
+namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
     public class BreakNonEmptyLineSteps {
 
@@ -39,6 +39,9 @@ namespace CodeEditor.Tests.ScenarioTests.Steps
             sv = new SelectionView(ti);
             etc = new EnterTextCommand(tv, sv, ti);
             cmc = new CaretMoveCommand(cv, ti);
+
+            tv.TextChanged += cv.HandleTextChange;
+            cv.CaretMoved += tv.HandleCaretMove;
         }
 
         #endregion
@@ -49,27 +52,59 @@ namespace CodeEditor.Tests.ScenarioTests.Steps
         public void GivenTextToEnterIs(string textToEnter) {
             textsToEnter.Add(textToEnter);
         }
-        
+
+        [Given(@"Text to enter is newline")]
+        public void GivenTextToEnterIsNewline() {
+            textsToEnter.Add("\r");
+        }
+
         [When(@"I enter text")]
         public void WhenIEnterText() {
             foreach (string text in textsToEnter) {
-                var evtArgs = EventGenerator.CreateTextCompositionEventArgs(text);
+                foreach (char letter in text) {
+                    var evtArgs = EventGenerator.CreateTextCompositionEventArgs(letter.ToString());
 
-                if (etc.CanExecute(evtArgs)) {
-                    etc.Execute(evtArgs);
+                    if (etc.CanExecute(evtArgs)) {
+                        etc.Execute(evtArgs);
+                    }
                 }
             }
         }
-        
+
         [When(@"I move caret to column number '(.*)' in line '(.*)'")]
         public void WhenIMoveCaretToColumnNumberInLine(int column, int line) {
-            var evtArgs = EventGenerator.CreateCaretMovedEventArgs(column, line);
+            if (ti.ActivePosition.Line < line) {
+                // move up
+                int stopAt = line - ti.ActivePosition.Line;
 
-            if (cmc.CanExecute(evtArgs)) {
-                cmc.Execute(evtArgs);
+                for (int i = 0; i < stopAt; i++) { 
+                    MoveCaret(Key.Up);
+                }
+            } else if (ti.ActivePosition.Line > line) {
+                // move down
+                int stopAt = ti.ActivePosition.Line - line;
+
+                for (int i = 0; i < stopAt; i++) {
+                    MoveCaret(Key.Down);
+                }
             }
+            if (ti.ActivePosition.Column < column) {
+                // move right
+                int stopAt = column - ti.ActivePosition.Column;
+
+                for (int i = 0; i < stopAt; i++) {
+                    MoveCaret(Key.Right);
+                }
+            } else if (ti.ActivePosition.Column > column) {
+                // move left
+                int stopAt = ti.ActivePosition.Column - column;
+
+                for (int i = 0; i < stopAt; i++) {
+                    MoveCaret(Key.Left);
+                }
+            }            
         }
-        
+
         [When(@"I hit enter key")]
         public void WhenIHitEnterKey() {
             var evtArgs = EventGenerator.CreateTextCompositionEventArgs("\r");
@@ -78,19 +113,31 @@ namespace CodeEditor.Tests.ScenarioTests.Steps
                 etc.Execute(evtArgs);
             }
         }
-        
+
         [Then(@"I should see '(.*)' lines")]
         public void ThenIShouldSeeLines(int numberOfVisibleLines) {
             var actualLinesCount = ti.GetScreenLines().Count;
 
             Assert.AreEqual(numberOfVisibleLines, actualLinesCount);
         }
-        
+
         [Then(@"The '(.*)' line should be equal to '(.*)'")]
         public void ThenTheLineShouldBeEqualTo(int lineNo, string text) {
             var actualLines = ti.GetScreenLines();
 
-            Assert.AreEqual(textsToEnter[lineNo], text);
+            Assert.AreEqual(text, actualLines[lineNo]);
+        }
+
+        #endregion
+
+        #region helper methods
+
+        public void MoveCaret(Key key) {
+            var evtArgs = EventGenerator.CreateKeyEventArgs(key);
+
+            if (cmc.CanExecute(evtArgs)) {
+                cmc.Execute(evtArgs);
+            }
         }
 
         #endregion
