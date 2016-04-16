@@ -23,22 +23,22 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [Then(@"I should see '(.*)' lines")]
         public void ThenIShouldSeeLines(int numberOfVisibleLines) {
-            var actualLinesCount = ctx.TextInfo.GetScreenLines().Count;
+            var actualLinesCount = ctx.TextView.GetScreenLines().Count;
 
             Assert.AreEqual(numberOfVisibleLines, actualLinesCount);
         }
 
         [Then(@"The '(.*)' line should be equal to '(.*)'")]
         public void ThenTheLineShouldBeEqualTo(int lineNo, string text) {
-            var actualLines = ctx.TextInfo.GetScreenLines();
+            var actualLines = ctx.TextView.GetScreenLines();
 
             Assert.AreEqual(text, actualLines[lineNo]);
         }
 
         [Then(@"Cursor should be at '(.*)' '(.*)'")]
         public void ThenCursorShouldBeAt(int column, int line) {
-            Assert.AreEqual(column, ctx.TextInfo.ActivePosition.Column);
-            Assert.AreEqual(line, ctx.TextInfo.ActivePosition.Line);
+            Assert.AreEqual(column, ctx.TextView.ActivePosition.Column);
+            Assert.AreEqual(line, ctx.TextView.ActivePosition.Line);
         }
 
         #endregion

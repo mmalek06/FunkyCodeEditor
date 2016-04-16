@@ -8,12 +8,10 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
     [TestClass]
     public class TextViewCollapsingScenarioTests {
         private TextView tv;
-        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {
             tv = new TextView();
-            ti = TextView.TextViewInfo.GetInstance(tv);
         }
 
         [TestMethod]
@@ -33,7 +31,7 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             tv.HandleTextFolding(foldMessage);
             tv.HandleTextFolding(unfoldMessage);
 
-            var renderedLines = ti.GetScreenLines();
+            var renderedLines = tv.GetScreenLines();
 
             Assert.AreEqual(text1, renderedLines[0]);
             Assert.AreEqual(text2, renderedLines[1]);
@@ -56,7 +54,7 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             tv.HandleTextFolding(foldMessage);
             tv.HandleTextFolding(unfoldMessage);
 
-            var renderedLines = ti.GetScreenLines();
+            var renderedLines = tv.GetScreenLines();
 
             Assert.AreEqual(text1, renderedLines[0]);
             Assert.AreEqual(text2, renderedLines[2]);

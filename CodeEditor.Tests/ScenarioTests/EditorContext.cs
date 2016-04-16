@@ -23,8 +23,6 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         internal FoldingView FoldingView { get; set; }
 
-        internal TextView.TextViewInfo TextInfo { get; set; }
-
         internal EnterTextCommand EnterTextCommand { get; set; }
 
         internal RemoveTextCommand RemoveTextCommand { get; set; }
@@ -38,14 +36,13 @@ namespace CodeEditor.Tests.ScenarioTests {
         public EditorContext() {
             TextsToEnter = new List<string>();
             TextView = new TextView();
-            TextInfo = TextView.TextViewInfo.GetInstance(TextView);
             CaretView = new CaretView();
-            SelectionView = new SelectionView(TextInfo);
+            SelectionView = new SelectionView(TextView);
             LinesView = new LinesView();
             FoldingView = new FoldingView();
-            EnterTextCommand = new EnterTextCommand(TextView, SelectionView, TextInfo);
-            RemoveTextCommand = new RemoveTextCommand(TextView, SelectionView, TextInfo);
-            CaretMoveCommand = new CaretMoveCommand(CaretView, TextInfo);
+            EnterTextCommand = new EnterTextCommand(TextView, SelectionView);
+            RemoveTextCommand = new RemoveTextCommand(TextView, SelectionView);
+            CaretMoveCommand = new CaretMoveCommand(CaretView, TextView);
 
             TextView.TextChanged += CaretView.HandleTextChange;
             CaretView.CaretMoved += TextView.HandleCaretMove;

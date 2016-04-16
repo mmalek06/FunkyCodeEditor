@@ -29,9 +29,9 @@ namespace CodeEditor.Views.Selection {
 
         #region constructor
 
-        public SelectionView(TextView.TextViewInfo textViewInfo) : base() {
+        public SelectionView(ITextViewRead textViewReader) : base() {
             isSelecting = false;
-            selectionAlgorithm = new TextSelector(textViewInfo, this);
+            selectionAlgorithm = new TextSelector(textViewReader, this);
         }
 
         #endregion

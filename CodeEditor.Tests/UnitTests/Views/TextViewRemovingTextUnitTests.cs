@@ -1,21 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Windows.Input;
-using System.Windows.Interop;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Events;
 using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests.UnitTests.Views {
     [TestClass]
     public class TextViewRemovingTextUnitTests {
         private TextView tv;
-        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTests() {
             tv = new TextView();
-            ti = TextView.TextViewInfo.GetInstance(tv);
         }
 
         [TestMethod]
@@ -23,8 +18,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("s");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(0, ti.ActivePosition.Column);
-            Assert.AreEqual(0, ti.ActivePosition.Line);
+            Assert.AreEqual(0, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -32,8 +27,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(0, ti.ActivePosition.Column);
-            Assert.AreEqual(0, ti.ActivePosition.Line);
+            Assert.AreEqual(0, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -41,7 +36,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("\r");
             tv.RemoveText(Key.Back);
 
-            Assert.AreEqual(1, ti.LinesCount);
+            Assert.AreEqual(1, tv.LinesCount);
         }
 
         [TestMethod]
@@ -50,7 +45,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("\r");
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(3, ti.LinesCount);
+            Assert.AreEqual(3, tv.LinesCount);
         }
 
         [TestMethod]
@@ -59,8 +54,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("\r");
             tv.RemoveText(Key.Delete);
 
-            Assert.AreEqual(2, ti.ActivePosition.Line);
-            Assert.AreEqual(0, ti.ActivePosition.Column);
+            Assert.AreEqual(2, tv.ActivePosition.Line);
+            Assert.AreEqual(0, tv.ActivePosition.Column);
         }
 
         [TestMethod]
@@ -79,7 +74,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
                 EndPosition = new TextPosition(column: 21, line: 2)
             });
 
-            Assert.AreEqual(1, ti.LinesCount);
+            Assert.AreEqual(1, tv.LinesCount);
         }
     }
 }

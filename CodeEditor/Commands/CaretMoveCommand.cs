@@ -14,7 +14,7 @@ namespace CodeEditor.Commands {
 
         private CaretView caretView;
 
-        private TextView.TextViewInfo textViewInfo;
+        private ITextViewRead textViewReader;
 
         #endregion
 
@@ -26,9 +26,9 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(CaretView caretView, TextView.TextViewInfo textViewInfo) {
+        public CaretMoveCommand(CaretView caretView, ITextViewRead textViewReader) {
             this.caretView = caretView;
-            this.textViewInfo = textViewInfo;
+            this.textViewReader = textViewReader;
         }
 
         #endregion
@@ -65,16 +65,16 @@ namespace CodeEditor.Commands {
 
             int column = -1, line = -1;
 
-            if (newPos.Column > textViewInfo.GetLineLength(newPos.Line)) {
-                column = textViewInfo.GetLineLength(newPos.Line);
+            if (newPos.Column > textViewReader.GetLineLength(newPos.Line)) {
+                column = textViewReader.GetLineLength(newPos.Line);
             }
-            if (newPos.Line >= textViewInfo.LinesCount) {
-                line = textViewInfo.LinesCount - 1;
+            if (newPos.Line >= textViewReader.LinesCount) {
+                line = textViewReader.LinesCount - 1;
             }
 
-            CaretMoveDirection moveDir = GetMoveDirection(newPos, textViewInfo.ActivePosition);
+            CaretMoveDirection moveDir = GetMoveDirection(newPos, textViewReader.ActivePosition);
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
-            newPos = textViewInfo.AdjustStep(newPos, moveDir);
+            newPos = textViewReader.AdjustStep(newPos, moveDir);
 
             caretView.MoveCursor(newPos);
         }
@@ -93,7 +93,7 @@ namespace CodeEditor.Commands {
 
             var nextPosition = caretView.GetNextPosition(e.Key);
 
-            if (nextPosition.Line < 0 || nextPosition.Line >= textViewInfo.LinesCount) {
+            if (nextPosition.Line < 0 || nextPosition.Line >= textViewReader.LinesCount) {
                 return false;
             }
             if (nextPosition.Column < 0) {
@@ -106,7 +106,7 @@ namespace CodeEditor.Commands {
         private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
             var docPosition = mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
-            if (docPosition.Line < 0 || docPosition.Line >= textViewInfo.LinesCount) {
+            if (docPosition.Line < 0 || docPosition.Line >= textViewReader.LinesCount) {
                 return false;
             }
             if (docPosition.Column < 0) {

@@ -81,6 +81,7 @@
     <Compile Include="Messaging\Postbox.cs" />
     <Compile Include="Messaging\TextRemovedMessage.cs" />
     <Compile Include="TextProperties\CharInfo.cs" />
+    <Compile Include="Views\Text\ITextViewRead.cs" />
     <Compile Include="Views\Text\TextViewRendering.cs" />
     <Compile Include="Visuals\CollapsedVisualTextLine.cs" />
     <Compile Include="Visuals\SingleVisualTextLine.cs" />

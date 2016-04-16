@@ -7,7 +7,7 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        protected TextView.TextViewInfo viewInfo;
+        protected ITextViewRead textViewReader;
 
         #endregion
 
@@ -27,8 +27,8 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public BaseTextViewCommand(TextView.TextViewInfo viewInfo) {
-            this.viewInfo = viewInfo;
+        public BaseTextViewCommand(ITextViewRead textViewReader) {
+            this.textViewReader = textViewReader;
             BeforeCommandExecutedState = new ViewState();
             AfterCommandExecutedState = new ViewState();
         }
@@ -46,11 +46,11 @@ namespace CodeEditor.Commands {
         #region methods
 
         protected void UpdateCommandState(ViewState stateToUpdate) {
-            if (viewInfo.ActivePosition.Line >= 0) {
-                stateToUpdate.LineCount = viewInfo.LinesCount;
-                stateToUpdate.ActiveLineIndex = viewInfo.ActivePosition.Line;
-                stateToUpdate.ActiveColumnIndex = viewInfo.ActivePosition.Column;
-                stateToUpdate.LineStates[viewInfo.ActivePosition.Line] = viewInfo.GetLine(viewInfo.ActivePosition.Line);
+            if (textViewReader.ActivePosition.Line >= 0) {
+                stateToUpdate.LineCount = textViewReader.LinesCount;
+                stateToUpdate.ActiveLineIndex = textViewReader.ActivePosition.Line;
+                stateToUpdate.ActiveColumnIndex = textViewReader.ActivePosition.Column;
+                stateToUpdate.LineStates[textViewReader.ActivePosition.Line] = textViewReader.GetLine(textViewReader.ActivePosition.Line);
             }
         }
 

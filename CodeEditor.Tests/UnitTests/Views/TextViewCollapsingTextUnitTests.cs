@@ -9,12 +9,10 @@ namespace CodeEditor.Tests.UnitTests.Views {
     [TestClass]
     public class TextViewCollapsingTextUnitTests {
         private TextView tv;
-        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {
             tv = new TextView();
-            ti = TextView.TextViewInfo.GetInstance(tv);
         }
 
         [TestMethod]
@@ -25,7 +23,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.HandleTextFolding(GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.FOLDED));
             tv.HandleTextFolding(GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.EXPANDED));
 
-            var renderedLines = ti.GetScreenLines();
+            var renderedLines = tv.GetScreenLines();
 
             Assert.AreEqual(renderedLines[0], text1);
         }
@@ -48,8 +46,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText(text3);
             tv.HandleTextFolding(GetFoldClickedMessage(0, 1, 0, 3, FoldingStates.FOLDED));
 
-            var renderedLines = ti.GetScreenLines();
-            var actualLines = ti.GetActualLines();
+            var renderedLines = tv.GetScreenLines();
+            var actualLines = tv.GetActualLines();
 
             Assert.AreEqual(text1, renderedLines[0]);
             Assert.AreEqual(collapseRepresentation, renderedLines[1]);
@@ -89,8 +87,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.HandleTextFolding(GetFoldClickedMessage(5, 0, 0, 2, FoldingStates.FOLDED));
             tv.HandleTextFolding(GetFoldClickedMessage(5, 0, 0, 2, FoldingStates.EXPANDED));
 
-            var renderedLines = ti.GetScreenLines();
-            var actualLines = ti.GetActualLines();
+            var renderedLines = tv.GetScreenLines();
+            var actualLines = tv.GetActualLines();
 
             Assert.IsTrue(Enumerable.SequenceEqual(renderedLines, actualLines));
         }

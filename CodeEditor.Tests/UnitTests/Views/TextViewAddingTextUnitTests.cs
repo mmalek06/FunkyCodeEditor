@@ -5,27 +5,25 @@ namespace CodeEditor.Tests.UnitTests.Views {
     [TestClass]
     public class TextViewAddingTextUnitTests {
         private TextView tv;
-        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTest() {
             tv = new TextView();
-            ti = TextView.TextViewInfo.GetInstance(tv);
         }
 
         [TestMethod]
         public void FourCharsPasted_LinesShouldBe1() {
             tv.EnterText("asdf");
 
-            Assert.AreEqual(1, ti.LinesCount);
+            Assert.AreEqual(1, tv.LinesCount);
         }
 
         [TestMethod]
         public void FourCharsPasted_CursorShouldBe40() {
             tv.EnterText("asdf");
 
-            Assert.AreEqual(4, ti.ActivePosition.Column);
-            Assert.AreEqual(0, ti.ActivePosition.Line);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -35,7 +33,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("c");
             tv.EnterText("d");
 
-            Assert.AreEqual(4, ti.GetLineLength(0));
+            Assert.AreEqual(4, tv.GetLineLength(0));
         }
 
         [TestMethod]
@@ -45,8 +43,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("c");
             tv.EnterText("d");
             
-            Assert.AreEqual(4, ti.ActivePosition.Column);
-            Assert.AreEqual(0, ti.ActivePosition.Line);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -62,7 +60,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(3, ti.LinesCount);
+            Assert.AreEqual(3, tv.LinesCount);
         }
 
         [TestMethod]
@@ -78,8 +76,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("c");
             tv.EnterText("v");
 
-            Assert.AreEqual(4, ti.ActivePosition.Column);
-            Assert.AreEqual(2, ti.ActivePosition.Line);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(2, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -88,7 +86,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(3, ti.LinesCount);
+            Assert.AreEqual(3, tv.LinesCount);
         }
 
         [TestMethod]
@@ -97,8 +95,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("\r");
             tv.EnterText("\rzxcv");
 
-            Assert.AreEqual(4, ti.ActivePosition.Column);
-            Assert.AreEqual(2, ti.ActivePosition.Line);
+            Assert.AreEqual(4, tv.ActivePosition.Column);
+            Assert.AreEqual(2, tv.ActivePosition.Line);
         }
     }
 }

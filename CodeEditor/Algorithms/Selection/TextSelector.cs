@@ -12,15 +12,15 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region fields
 
-        private TextView.TextViewInfo textViewReader;
+        private ITextViewRead textViewReader;
 
         private SelectionView parent;
-
+        
         #endregion
 
         #region constructor
 
-        public TextSelector(TextView.TextViewInfo textViewReader, SelectionView parent) {
+        public TextSelector(ITextViewRead textViewReader, SelectionView parent) {
             this.textViewReader = textViewReader;
             this.parent = parent;
         }

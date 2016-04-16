@@ -20,7 +20,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public RemoveTextCommand(TextView textView, SelectionView selectionView, TextView.TextViewInfo viewInfo) : base(viewInfo) {
+        public RemoveTextCommand(TextView textView, SelectionView selectionView) : base(textView) {
             this.textView = textView;
             this.selectionView = selectionView;
         }
@@ -41,10 +41,10 @@ namespace CodeEditor.Commands {
 
             var area = selectionView.GetCurrentSelectionArea();
 
-            if (e.Key == Key.Delete && viewInfo.ActivePosition.Line == viewInfo.LinesCount && viewInfo.ActivePosition.Column == viewInfo.GetLineLength(viewInfo.ActivePosition.Line) && area == null) { 
+            if (e.Key == Key.Delete && textViewReader.ActivePosition.Line == textViewReader.LinesCount && textViewReader.ActivePosition.Column == textViewReader.GetLineLength(textViewReader.ActivePosition.Line) && area == null) { 
                 return false;
             }
-            if (e.Key == Key.Back && viewInfo.ActivePosition.Line == 0 && viewInfo.ActivePosition.Column == 0) {
+            if (e.Key == Key.Back && textViewReader.ActivePosition.Line == 0 && textViewReader.ActivePosition.Column == 0) {
                 return false;
             }
 
@@ -59,8 +59,8 @@ namespace CodeEditor.Commands {
             var e = parameter as KeyEventArgs;
             var key = e.Key;
             var selectionArea = selectionView.GetCurrentSelectionArea();
-            var prevPosition = viewInfo.ActivePosition;
-            int linesCountBeforeRemove = viewInfo.LinesCount;
+            var prevPosition = textViewReader.ActivePosition;
+            int linesCountBeforeRemove = textViewReader.LinesCount;
             int removedLinesCount = 0;
             string removedText = string.Empty;
 
@@ -75,12 +75,12 @@ namespace CodeEditor.Commands {
 
                 textView.RemoveText(key);
             } else {
-                removedText = string.Join("", viewInfo.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
+                removedText = string.Join("", textViewReader.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
                 removedLinesCount = selectionArea.EndPosition.Line - selectionArea.StartPosition.Line;
 
                 textView.RemoveText(selectionArea);
             }
-            if (viewInfo.LinesCount < linesCountBeforeRemove) {
+            if (textViewReader.LinesCount < linesCountBeforeRemove) {
                 Postbox.Instance.Send(new LinesRemovedMessage {
                     Count = removedLinesCount
                 });
@@ -88,7 +88,7 @@ namespace CodeEditor.Commands {
 
             Postbox.Instance.Send(new TextRemovedMessage {
                 Key = e.Key,
-                Position = viewInfo.ActivePosition,
+                Position = textViewReader.ActivePosition,
                 RemovedText = removedText
             });
 
@@ -104,14 +104,14 @@ namespace CodeEditor.Commands {
         #region methods
 
         private string GetRemovedText(Key key) {
-            if (viewInfo.GetLineLength(viewInfo.ActivePosition.Line) == 0 || (key == Key.Delete && viewInfo.ActivePosition.Column >= viewInfo.GetLine(viewInfo.ActivePosition.Line).Length)) {
+            if (textViewReader.GetLineLength(textViewReader.ActivePosition.Line) == 0 || (key == Key.Delete && textViewReader.ActivePosition.Column >= textViewReader.GetLine(textViewReader.ActivePosition.Line).Length)) {
                 return string.Empty;
             }
             if (key == Key.Delete) {
-                return viewInfo.GetCharAt(viewInfo.ActivePosition).ToString();
+                return textViewReader.GetCharAt(textViewReader.ActivePosition).ToString();
             } else {
-                return viewInfo.GetCharAt(
-                    new TextPosition(column: viewInfo.ActivePosition.Column > 0 ? viewInfo.ActivePosition.Column - 1 : 0, line: viewInfo.ActivePosition.Line)).ToString();
+                return textViewReader.GetCharAt(
+                    new TextPosition(column: textViewReader.ActivePosition.Column > 0 ? textViewReader.ActivePosition.Column - 1 : 0, line: textViewReader.ActivePosition.Line)).ToString();
             }
         }
 

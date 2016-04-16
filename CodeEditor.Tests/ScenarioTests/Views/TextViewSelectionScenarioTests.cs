@@ -11,13 +11,11 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
         private TextView tv;
         private SelectionView sv;
         private CaretView cv;
-        private TextView.TextViewInfo ti;
 
         [TestInitialize]
         public void InitializeTests() {
             tv = new TextView();
-            ti = TextView.TextViewInfo.GetInstance(tv);
-            sv = new SelectionView(ti);
+            sv = new SelectionView(tv);
             cv = new CaretView();
         }
 
@@ -37,7 +35,7 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = tv.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }
@@ -58,7 +56,7 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = tv.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
         }
@@ -82,7 +80,7 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             sv.Select(endingPosition);
 
             var selectionArea = sv.GetCurrentSelectionArea();
-            var selectedParts = ti.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
+            var selectedParts = tv.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition);
 
             Assert.AreEqual(text2, selectedParts.First());
             Assert.AreEqual(text3, selectedParts.Last());
@@ -104,8 +102,8 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             sv.Select(endingPosition);
             cv.MoveCursor(endingPosition);
 
-            Assert.AreEqual(0, ti.ActivePosition.Line);
-            Assert.AreEqual(text1.Length, ti.ActivePosition.Column);
+            Assert.AreEqual(0, tv.ActivePosition.Line);
+            Assert.AreEqual(text1.Length, tv.ActivePosition.Column);
         }
 
         [TestMethod]
@@ -124,8 +122,8 @@ namespace CodeEditor.Tests.ScenarioTests.Views {
             sv.Select(endingPosition);
             cv.MoveCursor(endingPosition);
 
-            Assert.AreEqual(1, ti.ActivePosition.Line);
-            Assert.AreEqual(text2.Length, ti.ActivePosition.Column);
+            Assert.AreEqual(1, tv.ActivePosition.Line);
+            Assert.AreEqual(text2.Length, tv.ActivePosition.Column);
         }
 
     }

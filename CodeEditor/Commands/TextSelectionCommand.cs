@@ -12,7 +12,7 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private TextView.TextViewInfo viewInfo;
+        private ITextViewRead textViewReader;
 
         private CaretView caretView;
 
@@ -29,11 +29,11 @@ namespace CodeEditor.Commands {
         #region constructor
 
         public TextSelectionCommand(
-            TextView.TextViewInfo viewInfo, 
+            ITextViewRead textViewReader, 
             SelectionView selectionView, 
             CaretView caretView) 
         {
-            this.viewInfo = viewInfo;
+            this.textViewReader = textViewReader;
             this.selectionView = selectionView;
             this.caretView = caretView;
         }
@@ -82,13 +82,13 @@ namespace CodeEditor.Commands {
             if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Left && caretView.CaretPosition.Column == 0) {
                 return false;
             }
-            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Right && caretView.CaretPosition.Column == viewInfo.GetLineLength(caretView.CaretPosition.Line)) {
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Right && caretView.CaretPosition.Column == textViewReader.GetLineLength(caretView.CaretPosition.Line)) {
                 return false;
             }
             if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Up && caretView.CaretPosition.Line == 0) {
                 return false;
             }
-            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == viewInfo.LinesCount - 1) {
+            if (Keyboard.IsKeyDown(Key.RightShift) && keyboardEvent.Key == Key.Down && caretView.CaretPosition.Line == textViewReader.LinesCount - 1) {
                 return false;
             }
 
@@ -110,13 +110,13 @@ namespace CodeEditor.Commands {
 
         private bool CanExecuteMouse(MouseEventArgs mouseEvent) =>
             mouseEvent.LeftButton == MouseButtonState.Pressed &&
-                viewInfo.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()));
+                textViewReader.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()));
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
             var endingPosition = selectionView.SelectionAlgorithm.GetSelectionPosition(keyboardEvent);
 
             if (!selectionView.HasSelection()) {
-                selectionView.Select(new TextPosition(column: viewInfo.ActivePosition.Column, line: viewInfo.ActivePosition.Line));
+                selectionView.Select(new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line));
             }
 
             selectionView.Select(endingPosition);

@@ -23,31 +23,31 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [When(@"I move caret to column number '(.*)' in line '(.*)'")]
         public void WhenIMoveCaretToColumnNumberInLine(int column, int line) {
-            if (ctx.TextInfo.ActivePosition.Line < line) {
+            if (ctx.TextView.ActivePosition.Line < line) {
                 // move up
-                int stopAt = line - ctx.TextInfo.ActivePosition.Line;
+                int stopAt = line - ctx.TextView.ActivePosition.Line;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Down);
                 }
-            } else if (ctx.TextInfo.ActivePosition.Line > line) {
+            } else if (ctx.TextView.ActivePosition.Line > line) {
                 // move down
-                int stopAt = ctx.TextInfo.ActivePosition.Line - line;
+                int stopAt = ctx.TextView.ActivePosition.Line - line;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Up);
                 }
             }
-            if (ctx.TextInfo.ActivePosition.Column < column) {
+            if (ctx.TextView.ActivePosition.Column < column) {
                 // move right
-                int stopAt = column - ctx.TextInfo.ActivePosition.Column;
+                int stopAt = column - ctx.TextView.ActivePosition.Column;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Right);
                 }
-            } else if (ctx.TextInfo.ActivePosition.Column > column) {
+            } else if (ctx.TextView.ActivePosition.Column > column) {
                 // move left
-                int stopAt = ctx.TextInfo.ActivePosition.Column - column;
+                int stopAt = ctx.TextView.ActivePosition.Column - column;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Left);

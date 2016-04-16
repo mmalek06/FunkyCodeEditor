@@ -28,8 +28,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
             if (ctx.RemoveTextCommand.CanExecute(evtArgs)) {
                 ctx.RemoveTextCommand.Execute(evtArgs);
-                ctx.LinesView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
-                ctx.FoldingView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
+                ctx.LinesView.HandleTextRemove("", key, ctx.TextView.ActivePosition);
+                ctx.FoldingView.HandleTextRemove("", key, ctx.TextView.ActivePosition);
             }
         }
 
@@ -40,8 +40,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
             if (ctx.RemoveTextCommand.CanExecute(evtArgs)) {
                 ctx.RemoveTextCommand.Execute(evtArgs);
-                ctx.LinesView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
-                ctx.FoldingView.HandleTextRemove("", key, ctx.TextInfo.ActivePosition);
+                ctx.LinesView.HandleTextRemove("", key, ctx.TextView.ActivePosition);
+                ctx.FoldingView.HandleTextRemove("", key, ctx.TextView.ActivePosition);
             }
         }
 

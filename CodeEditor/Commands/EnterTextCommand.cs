@@ -16,7 +16,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public EnterTextCommand(TextView textView, SelectionView selectionView, TextView.TextViewInfo textViewInfo) : base(textViewInfo) {
+        public EnterTextCommand(TextView textView, SelectionView selectionView) : base(textView) {
             this.textView = textView;
             this.selectionView = selectionView;
         }
@@ -52,7 +52,7 @@ namespace CodeEditor.Commands {
             textView.TriggerTextChanged(e.Text);
             Postbox.Instance.Send(new TextAddedMessage {
                 Text = e.Text,
-                Position = viewInfo.ActivePosition
+                Position = textViewReader.ActivePosition
             });
         }
 
