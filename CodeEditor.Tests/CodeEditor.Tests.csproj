@@ -70,13 +70,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BreakNonEmptyLine.feature</DependentUpon>
     </Compile>
-    <Compile Include="ScenarioTests\Features\CodeCollapsingWithBrackets.feature.cs">
+    <Compile Include="ScenarioTests\Features\RemovingText.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CodeCollapsingWithBrackets.feature</DependentUpon>
+      <DependentUpon>RemovingText.feature</DependentUpon>
     </Compile>
-    <Compile Include="ScenarioTests\Steps\CodeCollapsingWithBracketsSteps.cs" />
-    <Compile Include="ScenarioTests\Steps\CommonSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\CaretMoveCommandSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\EnterTextCommandSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\LinesViewSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\RemoveCommandSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\TextViewSteps.cs" />
     <Compile Include="ScenarioTests\Views\TextViewCollapsingScenarioTests.cs" />
     <Compile Include="ScenarioTests\Views\TextViewRemovingScenarioTests.cs" />
     <Compile Include="UnitTests\Algorithms\TextCollapsingUnitTests.cs" />
@@ -106,9 +109,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BreakNonEmptyLine.feature.cs</LastGenOutput>
     </None>
-    <None Include="ScenarioTests\Features\CodeCollapsingWithBrackets.feature">
+    <None Include="ScenarioTests\Features\RemovingText.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CodeCollapsingWithBrackets.feature.cs</LastGenOutput>
+      <LastGenOutput>RemovingText.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Choose>

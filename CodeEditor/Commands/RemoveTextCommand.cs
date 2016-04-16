@@ -41,7 +41,7 @@ namespace CodeEditor.Commands {
 
             var area = selectionView.GetCurrentSelectionArea();
 
-            if (e.Key == Key.Delete && viewInfo.ActivePosition.Line == viewInfo.LinesCount - 1 && viewInfo.ActivePosition.Column == viewInfo.GetLineLength(viewInfo.ActivePosition.Line) && area == null) { 
+            if (e.Key == Key.Delete && viewInfo.ActivePosition.Line == viewInfo.LinesCount && viewInfo.ActivePosition.Column == viewInfo.GetLineLength(viewInfo.ActivePosition.Line) && area == null) { 
                 return false;
             }
             if (e.Key == Key.Back && viewInfo.ActivePosition.Line == 0 && viewInfo.ActivePosition.Column == 0) {

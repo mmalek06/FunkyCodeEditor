@@ -36,7 +36,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
             if (key == Key.Delete) {
                 bool isStartEqToTextLen = startingTextPosition.Column == lines[startingTextPosition.Line].Length;
 
-                if (isStartEqToTextLen && startingTextPosition.Line == lines.Count - 1) {
+                if (isStartEqToTextLen && startingTextPosition.Line == lines.Count) {
                     return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
                 }
                 if (isStartEqToTextLen) {
