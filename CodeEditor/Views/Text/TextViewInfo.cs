@@ -13,7 +13,7 @@ namespace CodeEditor.Views.Text {
     /// since there may be many TextViews, each should have it's own TextViewInfo instance - hence the instanceMap variable
     /// </summary>
     internal partial class TextView {
-
+        // TODO: think about creating and implementing a ITextViewReader interface instead of nesting class
         public class TextViewInfo {
 
             #region fields
