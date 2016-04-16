@@ -35,9 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\CodeEditor\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="TechTalk.SpecFlow, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\CodeEditor\packages\SpecFlow.2.0.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -55,6 +63,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ScenarioTests\EventGenerator.cs" />
+    <Compile Include="ScenarioTests\Features\BreakNonEmptyLine.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BreakNonEmptyLine.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioTests\Steps\BreakNonEmptyLineSteps.cs" />
     <Compile Include="ScenarioTests\Views\TextViewAddingScenarioTests.cs" />
     <Compile Include="ScenarioTests\Views\TextViewCollapsingScenarioTests.cs" />
     <Compile Include="ScenarioTests\Views\TextViewRemovingScenarioTests.cs" />
@@ -77,8 +92,14 @@
       <Name>CodeEditor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ScenarioTests\Algorithms\" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="ScenarioTests\Features\BreakNonEmptyLine.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BreakNonEmptyLine.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
