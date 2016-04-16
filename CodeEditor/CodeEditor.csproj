@@ -120,7 +120,7 @@
     <Compile Include="Views\Selection\SelectionView.cs" />
     <Compile Include="Algorithms\TextManipulation\ChangeInLinesInfo.cs" />
     <Compile Include="TextProperties\Properties.cs" />
-    <Compile Include="Views\Text\TextViewInfo.cs" />
+    <Compile Include="Views\Text\TextViewRead.cs" />
     <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
     <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
     <Compile Include="Views\BaseClasses\InputViewBase.cs" />
