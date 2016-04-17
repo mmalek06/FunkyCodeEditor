@@ -38,8 +38,6 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
                     if (ctx.EnterTextCommand.CanExecute(evtArgs)) {
                         ctx.EnterTextCommand.Execute(evtArgs);
-                        ctx.LinesView.HandleTextInput(character.ToString(), ctx.TextView.ActivePosition);
-                        ctx.FoldingView.HandleTextInput(character.ToString(), ctx.TextView.ActivePosition);
                     }
                 }
             }

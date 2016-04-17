@@ -76,13 +76,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RemovingText.feature</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioTests\PrivateMembersHelper.cs" />
     <Compile Include="ScenarioTests\Steps\CaretMoveCommandSteps.cs" />
     <Compile Include="ScenarioTests\Steps\EnterTextCommandSteps.cs" />
     <Compile Include="ScenarioTests\Steps\LinesViewSteps.cs" />
     <Compile Include="ScenarioTests\Steps\RemoveCommandSteps.cs" />
     <Compile Include="ScenarioTests\Steps\TextViewSteps.cs" />
     <Compile Include="ScenarioTests\Views\TextViewCollapsingScenarioTests.cs" />
-    <Compile Include="ScenarioTests\Views\TextViewRemovingScenarioTests.cs" />
     <Compile Include="UnitTests\Algorithms\TextCollapsingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\BracketsFoldingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\RemovingTextUnitTests.cs" />

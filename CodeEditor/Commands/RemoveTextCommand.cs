@@ -110,8 +110,12 @@ namespace CodeEditor.Commands {
             if (key == Key.Delete) {
                 return textViewReader.GetCharAt(textViewReader.ActivePosition).ToString();
             } else {
-                return textViewReader.GetCharAt(
-                    new TextPosition(column: textViewReader.ActivePosition.Column > 0 ? textViewReader.ActivePosition.Column - 1 : 0, line: textViewReader.ActivePosition.Line)).ToString();
+                if (textViewReader.ActivePosition.Column == 0 && textViewReader.ActivePosition.Line > 0) {
+                    return string.Empty;
+                } else {
+                    return textViewReader.GetCharAt(
+                        new TextPosition(column: textViewReader.ActivePosition.Column > 0 ? textViewReader.ActivePosition.Column - 1 : 0, line: textViewReader.ActivePosition.Line)).ToString();
+                }
             }
         }
 

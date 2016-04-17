@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.Commands;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Folding;
 using CodeEditor.Views.Lines;
@@ -44,8 +45,40 @@ namespace CodeEditor.Tests.ScenarioTests {
             RemoveTextCommand = new RemoveTextCommand(TextView, SelectionView);
             CaretMoveCommand = new CaretMoveCommand(CaretView, TextView);
 
+            InitEvents();
+            ForceDraw();
+        }
+
+        #endregion
+
+        #region methods
+
+        private void InitEvents() {
             TextView.TextChanged += CaretView.HandleTextChange;
             CaretView.CaretMoved += TextView.HandleCaretMove;
+
+            Postbox.Instance.For(typeof(LinesRemovedMessage)).Invoke(message => {
+                                var linesRemovedMessage = message as LinesRemovedMessage;
+
+                                LinesView.HandleLinesRemove(linesRemovedMessage.Count);
+                                FoldingView.HandleLinesRemove(linesRemovedMessage.Count);
+                            })
+                            .For(typeof(TextRemovedMessage)).Invoke(message => {
+                                var textRemovedMessage = message as TextRemovedMessage;
+
+                                LinesView.HandleTextRemove(textRemovedMessage.RemovedText, textRemovedMessage.Key, textRemovedMessage.Position);
+                                FoldingView.HandleTextRemove(textRemovedMessage.RemovedText, textRemovedMessage.Key, textRemovedMessage.Position);
+                            })
+                            .For(typeof(TextAddedMessage)).Invoke(message => {
+                                var textAddedMessage = message as TextAddedMessage;
+
+                                LinesView.HandleTextInput(textAddedMessage.Text, textAddedMessage.Position);
+                                FoldingView.HandleTextInput(textAddedMessage.Text, textAddedMessage.Position);
+                            });
+        }
+
+        private void ForceDraw() {
+            PrivateMembersHelper.InvokeMethod(LinesView, "Push", new object[] { });
         }
 
         #endregion

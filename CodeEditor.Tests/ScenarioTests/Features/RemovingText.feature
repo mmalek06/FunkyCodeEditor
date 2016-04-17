@@ -7,74 +7,109 @@
 Scenario: Delete from empty line - Green Path
 	Given Text to enter is newline
 	When I enter text
-	And I move caret to column number '0' in line '0'
-	And I hit delete key
+		And I move caret to column number '0' in line '0'
+		And I hit delete key
 	Then I should see '1' lines
-	And Shown number of lines in the lines panel should be '1'
-	And The '0' line should be equal to ''
-	And Cursor should be at '0' '0'
+		And Shown number of lines in the lines panel should be '1'
+		And The '0' line should be equal to ''
+		And Cursor should be at '0' '0'
 	
 
 Scenario: Delete last line when the cursor is at the second one - Green Path
 	Given Text to enter is newline
-	And Text to enter is newline
+		And Text to enter is newline
 	When I enter text
-	And I move caret to column number '0' in line '1'
-	And I hit delete key
+		And I move caret to column number '0' in line '1'
+		And I hit delete key
 	Then I should see '2' lines
-	And Shown number of lines in the lines panel should be '2'
-	And The '0' line should be equal to ''
-	And The '1' line should be equal to ''
-	And Cursor should be at '0' '1'
+		And Shown number of lines in the lines panel should be '2'
+		And The '0' line should be equal to ''
+		And The '1' line should be equal to ''
+		And Cursor should be at '0' '1'
 
 
 Scenario: Delete last line that is not empty and when the cursor is at the second one - Green Path
 	Given Text to enter is newline
-	And Text to enter is newline
-	And Text to enter is 'asdf'
+		And Text to enter is newline
+		And Text to enter is 'asdf'
 	When I enter text
-	And I move caret to column number '0' in line '1'
-	And I hit delete key
+		And I move caret to column number '0' in line '1'
+		And I hit delete key
 	Then I should see '2' lines
-	And Shown number of lines in the lines panel should be '2'
-	And The '0' line should be equal to ''
-	And The '1' line should be equal to 'asdf'
+		And Shown number of lines in the lines panel should be '2'
+		And The '0' line should be equal to ''
+		And The '1' line should be equal to 'asdf'
 
 
 Scenario: Two non empty lines entered, delete pressed at the end of first one - Green Path
 	Given Text to enter is 'asdf'
-	And Text to enter is newline
-	And Text to enter is 'qwer'
+		And Text to enter is newline
+		And Text to enter is 'qwer'
 	When I enter text
-	And I move caret to column number '4' in line '0'
-	And I hit delete key
+		And I move caret to column number '4' in line '0'
+		And I hit delete key
 	Then I should see '1' lines
-	And Shown number of lines in the lines panel should be '1'
-	And The '0' line should be equal to 'asdfqwer'
-	And Cursor should be at '4' '0'
+		And Shown number of lines in the lines panel should be '1'
+		And The '0' line should be equal to 'asdfqwer'
+		And Cursor should be at '4' '0'
 
 
 Scenario: Backspace first line when the cursor is at the second one - Green Path
 	Given Text to enter is newline
-	And Text to enter is newline
+		And Text to enter is newline
 	When I enter text
-	And I move caret to column number '0' in line '1'
-	And I hit backspace key
+		And I move caret to column number '0' in line '1'
+		And I hit backspace key
 	Then I should see '2' lines
-	And Shown number of lines in the lines panel should be '2'
-	And The '0' line should be equal to ''
-	And The '1' line should be equal to ''
-	And Cursor should be at '0' '0'
+		And Shown number of lines in the lines panel should be '2'
+		And The '0' line should be equal to ''
+		And The '1' line should be equal to ''
+		And Cursor should be at '0' '0'
 
 
 Scenario: Two non empty lines entered, backspace pressed at the beginning of second one - Green Path
 	Given Text to enter is 'asdf'
-	And Text to enter is newline
-	And Text to enter is 'qwer'
+		And Text to enter is newline
+		And Text to enter is 'qwer'
 	When I enter text
-	And I move caret to column number '0' in line '1'
-	And I hit backspace key
+		And I move caret to column number '0' in line '1'
+		And I hit backspace key
 	Then I should see '1' lines
-	And Shown number of lines in the lines panel should be '1'
-	And The '0' line should be equal to 'asdfqwer'
-	And Cursor should be at '4' '0'
+		And Shown number of lines in the lines panel should be '1'
+		And The '0' line should be equal to 'asdfqwer'
+		And Cursor should be at '4' '0'
+
+
+Scenario: Four lines entered, delete pressed at the end of first - Green Path
+	Given Text to enter is 'asdf'
+		And Text to enter is newline
+		And Text to enter is newline
+		And Text to enter is 'qwer'
+		And Text to enter is newline
+		And Text to enter is 'xzcv'
+	When I enter text
+		And I move caret to column number '4' in line '0'
+		And I hit delete key
+	Then I should see '3' lines
+		And Shown number of lines in the lines panel should be '3'
+		And The '0' line should be equal to 'asdf'
+		And The '1' line should be equal to 'qwer'
+		And The '2' line should be equal to 'xzcv'
+		And Cursor should be at '4' '0'
+
+
+Scenario: Four lines entered, delete pressed twice at the end of first - Green Path
+	Given Text to enter is 'asdf'
+		And Text to enter is newline
+		And Text to enter is newline
+		And Text to enter is 'qwer'
+		And Text to enter is newline
+		And Text to enter is 'xzcv'
+	When I enter text
+		And I move caret to column number '4' in line '0'
+		And I hit delete key
+		And I hit delete key
+	Then I should see '2' lines
+		And Shown number of lines in the lines panel should be '2'
+		And The '0' line should be equal to 'asdfqwer'
+		And The '1' line should be equal to 'xzcv'

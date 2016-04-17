@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
@@ -17,6 +16,8 @@ namespace CodeEditor.Views.Lines {
         private SimpleParagraphProperties paragraphProperties;
 
         #endregion
+
+        public VisualCollection VS => visuals;
 
         #region constructor
 
@@ -36,8 +37,10 @@ namespace CodeEditor.Views.Lines {
 
             linesCount -= count;
 
-            for (int i = initialLinesCount; i < count; i++) {
-                RemoveLine(i);
+            while (count > 0) { 
+                Pop();
+
+                count--;
             }
 
             UpdateSize();
@@ -46,7 +49,7 @@ namespace CodeEditor.Views.Lines {
         public override void HandleTextInput(string text, TextPosition activePosition) {
             if (text == TextProperties.Properties.NEWLINE) {
                 linesCount++;
-                AddLine(linesCount);
+                Push();
                 UpdateSize();
             }
         }
@@ -58,7 +61,7 @@ namespace CodeEditor.Views.Lines {
                 linesCount -= diff;
 
                 for (int i = linesCount; i <= diff; i++) {
-                    RemoveLine(linesCount);
+                    Pop();
                 }
             } else {
                 int initialLinesCount = linesCount;
@@ -66,7 +69,7 @@ namespace CodeEditor.Views.Lines {
                 linesCount += diff;
 
                 for (int i = initialLinesCount; i <= diff; i++) {
-                    AddLine(i + initialLinesCount);
+                    Push();
                 }
             }
 
@@ -76,7 +79,7 @@ namespace CodeEditor.Views.Lines {
         protected override void OnRender(DrawingContext drawingContext) {
             base.OnRender(drawingContext);
 
-            AddLine(linesCount);
+            Push();
         }
 
         protected override double GetWidth() => EditorConfiguration.GetLinesColumnWidth();
@@ -93,12 +96,12 @@ namespace CodeEditor.Views.Lines {
             }
         }
 
-        private void AddLine(int lineNum) {
-            visuals.Add(new VisualElement(lineNum));
+        private void Push() {
+            visuals.Add(new VisualElement(visuals.Count + 1));
         }
 
-        private void RemoveLine(int lineNum) {
-            visuals.RemoveAt(lineNum);
+        private void Pop() {
+            visuals.RemoveAt(visuals.Count - 1);
         }
 
         #endregion
