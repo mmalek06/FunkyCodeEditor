@@ -53,3 +53,6 @@ Scenario: Enter four lines with two collapsible sections - Green Path
 		And The '1' line should be equal to ''
 		And The '2' line should be equal to 'b'
 		And The '3' line should be equal to '{}'
+
+
+Scenario: Enter

@@ -67,8 +67,8 @@ namespace CodeEditor.Tests.ScenarioTests {
                             .For(typeof(TextRemovedMessage)).Invoke(message => {
                                 var textRemovedMessage = message as TextRemovedMessage;
 
-                                LinesView.HandleTextRemove(textRemovedMessage.RemovedText, textRemovedMessage.Key, textRemovedMessage.Position);
-                                FoldingView.HandleTextRemove(textRemovedMessage.RemovedText, textRemovedMessage.Key, textRemovedMessage.Position);
+                                LinesView.HandleTextRemove(textRemovedMessage);
+                                FoldingView.HandleTextRemove(textRemovedMessage);
                             })
                             .For(typeof(TextAddedMessage)).Invoke(message => {
                                 var textAddedMessage = message as TextAddedMessage;

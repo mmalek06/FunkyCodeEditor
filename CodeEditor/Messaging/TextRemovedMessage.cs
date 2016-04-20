@@ -8,7 +8,9 @@ namespace CodeEditor.Messaging {
 
         public Key Key { get; set; }
 
-        public TextPosition Position { get; set; }
+        public TextPosition OldCaretPosition { get; set; }
+
+        public TextPosition NewCaretPosition { get; set; }
 
         public string RemovedText { get; set; }
 

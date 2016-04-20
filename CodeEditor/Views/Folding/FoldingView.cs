@@ -49,19 +49,19 @@ namespace CodeEditor.Views.Folding {
             RedrawFolds();
         }
 
-        public override void HandleTextRemove(string removedText, Key key, TextPosition activePosition) {
-            if (removedText == string.Empty) {
+        public override void HandleTextRemove(TextRemovedMessage message) {
+            if (message.RemovedText == string.Empty) {
                 return;
             }
 
             var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
-            var removedKey = foldingAlgorithm.DeleteFolds(removedText, activePosition, positions);
+            var removedKey = foldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
 
             if (removedKey == null) {
                 return;
             }
 
-            DeleteFolds(removedKey, removedText);
+            DeleteFolds(removedKey, message.RemovedText);
             RedrawFolds();
         }
 

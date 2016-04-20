@@ -96,7 +96,8 @@ namespace CodeEditor.Commands {
 
             Postbox.Instance.Send(new TextRemovedMessage {
                 Key = e.Key,
-                Position = caretViewReader.CaretPosition,
+                OldCaretPosition = caretViewReader.CaretPosition,
+                NewCaretPosition = positionAfterRemove,
                 RemovedText = removedText
             });
             caretView.HandleTextRemove(positionAfterRemove);

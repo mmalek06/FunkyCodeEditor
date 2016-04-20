@@ -62,7 +62,7 @@ namespace CodeEditor.Controls {
             var m = (TextRemovedMessage)message;
 
             foreach (var view in views) {
-                view.HandleTextRemove(m.RemovedText, m.Key, m.Position);
+                view.HandleTextRemove(m);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Messaging;
 
 namespace CodeEditor.Views.BaseClasses {
     internal abstract class HelperViewBase : ViewBase {
@@ -24,7 +25,7 @@ namespace CodeEditor.Views.BaseClasses {
 
         public virtual void HandleTextInput(string text, TextPosition activePosition) { }
 
-        public virtual void HandleTextRemove(string removedText, Key key, TextPosition activePosition) { }
+        public virtual void HandleTextRemove(TextRemovedMessage message) { }
 
         public virtual void HandleLinesRemove(int count) { }
 
