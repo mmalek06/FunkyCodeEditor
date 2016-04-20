@@ -4,6 +4,33 @@
 	I want to press backspace or delete keys with or without text selected
 
 
+Scenario: Enter one character and press backspace - Green Path
+	Given Text to enter is 'a'
+	When I enter text
+		And I hit backspace key
+	Then Cursor should be at '0' '0'
+
+
+Scenario: Enter single empty line and press backspace - Green Path
+	Given Text to enter is newline
+	When I enter text
+		And I hit backspace key
+	Then Cursor should be at '0' '0'
+		And I should see '1' lines
+		And The '0' line should be equal to ''
+		And Shown number of lines in the lines panel should be '1'
+
+
+Scenario: Enter three empty lines and press delete - Red Path
+	Given Text to enter is newline
+		And Text to enter is newline
+	When I enter text
+		And I hit delete key
+	Then Cursor should be at '0' '2'
+		And I should see '3' lines
+		And Shown number of lines in the lines panel should be '3'
+
+
 Scenario: Delete from empty line - Green Path
 	Given Text to enter is newline
 	When I enter text

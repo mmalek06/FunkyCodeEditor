@@ -54,22 +54,26 @@ namespace CodeEditor.Views.Lines {
             }
         }
 
-        public void HandleFoldRemove(FoldClickedMessage m) {
+        public void HandleFolding(FoldClickedMessage m) {
             int diff = m.Area.EndPosition.Line - m.Area.StartPosition.Line;
-            
+
             if (m.State == Algorithms.Folding.FoldingStates.FOLDED) {
                 linesCount -= diff;
 
-                for (int i = linesCount; i <= diff; i++) {
+                while (diff > 0) {
                     Pop();
+
+                    diff--;
                 }
             } else {
                 int initialLinesCount = linesCount;
 
                 linesCount += diff;
 
-                for (int i = initialLinesCount; i <= diff; i++) {
+                while (diff > 0) {
                     Push();
+
+                    diff--;
                 }
             }
 

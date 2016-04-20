@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 
 namespace CodeEditor.Commands {
@@ -7,7 +8,9 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        protected ITextViewRead textViewReader;
+        protected ITextViewReader textViewReader;
+
+        protected ICaretViewReader caretViewReader;
 
         #endregion
 
@@ -27,8 +30,9 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public BaseTextViewCommand(ITextViewRead textViewReader) {
+        public BaseTextViewCommand(ITextViewReader textViewReader, ICaretViewReader caretViewReader) {
             this.textViewReader = textViewReader;
+            this.caretViewReader = caretViewReader;
             BeforeCommandExecutedState = new ViewState();
             AfterCommandExecutedState = new ViewState();
         }
@@ -46,11 +50,11 @@ namespace CodeEditor.Commands {
         #region methods
 
         protected void UpdateCommandState(ViewState stateToUpdate) {
-            if (textViewReader.ActivePosition.Line >= 0) {
+            if (caretViewReader.CaretPosition.Line >= 0) {
                 stateToUpdate.LineCount = textViewReader.LinesCount;
-                stateToUpdate.ActiveLineIndex = textViewReader.ActivePosition.Line;
-                stateToUpdate.ActiveColumnIndex = textViewReader.ActivePosition.Column;
-                stateToUpdate.LineStates[textViewReader.ActivePosition.Line] = textViewReader.GetLine(textViewReader.ActivePosition.Line);
+                stateToUpdate.ActiveLineIndex = caretViewReader.CaretPosition.Line;
+                stateToUpdate.ActiveColumnIndex = caretViewReader.CaretPosition.Column;
+                stateToUpdate.LineStates[caretViewReader.CaretPosition.Line] = textViewReader.GetLine(caretViewReader.CaretPosition.Line);
             }
         }
 

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
+using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 using CodeEditor.Visuals;
@@ -12,7 +13,9 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region fields
 
-        private ITextViewRead textViewReader;
+        private ITextViewReader textViewReader;
+
+        private Views.Caret.ICaretViewReader caretViewReader;
 
         private SelectionView parent;
         
@@ -20,7 +23,8 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region constructor
 
-        public TextSelector(ITextViewRead textViewReader, SelectionView parent) {
+        public TextSelector(ICaretViewReader caretViewReader, ITextViewReader textViewReader, SelectionView parent) {
+            this.caretViewReader = caretViewReader;
             this.textViewReader = textViewReader;
             this.parent = parent;
         }
@@ -32,7 +36,7 @@ namespace CodeEditor.Algorithms.Selection {
         public TextPosition StandardSelection(MouseEventArgs mouseEvent) => mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
 
         public SelectionInfo WordSelection(KeyEventArgs keyboardEvent) {
-            var activeLine = textViewReader.GetLine(textViewReader.ActivePosition.Line);
+            var activeLine = textViewReader.GetLine(caretViewReader.CaretPosition.Line);
 
             return null;
         }
@@ -75,28 +79,28 @@ namespace CodeEditor.Algorithms.Selection {
 
             switch (keyboardEvent.Key) {
                 case Key.Left:
-                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column - 1, line: textViewReader.ActivePosition.Line);
+                    endingPosition = new TextPosition(column: caretViewReader.CaretPosition.Column - 1, line: caretViewReader.CaretPosition.Line);
                     break;
                 case Key.Home:
-                    endingPosition = new TextPosition(column: 0, line: textViewReader.ActivePosition.Line);
+                    endingPosition = new TextPosition(column: 0, line: caretViewReader.CaretPosition.Line);
                     break;
                 case Key.Right:
-                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column + 1, line: textViewReader.ActivePosition.Line);
+                    endingPosition = new TextPosition(column: caretViewReader.CaretPosition.Column + 1, line: caretViewReader.CaretPosition.Line);
                     break;
                 case Key.End:
-                    endingPosition = new TextPosition(column: textViewReader.GetLineLength(textViewReader.ActivePosition.Line), line: textViewReader.ActivePosition.Line);
+                    endingPosition = new TextPosition(column: textViewReader.GetLineLength(caretViewReader.CaretPosition.Line), line: caretViewReader.CaretPosition.Line);
                     break;
                 case Key.Up:
-                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line - 1);
+                    endingPosition = new TextPosition(column: caretViewReader.CaretPosition.Column, line: caretViewReader.CaretPosition.Line - 1);
                     break;
                 case Key.PageUp:
-                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line - GlobalConstants.PageSize);
+                    endingPosition = new TextPosition(column: caretViewReader.CaretPosition.Column, line: caretViewReader.CaretPosition.Line - GlobalConstants.PageSize);
                     break;
                 case Key.Down:
-                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line + 1);
+                    endingPosition = new TextPosition(column: caretViewReader.CaretPosition.Column, line: caretViewReader.CaretPosition.Line + 1);
                     break;
                 case Key.PageDown:
-                    endingPosition = new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line + GlobalConstants.PageSize);
+                    endingPosition = new TextPosition(column: caretViewReader.CaretPosition.Column, line: caretViewReader.CaretPosition.Line + GlobalConstants.PageSize);
                     break;
             }
 

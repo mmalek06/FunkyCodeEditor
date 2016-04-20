@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -11,7 +13,7 @@ using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Caret {
-    internal class CaretView : InputViewBase {
+    internal partial class CaretView : InputViewBase {
 
         #region constants
 
@@ -25,15 +27,7 @@ namespace CodeEditor.Views.Caret {
 
         private Timer checkTimer;
 
-        private TextPosition caretPosition;
-
         private bool isCaretVisible;
-
-        #endregion
-
-        #region events
-
-        public event CaretMovedEventHandler CaretMoved;
 
         #endregion
 
@@ -42,11 +36,6 @@ namespace CodeEditor.Views.Caret {
         public HashSet<Key> StepKeys { get; set; }
 
         public HashSet<Key> JumpKeys { get; set; }
-
-        public TextPosition CaretPosition {
-            get { return caretPosition; }
-            private set { caretPosition = value; }
-        }
         
         #endregion
 
@@ -55,7 +44,7 @@ namespace CodeEditor.Views.Caret {
         public CaretView() : base() {
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });
-            caretPosition = TextPosition.Zero;
+            CaretPosition = TextPosition.Zero;
             isCaretVisible = true;
             
             InitBlinker();
@@ -66,7 +55,11 @@ namespace CodeEditor.Views.Caret {
 
         #region event handlers
 
+        public void HandleTextChange(string newText) => MoveCaret(GetNewCaretPosition(newText));
+
         public void HandleTextChange(object sender, TextChangedEventArgs e) => MoveCaret(new TextPosition(column: e.CurrentColumn, line: e.CurrentLine));
+
+        public void HandleTextRemove(TextPosition newPosition) => MoveCaret(newPosition);
 
         public override void HandleTextFolding(FoldClickedMessage message) => MoveCaret(message.Area.StartPosition);
 
@@ -75,10 +68,9 @@ namespace CodeEditor.Views.Caret {
         #region public methods
 
         public void MoveCursor(TextPosition newPos) {
-            var oldPos = caretPosition;
+            var oldPos = CaretPosition;
 
             MoveCaret(newPos);
-            TriggerCaretMoved(newPos, oldPos);
         }
 
         public TextPosition GetNextPosition(Key key) {
@@ -88,8 +80,8 @@ namespace CodeEditor.Views.Caret {
 
             if (IsStep(key)) {
                 coordinates = GetStep(key);
-                column = caretPosition.Column + coordinates.Column;
-                line = caretPosition.Line + coordinates.Line;
+                column = CaretPosition.Column + coordinates.Column;
+                line = CaretPosition.Line + coordinates.Line;
             } else {
                 coordinates = GetJump(key);
                 column = coordinates.Column;
@@ -113,21 +105,15 @@ namespace CodeEditor.Views.Caret {
 
             var caret = new VisualElement();
 
-            caret.Draw(caretPosition);
+            caret.Draw(CaretPosition);
             visuals.Clear();
             visuals.Add(caret);
 
             isCaretVisible = true;
         }
 
-        private void TriggerCaretMoved(TextPosition newPosition, TextPosition oldPosition) =>
-            CaretMoved(this, new CaretMovedEventArgs {
-                NewPosition = newPosition,
-                OldPosition = oldPosition
-            });
-
         private void MoveCaret(TextPosition position) {
-            caretPosition = position;
+            CaretPosition = position;
 
             DrawCaret();
             RestartCheckTimer();
@@ -153,8 +139,8 @@ namespace CodeEditor.Views.Caret {
         }
 
         private TextPosition GetJump(Key key) {
-            int x = caretPosition.Column;
-            int y = caretPosition.Line;
+            int x = CaretPosition.Column;
+            int y = CaretPosition.Line;
 
             switch (key) {
                 case Key.Home: x = 0; break;
@@ -167,21 +153,44 @@ namespace CodeEditor.Views.Caret {
             return new TextPosition(x, y);
         }
 
+        private TextPosition GetNewCaretPosition(string text) {
+            var specialCharsRegex = new Regex("[\a|\b|\n|\r|\f|\t|\v]");
+            var replacedText = specialCharsRegex.Replace(text, string.Empty);
+            int column = -1;
+            int line = -1;
+
+            if (text == TextProperties.Properties.NEWLINE) {
+                column = 0;
+                line = CaretPosition.Line + 1;
+            } else if (text == TextProperties.Properties.TAB) {
+                column = CaretPosition.Column + TextProperties.Properties.TabSize;
+            } else if (replacedText.Length == 1) {
+                column = CaretPosition.Column + 1;
+            } else {
+                var parts = text.Split(TextProperties.Properties.NEWLINE[0]);
+
+                column = parts.Last().Length;
+                line = CaretPosition.Line + parts.Length - 1;
+            }
+
+            return new TextPosition(column: column > -1 ? column : CaretPosition.Column, line: line > -1 ? line : CaretPosition.Line);
+        }
+
         private void InitBlinker() {
             blinkTimer = new DispatcherTimer();
             blinkTimer.Tick += (sender, e) => {
-                Application.Current.Dispatcher.Invoke(() => {
+                Application.Current.Dispatcher.Invoke((Action)(() => {
                     if (isCaretVisible) {
                         var caret = new VisualElement();
 
-                        caret.Draw(CaretPosition);
+                        caret.Draw((TextPosition)this.CaretPosition);
                         visuals.Add(caret);
                     } else {
                         visuals.Clear();
                     }
 
                     isCaretVisible = !isCaretVisible;
-                });
+                }));
             };
             blinkTimer.Interval = new TimeSpan(0, 0, 0, 0, BLINK_INTERVAL);
         }

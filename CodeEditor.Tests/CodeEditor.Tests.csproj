@@ -42,6 +42,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="TechTalk.SpecFlow, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
       <HintPath>..\CodeEditor\packages\SpecFlow.2.0.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
@@ -71,25 +72,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BreakNonEmptyLine.feature</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioTests\Features\CollapsingTextWithBrackets.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CollapsingTextWithBrackets.feature</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioTests\Features\RemovingText.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RemovingText.feature</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioTests\Features\SelectingText.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SelectingText.feature</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioTests\PrivateMembersHelper.cs" />
     <Compile Include="ScenarioTests\Steps\CaretMoveCommandSteps.cs" />
     <Compile Include="ScenarioTests\Steps\EnterTextCommandSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\BracketsFoldingSteps.cs" />
     <Compile Include="ScenarioTests\Steps\LinesViewSteps.cs" />
-    <Compile Include="ScenarioTests\Steps\RemoveCommandSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\KeysSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\SelectionViewSteps.cs" />
     <Compile Include="ScenarioTests\Steps\TextViewSteps.cs" />
-    <Compile Include="ScenarioTests\Views\TextViewCollapsingScenarioTests.cs" />
     <Compile Include="UnitTests\Algorithms\TextCollapsingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\BracketsFoldingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\RemovingTextUnitTests.cs" />
     <Compile Include="UnitTests\Views\TextViewAddingTextUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\Views\TextViewCollapsingTextUnitTests.cs" />
-    <Compile Include="UnitTests\Views\TextViewRemovingTextUnitTests.cs" />
     <Compile Include="ScenarioTests\Views\TextViewSelectionScenarioTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +121,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BreakNonEmptyLine.feature.cs</LastGenOutput>
     </None>
+    <None Include="ScenarioTests\Features\CollapsingTextWithBrackets.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CollapsingTextWithBrackets.feature.cs</LastGenOutput>
+    </None>
     <None Include="ScenarioTests\Features\RemovingText.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RemovingText.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ScenarioTests\Features\SelectingText.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SelectingText.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Choose>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using CodeEditor.Commands;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
@@ -30,20 +31,23 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         internal CaretMoveCommand CaretMoveCommand { get; set;}
 
+        internal TextSelectionCommand SelectionCommand { get; set; }
+
         #endregion
 
         #region constructor
 
         public EditorContext() {
             TextsToEnter = new List<string>();
-            TextView = new TextView();
             CaretView = new CaretView();
-            SelectionView = new SelectionView(TextView);
+            TextView = new TextView(CaretView);
+            SelectionView = new SelectionView(TextView, CaretView);
             LinesView = new LinesView();
             FoldingView = new FoldingView();
-            EnterTextCommand = new EnterTextCommand(TextView, SelectionView);
-            RemoveTextCommand = new RemoveTextCommand(TextView, SelectionView);
+            EnterTextCommand = new EnterTextCommand(TextView, SelectionView, CaretView);
+            RemoveTextCommand = new RemoveTextCommand(TextView, SelectionView, CaretView);
             CaretMoveCommand = new CaretMoveCommand(CaretView, TextView);
+            SelectionCommand = new TextSelectionCommand(TextView, SelectionView, CaretView);
 
             InitEvents();
             ForceDraw();
@@ -54,9 +58,6 @@ namespace CodeEditor.Tests.ScenarioTests {
         #region methods
 
         private void InitEvents() {
-            TextView.TextChanged += CaretView.HandleTextChange;
-            CaretView.CaretMoved += TextView.HandleCaretMove;
-
             Postbox.Instance.For(typeof(LinesRemovedMessage)).Invoke(message => {
                                 var linesRemovedMessage = message as LinesRemovedMessage;
 
@@ -74,7 +75,8 @@ namespace CodeEditor.Tests.ScenarioTests {
 
                                 LinesView.HandleTextInput(textAddedMessage.Text, textAddedMessage.Position);
                                 FoldingView.HandleTextInput(textAddedMessage.Text, textAddedMessage.Position);
-                            });
+                            })
+                            .For(typeof(FoldClickedMessage)).Invoke(message => LinesView.HandleFolding(message as FoldClickedMessage));
         }
 
         private void ForceDraw() {

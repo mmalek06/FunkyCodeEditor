@@ -1,4 +1,5 @@
-﻿using CodeEditor.Views.Text;
+﻿using CodeEditor.Views.Caret;
+using CodeEditor.Views.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.UnitTests.Views {
@@ -6,9 +7,12 @@ namespace CodeEditor.Tests.UnitTests.Views {
     public class TextViewAddingTextUnitTests {
         private TextView tv;
 
+        private CaretView cv;
+
         [TestInitialize]
         public void InitializeTest() {
-            tv = new TextView();
+            cv = new CaretView();
+            tv = new TextView(cv);
         }
 
         [TestMethod]
@@ -19,14 +23,6 @@ namespace CodeEditor.Tests.UnitTests.Views {
         }
 
         [TestMethod]
-        public void FourCharsPasted_CursorShouldBe40() {
-            tv.EnterText("asdf");
-
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
-        }
-
-        [TestMethod]
         public void FourCharsEntered_LineLengthShouldBe4() {
             tv.EnterText("a");
             tv.EnterText("b");
@@ -34,17 +30,6 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EnterText("d");
 
             Assert.AreEqual(4, tv.GetLineLength(0));
-        }
-
-        [TestMethod]
-        public void FourCharsEntered_CursorShouldBe40() {
-            tv.EnterText("a");
-            tv.EnterText("b");
-            tv.EnterText("c");
-            tv.EnterText("d");
-            
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(0, tv.ActivePosition.Line);
         }
 
         [TestMethod]
@@ -64,39 +49,13 @@ namespace CodeEditor.Tests.UnitTests.Views {
         }
 
         [TestMethod]
-        public void ThreeLinesAddedCharsEntered_CursorShouldBeAt42() {
-            tv.EnterText("a");
-            tv.EnterText("s");
-            tv.EnterText("d");
-            tv.EnterText("f");
-            tv.EnterText("\r");
-            tv.EnterText("\r");
-            tv.EnterText("z");
-            tv.EnterText("x");
-            tv.EnterText("c");
-            tv.EnterText("v");
-
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(2, tv.ActivePosition.Line);
-        }
-
-        [TestMethod]
         public void ThreeLinesPasted_LinesShouldBe3() {
             tv.EnterText("asdf");
             tv.EnterText("\r");
-            tv.EnterText("\rzxcv");
+            tv.EnterText("\r");
+            tv.EnterText("zxcv");
 
             Assert.AreEqual(3, tv.LinesCount);
-        }
-
-        [TestMethod]
-        public void ThreeLinesPasted_CursorShouldBeAt42() {
-            tv.EnterText("asdf");
-            tv.EnterText("\r");
-            tv.EnterText("\rzxcv");
-
-            Assert.AreEqual(4, tv.ActivePosition.Column);
-            Assert.AreEqual(2, tv.ActivePosition.Line);
         }
     }
 }

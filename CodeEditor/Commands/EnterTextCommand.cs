@@ -1,24 +1,28 @@
 ﻿using System.Windows.Input;
 using CodeEditor.Messaging;
+using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 
 namespace CodeEditor.Commands {
     internal class EnterTextCommand : BaseTextViewCommand {
-
+        
         #region fields
 
         private SelectionView selectionView;
 
         private TextView textView;
 
+        private CaretView caretView;
+
         #endregion
 
         #region constructor
 
-        public EnterTextCommand(TextView textView, SelectionView selectionView) : base(textView) {
+        public EnterTextCommand(TextView textView, SelectionView selectionView, CaretView caretView) : base(textView, caretView) {
             this.textView = textView;
             this.selectionView = selectionView;
+            this.caretView = caretView;
         }
 
         #endregion
@@ -49,10 +53,10 @@ namespace CodeEditor.Commands {
 
             UpdateCommandState(AfterCommandExecutedState);
 
-            textView.TriggerTextChanged(e.Text);
+            caretView.HandleTextChange(e.Text);
             Postbox.Instance.Send(new TextAddedMessage {
                 Text = e.Text,
-                Position = textViewReader.ActivePosition
+                Position = caretViewReader.CaretPosition
             });
         }
 

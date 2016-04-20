@@ -14,7 +14,7 @@ namespace CodeEditor.Commands {
 
         private CaretView caretView;
 
-        private ITextViewRead textViewReader;
+        private ITextViewReader textViewReader;
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(CaretView caretView, ITextViewRead textViewReader) {
+        public CaretMoveCommand(CaretView caretView, ITextViewReader textViewReader) {
             this.caretView = caretView;
             this.textViewReader = textViewReader;
         }
@@ -72,7 +72,7 @@ namespace CodeEditor.Commands {
                 line = textViewReader.LinesCount - 1;
             }
 
-            CaretMoveDirection moveDir = GetMoveDirection(newPos, textViewReader.ActivePosition);
+            CaretMoveDirection moveDir = GetMoveDirection(newPos, caretView.CaretPosition);
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
             newPos = textViewReader.AdjustStep(newPos, moveDir);
 

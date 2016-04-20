@@ -4,18 +4,15 @@ using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Views.Text;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
     public class RemovingTextUnitTests {
         private static TextRemover algorithm;
-        private static TextView view;
 
         [ClassInitialize]
         public static void Initialize(TestContext context) {
             algorithm = new TextRemover();
-            view = new TextView();
         }
 
         [TestMethod]

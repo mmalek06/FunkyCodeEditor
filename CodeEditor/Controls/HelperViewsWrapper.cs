@@ -77,7 +77,7 @@ namespace CodeEditor.Controls {
         private void OnFoldClicked(object message) {
             var m = (FoldClickedMessage)message;
 
-            linesView.HandleFoldRemove(m);
+            linesView.HandleFolding(m);
         }
 
         #endregion

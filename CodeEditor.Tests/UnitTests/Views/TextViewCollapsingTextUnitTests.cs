@@ -2,6 +2,7 @@
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
+using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,9 +11,12 @@ namespace CodeEditor.Tests.UnitTests.Views {
     public class TextViewCollapsingTextUnitTests {
         private TextView tv;
 
+        private CaretView cv;
+
         [TestInitialize]
         public void InitializeTest() {
-            tv = new TextView();
+            cv = new CaretView();
+            tv = new TextView(cv);
         }
 
         [TestMethod]
@@ -26,37 +30,6 @@ namespace CodeEditor.Tests.UnitTests.Views {
             var renderedLines = tv.GetScreenLines();
 
             Assert.AreEqual(renderedLines[0], text1);
-        }
-
-        [TestMethod]
-        public void EnteredFiveLines_AfterCollapseShouldBeText1CollapseText3() {
-            string text1 = "asdf";
-            string open = "{";
-            string close = "}";
-            string text3 = "zxcv";
-            string collapseRepresentation = "{...}";
-
-            tv.EnterText(text1);
-            tv.EnterText("\r");
-            tv.EnterText(open);
-            tv.EnterText("\r");
-            tv.EnterText("\r");
-            tv.EnterText(close);
-            tv.EnterText("\r");
-            tv.EnterText(text3);
-            tv.HandleTextFolding(GetFoldClickedMessage(0, 1, 0, 3, FoldingStates.FOLDED));
-
-            var renderedLines = tv.GetScreenLines();
-            var actualLines = tv.GetActualLines();
-
-            Assert.AreEqual(text1, renderedLines[0]);
-            Assert.AreEqual(collapseRepresentation, renderedLines[1]);
-            Assert.AreEqual(text3, renderedLines[2]);
-            Assert.AreEqual(text1, actualLines[0]);
-            Assert.AreEqual(open, actualLines[1]);
-            Assert.AreEqual("", actualLines[2]);
-            Assert.AreEqual(close, actualLines[3]);
-            Assert.AreEqual(text3, actualLines[4]);
         }
 
         [TestMethod]

@@ -4,6 +4,7 @@ using CodeEditor.Algorithms.Selection;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
+using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 
 namespace CodeEditor.Views.Selection {
@@ -29,9 +30,9 @@ namespace CodeEditor.Views.Selection {
 
         #region constructor
 
-        public SelectionView(ITextViewRead textViewReader) : base() {
+        public SelectionView(ITextViewReader textViewReader, ICaretViewReader caretViewReader) : base() {
             isSelecting = false;
-            selectionAlgorithm = new TextSelector(textViewReader, this);
+            selectionAlgorithm = new TextSelector(caretViewReader, textViewReader, this);
         }
 
         #endregion

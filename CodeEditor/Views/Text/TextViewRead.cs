@@ -8,13 +8,11 @@ using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
-    internal partial class TextView : ITextViewRead {
+    internal partial class TextView : ITextViewReader {
         
         #region properties
 
         public int LinesCount => visuals.Count;
-
-        public TextPosition ActivePosition { get; private set; } = new TextPosition(column: 0, line: 0);
 
         #endregion
 

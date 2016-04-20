@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
+using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
 
@@ -16,13 +18,16 @@ namespace CodeEditor.Commands {
 
         private SelectionView selectionView;
 
+        private CaretView caretView;
+
         #endregion
 
         #region constructor
 
-        public RemoveTextCommand(TextView textView, SelectionView selectionView) : base(textView) {
+        public RemoveTextCommand(TextView textView, SelectionView selectionView, CaretView caretView) : base(textView, caretView) {
             this.textView = textView;
             this.selectionView = selectionView;
+            this.caretView = caretView;
         }
 
         #endregion
@@ -41,10 +46,10 @@ namespace CodeEditor.Commands {
 
             var area = selectionView.GetCurrentSelectionArea();
 
-            if (e.Key == Key.Delete && textViewReader.ActivePosition.Line == textViewReader.LinesCount && textViewReader.ActivePosition.Column == textViewReader.GetLineLength(textViewReader.ActivePosition.Line) && area == null) { 
+            if (e.Key == Key.Delete && caretViewReader.CaretPosition.Line == textViewReader.LinesCount && caretViewReader.CaretPosition.Column == textViewReader.GetLineLength(caretViewReader.CaretPosition.Line) && area == null) { 
                 return false;
             }
-            if (e.Key == Key.Back && textViewReader.ActivePosition.Line == 0 && textViewReader.ActivePosition.Column == 0) {
+            if (e.Key == Key.Back && caretViewReader.CaretPosition.Line == 0 && caretViewReader.CaretPosition.Column == 0) {
                 return false;
             }
 
@@ -59,16 +64,18 @@ namespace CodeEditor.Commands {
             var e = parameter as KeyEventArgs;
             var key = e.Key;
             var selectionArea = selectionView.GetCurrentSelectionArea();
-            var prevPosition = textViewReader.ActivePosition;
+            var prevPosition = caretViewReader.CaretPosition;
             int linesCountBeforeRemove = textViewReader.LinesCount;
             int removedLinesCount = 0;
             string removedText = string.Empty;
+            TextPosition positionAfterRemove;
 
             UpdateCommandState(BeforeCommandExecutedState);
 
             if (selectionArea == null) {
                 removedText = GetRemovedText(key);
-                
+                positionAfterRemove = GetPositionAfterKeypress(key, removedText);
+
                 if (removedText == string.Empty) {
                     removedLinesCount = 1;
                 }
@@ -77,6 +84,7 @@ namespace CodeEditor.Commands {
             } else {
                 removedText = string.Join("", textViewReader.GetTextPartsBetweenPositions(selectionArea.StartPosition, selectionArea.EndPosition));
                 removedLinesCount = selectionArea.EndPosition.Line - selectionArea.StartPosition.Line;
+                positionAfterRemove = selectionArea.StartPosition;
 
                 textView.RemoveText(selectionArea);
             }
@@ -88,13 +96,12 @@ namespace CodeEditor.Commands {
 
             Postbox.Instance.Send(new TextRemovedMessage {
                 Key = e.Key,
-                Position = textViewReader.ActivePosition,
+                Position = caretViewReader.CaretPosition,
                 RemovedText = removedText
             });
+            caretView.HandleTextRemove(positionAfterRemove);
 
             UpdateCommandState(AfterCommandExecutedState);
-
-            textView.TriggerTextChanged();
 
             e.Handled = true;
         }
@@ -103,18 +110,30 @@ namespace CodeEditor.Commands {
 
         #region methods
 
+        private TextPosition GetPositionAfterKeypress(Key key, string removedText) {
+            if (key == Key.Back) {
+                if (removedText == string.Empty) {
+                    return new TextPosition(column: textViewReader.GetLineLength(caretViewReader.CaretPosition.Line - 1), line: caretViewReader.CaretPosition.Line - 1);
+                }
+
+                return new TextPosition(column: caretViewReader.CaretPosition.Column - 1, line: caretViewReader.CaretPosition.Line);
+            }
+
+            return caretViewReader.CaretPosition;
+        }
+
         private string GetRemovedText(Key key) {
-            if (textViewReader.GetLineLength(textViewReader.ActivePosition.Line) == 0 || (key == Key.Delete && textViewReader.ActivePosition.Column >= textViewReader.GetLine(textViewReader.ActivePosition.Line).Length)) {
+            if (textViewReader.GetLineLength(caretViewReader.CaretPosition.Line) == 0 || (key == Key.Delete && caretViewReader.CaretPosition.Column >= textViewReader.GetLine(caretViewReader.CaretPosition.Line).Length)) {
                 return string.Empty;
             }
             if (key == Key.Delete) {
-                return textViewReader.GetCharAt(textViewReader.ActivePosition).ToString();
+                return textViewReader.GetCharAt(caretViewReader.CaretPosition).ToString();
             } else {
-                if (textViewReader.ActivePosition.Column == 0 && textViewReader.ActivePosition.Line > 0) {
+                if (caretViewReader.CaretPosition.Column == 0 && caretViewReader.CaretPosition.Line > 0) {
                     return string.Empty;
                 } else {
                     return textViewReader.GetCharAt(
-                        new TextPosition(column: textViewReader.ActivePosition.Column > 0 ? textViewReader.ActivePosition.Column - 1 : 0, line: textViewReader.ActivePosition.Line)).ToString();
+                        new TextPosition(column: caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0, line: caretViewReader.CaretPosition.Line)).ToString();
                 }
             }
         }

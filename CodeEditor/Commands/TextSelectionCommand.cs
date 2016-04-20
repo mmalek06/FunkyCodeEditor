@@ -12,7 +12,7 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private ITextViewRead textViewReader;
+        private ITextViewReader textViewReader;
 
         private CaretView caretView;
 
@@ -28,11 +28,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public TextSelectionCommand(
-            ITextViewRead textViewReader, 
-            SelectionView selectionView, 
-            CaretView caretView) 
-        {
+        public TextSelectionCommand(ITextViewReader textViewReader, SelectionView selectionView, CaretView caretView) {
             this.textViewReader = textViewReader;
             this.selectionView = selectionView;
             this.caretView = caretView;
@@ -116,7 +112,7 @@ namespace CodeEditor.Commands {
             var endingPosition = selectionView.SelectionAlgorithm.GetSelectionPosition(keyboardEvent);
 
             if (!selectionView.HasSelection()) {
-                selectionView.Select(new TextPosition(column: textViewReader.ActivePosition.Column, line: textViewReader.ActivePosition.Line));
+                selectionView.Select(new TextPosition(column: caretView.CaretPosition.Column, line: caretView.CaretPosition.Line));
             }
 
             selectionView.Select(endingPosition);

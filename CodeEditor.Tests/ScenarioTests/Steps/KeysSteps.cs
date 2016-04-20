@@ -1,20 +1,25 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Windows.Input;
 using TechTalk.SpecFlow;
 
 namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
-    public class RemoveCommandSteps {
+    public class KeysSteps {
 
         #region fields
 
         private EditorContext ctx;
 
+        private List<string> pressedModifierKeys;
+
         #endregion
 
         #region constructor
 
-        public RemoveCommandSteps(EditorContext context) {
+        public KeysSteps(EditorContext context) {
             ctx = context;
+            pressedModifierKeys = new List<string>();
         }
 
         #endregion

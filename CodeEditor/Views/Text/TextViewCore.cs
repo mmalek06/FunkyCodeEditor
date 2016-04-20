@@ -14,18 +14,13 @@ using CodeEditor.Visuals;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.Parsing;
 using CodeEditor.Core.Extensions;
+using CodeEditor.Views.Caret;
 
 namespace CodeEditor.Views.Text {
     /// <summary>
     /// provides core functionality for entering text
     /// </summary>
     internal partial class TextView : InputViewBase {
-
-        #region events
-
-        public event TextChangedEventHandler TextChanged;
-
-        #endregion
 
         #region fields
 
@@ -37,15 +32,18 @@ namespace CodeEditor.Views.Text {
 
         private TextParser parsingAlgorithm;
 
+        private ICaretViewReader caretViewReader;
+
         #endregion
 
         #region constructor
 
-        public TextView() : base() {
+        public TextView(ICaretViewReader caretViewReader) : base() {
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
             collapsingAlgorithm = new TextCollapser();
             parsingAlgorithm = new TextParser();
+            this.caretViewReader = caretViewReader;
 
             visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
         }
@@ -53,8 +51,6 @@ namespace CodeEditor.Views.Text {
         #endregion
 
         #region event handlers
-
-        public void HandleCaretMove(object sender, CaretMovedEventArgs e) => UpdateActivePosition(e.NewPosition);
 
         public void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
 
@@ -84,7 +80,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.GetChangeInLines(GetActualLines(), ActivePosition, key);
+            var removalInfo = removingAlgorithm.GetChangeInLines(GetActualLines(), caretViewReader.CaretPosition, key);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -106,16 +102,15 @@ namespace CodeEditor.Views.Text {
 
         public void CollapseText(FoldClickedMessage message) {
             var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, GetScreenLines(), message.Area.StartPosition.Line);
-            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), collapsedLine, message.Area.EndPosition.Line);
+            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), collapsedLine, message.Area);
+            int linesToRedrawCount = linesToRedraw.Count();
 
-            visuals.RemoveRange(message.Area.StartPosition.Line, (message.Area.EndPosition.Line + 1) - message.Area.StartPosition.Line);
-            RedrawCollapsedLine(collapsedLine, message.Area.StartPosition.Line);
-            AddLines(linesToRedraw);
-
-            if (message.Area.Contains(ActivePosition)) {
-                UpdateActivePosition(message.Area.StartPosition);
+            if (linesToRedrawCount > 0) {
+                visuals.RemoveRange(message.Area.StartPosition.Line, visuals.Count - (message.Area.StartPosition.Line + 1));
             }
 
+            RedrawCollapsedLine(collapsedLine, message.Area.StartPosition.Line);
+            AddLines(linesToRedraw);
             UpdateSize();
         }
 
@@ -123,8 +118,7 @@ namespace CodeEditor.Views.Text {
             int collapseIndex = message.Area.StartPosition.Line;
             var collapsedLineContent = ((VisualTextLine)visuals[collapseIndex]).GetStringContents();
             var expandedLines = collapsedLineContent.Select((line, index) => VisualTextLine.Create(line, collapseIndex + index));
-            var linesToRedraw = 
-                collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), (VisualTextLine)visuals[message.Area.StartPosition.Line], message.Area.StartPosition.Line);
+            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterExpand(visuals.ToEnumerableOf<VisualTextLine>().Where(line => line.Index > message.Area.StartPosition.Line), expandedLines.Count() - 1);
 
             visuals.RemoveRange(collapseIndex, LinesCount - collapseIndex);
             
@@ -137,37 +131,22 @@ namespace CodeEditor.Views.Text {
             UpdateSize();
         }
 
-        public void TriggerTextChanged() => 
-            TextChanged?.Invoke(this, new TextChangedEventArgs { CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
-
-        public void TriggerTextChanged(string text) =>
-            TextChanged?.Invoke(this, new TextChangedEventArgs { Text = text, CurrentColumn = ActivePosition.Column, CurrentLine = ActivePosition.Line });
-
         #endregion
 
         #region methods
 
         private void InputText(string enteredText) {
-            var newLines = updatingAlgorithm.GetChangeInLines(GetActualLines(), ActivePosition, enteredText);
+            var newLines = updatingAlgorithm.GetChangeInLines(GetActualLines(), caretViewReader.CaretPosition, enteredText);
 
-            UpdateActivePosition(enteredText);
             DrawLines(newLines.Select(entry => VisualTextLine.Create(entry.Value, entry.Key)));
         }
 
         private void DeleteText(ChangeInLinesInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);
-            UpdateActivePosition(removalInfo.LinesToChange.First().Key);
             DrawLines(removalInfo.LinesToChange.Select(pair => VisualTextLine.Create(pair.Value, pair.Key.Line)));
         }
 
-        private void DeleteLines(IReadOnlyCollection<int> linesToRemove) {
-            RemoveLines(linesToRemove);
-
-            int minLine = linesToRemove.Min() - 1;
-            int textLen = GetActualLines()[minLine].Length;
-
-            UpdateActivePosition(new TextPosition(column: textLen > 0 ? textLen - 1 : 0, line: minLine));
-        }
+        private void DeleteLines(IReadOnlyCollection<int> linesToRemove) => RemoveLines(linesToRemove);
 
         private void UpdateSize() {
             int maxLineLen = 0;
@@ -183,31 +162,7 @@ namespace CodeEditor.Views.Text {
             Width = maxLineLen * TextConfiguration.GetCharSize().Width;
             Height = Convert.ToInt32(visuals.Count * TextConfiguration.GetCharSize().Height);
         }
-
-        private void UpdateActivePosition(TextPosition position) => ActivePosition = new TextPosition(column: position.Column, line: position.Line);
-
-        private void UpdateActivePosition(string text) {
-            var replacedText = updatingAlgorithm.SpecialCharsRegex.Replace(text, string.Empty);
-            int column = -1;
-            int line = -1;
-
-            if (text == TextProperties.Properties.NEWLINE) {
-                column = 0;
-                line = ActivePosition.Line + 1;
-            } else if (text == TextProperties.Properties.TAB) {
-                column = ActivePosition.Column + TextProperties.Properties.TabSize;
-            } else if (replacedText.Length == 1) {
-                column = ActivePosition.Column + 1;
-            } else {
-                var parts = text.Split(TextProperties.Properties.NEWLINE[0]);
-
-                column = parts.Last().Length;
-                line = ActivePosition.Line + parts.Length - 1;
-            }
-
-            ActivePosition = new TextPosition(column: column > -1 ? column : ActivePosition.Column, line: line > -1 ? line : ActivePosition.Line);
-        }
-
+        
         #endregion
 
     }

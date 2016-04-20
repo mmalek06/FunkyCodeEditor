@@ -37,8 +37,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [Then(@"Cursor should be at '(.*)' '(.*)'")]
         public void ThenCursorShouldBeAt(int column, int line) {
-            Assert.AreEqual(column, ctx.TextView.ActivePosition.Column);
-            Assert.AreEqual(line, ctx.TextView.ActivePosition.Line);
+            Assert.AreEqual(column, ctx.CaretView.CaretPosition.Column);
+            Assert.AreEqual(line, ctx.CaretView.CaretPosition.Line);
         }
 
         #endregion

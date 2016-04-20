@@ -59,13 +59,13 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            var removeTextCmd = new RemoveTextCommand(textView, selectionView);
+            var removeTextCmd = new RemoveTextCommand(textView, selectionView, caretView);
             var caretMoveCmd = new CaretMoveCommand(caretView, textView);
             var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (removeTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView), e);
+                ExecuteTextCommand(removeTextCmd, new UndoRemoveTextCommand(textView, caretView), e);
                 deselectionCmd.Execute();
             } else if (caretMoveCmd.CanExecute(e)) {
                 caretMoveCmd.Execute(e);
@@ -76,11 +76,11 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
-            var enterTextCmd = new EnterTextCommand(textView, selectionView);
+            var enterTextCmd = new EnterTextCommand(textView, selectionView, caretView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (enterTextCmd.CanExecute(e)) {
-                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView), e);
+                ExecuteTextCommand(enterTextCmd, new UndoEnterTextCommand(textView, caretView), e);
                 deselectionCmd.Execute();
             }
         }
@@ -128,10 +128,10 @@ namespace CodeEditor.Controls {
         protected override Visual GetVisualChild(int index) => views[index];
 
         private void SetupViews() {
-            textView = new TextView();
-            selectionView = new SelectionView(textView);
             caretView = new CaretView();
-
+            textView = new TextView(caretView);
+            selectionView = new SelectionView(textView, caretView);
+            
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 view.Margin = new Thickness(2, 0, 0, 0);
                 view.HorizontalAlignment = HorizontalAlignment.Left;
@@ -144,10 +144,6 @@ namespace CodeEditor.Controls {
 
         private void InitEvents() {
             GotFocus += textView.HandleGotFocus;
-
-            // custom editor events
-            textView.TextChanged += caretView.HandleTextChange;
-            caretView.CaretMoved += textView.HandleCaretMove;
         }
 
         private void ExecuteTextCommand(BaseTextViewCommand doCommand, BaseTextViewCommand undoCommand, EventArgs e) {

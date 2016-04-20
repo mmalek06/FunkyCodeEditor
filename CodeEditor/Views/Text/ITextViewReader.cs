@@ -4,13 +4,11 @@ using CodeEditor.Enums;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
-    internal interface ITextViewRead {
+    internal interface ITextViewReader {
 
         #region properties
 
         int LinesCount { get; }
-
-        TextPosition ActivePosition { get; }
 
         #endregion
 

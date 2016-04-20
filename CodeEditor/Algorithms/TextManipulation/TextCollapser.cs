@@ -9,8 +9,14 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region public methods
 
-        public IEnumerable<VisualTextLine> GetLinesToRedrawAfterCollapse(IReadOnlyList<VisualTextLine> visuals, VisualTextLine collapsedLine, int collapseEndLine) {
+        public IEnumerable<VisualTextLine> GetLinesToRedrawAfterCollapse(IReadOnlyList<VisualTextLine> visuals, VisualTextLine collapsedLine, TextRange range) {
             var linesToRedraw = new List<VisualTextLine>();
+
+            if (range.StartPosition.Line == range.EndPosition.Line) {
+                return linesToRedraw;
+            }
+
+            int collapseEndLine = range.EndPosition.Line;
 
             for (int i = collapseEndLine + 1, newIndex = collapsedLine.Index + 1; i < visuals.Count; i++, newIndex++) {
                 var line = visuals[i].CloneWithIndexChange(newIndex);
@@ -21,7 +27,19 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return linesToRedraw;
         }
 
-        public VisualTextLine CollapseTextRange(TextRange area, IReadOnlyList<string> lines, int index) {
+        public IEnumerable<VisualTextLine> GetLinesToRedrawAfterExpand(IEnumerable<VisualTextLine> lines, int nextLineIndex) {
+            var linesToRedraw = new List<VisualTextLine>();
+
+            foreach (var line in lines) {
+                var clonedLine = line.CloneWithIndexChange(line.Index + nextLineIndex);
+
+                linesToRedraw.Add(clonedLine);
+            }
+
+            return linesToRedraw;
+        }
+
+        public VisualTextLine CollapseTextRange(TextRange area, IReadOnlyList<string> lines, int collapsedLineIndex) {
             string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
             string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
             var linesToStartFrom = lines.Skip(area.StartPosition.Line);
@@ -41,7 +59,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 middlePart.Add(currentLine);
             }
 
-            return VisualTextLine.Create(middlePart, precedingText, followingText, index, GetCollapseRepresentation());
+            return VisualTextLine.Create(middlePart, precedingText, followingText, collapsedLineIndex, GetCollapseRepresentation());
         }
 
         public IEnumerable<VisualTextLine> ExpandTextRange(TextRange area, IEnumerable<string> lines) =>
