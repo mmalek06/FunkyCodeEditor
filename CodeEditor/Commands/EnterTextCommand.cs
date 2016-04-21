@@ -42,6 +42,7 @@ namespace CodeEditor.Commands {
         public override void Execute(object parameter) {
             var e = parameter as TextCompositionEventArgs;
             var selectionArea = selectionViewReader.GetCurrentSelectionArea();
+            var prevCaretPosition = caretViewReader.CaretPosition;
 
             UpdateCommandState(BeforeCommandExecutedState);
 
@@ -56,7 +57,8 @@ namespace CodeEditor.Commands {
             caretView.HandleTextChange(e.Text);
             Postbox.Instance.Send(new TextAddedMessage {
                 Text = e.Text,
-                Position = caretViewReader.CaretPosition
+                PrevCaretPosition = prevCaretPosition,
+                NewCaretPosition = caretViewReader.CaretPosition
             });
         }
 

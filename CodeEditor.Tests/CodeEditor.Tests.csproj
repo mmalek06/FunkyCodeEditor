@@ -91,6 +91,7 @@
     <Compile Include="ScenarioTests\Steps\CaretMoveCommandSteps.cs" />
     <Compile Include="ScenarioTests\Steps\EnterTextCommandSteps.cs" />
     <Compile Include="ScenarioTests\Steps\BracketsFoldingSteps.cs" />
+    <Compile Include="ScenarioTests\Steps\FoldingViewSteps.cs" />
     <Compile Include="ScenarioTests\Steps\LinesViewSteps.cs" />
     <Compile Include="ScenarioTests\Steps\KeysSteps.cs" />
     <Compile Include="ScenarioTests\Steps\SelectionViewSteps.cs" />

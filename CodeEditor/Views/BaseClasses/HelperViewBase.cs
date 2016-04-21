@@ -23,7 +23,7 @@ namespace CodeEditor.Views.BaseClasses {
 
         #region event handlers
 
-        public virtual void HandleTextInput(string text, TextPosition activePosition) { }
+        public virtual void HandleTextInput(TextAddedMessage message) { }
 
         public virtual void HandleTextRemove(TextRemovedMessage message) { }
 

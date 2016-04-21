@@ -34,19 +34,18 @@ namespace CodeEditor.Views.Folding {
 
         #region event handlers
 
-        public override void HandleTextInput(string text, TextPosition activePosition) {
-            if (!foldingAlgorithm.CanRun(text)) {
-                return;
+        public override void HandleTextInput(TextAddedMessage message) {
+            if (message.Text == TextProperties.Properties.NEWLINE) {
+                MoveFoldsDown(message.PrevCaretPosition);
+            } else if (message.Text == TextProperties.Properties.BACKSPACE) {
+                MoveFoldsUp(message.PrevCaretPosition, message.NewCaretPosition);
+            } else {
+                if (!foldingAlgorithm.CanRun(message.Text)) {
+                    return;
+                }
+
+                RunFolding(message.Text, message.NewCaretPosition);
             }
-
-            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), GetPotentialFoldingPositions());
-
-            if (folds == null || !folds.Any()) {
-                return;
-            }
-
-            CreateFolds(folds);
-            RedrawFolds();
         }
 
         public override void HandleTextRemove(TextRemovedMessage message) {
@@ -92,6 +91,39 @@ namespace CodeEditor.Views.Folding {
         #region methods
 
         protected override double GetWidth() => EditorConfiguration.GetFoldingColumnWidth();
+
+        private void RunFolding(string text, TextPosition activePosition) {
+            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), GetPotentialFoldingPositions());
+
+            if (folds == null || !folds.Any()) {
+                return;
+            }
+
+            CreateFolds(folds);
+            RedrawFolds();
+        }
+
+        private void MoveFoldsDown(TextPosition prevCaretPosition) {
+            var foldsAfterCaret = foldingPositions.Where(pair => pair.Key.Position >= prevCaretPosition);
+            var foldsWithClosingTagAfterPosition = foldingPositions.Where(pair => pair.Value.Position != null && pair.Value.Position.Line >= prevCaretPosition.Line)
+                                                                   .Except(foldsAfterCaret);
+            foreach (var fold in foldsAfterCaret) {
+                fold.Key.Position = new TextPosition(column: fold.Key.Position.Column, line: fold.Key.Position.Line + 1);
+
+                if (fold.Value.Position != null) {
+                    fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line + 1);
+                }
+            }
+            foreach (var fold in foldsWithClosingTagAfterPosition) {
+                fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line + 1);
+            }
+
+            RedrawFolds();
+        }
+
+        private void MoveFoldsUp(TextPosition prevCaretPosition, TextPosition newCaretPosition) {
+            RedrawFolds();
+        }
 
         private IDictionary<TextPosition, TextPosition> GetPotentialFoldingPositions() =>
             foldingPositions.Where(pair => pair.Key.Deleted || pair.Value == null || pair.Value.Deleted || pair.Value.Position == null)
@@ -143,46 +175,6 @@ namespace CodeEditor.Views.Folding {
                 symbols.Add(symbol);
                 visuals.Add(symbol);
             }
-        }
-
-        #endregion
-
-        #region classes
-
-        private class FoldingPositionInfo {
-
-            #region properties
-
-            public TextPosition Position { get; set; }
-
-            public FoldingStates State { get; set; }
-
-            public bool Deleted { get; set; }
-
-            #endregion
-
-            #region public methods
-
-            public override bool Equals(object obj) {
-                var other = (FoldingPositionInfo)obj;
-
-                if (other == null || other.Position == null) {
-                    return false;
-                }
-
-                return Position.Equals(other.Position);
-            }
-
-            public override int GetHashCode() {
-                return Position.GetHashCode();
-            }
-
-            public override string ToString() {
-                return string.Format("{0}, Deleted: {1}, State: {2}", Position.ToString(), Deleted.ToString(), State.ToString());
-            }
-
-            #endregion
-
         }
 
         #endregion

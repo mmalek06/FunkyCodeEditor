@@ -44,8 +44,8 @@ namespace CodeEditor.Views.Lines {
             UpdateSize();
         }
 
-        public override void HandleTextInput(string text, TextPosition activePosition) {
-            if (text == TextProperties.Properties.NEWLINE) {
+        public override void HandleTextInput(TextAddedMessage message) {
+            if (message.Text == TextProperties.Properties.NEWLINE) {
                 linesCount++;
                 Push();
                 UpdateSize();

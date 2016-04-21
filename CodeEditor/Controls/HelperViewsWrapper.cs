@@ -70,7 +70,7 @@ namespace CodeEditor.Controls {
             var m = (TextAddedMessage)message;
 
             foreach (var view in views) {
-                view.HandleTextInput(m.Text, m.Position);
+                view.HandleTextInput(m);
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Input;
 using CodeEditor.Commands;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
@@ -19,7 +18,7 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         internal CaretView CaretView { get; set; }
 
-        internal ISelectionViewReadonly SelectionView { get; set; }
+        internal SelectionView SelectionView { get; set; }
 
         internal LinesView LinesView { get; set; }
 
@@ -41,11 +40,11 @@ namespace CodeEditor.Tests.ScenarioTests {
             TextsToEnter = new List<string>();
             CaretView = new CaretView();
             TextView = new TextView(CaretView);
-            SelectionView = new ISelectionViewReadonly(TextView, CaretView);
+            SelectionView = new SelectionView(TextView, CaretView);
             LinesView = new LinesView();
             FoldingView = new FoldingView();
-            EnterTextCommand = new EnterTextCommand(TextView, SelectionView, CaretView);
-            RemoveTextCommand = new RemoveTextCommand(TextView, SelectionView, CaretView);
+            EnterTextCommand = new EnterTextCommand(TextView, CaretView, SelectionView);
+            RemoveTextCommand = new RemoveTextCommand(TextView, CaretView, SelectionView);
             CaretMoveCommand = new CaretMoveCommand(CaretView, TextView);
             SelectionCommand = new TextSelectionCommand(TextView, SelectionView, CaretView);
 
@@ -73,8 +72,8 @@ namespace CodeEditor.Tests.ScenarioTests {
                             .For(typeof(TextAddedMessage)).Invoke(message => {
                                 var textAddedMessage = message as TextAddedMessage;
 
-                                LinesView.HandleTextInput(textAddedMessage.Text, textAddedMessage.Position);
-                                FoldingView.HandleTextInput(textAddedMessage.Text, textAddedMessage.Position);
+                                LinesView.HandleTextInput(textAddedMessage);
+                                FoldingView.HandleTextInput(textAddedMessage);
                             })
                             .For(typeof(FoldClickedMessage)).Invoke(message => LinesView.HandleFolding(message as FoldClickedMessage));
         }

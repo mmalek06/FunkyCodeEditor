@@ -83,6 +83,7 @@
     <Compile Include="TextProperties\CharInfo.cs" />
     <Compile Include="Views\Caret\CaretViewReadonly.cs" />
     <Compile Include="Views\Caret\ICaretViewReadonly.cs" />
+    <Compile Include="Views\Folding\FoldingPositionInfo.cs" />
     <Compile Include="Views\Selection\ISelectionViewReadonly.cs" />
     <Compile Include="Views\Selection\SelectionViewReadonly.cs" />
     <Compile Include="Views\Text\ITextViewReadonly.cs" />
@@ -117,8 +118,6 @@
     <Compile Include="Views\Caret\VisualElement.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
     <Compile Include="Algorithms\Folding\FoldingStates.cs" />
-    <Compile Include="Views\Folding\VisualElementCodeSnippet.cs" />
-    <Compile Include="Views\Folding\VisualElementLine.cs" />
     <Compile Include="Views\Folding\VisualElementSymbol.cs" />
     <Compile Include="Views\Selection\VisualElement.cs" />
     <Compile Include="Views\Selection\SelectionViewCore.cs" />
