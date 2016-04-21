@@ -52,7 +52,6 @@ namespace CodeEditor.Views.Folding {
             if (message.RemovedText == string.Empty) {
                 MoveFoldsUp(message.NewCaretPosition);
             } else {
-
                 var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
                 var removedKey = foldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
 
@@ -102,6 +101,7 @@ namespace CodeEditor.Views.Folding {
             }
 
             CreateFolds(folds);
+            BalanceFolds();
             RedrawFolds();
         }
 
@@ -161,8 +161,23 @@ namespace CodeEditor.Views.Folding {
             }
         }
 
+        private void BalanceFolds() {
+            var foldsInSameLine = foldingPositions.GroupBy(pair => pair.Key.Position.Line)
+                                                  .Where(group => group.Count() > 1)
+                                                  .SelectMany(group => group)
+                                                  .Select(pair => pair.Key);
+
+            foreach (var repeatingFold in foldsInSameLine) {
+                foldingPositions.Remove(repeatingFold);
+            }
+        }
+
         private void DeleteFolds(TextPosition removedKey, string removedText) {
-            var info = foldingPositions.Keys.First(k => k.Position == removedKey);
+            var info = foldingPositions.Keys.FirstOrDefault(k => k.Position == removedKey);
+
+            if (info == null) {
+                return;
+            }
 
             if (foldingAlgorithm.IsOpeningTag(removedText)) {
                 if (foldingPositions[info] == null || foldingPositions[info].Deleted || foldingPositions[info].Position == null) {
