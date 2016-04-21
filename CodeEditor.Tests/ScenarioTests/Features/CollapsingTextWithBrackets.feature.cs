@@ -189,13 +189,37 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter brackets below a line of text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CollapsingText")]
-        public virtual void Enter()
+        public virtual void EnterBracketsBelowALineOfText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter brackets below a line of text", ((string[])(null)));
 #line 58
 this.ScenarioSetup(scenarioInfo);
+#line 59
+ testRunner.Given("Text to enter is \'susie sits in a shoe shine shop\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 60
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+  testRunner.And("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 63
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
+  testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 66
+  testRunner.And("I request folding for position starting at \'0\' \'1\' and ending at \'0\' \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.Then("I should see \'2\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 68
+  testRunner.And("Shown number of lines in the lines panel should be \'2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+  testRunner.And("The \'0\' line should be equal to \'susie sits in a shoe shine shop\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+  testRunner.And("The \'1\' line should be equal to \'{...}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

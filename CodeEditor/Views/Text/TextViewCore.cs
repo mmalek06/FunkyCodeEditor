@@ -103,9 +103,8 @@ namespace CodeEditor.Views.Text {
         public void CollapseText(FoldClickedMessage message) {
             var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, GetScreenLines(), message.Area.StartPosition.Line);
             var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), collapsedLine, message.Area);
-            int linesToRedrawCount = linesToRedraw.Count();
 
-            if (linesToRedrawCount > 0) {
+            if (message.Area.StartPosition.Line != message.Area.EndPosition.Line) {
                 visuals.RemoveRange(message.Area.StartPosition.Line, visuals.Count - (message.Area.StartPosition.Line + 1));
             }
 

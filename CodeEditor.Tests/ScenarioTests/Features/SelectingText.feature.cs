@@ -127,8 +127,6 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I select text from \'1\' \'0\' to \'10\' \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
  testRunner.Then("Selected text should be \' saw Susie sitting in a shoe shine shop.Where she \'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 25
-  testRunner.And("Cursor should be at \'10\' \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -139,19 +137,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterTwoLinesWhereFirstOneIsShorterThanTheSecondOne()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines where first one is shorter than the second one", ((string[])(null)));
-#line 28
+#line 27
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 28
  testRunner.Given("Text to enter is \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 29
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 30
   testRunner.And("Text to enter is \'asdf xzcv qwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 31
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
+#line 32
   testRunner.And("I select text from \'4\' \'0\' to \'9\' \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 33
  testRunner.Then("Selected text should be \'asdf xzcv\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

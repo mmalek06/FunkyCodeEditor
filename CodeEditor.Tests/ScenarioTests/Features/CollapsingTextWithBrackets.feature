@@ -55,4 +55,16 @@ Scenario: Enter four lines with two collapsible sections - Green Path
 		And The '3' line should be equal to '{}'
 
 
-Scenario: Enter
+Scenario: Enter brackets below a line of text
+	Given Text to enter is 'susie sits in a shoe shine shop'
+		And Text to enter is newline
+		And Text to enter is '{'
+		And Text to enter is newline
+		And Text to enter is newline
+		And Text to enter is '}'
+	When I enter text
+		And I request folding for position starting at '0' '1' and ending at '0' '3'
+	Then I should see '2' lines
+		And Shown number of lines in the lines panel should be '2'
+		And The '0' line should be equal to 'susie sits in a shoe shine shop'
+		And The '1' line should be equal to '{...}'

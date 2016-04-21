@@ -22,7 +22,6 @@ Scenario: Enter two lines and select text
 	When I enter text
 		And I select text from '1' '0' to '10' '1'
 	Then Selected text should be ' saw Susie sitting in a shoe shine shop.Where she '
-		And Cursor should be at '10' '1'
 
 
 Scenario: Enter two lines where first one is shorter than the second one

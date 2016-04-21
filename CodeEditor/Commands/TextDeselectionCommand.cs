@@ -35,7 +35,7 @@ namespace CodeEditor.Commands {
             Execute();
         }
 
-        public bool CanExecute(object parameter) => true;
+        public bool CanExecute(object parameter) => selectionView.GetCurrentSelectionArea() != null;
 
         #endregion
 
