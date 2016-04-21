@@ -8,9 +8,9 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        protected ITextViewReader textViewReader;
+        protected ITextViewReadonly textViewReader;
 
-        protected ICaretViewReader caretViewReader;
+        protected ICaretViewReadonly caretViewReader;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public BaseTextViewCommand(ITextViewReader textViewReader, ICaretViewReader caretViewReader) {
+        public BaseTextViewCommand(ITextViewReadonly textViewReader, ICaretViewReadonly caretViewReader) {
             this.textViewReader = textViewReader;
             this.caretViewReader = caretViewReader;
             BeforeCommandExecutedState = new ViewState();

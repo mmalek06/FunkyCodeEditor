@@ -8,7 +8,7 @@ using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 
 namespace CodeEditor.Views.Selection {
-    internal class SelectionView : InputViewBase {
+    internal partial class SelectionView : InputViewBase {
 
         #region fields
 
@@ -30,7 +30,7 @@ namespace CodeEditor.Views.Selection {
 
         #region constructor
 
-        public SelectionView(ITextViewReader textViewReader, ICaretViewReader caretViewReader) : base() {
+        public SelectionView(ITextViewReadonly textViewReader, ICaretViewReadonly caretViewReader) : base() {
             isSelecting = false;
             selectionAlgorithm = new TextSelector(caretViewReader, textViewReader, this);
         }
@@ -55,19 +55,6 @@ namespace CodeEditor.Views.Selection {
 
             visuals.Clear();
         }
-
-        public TextRange GetCurrentSelectionArea() {
-            if (lastSelectionStart == null || lastSelectionEnd == null) {
-                return null;
-            }
-            
-            return new TextRange {
-                StartPosition = lastSelectionStart <= lastSelectionEnd ? lastSelectionStart : lastSelectionEnd,
-                EndPosition = lastSelectionStart <= lastSelectionEnd ? lastSelectionEnd : lastSelectionStart
-            };
-        }
-
-        public bool HasSelection() => lastSelectionStart != null && lastSelectionEnd != null && isSelecting;
 
         #endregion
 

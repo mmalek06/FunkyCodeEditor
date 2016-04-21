@@ -17,8 +17,6 @@ namespace CodeEditor.Views.Lines {
 
         #endregion
 
-        public VisualCollection VS => visuals;
-
         #region constructor
 
         public LinesView() : base() {
@@ -86,11 +84,11 @@ namespace CodeEditor.Views.Lines {
             Push();
         }
 
-        protected override double GetWidth() => EditorConfiguration.GetLinesColumnWidth();
-
         #endregion
 
         #region methods
+
+        protected override double GetWidth() => EditorConfiguration.GetLinesColumnWidth();
 
         private void UpdateSize() {
             double h = linesCount * TextConfiguration.GetCharSize().Height;

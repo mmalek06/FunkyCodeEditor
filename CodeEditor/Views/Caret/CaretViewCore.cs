@@ -73,28 +73,6 @@ namespace CodeEditor.Views.Caret {
             MoveCaret(newPos);
         }
 
-        public TextPosition GetNextPosition(Key key) {
-            TextPosition coordinates;
-            int column = 0;
-            int line = 0;
-
-            if (IsStep(key)) {
-                coordinates = GetStep(key);
-                column = CaretPosition.Column + coordinates.Column;
-                line = CaretPosition.Line + coordinates.Line;
-            } else {
-                coordinates = GetJump(key);
-                column = coordinates.Column;
-                line = coordinates.Line;
-
-                if (coordinates.Column == int.MinValue) {
-                    column = 0;
-                }
-            }
-
-            return new TextPosition(column: column, line: line);
-        }
-
         #endregion
 
         #region methods

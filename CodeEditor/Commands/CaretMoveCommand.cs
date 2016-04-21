@@ -14,7 +14,7 @@ namespace CodeEditor.Commands {
 
         private CaretView caretView;
 
-        private ITextViewReader textViewReader;
+        private ITextViewReadonly textViewReader;
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public CaretMoveCommand(CaretView caretView, ITextViewReader textViewReader) {
+        public CaretMoveCommand(CaretView caretView, ITextViewReadonly textViewReader) {
             this.caretView = caretView;
             this.textViewReader = textViewReader;
         }

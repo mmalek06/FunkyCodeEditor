@@ -6,22 +6,22 @@ using CodeEditor.Views.Text;
 
 namespace CodeEditor.Commands {
     internal class EnterTextCommand : BaseTextViewCommand {
-        
-        #region fields
 
-        private SelectionView selectionView;
+        #region fields
 
         private TextView textView;
 
         private CaretView caretView;
 
+        private ISelectionViewReadonly selectionViewReader;
+
         #endregion
 
         #region constructor
 
-        public EnterTextCommand(TextView textView, SelectionView selectionView, CaretView caretView) : base(textView, caretView) {
+        public EnterTextCommand(TextView textView, CaretView caretView, ISelectionViewReadonly selectionViewReader) : base(textView, caretView) {
             this.textView = textView;
-            this.selectionView = selectionView;
+            this.selectionViewReader = selectionViewReader;
             this.caretView = caretView;
         }
 
@@ -41,7 +41,7 @@ namespace CodeEditor.Commands {
 
         public override void Execute(object parameter) {
             var e = parameter as TextCompositionEventArgs;
-            var selectionArea = selectionView.GetCurrentSelectionArea();
+            var selectionArea = selectionViewReader.GetCurrentSelectionArea();
 
             UpdateCommandState(BeforeCommandExecutedState);
 

@@ -16,17 +16,17 @@ namespace CodeEditor.Commands {
 
         private TextView textView;
 
-        private SelectionView selectionView;
-
         private CaretView caretView;
+
+        private ISelectionViewReadonly selectionViewReader;
 
         #endregion
 
         #region constructor
 
-        public RemoveTextCommand(TextView textView, SelectionView selectionView, CaretView caretView) : base(textView, caretView) {
+        public RemoveTextCommand(TextView textView, CaretView caretView, ISelectionViewReadonly selectionViewReader) : base(textView, caretView) {
             this.textView = textView;
-            this.selectionView = selectionView;
+            this.selectionViewReader = selectionViewReader;
             this.caretView = caretView;
         }
 
@@ -44,7 +44,7 @@ namespace CodeEditor.Commands {
                 return false;
             }
 
-            var area = selectionView.GetCurrentSelectionArea();
+            var area = selectionViewReader.GetCurrentSelectionArea();
 
             if (e.Key == Key.Delete && caretViewReader.CaretPosition.Line == textViewReader.LinesCount && caretViewReader.CaretPosition.Column == textViewReader.GetLineLength(caretViewReader.CaretPosition.Line) && area == null) { 
                 return false;
@@ -63,7 +63,7 @@ namespace CodeEditor.Commands {
         public override void Execute(object parameter) {
             var e = parameter as KeyEventArgs;
             var key = e.Key;
-            var selectionArea = selectionView.GetCurrentSelectionArea();
+            var selectionArea = selectionViewReader.GetCurrentSelectionArea();
             var prevPosition = caretViewReader.CaretPosition;
             int linesCountBeforeRemove = textViewReader.LinesCount;
             int removedLinesCount = 0;

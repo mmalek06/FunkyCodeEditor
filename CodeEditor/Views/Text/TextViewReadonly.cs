@@ -8,7 +8,7 @@ using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
-    internal partial class TextView : ITextViewReader {
+    internal partial class TextView : ITextViewReadonly {
         
         #region properties
 

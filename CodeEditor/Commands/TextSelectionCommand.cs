@@ -12,7 +12,7 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private ITextViewReader textViewReader;
+        private ITextViewReadonly textViewReader;
 
         private CaretView caretView;
 
@@ -28,7 +28,7 @@ namespace CodeEditor.Commands {
 
         #region constructor
 
-        public TextSelectionCommand(ITextViewReader textViewReader, SelectionView selectionView, CaretView caretView) {
+        public TextSelectionCommand(ITextViewReadonly textViewReader, SelectionView selectionView, CaretView caretView) {
             this.textViewReader = textViewReader;
             this.selectionView = selectionView;
             this.caretView = caretView;

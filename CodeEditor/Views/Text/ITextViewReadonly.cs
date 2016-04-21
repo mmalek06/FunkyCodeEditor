@@ -4,7 +4,7 @@ using CodeEditor.Enums;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {
-    internal interface ITextViewReader {
+    internal interface ITextViewReadonly {
 
         #region properties
 

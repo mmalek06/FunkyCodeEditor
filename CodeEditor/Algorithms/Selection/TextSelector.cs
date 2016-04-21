@@ -13,9 +13,9 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region fields
 
-        private ITextViewReader textViewReader;
+        private ITextViewReadonly textViewReader;
 
-        private Views.Caret.ICaretViewReader caretViewReader;
+        private ICaretViewReadonly caretViewReader;
 
         private SelectionView parent;
         
@@ -23,7 +23,7 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region constructor
 
-        public TextSelector(ICaretViewReader caretViewReader, ITextViewReader textViewReader, SelectionView parent) {
+        public TextSelector(ICaretViewReadonly caretViewReader, ITextViewReadonly textViewReader, SelectionView parent) {
             this.caretViewReader = caretViewReader;
             this.textViewReader = textViewReader;
             this.parent = parent;

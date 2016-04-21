@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Events;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Configuration;
 using CodeEditor.Views.BaseClasses;
@@ -32,13 +31,13 @@ namespace CodeEditor.Views.Text {
 
         private TextParser parsingAlgorithm;
 
-        private ICaretViewReader caretViewReader;
+        private ICaretViewReadonly caretViewReader;
 
         #endregion
 
         #region constructor
 
-        public TextView(ICaretViewReader caretViewReader) : base() {
+        public TextView(ICaretViewReadonly caretViewReader) : base() {
             updatingAlgorithm = new TextUpdater();
             removingAlgorithm = new TextRemover();
             collapsingAlgorithm = new TextCollapser();

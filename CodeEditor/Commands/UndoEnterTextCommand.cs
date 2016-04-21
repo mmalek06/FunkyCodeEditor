@@ -4,7 +4,7 @@ using CodeEditor.Views.Text;
 namespace CodeEditor.Commands {
     internal class UndoEnterTextCommand : BaseTextViewCommand {
 
-        public UndoEnterTextCommand(ITextViewReader textViewReader, ICaretViewReader caretViewReader) : base(textViewReader, caretViewReader) { }
+        public UndoEnterTextCommand(ITextViewReadonly textViewReader, ICaretViewReadonly caretViewReader) : base(textViewReader, caretViewReader) { }
 
         public override bool CanExecute(object parameter) => true;
 

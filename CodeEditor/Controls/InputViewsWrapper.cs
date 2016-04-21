@@ -59,7 +59,7 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            var removeTextCmd = new RemoveTextCommand(textView, selectionView, caretView);
+            var removeTextCmd = new RemoveTextCommand(textView, caretView, selectionView);
             var caretMoveCmd = new CaretMoveCommand(caretView, textView);
             var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
@@ -76,7 +76,7 @@ namespace CodeEditor.Controls {
         }
 
         protected override void OnTextInput(TextCompositionEventArgs e) {
-            var enterTextCmd = new EnterTextCommand(textView, selectionView, caretView);
+            var enterTextCmd = new EnterTextCommand(textView, caretView, selectionView);
             var deselectionCmd = new TextDeselectionCommand(selectionView);
 
             if (enterTextCmd.CanExecute(e)) {

@@ -19,7 +19,7 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         internal CaretView CaretView { get; set; }
 
-        internal SelectionView SelectionView { get; set; }
+        internal ISelectionViewReadonly SelectionView { get; set; }
 
         internal LinesView LinesView { get; set; }
 
@@ -41,7 +41,7 @@ namespace CodeEditor.Tests.ScenarioTests {
             TextsToEnter = new List<string>();
             CaretView = new CaretView();
             TextView = new TextView(CaretView);
-            SelectionView = new SelectionView(TextView, CaretView);
+            SelectionView = new ISelectionViewReadonly(TextView, CaretView);
             LinesView = new LinesView();
             FoldingView = new FoldingView();
             EnterTextCommand = new EnterTextCommand(TextView, SelectionView, CaretView);
