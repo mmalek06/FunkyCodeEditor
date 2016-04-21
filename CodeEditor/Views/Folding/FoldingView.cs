@@ -37,8 +37,6 @@ namespace CodeEditor.Views.Folding {
         public override void HandleTextInput(TextAddedMessage message) {
             if (message.Text == TextProperties.Properties.NEWLINE) {
                 MoveFoldsDown(message.PrevCaretPosition);
-            } else if (message.Text == TextProperties.Properties.BACKSPACE) {
-                MoveFoldsUp(message.PrevCaretPosition, message.NewCaretPosition);
             } else {
                 if (!foldingAlgorithm.CanRun(message.Text)) {
                     return;
@@ -46,21 +44,25 @@ namespace CodeEditor.Views.Folding {
 
                 RunFolding(message.Text, message.NewCaretPosition);
             }
+
+            RedrawFolds();
         }
 
         public override void HandleTextRemove(TextRemovedMessage message) {
             if (message.RemovedText == string.Empty) {
-                return;
+                MoveFoldsUp(message.NewCaretPosition);
+            } else {
+
+                var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
+                var removedKey = foldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
+
+                if (removedKey == null) {
+                    return;
+                }
+
+                DeleteFolds(removedKey, message.RemovedText);
             }
 
-            var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
-            var removedKey = foldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
-
-            if (removedKey == null) {
-                return;
-            }
-
-            DeleteFolds(removedKey, message.RemovedText);
             RedrawFolds();
         }
 
@@ -105,8 +107,8 @@ namespace CodeEditor.Views.Folding {
 
         private void MoveFoldsDown(TextPosition prevCaretPosition) {
             var foldsAfterCaret = foldingPositions.Where(pair => pair.Key.Position >= prevCaretPosition);
-            var foldsWithClosingTagAfterPosition = foldingPositions.Where(pair => pair.Value.Position != null && pair.Value.Position.Line >= prevCaretPosition.Line)
-                                                                   .Except(foldsAfterCaret);
+            var foldsWithClosingTagAfterPosition = foldingPositions.Except(foldsAfterCaret)
+                                                                   .Where(pair => pair.Value.Position != null && pair.Value.Position.Line >= prevCaretPosition.Line);
             foreach (var fold in foldsAfterCaret) {
                 fold.Key.Position = new TextPosition(column: fold.Key.Position.Column, line: fold.Key.Position.Line + 1);
 
@@ -117,12 +119,23 @@ namespace CodeEditor.Views.Folding {
             foreach (var fold in foldsWithClosingTagAfterPosition) {
                 fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line + 1);
             }
-
-            RedrawFolds();
         }
 
-        private void MoveFoldsUp(TextPosition prevCaretPosition, TextPosition newCaretPosition) {
-            RedrawFolds();
+        private void MoveFoldsUp(TextPosition newCaretPosition) {
+            var foldsAfterCaret = foldingPositions.Where(pair => pair.Key.Position > newCaretPosition);
+            var foldsWithClosingTagAfterPosition = foldingPositions.Except(foldsAfterCaret)
+                                                                   .Where(pair => pair.Value.Position != null && pair.Value.Position.Line > newCaretPosition.Line);
+
+            foreach (var fold in foldsAfterCaret) {
+                fold.Key.Position = new TextPosition(column: fold.Key.Position.Column, line: fold.Key.Position.Line - 1);
+
+                if (fold.Value.Position != null) {
+                    fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line - 1);
+                }
+            }
+            foreach (var fold in foldsWithClosingTagAfterPosition) {
+                fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line - 1);
+            }
         }
 
         private IDictionary<TextPosition, TextPosition> GetPotentialFoldingPositions() =>
