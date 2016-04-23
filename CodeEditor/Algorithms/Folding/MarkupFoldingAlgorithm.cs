@@ -19,6 +19,10 @@ namespace CodeEditor.Algorithms.Folding {
             throw new NotImplementedException();
         }
 
+        public IEnumerable<TextPosition> GetRepeatingFolds(IDictionary<TextPosition, TextPosition> folds) {
+            throw new NotImplementedException();
+        }
+
         public string GetClosingTag() {
             throw new NotImplementedException();
         }

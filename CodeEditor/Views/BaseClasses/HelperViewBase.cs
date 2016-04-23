@@ -1,7 +1,5 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
-using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 
 namespace CodeEditor.Views.BaseClasses {

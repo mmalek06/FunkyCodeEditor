@@ -27,12 +27,12 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
         public void EnterTwoOpeningBrackets_ShouldHaveTwoEmptyFolds() {
             Fold("{", 0, 0);
 
-            var folds = Fold("{", 1, 0);
+            var folds = Fold("{", 0, 1);
 
             Assert.AreEqual(2, folds.Count);
             Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
             Assert.IsNull(folds[0].Value);
-            Assert.AreEqual(new TextPosition(column: 1, line: 0), folds[1].Key);
+            Assert.AreEqual(new TextPosition(column: 0, line: 1), folds[1].Key);
             Assert.IsNull(folds[1].Value);
         }
 
@@ -95,12 +95,20 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             var folds = Fold("}", 3, 5);
 
             Assert.AreEqual(3, folds.Count);
-            Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
-            Assert.AreEqual(new TextPosition(column: 3, line: 5), folds[0].Value);
-            Assert.AreEqual(new TextPosition(column: 1, line: 0), folds[1].Key);
-            Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[1].Value);
-            Assert.AreEqual(new TextPosition(column: 2, line: 0), folds[2].Key);
-            Assert.AreEqual(new TextPosition(column: 8, line: 3), folds[2].Value);
+        }
+
+        [TestMethod]
+        public void OpeningBracketsInTheSameLine_RepeatingFoldsShouldBeThree() {
+            Fold("{", 0, 0);
+            Fold("{", 1, 0);
+            Fold("{", 2, 0);
+            Fold("}", 8, 3);
+            Fold("}", 0, 4);
+
+            var folds = Fold("}", 3, 5);
+            var repeating = fa.GetRepeatingFolds(folds.ToDictionary(pair => pair.Key, pair => pair.Value));
+
+            Assert.AreEqual(3, repeating.Count());
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -101,7 +102,7 @@ namespace CodeEditor.Views.Folding {
             }
 
             CreateFolds(folds);
-            BalanceFolds();
+            MakeFoldsUnique();
             RedrawFolds();
         }
 
@@ -138,6 +139,16 @@ namespace CodeEditor.Views.Folding {
             }
         }
 
+        private void MakeFoldsUnique() {
+            var repeatingFolds = foldingAlgorithm.GetRepeatingFolds(foldingPositions.ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position));
+
+            foreach (var repeatingKey in repeatingFolds) {
+                var position = foldingPositions.First(pair => pair.Key.Position == repeatingKey);
+
+                foldingPositions.Remove(position.Key);
+            }
+        }
+
         private IDictionary<TextPosition, TextPosition> GetPotentialFoldingPositions() =>
             foldingPositions.Where(pair => pair.Key.Deleted || pair.Value == null || pair.Value.Deleted || pair.Value.Position == null)
                             .ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
@@ -158,17 +169,6 @@ namespace CodeEditor.Views.Folding {
                 }
 
                 foldingPositions[existingKey] = new FoldingPositionInfo { Deleted = false, Position = kvp.Value };
-            }
-        }
-
-        private void BalanceFolds() {
-            var foldsInSameLine = foldingPositions.GroupBy(pair => pair.Key.Position.Line)
-                                                  .Where(group => group.Count() > 1)
-                                                  .SelectMany(group => group)
-                                                  .Select(pair => pair.Key);
-
-            foreach (var repeatingFold in foldsInSameLine) {
-                foldingPositions.Remove(repeatingFold);
             }
         }
 

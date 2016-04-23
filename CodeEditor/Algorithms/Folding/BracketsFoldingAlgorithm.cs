@@ -22,13 +22,18 @@ namespace CodeEditor.Algorithms.Folding {
         public string GetClosingTag() => "}";
 
         public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
+            IDictionary<TextPosition, TextPosition> folds = null;
+
             if (text == GetOpeningTag()) {
-                return CreateEmptyFold(position, foldingPositions);
+                folds = CreateEmptyFold(position, foldingPositions);
             } else if (text == GetClosingTag()) {
-                return RebuildFolds(position, foldingPositions);
+                folds = RebuildFolds(position, foldingPositions);
+            }
+            if (folds != null) {
+                GetRepeatingFolds(folds);
             }
 
-            return null;
+            return folds;
         }
 
         public TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
@@ -40,6 +45,12 @@ namespace CodeEditor.Algorithms.Folding {
 
             return null;
         }
+
+        public IEnumerable<TextPosition> GetRepeatingFolds(IDictionary<TextPosition, TextPosition> folds) =>
+            folds.GroupBy(pair => pair.Key.Line)
+                 .Where(group => group.Count() > 1)
+                 .SelectMany(group => group)
+                 .Select(pair => pair.Key);
 
         #endregion
 

@@ -18,6 +18,8 @@ namespace CodeEditor.Algorithms.Folding {
 
         IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 
+        IEnumerable<TextPosition> GetRepeatingFolds(IDictionary<TextPosition, TextPosition> folds);
+
         #endregion
 
     }
