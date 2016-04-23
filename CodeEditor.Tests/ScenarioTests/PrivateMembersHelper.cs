@@ -5,9 +5,17 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         #region public methods
 
+        public static object GetFieldValue(object obj, string fieldName) {
+            var bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            var fieldInfo = obj.GetType().GetField(fieldName, bindFlags);
+            var value = fieldInfo.GetValue(obj);
+
+            return value;
+        }
+
         public static object GetPropertyValue(object obj, string propName) {
             var bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-            var fieldInfo = obj.GetType().GetProperty("VisualChildrenCount", bindFlags);
+            var fieldInfo = obj.GetType().GetProperty(propName, bindFlags);
             var value = fieldInfo.GetValue(obj);
 
             return value;

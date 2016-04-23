@@ -39,7 +39,6 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
             Postbox.Instance.Send(message);
         }
 
-
         #endregion
 
         #region helpers

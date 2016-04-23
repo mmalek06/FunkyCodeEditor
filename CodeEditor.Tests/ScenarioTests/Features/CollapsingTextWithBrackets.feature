@@ -93,3 +93,11 @@ Scenario: Create folding in first line, move it to the second
 		And Shown number of lines in the lines panel should be '2'
 		And The '1' line should be equal to '{}'
 		And I should see folding on position starting at '0' '1' and ending at '1' '1'
+
+
+Scenario: Create two folds in one line
+	Given Text to enter is '{}'
+		And Text to enter is '{}'
+	When I enter text
+	Then I should see '1' lines
+		And I should see no folding
