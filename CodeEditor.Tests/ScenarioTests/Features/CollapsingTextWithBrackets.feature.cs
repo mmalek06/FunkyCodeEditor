@@ -91,36 +91,70 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter three opening and three closing brackets")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CollapsingText")]
+        public virtual void EnterThreeOpeningAndThreeClosingBrackets()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three opening and three closing brackets", ((string[])(null)));
+#line 15
+this.ScenarioSetup(scenarioInfo);
+#line 16
+ testRunner.Given("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+  testRunner.And("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
+  testRunner.And("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+  testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
+  testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+  testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
+ testRunner.Then("I should see \'3\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
+  testRunner.And("I should see no folding", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter two lines with brackets only - Green Path")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CollapsingText")]
         public virtual void EnterTwoLinesWithBracketsOnly_GreenPath()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines with brackets only - Green Path", ((string[])(null)));
-#line 15
+#line 29
 this.ScenarioSetup(scenarioInfo);
-#line 16
+#line 30
  testRunner.Given("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 17
+#line 31
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 32
   testRunner.And("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
+#line 33
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 34
   testRunner.And("I request folding for position starting at \'0\' \'0\' and ending at \'1\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 35
   testRunner.And("I request unfolding for position starting at \'0\' \'0\' and ending at \'1\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 36
   testRunner.And("I request folding for position starting at \'0\' \'0\' and ending at \'1\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 37
   testRunner.And("I request unfolding for position starting at \'0\' \'0\' and ending at \'1\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 38
  testRunner.Then("I should see \'2\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 25
+#line 39
   testRunner.And("Shown number of lines in the lines panel should be \'2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 40
   testRunner.And("The \'0\' line should be equal to \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 41
   testRunner.And("The \'1\' line should be equal to \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -132,37 +166,37 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterFiveLinesAndCollapseText_GreenPath()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter five lines and collapse text - Green Path", ((string[])(null)));
-#line 30
-this.ScenarioSetup(scenarioInfo);
-#line 31
- testRunner.Given("Text to enter is \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
-  testRunner.And("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
-  testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
-  testRunner.And("Text to enter is \'qwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
- testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 40
-  testRunner.And("I request folding for position starting at \'0\' \'1\' and ending at \'0\' \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.Then("I should see \'3\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 42
-  testRunner.And("Shown number of lines in the lines panel should be \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
-  testRunner.And("The \'0\' line should be equal to \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
-  testRunner.And("The \'1\' line should be equal to \'{...}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 45
+ testRunner.Given("Text to enter is \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 46
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+  testRunner.And("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+  testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+  testRunner.And("Text to enter is \'qwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 54
+  testRunner.And("I request folding for position starting at \'0\' \'1\' and ending at \'0\' \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+ testRunner.Then("I should see \'3\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 56
+  testRunner.And("Shown number of lines in the lines panel should be \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+  testRunner.And("The \'0\' line should be equal to \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+  testRunner.And("The \'1\' line should be equal to \'{...}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
   testRunner.And("The \'2\' line should be equal to \'qwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -174,37 +208,37 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterFourLinesWithTwoCollapsibleSections_GreenPath()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter four lines with two collapsible sections - Green Path", ((string[])(null)));
-#line 48
-this.ScenarioSetup(scenarioInfo);
-#line 49
- testRunner.Given("Text to enter is \'asdf {}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 50
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
-  testRunner.And("Text to enter is \'b\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
-  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
-  testRunner.And("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
- testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
-  testRunner.And("I request folding for position starting at \'5\' \'0\' and ending at \'6\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
-  testRunner.And("I request unfolding for position starting at \'5\' \'0\' and ending at \'6\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.Then("I should see \'4\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 59
-  testRunner.And("Shown number of lines in the lines panel should be \'4\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
-  testRunner.And("The \'0\' line should be equal to \'asdf {}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
-  testRunner.And("The \'1\' line should be equal to \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
-  testRunner.And("The \'2\' line should be equal to \'b\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 63
+ testRunner.Given("Text to enter is \'asdf {}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 64
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+  testRunner.And("Text to enter is \'b\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+  testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+  testRunner.And("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 70
+  testRunner.And("I request folding for position starting at \'5\' \'0\' and ending at \'6\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+  testRunner.And("I request unfolding for position starting at \'5\' \'0\' and ending at \'6\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+ testRunner.Then("I should see \'4\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 73
+  testRunner.And("Shown number of lines in the lines panel should be \'4\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
+  testRunner.And("The \'0\' line should be equal to \'asdf {}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+  testRunner.And("The \'1\' line should be equal to \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+  testRunner.And("The \'2\' line should be equal to \'b\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 77
   testRunner.And("The \'3\' line should be equal to \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -216,31 +250,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterBracketsBelowALineOfText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter brackets below a line of text", ((string[])(null)));
-#line 66
+#line 80
 this.ScenarioSetup(scenarioInfo);
-#line 67
+#line 81
  testRunner.Given("Text to enter is \'susie sits in a shoe shine shop\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 82
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 83
   testRunner.And("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 84
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 85
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 86
   testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 87
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 74
+#line 88
   testRunner.And("I request folding for position starting at \'0\' \'1\' and ending at \'0\' \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 89
  testRunner.Then("I should see \'2\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 76
+#line 90
   testRunner.And("Shown number of lines in the lines panel should be \'2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 91
   testRunner.And("The \'0\' line should be equal to \'susie sits in a shoe shine shop\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 92
   testRunner.And("The \'1\' line should be equal to \'{...}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -252,29 +286,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateFoldingMoveClosingBracketOneLineToTheBottom()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create folding, move closing bracket one line to the bottom", ((string[])(null)));
-#line 81
+#line 95
 this.ScenarioSetup(scenarioInfo);
-#line 82
+#line 96
  testRunner.Given("Text to enter is \'{\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 83
+#line 97
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 98
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 99
   testRunner.And("Text to enter is \'}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 100
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 87
+#line 101
   testRunner.And("I move caret to column number \'0\' in line \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 102
   testRunner.And("I hit enter key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 103
   testRunner.And("I request folding for position starting at \'0\' \'0\' and ending at \'0\' \'3\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 104
  testRunner.Then("I should see \'1\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
+#line 105
   testRunner.And("Shown number of lines in the lines panel should be \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 106
   testRunner.And("The \'0\' line should be equal to \'{...}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -286,23 +320,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateFoldingInFirstLineMoveItToTheSecond()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create folding in first line, move it to the second", ((string[])(null)));
-#line 95
+#line 109
 this.ScenarioSetup(scenarioInfo);
-#line 96
+#line 110
  testRunner.Given("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 97
+#line 111
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 98
+#line 112
   testRunner.And("I move caret to column number \'0\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 113
   testRunner.And("I hit enter key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 114
  testRunner.Then("I should see \'2\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 101
+#line 115
   testRunner.And("Shown number of lines in the lines panel should be \'2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 116
   testRunner.And("The \'1\' line should be equal to \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 117
   testRunner.And("I should see folding on position starting at \'0\' \'1\' and ending at \'1\' \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

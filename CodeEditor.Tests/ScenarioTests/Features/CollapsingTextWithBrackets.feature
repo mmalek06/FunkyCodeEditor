@@ -12,6 +12,20 @@ Scenario: Create two folds in one line
 		And I should see no folding
 
 
+Scenario: Enter three opening and three closing brackets
+	Given Text to enter is '{'
+		And Text to enter is '{'
+		And Text to enter is '{'
+		And Text to enter is newline
+		And Text to enter is newline
+		And Text to enter is '}'
+		And Text to enter is '}'
+		And Text to enter is '}'
+	When I enter text
+	Then I should see '3' lines
+		And I should see no folding
+
+
 Scenario: Enter two lines with brackets only - Green Path
 	Given Text to enter is '{}'
 		And Text to enter is newline
