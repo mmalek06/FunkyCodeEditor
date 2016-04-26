@@ -23,10 +23,23 @@ Scenario: Enter three opening and three closing brackets
 		And Text to enter is '}'
 	When I enter text
 	Then I should see '3' lines
+		And Shown number of lines in the lines panel should be '3'
 		And I should see no folding
 
 
-Scenario: Enter two lines with brackets only - Green Path
+Scenario: Enter two lines with brackets only with fold in first
+	Given Text to enter is '{}'
+		And Text to enter is newline
+		And Text to enter is '{}'
+	When I enter text
+		And I request folding for position starting at '0' '0' and ending at '1' '0'
+	Then I should see '2' lines
+		And Shown number of lines in the lines panel should be '2'
+		And The '0' line should be equal to '{...}'
+		And The '1' line should be equal to '{}'
+
+
+Scenario: Enter two lines with brackets only
 	Given Text to enter is '{}'
 		And Text to enter is newline
 		And Text to enter is '{}'
@@ -41,7 +54,7 @@ Scenario: Enter two lines with brackets only - Green Path
 		And The '1' line should be equal to '{}'
 
 
-Scenario: Enter five lines and collapse text - Green Path
+Scenario: Enter five lines and collapse text
 	Given Text to enter is 'asdf'
 		And Text to enter is newline
 		And Text to enter is '{'
@@ -59,7 +72,7 @@ Scenario: Enter five lines and collapse text - Green Path
 		And The '2' line should be equal to 'qwer'
 
 
-Scenario: Enter four lines with two collapsible sections - Green Path
+Scenario: Enter four lines with two collapsible sections
 	Given Text to enter is 'asdf {}'
 		And Text to enter is newline
 		And Text to enter is newline

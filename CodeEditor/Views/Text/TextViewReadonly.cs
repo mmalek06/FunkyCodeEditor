@@ -70,7 +70,7 @@ namespace CodeEditor.Views.Text {
                 substringTo = endPosition.Column - startPosition.Column;
             }
 
-            parts[lastIndex] = parts[lastIndex].Substring(0, substringTo);
+            parts[lastIndex] = string.Join("", parts[lastIndex].Take(substringTo));
 
             return parts;
         }

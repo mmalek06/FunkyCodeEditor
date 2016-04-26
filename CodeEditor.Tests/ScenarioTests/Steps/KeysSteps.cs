@@ -7,23 +7,6 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
     public class KeysSteps {
 
-        #region fields
-
-        private EditorContext ctx;
-
-        private List<string> pressedModifierKeys;
-
-        #endregion
-
-        #region constructor
-
-        public KeysSteps(EditorContext context) {
-            ctx = context;
-            pressedModifierKeys = new List<string>();
-        }
-
-        #endregion
-
         #region steps
 
         [When(@"I hit delete key")]
@@ -31,8 +14,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
             var key = Key.Delete;
             var evtArgs = EventGenerator.CreateKeyEventArgs(key);
 
-            if (ctx.RemoveTextCommand.CanExecute(evtArgs)) {
-                ctx.RemoveTextCommand.Execute(evtArgs);
+            if (Common.Context.RemoveTextCommand.CanExecute(evtArgs)) {
+                Common.Context.RemoveTextCommand.Execute(evtArgs);
             }
         }
 
@@ -41,8 +24,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
             var key = Key.Back;
             var evtArgs = EventGenerator.CreateKeyEventArgs(key);
 
-            if (ctx.RemoveTextCommand.CanExecute(evtArgs)) {
-                ctx.RemoveTextCommand.Execute(evtArgs);
+            if (Common.Context.RemoveTextCommand.CanExecute(evtArgs)) {
+                Common.Context.RemoveTextCommand.Execute(evtArgs);
             }
         }
 

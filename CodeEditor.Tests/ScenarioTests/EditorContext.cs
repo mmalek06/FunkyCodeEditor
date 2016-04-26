@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CodeEditor.Commands;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
@@ -12,7 +13,7 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         #region properties
 
-        public List<string> TextsToEnter { get; set; }
+        internal List<string> TextsToEnter { get; set; }
 
         internal TextView TextView { get; set; }
 
@@ -50,6 +51,17 @@ namespace CodeEditor.Tests.ScenarioTests {
 
             InitEvents();
             ForceDraw();
+        }
+
+        #endregion
+
+        #region public methods
+
+        public void RemoveMessages() {
+            Postbox.Instance.RemoveListener(typeof(LinesRemovedMessage))
+                            .RemoveListener(typeof(TextRemovedMessage))
+                            .RemoveListener(typeof(TextAddedMessage))
+                            .RemoveListener(typeof(FoldClickedMessage));
         }
 
         #endregion

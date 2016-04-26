@@ -22,18 +22,13 @@ namespace CodeEditor.Algorithms.Folding {
         public string GetClosingTag() => "}";
 
         public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
-            IDictionary<TextPosition, TextPosition> folds = null;
-
             if (text == GetOpeningTag()) {
-                folds = CreateEmptyFold(position, foldingPositions);
+                return CreateEmptyFold(position, foldingPositions);
             } else if (text == GetClosingTag()) {
-                folds = RebuildFolds(position, foldingPositions);
-            }
-            if (folds != null) {
-                GetRepeatingFolds(folds);
+                return RebuildFolds(position, foldingPositions);
             }
 
-            return folds;
+            return null;
         }
 
         public TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {

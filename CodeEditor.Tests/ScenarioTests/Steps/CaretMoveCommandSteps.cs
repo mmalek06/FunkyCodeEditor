@@ -5,49 +5,35 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
     public class CaretMoveCommandSteps {
 
-        #region fields
-
-        private EditorContext ctx;
-
-        #endregion
-
-        #region constructor
-
-        public CaretMoveCommandSteps(EditorContext context) {
-            ctx = context;
-        }
-
-        #endregion
-
         #region steps
 
         [When(@"I move caret to column number '(.*)' in line '(.*)'")]
         public void WhenIMoveCaretToColumnNumberInLine(int column, int line) {
-            if (ctx.CaretView.CaretPosition.Line < line) {
+            if (Common.Context.CaretView.CaretPosition.Line < line) {
                 // move up
-                int stopAt = line - ctx.CaretView.CaretPosition.Line;
+                int stopAt = line - Common.Context.CaretView.CaretPosition.Line;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Down);
                 }
-            } else if (ctx.CaretView.CaretPosition.Line > line) {
+            } else if (Common.Context.CaretView.CaretPosition.Line > line) {
                 // move down
-                int stopAt = ctx.CaretView.CaretPosition.Line - line;
+                int stopAt = Common.Context.CaretView.CaretPosition.Line - line;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Up);
                 }
             }
-            if (ctx.CaretView.CaretPosition.Column < column) {
+            if (Common.Context.CaretView.CaretPosition.Column < column) {
                 // move right
-                int stopAt = column - ctx.CaretView.CaretPosition.Column;
+                int stopAt = column - Common.Context.CaretView.CaretPosition.Column;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Right);
                 }
-            } else if (ctx.CaretView.CaretPosition.Column > column) {
+            } else if (Common.Context.CaretView.CaretPosition.Column > column) {
                 // move left
-                int stopAt = ctx.CaretView.CaretPosition.Column - column;
+                int stopAt = Common.Context.CaretView.CaretPosition.Column - column;
 
                 for (int i = 0; i < stopAt; i++) {
                     MoveCaret(Key.Left);
@@ -62,8 +48,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
         private void MoveCaret(Key key) {
             var evtArgs = EventGenerator.CreateKeyEventArgs(key);
 
-            if (ctx.CaretMoveCommand.CanExecute(evtArgs)) {
-                ctx.CaretMoveCommand.Execute(evtArgs);
+            if (Common.Context.CaretMoveCommand.CanExecute(evtArgs)) {
+                Common.Context.CaretMoveCommand.Execute(evtArgs);
             }
         }
 

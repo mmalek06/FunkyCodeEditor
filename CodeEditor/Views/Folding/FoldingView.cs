@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -15,8 +14,8 @@ namespace CodeEditor.Views.Folding {
 
         #region fields
 
-        private readonly List<VisualElementSymbol> symbols;
         private IFoldingAlgorithm foldingAlgorithm;
+
         private Dictionary<FoldingPositionInfo, FoldingPositionInfo> foldingPositions;
 
         #endregion
@@ -25,7 +24,6 @@ namespace CodeEditor.Views.Folding {
 
         public FoldingView() : base() {
             bgBrush = EditorConfiguration.GetFoldingColumnBrush();
-            symbols = new List<VisualElementSymbol>();
             foldingAlgorithm = EditorConfiguration.GetFoldingAlgorithm();
             foldingPositions = new Dictionary<FoldingPositionInfo, FoldingPositionInfo>();
             Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth(), 0, 0, 0);
@@ -94,8 +92,8 @@ namespace CodeEditor.Views.Folding {
 
         protected override double GetWidth() => EditorConfiguration.GetFoldingColumnWidth();
 
-        private void RunFolding(string text, TextPosition activePosition) {
-            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: activePosition.Column - 1, line: activePosition.Line), GetPotentialFoldingPositions());
+        private void RunFolding(string text, TextPosition caretPosition) {
+            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: caretPosition.Column - 1, line: caretPosition.Line), GetPotentialFoldingPositions());
 
             if (folds == null || !folds.Any()) {
                 return;
@@ -108,17 +106,13 @@ namespace CodeEditor.Views.Folding {
 
         private void MoveFoldsDown(TextPosition prevCaretPosition) {
             var foldsAfterCaret = foldingPositions.Where(pair => pair.Key.Position >= prevCaretPosition);
-            var foldsWithClosingTagAfterPosition = foldingPositions.Except(foldsAfterCaret)
-                                                                   .Where(pair => pair.Value.Position != null && pair.Value.Position.Line >= prevCaretPosition.Line);
+            
             foreach (var fold in foldsAfterCaret) {
                 fold.Key.Position = new TextPosition(column: fold.Key.Position.Column, line: fold.Key.Position.Line + 1);
 
                 if (fold.Value.Position != null) {
                     fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line + 1);
                 }
-            }
-            foreach (var fold in foldsWithClosingTagAfterPosition) {
-                fold.Value.Position = new TextPosition(column: fold.Value.Position.Column, line: fold.Value.Position.Line + 1);
             }
         }
 
@@ -145,16 +139,18 @@ namespace CodeEditor.Views.Folding {
             foreach (var repeatingKey in repeatingFolds) {
                 var position = foldingPositions.First(pair => pair.Key.Position == repeatingKey);
 
-                foldingPositions.Remove(position.Key);
+                position.Key.Deleted = true;
             }
         }
-
+        
         private IDictionary<TextPosition, TextPosition> GetPotentialFoldingPositions() =>
             foldingPositions.Where(pair => pair.Key.Deleted || pair.Value == null || pair.Value.Deleted || pair.Value.Position == null)
+                            .Distinct()
                             .ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
 
         private IDictionary<FoldingPositionInfo, FoldingPositionInfo> GetClosedFoldingInfos() =>
             foldingPositions.Where(pair => !pair.Key.Deleted && pair.Value != null && !pair.Value.Deleted && pair.Value.Position != null)
+                            .Distinct()
                             .ToDictionary(pair => pair.Key, pair => pair.Value);
 
         private void CreateFolds(IDictionary<TextPosition, TextPosition> folds) {
@@ -192,7 +188,6 @@ namespace CodeEditor.Views.Folding {
 
         private void RedrawFolds() {
             visuals.Clear();
-            symbols.Clear();
 
             foreach (var kvp in GetClosedFoldingInfos()) {
                 var symbol = new VisualElementSymbol();
@@ -200,7 +195,6 @@ namespace CodeEditor.Views.Folding {
 
                 symbol.DrawFolding(kvp.Key.State, top);
 
-                symbols.Add(symbol);
                 visuals.Add(symbol);
             }
         }

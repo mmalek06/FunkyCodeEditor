@@ -64,6 +64,17 @@ namespace CodeEditor.Messaging {
             return this;
         }
 
+        public Postbox RemoveListener(Type messageType) {
+            if (messageToMethodsMap.ContainsKey(messageType)) {
+                messageToMethodsMap.Remove(messageType);
+            }
+            if (messageType == lastMessageType) {
+                lastMessageType = null;
+            }
+
+            return this;
+        }
+
         #endregion
 
     }

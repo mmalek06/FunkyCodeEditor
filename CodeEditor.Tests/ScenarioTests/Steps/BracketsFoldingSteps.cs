@@ -7,27 +7,13 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
     public class BracketsFoldingSteps {
 
-        #region fields
-
-        private EditorContext ctx;
-
-        #endregion
-
-        #region constructor
-
-        public BracketsFoldingSteps(EditorContext context) {
-            ctx = context;
-        }
-
-        #endregion
-
         #region steps
 
         [When(@"I request folding for position starting at '(.*)' '(.*)' and ending at '(.*)' '(.*)'")]
         public void WhenIRequestFoldingForPositionStartingAtAndEndingAt(int columnStart, int lineStart, int columnEnd, int lineEnd) {
             var message = GetBracketFoldClickedMessage(columnStart, lineStart, columnEnd, lineEnd, FoldingStates.FOLDED);
 
-            ctx.TextView.HandleTextFolding(message);
+            Common.Context.TextView.HandleTextFolding(message);
             Postbox.Instance.Send(message);
         }
 
@@ -35,7 +21,7 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
         public void WhenIRequestUnfoldingForPositionStartingAtAndEndingAt(int columnStart, int lineStart, int columnEnd, int lineEnd) {
             var message = GetBracketFoldClickedMessage(columnStart, lineStart, columnEnd, lineEnd, FoldingStates.EXPANDED);
 
-            ctx.TextView.HandleTextFolding(message);
+            Common.Context.TextView.HandleTextFolding(message);
             Postbox.Instance.Send(message);
         }
 

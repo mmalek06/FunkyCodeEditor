@@ -5,40 +5,26 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]
     public class TextViewSteps {
 
-        #region fields
-
-        private EditorContext ctx;
-
-        #endregion
-
-        #region constructor
-
-        public TextViewSteps(EditorContext context) {
-            ctx = context;
-        }
-
-        #endregion
-
         #region steps
 
         [Then(@"I should see '(.*)' lines")]
         public void ThenIShouldSeeLines(int numberOfVisibleLines) {
-            var actualLinesCount = ctx.TextView.GetScreenLines().Count;
+            var actualLinesCount = Common.Context.TextView.GetScreenLines().Count;
 
             Assert.AreEqual(numberOfVisibleLines, actualLinesCount);
         }
 
         [Then(@"The '(.*)' line should be equal to '(.*)'")]
         public void ThenTheLineShouldBeEqualTo(int lineNo, string text) {
-            var actualLines = ctx.TextView.GetScreenLines();
+            var actualLines = Common.Context.TextView.GetScreenLines();
 
             Assert.AreEqual(text, actualLines[lineNo]);
         }
 
         [Then(@"Cursor should be at '(.*)' '(.*)'")]
         public void ThenCursorShouldBeAt(int column, int line) {
-            Assert.AreEqual(column, ctx.CaretView.CaretPosition.Column);
-            Assert.AreEqual(line, ctx.CaretView.CaretPosition.Line);
+            Assert.AreEqual(column, Common.Context.CaretView.CaretPosition.Column);
+            Assert.AreEqual(line, Common.Context.CaretView.CaretPosition.Line);
         }
 
         #endregion
