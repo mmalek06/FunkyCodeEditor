@@ -69,11 +69,11 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move text to second line")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move text from first to second line")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MovingText")]
-        public virtual void MoveTextToSecondLine()
+        public virtual void MoveTextFromFirstToSecondLine()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text to second line", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text from first to second line", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -99,24 +99,52 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move text from first to second and again to the first line")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MovingText")]
+        public virtual void MoveTextFromFirstToSecondAndAgainToTheFirstLine()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text from first to second and again to the first line", ((string[])(null)));
+#line 19
+this.ScenarioSetup(scenarioInfo);
+#line 20
+ testRunner.Given("Text to enter is \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 21
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 22
+  testRunner.And("I move caret to column number \'0\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+  testRunner.And("I hit enter key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+  testRunner.And("I hit backspace key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+ testRunner.Then("I should see \'1\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
+  testRunner.And("Shown number of lines in the lines panel should be \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+  testRunner.And("The \'0\' line should be equal to \'asdf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Folds should not move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MovingText")]
         public virtual void FoldsShouldNotMove()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Folds should not move", ((string[])(null)));
-#line 19
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 20
+#line 31
  testRunner.Given("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 21
+#line 32
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 33
   testRunner.And("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 34
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 35
  testRunner.Then("I should see \'1\' folding on position starting at \'0\' \'0\' and ending at \'1\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 25
+#line 36
   testRunner.And("I should see \'2\' folding on position starting at \'0\' \'1\' and ending at \'1\' \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -128,23 +156,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FoldsShouldMove()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Folds should move", ((string[])(null)));
-#line 28
+#line 39
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 40
  testRunner.Given("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 41
   testRunner.And("Text to enter is newline", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 42
   testRunner.And("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 43
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
+#line 44
   testRunner.And("I move caret to column number \'0\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 45
   testRunner.And("I hit enter key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 46
  testRunner.Then("I should see \'1\' folding on position starting at \'0\' \'1\' and ending at \'1\' \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 36
+#line 47
   testRunner.And("I should see \'2\' folding on position starting at \'0\' \'2\' and ending at \'1\' \'2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -4,7 +4,7 @@
 	And hit one of enter, delete, backspace keys
 
 
-Scenario: Move text to second line
+Scenario: Move text from first to second line
 	Given Text to enter is 'asdf'
 	When I enter text
 		And I move caret to column number '0' in line '0'
@@ -14,6 +14,17 @@ Scenario: Move text to second line
 		And The '0' line should be equal to ''
 		And The '1' line should be equal to 'asdf'
 		And I should see no folding
+
+
+Scenario: Move text from first to second and again to the first line
+	Given Text to enter is 'asdf'
+	When I enter text
+		And I move caret to column number '0' in line '0'
+		And I hit enter key
+		And I hit backspace key
+	Then I should see '1' lines
+		And Shown number of lines in the lines panel should be '1'
+		And The '0' line should be equal to 'asdf'
 
 
 Scenario: Folds should not move
