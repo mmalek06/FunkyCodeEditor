@@ -74,7 +74,9 @@ namespace CodeEditor.Views.Folding {
                 Postbox.Instance.Send(new FoldClickedMessage {
                     Area = new TextRange {
                         StartPosition = folding.Position,
-                        EndPosition = foldingPositions[folding].Position
+                        // don't know why this throws KeyNotFoundException in a case when folding was moved: EndPosition = foldingPositions[folding].Position
+                        // the key is there...
+                        EndPosition = foldingPositions.First(f => f.Key == folding).Value.Position
                     },
                     ClosingTag = foldingAlgorithm.GetClosingTag(),
                     OpeningTag = foldingAlgorithm.GetOpeningTag(),
