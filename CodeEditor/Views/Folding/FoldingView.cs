@@ -70,14 +70,24 @@ namespace CodeEditor.Views.Folding {
 
             if (folding != null) {
                 var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
+                var areaBeforeFolding = new TextRange();
+                var areaAfterFolding = new TextRange();
+
+                if (state == FoldingStates.FOLDED) {
+                    areaBeforeFolding.StartPosition = folding.Position;
+                    areaBeforeFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
+                    areaAfterFolding.StartPosition = folding.Position;
+                    areaAfterFolding.EndPosition = new TextPosition(column: folding.Position.Column + foldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
+                } else {
+                    areaAfterFolding.StartPosition = folding.Position;
+                    areaAfterFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
+                    areaBeforeFolding.StartPosition = folding.Position;
+                    areaBeforeFolding.EndPosition = new TextPosition(column: folding.Position.Column + foldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
+                }
 
                 Postbox.Instance.Send(new FoldClickedMessage {
-                    Area = new TextRange {
-                        StartPosition = folding.Position,
-                        // don't know why this throws KeyNotFoundException in a case when folding was moved: EndPosition = foldingPositions[folding].Position
-                        // the key is there...
-                        EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position
-                    },
+                    AreaBeforeFolding = areaBeforeFolding,
+                    AreaAfterFolding = areaAfterFolding,
                     ClosingTag = foldingAlgorithm.GetClosingTag(),
                     OpeningTag = foldingAlgorithm.GetOpeningTag(),
                     State = state

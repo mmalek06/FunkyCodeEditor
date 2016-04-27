@@ -100,23 +100,23 @@ namespace CodeEditor.Views.Text {
         }
 
         public void CollapseText(FoldClickedMessage message) {
-            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.Area, GetScreenLines(), message.Area.StartPosition.Line);
-            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), collapsedLine, message.Area);
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.AreaBeforeFolding, GetScreenLines(), message.AreaBeforeFolding.StartPosition.Line);
+            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), collapsedLine, message.AreaBeforeFolding);
 
-            if (message.Area.StartPosition.Line != message.Area.EndPosition.Line) {
-                visuals.RemoveRange(message.Area.StartPosition.Line, visuals.Count - (message.Area.StartPosition.Line + 1));
+            if (message.AreaBeforeFolding.StartPosition.Line != message.AreaBeforeFolding.EndPosition.Line) {
+                visuals.RemoveRange(message.AreaBeforeFolding.StartPosition.Line, visuals.Count - (message.AreaBeforeFolding.StartPosition.Line + 1));
             }
 
-            RedrawCollapsedLine(collapsedLine, message.Area.StartPosition.Line);
+            RedrawCollapsedLine(collapsedLine, message.AreaBeforeFolding.StartPosition.Line);
             AddLines(linesToRedraw);
             UpdateSize();
         }
 
         public void ExpandText(FoldClickedMessage message) {
-            int collapseIndex = message.Area.StartPosition.Line;
+            int collapseIndex = message.AreaBeforeFolding.StartPosition.Line;
             var collapsedLineContent = ((VisualTextLine)visuals[collapseIndex]).GetStringContents();
             var expandedLines = collapsedLineContent.Select((line, index) => VisualTextLine.Create(line, collapseIndex + index));
-            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterExpand(visuals.ToEnumerableOf<VisualTextLine>().Where(line => line.Index > message.Area.StartPosition.Line), expandedLines.Count() - 1);
+            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterExpand(visuals.ToEnumerableOf<VisualTextLine>().Where(line => line.Index > message.AreaBeforeFolding.StartPosition.Line), expandedLines.Count() - 1);
 
             visuals.RemoveRange(collapseIndex, LinesCount - collapseIndex);
             

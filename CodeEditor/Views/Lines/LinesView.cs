@@ -53,7 +53,7 @@ namespace CodeEditor.Views.Lines {
         }
 
         public void HandleFolding(FoldClickedMessage m) {
-            int diff = m.Area.EndPosition.Line - m.Area.StartPosition.Line;
+            int diff = m.AreaBeforeFolding.EndPosition.Line - m.AreaBeforeFolding.StartPosition.Line;
 
             if (m.State == Algorithms.Folding.FoldingStates.FOLDED) {
                 linesCount -= diff;

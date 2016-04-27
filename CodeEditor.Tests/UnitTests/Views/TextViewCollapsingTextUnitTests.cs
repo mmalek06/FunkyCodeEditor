@@ -69,7 +69,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
         private FoldClickedMessage GetFoldClickedMessage(int startingCol, int startingLine, int endingCol, int endingLine, FoldingStates state) {
             return new FoldClickedMessage {
                 State = state,
-                Area = new TextRange {
+                AreaBeforeFolding = new TextRange {
                     StartPosition = new TextPosition(startingCol, startingLine),
                     EndPosition = new TextPosition(endingCol, endingLine)
                 },

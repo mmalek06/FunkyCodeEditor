@@ -61,7 +61,17 @@ namespace CodeEditor.Views.Caret {
 
         public void HandleTextRemove(TextPosition newPosition) => MoveCaret(newPosition);
 
-        public override void HandleTextFolding(FoldClickedMessage message) => MoveCaret(message.Area.StartPosition);
+        public override void HandleTextFolding(FoldClickedMessage message) {
+            if (message.State == Algorithms.Folding.FoldingStates.FOLDED) {
+                if (CaretPosition >= message.AreaAfterFolding.StartPosition && CaretPosition <= message.AreaAfterFolding.EndPosition) {
+                    MoveCaret(message.AreaAfterFolding.EndPosition);
+                }
+            } else {
+                if (CaretPosition >= message.AreaBeforeFolding.StartPosition && CaretPosition <= message.AreaBeforeFolding.EndPosition) {
+                    MoveCaret(new TextPosition(column: message.AreaAfterFolding.EndPosition.Column + 1, line: message.AreaAfterFolding.EndPosition.Line));
+                }
+            }
+        }
 
         #endregion
 
