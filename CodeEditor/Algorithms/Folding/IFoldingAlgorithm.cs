@@ -10,9 +10,13 @@ namespace CodeEditor.Algorithms.Folding {
 
         bool IsOpeningTag(string text);
 
+        bool IsCollapseRepresentation(string text);
+
         string GetOpeningTag();
 
         string GetClosingTag();
+
+        string GetCollapsibleRepresentation();
 
         TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions);
 

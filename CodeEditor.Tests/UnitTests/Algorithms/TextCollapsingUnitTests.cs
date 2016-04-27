@@ -28,6 +28,27 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
         }
 
         [TestMethod]
+        public void OneLineWithBracketsAndText_ActualTextShouldBeEqualToRenderedText() {
+            string text1 = "asdf ";
+            string open = "{";
+            string text2 = string.Empty;
+            string close = "}";
+            string text3 = " xzcv";
+            var lines = new[] { text1 + open + text2 + close + text3 };
+            var line = tc.CollapseTextRange(new TextRange {
+                StartPosition = new TextPosition(column: 5, line: 0),
+                EndPosition = new TextPosition(column: 6, line: 0) }, 
+                lines, 
+                0);
+            string stringContents = line.GetStringContents()[0];
+
+            Assert.AreEqual(text1, string.Join("", stringContents.Take(5)));
+            Assert.AreEqual(text3, string.Join("", stringContents.Skip(7)));
+            Assert.AreEqual(string.Join("", line.RenderedText.Take(5)), string.Join("", stringContents.Take(5)));
+            Assert.AreEqual(string.Join("", line.RenderedText.Skip(10)), string.Join("", stringContents.Skip(7)));
+        }
+
+        [TestMethod]
         public void BracketsInDifferentLinesThanText_ShouldHaveTextBeforeAndAfterFold() {
             string text1 = "asdf";
             string open = "{";

@@ -31,9 +31,13 @@ namespace CodeEditor.Algorithms.Folding {
             throw new NotImplementedException();
         }
 
+        public string GetCollapsibleRepresentation() => "";
+
         public bool IsOpeningTag(string text) {
             throw new NotImplementedException();
         }
+
+        public bool IsCollapseRepresentation(string text) => text == GetCollapsibleRepresentation();
 
         #endregion
 

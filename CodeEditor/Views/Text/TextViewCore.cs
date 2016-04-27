@@ -79,7 +79,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(Key key) {
-            var removalInfo = removingAlgorithm.GetChangeInLines(GetActualLines(), caretViewReader.CaretPosition, key);
+            var removalInfo = removingAlgorithm.GetChangeInLines(GetVisualLines(), caretViewReader.CaretPosition, key);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -91,7 +91,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void RemoveText(TextRange range) {
-            var removalInfo = removingAlgorithm.GetChangeInLines(GetActualLines(), range);
+            var removalInfo = removingAlgorithm.GetChangeInLines(GetVisualLines(), range);
 
             if (removalInfo.LinesToChange.Any()) {
                 DeleteText(removalInfo);
@@ -141,7 +141,7 @@ namespace CodeEditor.Views.Text {
 
         private void DeleteText(ChangeInLinesInfo removalInfo) {
             RemoveLines(removalInfo.LinesToRemove);
-            DrawLines(removalInfo.LinesToChange.Select(pair => VisualTextLine.Create(pair.Value, pair.Key.Line)));
+            DrawLines(removalInfo.LinesToChange.Select(pair => pair.Value));
         }
 
         private void DeleteLines(IReadOnlyCollection<int> linesToRemove) => RemoveLines(linesToRemove);

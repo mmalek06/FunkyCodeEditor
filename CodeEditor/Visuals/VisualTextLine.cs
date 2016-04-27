@@ -65,6 +65,9 @@ namespace CodeEditor.Visuals {
                 linesToCollapse.Select(line => new SimpleTextSource(line, TextConfiguration.GetGlobalTextRunProperties())), textSourceBeforeCollapse, textSourceAfterCollapse, index, collapseRepresentation);
         }
 
+        public static VisualTextLine MergeLines(IEnumerable<VisualTextLine> lines, int index) =>
+            VisualTextLine.Create(string.Join("", lines.SelectMany(line => line.GetStringContents())), index);
+
         #endregion
 
         #region methods

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
@@ -117,7 +118,7 @@ namespace CodeEditor.Commands {
                     return new TextPosition(column: textViewReader.GetLineLength(caretViewReader.CaretPosition.Line - 1), line: caretViewReader.CaretPosition.Line - 1);
                 }
 
-                return new TextPosition(column: caretViewReader.CaretPosition.Column - 1, line: caretViewReader.CaretPosition.Line);
+                return new TextPosition(column: caretViewReader.CaretPosition.Column - removedText.Length, line: caretViewReader.CaretPosition.Line);
             }
 
             return caretViewReader.CaretPosition;
@@ -129,13 +130,22 @@ namespace CodeEditor.Commands {
             }
             if (key == Key.Delete) {
                 return textViewReader.GetCharAt(caretViewReader.CaretPosition).ToString();
+            }
+            if (caretViewReader.CaretPosition.Column == 0 && caretViewReader.CaretPosition.Line > 0) {
+                return string.Empty;
             } else {
-                if (caretViewReader.CaretPosition.Column == 0 && caretViewReader.CaretPosition.Line > 0) {
-                    return string.Empty;
-                } else {
-                    return textViewReader.GetCharAt(
-                        new TextPosition(column: caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0, line: caretViewReader.CaretPosition.Line)).ToString();
-                }
+                var line = textViewReader.GetVisualLine(caretViewReader.CaretPosition.Line);
+                var info = line.GetCharInfoAt(caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0);
+
+                if (!info.IsCharacter) {
+                    return EditorConfiguration.GetCollapseRepresentation();
+                } 
+
+                return textViewReader.GetCharAt(
+                    new TextPosition(
+                        column: caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0, 
+                        line: caretViewReader.CaretPosition.Line))
+                                        .ToString();
             }
         }
 

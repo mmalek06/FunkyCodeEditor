@@ -90,10 +90,20 @@ namespace CodeEditor.Visuals {
 
         public override CharInfo GetCharInfoAt(int column) {
             if (column < textBeforeCollapse.Length) {
-                return new CharInfo { IsCharacter = true, Character = textBeforeCollapse[column] };
+                return new CharInfo {
+                    IsCharacter = true,
+                    Character = textBeforeCollapse[column],
+                    PrevCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index),
+                    NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
+                };
             }
             if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length) {
-                return new CharInfo { IsCharacter = true, Character = RenderedText[column] };
+                return new CharInfo {
+                    IsCharacter = true,
+                    Character = RenderedText[column],
+                    PrevCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index),
+                    NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
+                };
             }
 
             return new CharInfo {

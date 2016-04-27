@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.TextProperties;
+using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextRemover {
 
         #region public methods
 
-        public ChangeInLinesInfo GetChangeInLines(IReadOnlyList<string> lines, TextRange range) {
+        public ChangeInLinesInfo GetChangeInLines(IReadOnlyList<VisualTextLine> lines, TextRange range) {
             var orderedRanges = (new[] { range.StartPosition, range.EndPosition }).OrderBy(elem => elem.Line).ThenBy(elem => elem.Column).ToArray();
             var pair = new TextRange {
                 StartPosition = orderedRanges[0],
@@ -21,23 +25,25 @@ namespace CodeEditor.Algorithms.TextManipulation {
             } else {
                 rangeEnd = pair.EndPosition.Line + 1;
             }
+            
+            var firstPart = Cut(lines[pair.StartPosition.Line], 0, pair.StartPosition.Column);
+            var secondPart = Cut(lines[pair.EndPosition.Line], pair.EndPosition.Column);
 
             return new ChangeInLinesInfo {
-                LinesToChange = new Dictionary<TextPosition, string> {
+                LinesToChange = new Dictionary<TextPosition, VisualTextLine> {
                     [new TextPosition(pair.StartPosition.Column, pair.StartPosition.Line)] =
-                        string.Concat(lines[pair.StartPosition.Line].Take(pair.StartPosition.Column)) +
-                        string.Concat(lines[pair.EndPosition.Line].Skip(pair.EndPosition.Column))
+                        VisualTextLine.MergeLines(new[] { firstPart, secondPart }, firstPart.Index)
                 },
                 LinesToRemove = Enumerable.Range(pair.StartPosition.Line, rangeEnd).ToList()
             };
         }
 
-        public ChangeInLinesInfo GetChangeInLines(IReadOnlyList<string> lines, TextPosition startingTextPosition, Key key) {
+        public ChangeInLinesInfo GetChangeInLines(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition, Key key) {
             if (key == Key.Delete) {
                 bool isStartEqToTextLen = startingTextPosition.Column == lines[startingTextPosition.Line].Length;
 
                 if (isStartEqToTextLen && startingTextPosition.Line == lines.Count) {
-                    return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new int[0] };
+                    return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, VisualTextLine>(), LinesToRemove = new int[0] };
                 }
                 if (isStartEqToTextLen) {
                     return DeleteNextLine(lines, startingTextPosition);
@@ -48,7 +54,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 bool isStartEqZero = startingTextPosition.Column == 0;
 
                 if (isStartEqZero && startingTextPosition.Line == 0) {
-                    return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, string>(), LinesToRemove = new[] { startingTextPosition.Line } };
+                    return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, VisualTextLine>(), LinesToRemove = new[] { startingTextPosition.Line } };
                 }
                 if (isStartEqZero) {
                     return RemoveThisLine(lines, startingTextPosition);
@@ -62,40 +68,45 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region methods
 
-        private ChangeInLinesInfo RemoveFromActiveLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
-            string lineToModify = lines[startingTextPosition.Line];
+        private ChangeInLinesInfo RemoveFromActiveLine(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition) {
+            var lineToModify = lines[startingTextPosition.Line];
             bool attachRest = startingTextPosition.Column < lines[startingTextPosition.Line].Length;
-            string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column - 1) + (attachRest ? lineToModify.Substring(startingTextPosition.Column) : string.Empty);
+            var firstPart = Cut(lineToModify, 0, startingTextPosition.Column - 1);
+            var secondPart = attachRest ? Cut(lineToModify, startingTextPosition.Column) : null;
+            var lineAfterRemove = secondPart != null ? VisualTextLine.MergeLines(new[] { firstPart, secondPart }, lineToModify.Index) : firstPart;
 
             return new ChangeInLinesInfo {
-                LinesToChange = new Dictionary<TextPosition, string> {
-                    [new TextPosition(startingTextPosition.Column - 1, startingTextPosition.Line)] = textAfterRemove
+                LinesToChange = new Dictionary<TextPosition, VisualTextLine> {
+                    [new TextPosition(startingTextPosition.Column - 1, startingTextPosition.Line)] = lineAfterRemove
                 },
                 LinesToRemove = new int[0]
             };
         }
 
-        private ChangeInLinesInfo DeleteFromActiveLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
-            string lineToModify = lines[startingTextPosition.Line];
-            string textAfterRemove = lineToModify.Substring(0, startingTextPosition.Column) + lineToModify.Substring(startingTextPosition.Column + 1);
+        private ChangeInLinesInfo DeleteFromActiveLine(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition) {
+            var lineToModify = lines[startingTextPosition.Line];
+            var firstPart = Cut(lineToModify, 0, startingTextPosition.Column);
+            var secondPart = Cut(lineToModify, startingTextPosition.Column + 1);
+            var lineAfterRemove = VisualTextLine.MergeLines(new[] { firstPart, secondPart }, lineToModify.Index);
 
             return new ChangeInLinesInfo {
-                LinesToChange = new Dictionary<TextPosition, string> {
-                    [new TextPosition(startingTextPosition.Column, startingTextPosition.Line)] = textAfterRemove
+                LinesToChange = new Dictionary<TextPosition, VisualTextLine> {
+                    [new TextPosition(startingTextPosition.Column, startingTextPosition.Line)] = lineAfterRemove
                 },
                 LinesToRemove = new int[0]
             };
         }
 
-        private ChangeInLinesInfo RemoveThisLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
-            var linesAffected = new List<KeyValuePair<TextPosition, string>> {
-                new KeyValuePair<TextPosition, string>(
+        private ChangeInLinesInfo RemoveThisLine(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition) {
+            var firstLine = lines[startingTextPosition.Line - 1];
+            var linesAffected = new List<KeyValuePair<TextPosition, VisualTextLine>> {
+                new KeyValuePair<TextPosition, VisualTextLine>(
                     new TextPosition(lines[startingTextPosition.Line - 1].Length, startingTextPosition.Line - 1),
-                    GetText(lines, startingTextPosition.Line - 1) + lines[startingTextPosition.Line])
+                    VisualTextLine.MergeLines(new[] { firstLine, lines[startingTextPosition.Line] }, firstLine.Index))
             };
 
             for (int i = startingTextPosition.Line + 1; i < lines.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), lines[i]));
+                linesAffected.Add(new KeyValuePair<TextPosition, VisualTextLine>(new TextPosition(0, i - 1), lines[i].CloneWithIndexChange(i - 1)));
             }
 
             return new ChangeInLinesInfo {
@@ -104,15 +115,18 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private ChangeInLinesInfo DeleteNextLine(IReadOnlyList<string> lines, TextPosition startingTextPosition) {
-            var linesAffected = new List<KeyValuePair<TextPosition, string>> {
-                new KeyValuePair<TextPosition, string>(
+        private ChangeInLinesInfo DeleteNextLine(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition) {
+            var firstLine = lines[startingTextPosition.Line];
+            var secondLine = startingTextPosition.Line + 1 < lines.Count ? lines[startingTextPosition.Line + 1] : null;
+            var linesToMerge = secondLine == null ? new[] { firstLine } : new[] { firstLine, secondLine };
+            var linesAffected = new List<KeyValuePair<TextPosition, VisualTextLine>> {
+                new KeyValuePair<TextPosition, VisualTextLine>(
                     new TextPosition(startingTextPosition.Column, startingTextPosition.Line),
-                    lines[startingTextPosition.Line] + GetText(lines, startingTextPosition.Line + 1))
+                    VisualTextLine.MergeLines(linesToMerge, firstLine.Index))
             };
 
             for (int i = startingTextPosition.Line + 2; i < lines.Count; i++) {
-                linesAffected.Add(new KeyValuePair<TextPosition, string>(new TextPosition(0, i - 1), lines[i]));
+                linesAffected.Add(new KeyValuePair<TextPosition, VisualTextLine>(new TextPosition(0, i - 1), lines[i].CloneWithIndexChange(i - 1)));
             }
 
             return new ChangeInLinesInfo {
@@ -121,12 +135,44 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private string GetText(IReadOnlyList<string> lines, int lineIdx) {
-            if (lineIdx < lines.Count && !string.IsNullOrEmpty(lines[lineIdx])) {
-                return lines[lineIdx];
+        private VisualTextLine Cut(VisualTextLine line, int startIndex, int length = -1) {
+            if (length < 0) {
+                length = line.Length;
             }
 
-            return string.Empty;
+            if (line is CollapsedVisualTextLine) {
+                var charInfos = Enumerable.Range(startIndex, length).Select(index => line.GetCharInfoAt(index));
+
+                if (charInfos.Any(info => !info.IsCharacter)) {
+                    return CutWithoutCollapse(charInfos, line, startIndex, length);
+                } else {
+                    return CutWithCollapse(line, startIndex, length);
+                }                
+            } else {
+                return CutStandardLine(line, startIndex, length);
+            }
+        }
+
+        private VisualTextLine CutStandardLine(VisualTextLine line, int startIndex, int length) {
+            string contents = line.GetStringContents()[0];
+
+            return VisualTextLine.Create(contents.Substring(startIndex, length - startIndex), line.Index);
+        }
+
+        private VisualTextLine CutWithCollapse(VisualTextLine line, int startIndex, int length) {
+            var contents = line.GetStringContents();
+            string firstPart = contents[0].Substring(startIndex, length);
+
+            return VisualTextLine.Create(contents.Skip(1).Take(contents.Count - 2), firstPart, contents.Last(), line.Index, EditorConfiguration.GetCollapseRepresentation());
+        }
+
+        private VisualTextLine CutWithoutCollapse(IEnumerable<CharInfo> charInfos, VisualTextLine line, int startIndex, int length) {
+            var collapseInfo = charInfos.First(info => !info.IsCharacter);
+            var contents = line.GetStringContents();
+            string textBeforeCollapse = contents[0].Substring(startIndex, collapseInfo.PrevCharPosition.Column);
+            string textAfterCollapse = string.Join("", contents[0].Skip(collapseInfo.NextCharPosition.Column).Take(length));
+
+            return VisualTextLine.Create(textBeforeCollapse + textAfterCollapse, line.Index);
         }
 
         #endregion

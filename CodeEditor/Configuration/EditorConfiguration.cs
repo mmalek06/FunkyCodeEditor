@@ -50,5 +50,13 @@ namespace CodeEditor.Configuration {
 
         public static LanguageFormattingType GetFormattingType() => LanguageFormattingType.BRACKETS;
 
+        public static string GetCollapseRepresentation() {
+            if (GetFormattingType() == LanguageFormattingType.BRACKETS) {
+                return "{...}";
+            }
+
+            return string.Empty;
+        }
+
     }
 }

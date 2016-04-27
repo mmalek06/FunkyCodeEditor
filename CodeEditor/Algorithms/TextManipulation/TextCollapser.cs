@@ -47,35 +47,27 @@ namespace CodeEditor.Algorithms.TextManipulation {
             int start = area.StartPosition.Line;
             int end = area.EndPosition.Line;
 
-            for (int i = start; i <= end; i++) {
-                string currentLine = lines[i];
+            if (start != end) {
+                for (int i = start; i <= end; i++) {
+                    string currentLine = lines[i];
 
-                if (i == start) {
-                    currentLine = string.Join("", currentLine.Skip(area.StartPosition.Column));
-                } else if (i == end) {
-                    currentLine = string.Join("", currentLine.Take(area.EndPosition.Column + 1));
+                    if (i == start) {
+                        currentLine = string.Join("", currentLine.Skip(area.StartPosition.Column));
+                    } else if (i == end) {
+                        currentLine = string.Join("", currentLine.Take(area.EndPosition.Column + 1));
+                    }
+
+                    middlePart.Add(currentLine);
                 }
-
-                middlePart.Add(currentLine);
+            } else {
+                middlePart.Add(string.Join("", lines[start].Skip(area.StartPosition.Column).Take((1 + area.EndPosition.Column) - area.StartPosition.Column)));
             }
 
-            return VisualTextLine.Create(middlePart, precedingText, followingText, collapsedLineIndex, GetCollapseRepresentation());
+            return VisualTextLine.Create(middlePart, precedingText, followingText, collapsedLineIndex, EditorConfiguration.GetCollapseRepresentation());
         }
 
         public IEnumerable<VisualTextLine> ExpandTextRange(TextRange area, IEnumerable<string> lines) =>
             lines.Skip(area.StartPosition.Line).Take(1 + area.EndPosition.Line - area.StartPosition.Line).Select((line, index) => VisualTextLine.Create(line, area.StartPosition.Line + index));
-
-        #endregion
-
-        #region methods
-
-        private string GetCollapseRepresentation() {
-            if (EditorConfiguration.GetFormattingType() == Enums.LanguageFormattingType.BRACKETS) {
-                return "{...}";
-            }
-
-            return string.Empty;
-        }
 
         #endregion
 

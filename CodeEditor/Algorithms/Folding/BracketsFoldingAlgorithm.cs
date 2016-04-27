@@ -17,9 +17,13 @@ namespace CodeEditor.Algorithms.Folding {
 
         public bool IsOpeningTag(string text) => text == GetOpeningTag();
 
+        public bool IsCollapseRepresentation(string text) => text == GetCollapsibleRepresentation();
+
         public string GetOpeningTag() => "{";
 
         public string GetClosingTag() => "}";
+
+        public string GetCollapsibleRepresentation() => "{...}";
 
         public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             if (text == GetOpeningTag()) {
@@ -32,7 +36,7 @@ namespace CodeEditor.Algorithms.Folding {
         }
 
         public TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
-            if (text == GetOpeningTag()) {
+            if (text == GetOpeningTag() || text == GetCollapsibleRepresentation()) {
                 return position;
             } else if (text == GetClosingTag()) {
                 return DeleteFoldForClosePosition(position, foldingPositions);

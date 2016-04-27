@@ -183,6 +183,8 @@ namespace CodeEditor.Views.Folding {
                 } else {
                     info.Deleted = true;
                 }
+            } else if (foldingAlgorithm.IsCollapseRepresentation(removedText)) {
+                foldingPositions.Remove(info);
             } else {
                 foldingPositions[info].Deleted = true;
             }

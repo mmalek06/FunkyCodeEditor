@@ -151,6 +151,8 @@ Scenario: Remove from collapsed line with brackets only
 	Then I should see '1' lines
 		And Shown number of lines in the lines panel should be '1'
 		And The '0' line should be equal to ''
+		And Cursor should be at '0' '0'
+		And I should see no folding
 
 
 Scenario: Remove from collapsed line with brackets and text
@@ -164,3 +166,5 @@ Scenario: Remove from collapsed line with brackets and text
 	Then I should see '1' lines
 		And Shown number of lines in the lines panel should be '1'
 		And The '0' line should be equal to 'asdf  qwer'
+		And Cursor should be at '5' '0'
+		And I should see no folding
