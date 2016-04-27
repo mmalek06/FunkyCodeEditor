@@ -76,7 +76,7 @@ namespace CodeEditor.Views.Folding {
                         StartPosition = folding.Position,
                         // don't know why this throws KeyNotFoundException in a case when folding was moved: EndPosition = foldingPositions[folding].Position
                         // the key is there...
-                        EndPosition = foldingPositions.First(f => f.Key == folding).Value.Position
+                        EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position
                     },
                     ClosingTag = foldingAlgorithm.GetClosingTag(),
                     OpeningTag = foldingAlgorithm.GetOpeningTag(),

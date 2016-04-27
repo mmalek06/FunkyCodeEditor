@@ -69,11 +69,11 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter one character and press backspace - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter one character and press backspace")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void EnterOneCharacterAndPressBackspace_GreenPath()
+        public virtual void EnterOneCharacterAndPressBackspace()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one character and press backspace - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one character and press backspace", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -89,11 +89,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter single empty line and press backspace - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter single empty line and press backspace")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void EnterSingleEmptyLineAndPressBackspace_GreenPath()
+        public virtual void EnterSingleEmptyLineAndPressBackspace()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter single empty line and press backspace - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter single empty line and press backspace", ((string[])(null)));
 #line 14
 this.ScenarioSetup(scenarioInfo);
 #line 15
@@ -115,11 +115,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter three empty lines and press delete - Red Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter three empty lines and press delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void EnterThreeEmptyLinesAndPressDelete_RedPath()
+        public virtual void EnterThreeEmptyLinesAndPressDelete()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three empty lines and press delete - Red Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three empty lines and press delete", ((string[])(null)));
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line 25
@@ -141,11 +141,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete from empty line - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete from empty line")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void DeleteFromEmptyLine_GreenPath()
+        public virtual void DeleteFromEmptyLine()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete from empty line - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete from empty line", ((string[])(null)));
 #line 34
 this.ScenarioSetup(scenarioInfo);
 #line 35
@@ -169,11 +169,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete last line when the cursor is at the second one - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete last line when the cursor is at the second one")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void DeleteLastLineWhenTheCursorIsAtTheSecondOne_GreenPath()
+        public virtual void DeleteLastLineWhenTheCursorIsAtTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line when the cursor is at the second one - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line when the cursor is at the second one", ((string[])(null)));
 #line 45
 this.ScenarioSetup(scenarioInfo);
 #line 46
@@ -201,13 +201,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete last line that is not empty and when the cursor is at the second one - Gre" +
-            "en Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete last line that is not empty and when the cursor is at the second one")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void DeleteLastLineThatIsNotEmptyAndWhenTheCursorIsAtTheSecondOne_GreenPath()
+        public virtual void DeleteLastLineThatIsNotEmptyAndWhenTheCursorIsAtTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line that is not empty and when the cursor is at the second one - Gre" +
-                    "en Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line that is not empty and when the cursor is at the second one", ((string[])(null)));
 #line 58
 this.ScenarioSetup(scenarioInfo);
 #line 59
@@ -235,11 +233,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Two non empty lines entered, delete pressed at the end of first one - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Two non empty lines entered, delete pressed at the end of first one")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void TwoNonEmptyLinesEnteredDeletePressedAtTheEndOfFirstOne_GreenPath()
+        public virtual void TwoNonEmptyLinesEnteredDeletePressedAtTheEndOfFirstOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, delete pressed at the end of first one - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, delete pressed at the end of first one", ((string[])(null)));
 #line 71
 this.ScenarioSetup(scenarioInfo);
 #line 72
@@ -267,11 +265,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Backspace first line when the cursor is at the second one - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Backspace first line when the cursor is at the second one")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void BackspaceFirstLineWhenTheCursorIsAtTheSecondOne_GreenPath()
+        public virtual void BackspaceFirstLineWhenTheCursorIsAtTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Backspace first line when the cursor is at the second one - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Backspace first line when the cursor is at the second one", ((string[])(null)));
 #line 84
 this.ScenarioSetup(scenarioInfo);
 #line 85
@@ -299,13 +297,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Two non empty lines entered, backspace pressed at the beginning of second one - G" +
-            "reen Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Two non empty lines entered, backspace pressed at the beginning of second one")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecondOne_GreenPath()
+        public virtual void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, backspace pressed at the beginning of second one - G" +
-                    "reen Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, backspace pressed at the beginning of second one", ((string[])(null)));
 #line 97
 this.ScenarioSetup(scenarioInfo);
 #line 98
@@ -333,11 +329,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Four lines entered, delete pressed at the end of first - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Four lines entered, delete pressed at the end of first")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void FourLinesEnteredDeletePressedAtTheEndOfFirst_GreenPath()
+        public virtual void FourLinesEnteredDeletePressedAtTheEndOfFirst()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed at the end of first - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed at the end of first", ((string[])(null)));
 #line 110
 this.ScenarioSetup(scenarioInfo);
 #line 111
@@ -375,11 +371,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Four lines entered, delete pressed twice at the end of first - Green Path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Four lines entered, delete pressed twice at the end of first")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
-        public virtual void FourLinesEnteredDeletePressedTwiceAtTheEndOfFirst_GreenPath()
+        public virtual void FourLinesEnteredDeletePressedTwiceAtTheEndOfFirst()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed twice at the end of first - Green Path", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed twice at the end of first", ((string[])(null)));
 #line 128
 this.ScenarioSetup(scenarioInfo);
 #line 129
@@ -410,6 +406,66 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("The \'0\' line should be equal to \'asdfqwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
   testRunner.And("The \'1\' line should be equal to \'xzcv\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove from collapsed line with brackets only")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
+        public virtual void RemoveFromCollapsedLineWithBracketsOnly()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove from collapsed line with brackets only", ((string[])(null)));
+#line 145
+this.ScenarioSetup(scenarioInfo);
+#line 146
+ testRunner.Given("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 147
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 148
+  testRunner.And("I request folding for position starting at \'0\' \'0\' and ending at \'2\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+  testRunner.And("I move caret to column number \'5\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 150
+  testRunner.And("I hit backspace key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 151
+ testRunner.Then("I should see \'1\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 152
+  testRunner.And("Shown number of lines in the lines panel should be \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 153
+  testRunner.And("The \'0\' line should be equal to \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove from collapsed line with brackets and text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemovingText")]
+        public virtual void RemoveFromCollapsedLineWithBracketsAndText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove from collapsed line with brackets and text", ((string[])(null)));
+#line 156
+this.ScenarioSetup(scenarioInfo);
+#line 157
+ testRunner.Given("Text to enter is \'asdf \'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 158
+  testRunner.And("Text to enter is \'{}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+  testRunner.And("Text to enter is \' qwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 160
+ testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 161
+  testRunner.And("I request folding for position starting at \'5\' \'0\' and ending at \'7\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+  testRunner.And("I move caret to column number \'9\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 163
+  testRunner.And("I hit backspace key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 164
+ testRunner.Then("I should see \'1\' lines", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 165
+  testRunner.And("Shown number of lines in the lines panel should be \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 166
+  testRunner.And("The \'0\' line should be equal to \'asdf  qwer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

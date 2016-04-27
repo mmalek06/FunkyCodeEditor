@@ -56,7 +56,6 @@ namespace CodeEditor.Views.Text {
             if (parts.Count == 0) {
                 return parts;
             }
-
             if (startPosition.Line == endPosition.Line) {
                 parts[0] = parts[0].Substring(startPosition.Column, endPosition.Column);
             } else {
