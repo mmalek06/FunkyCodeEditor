@@ -69,11 +69,11 @@ namespace CodeEditor.Algorithms.TextManipulation {
         #region methods
 
         private ChangeInLinesInfo RemoveFromActiveLine(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition) {
-            var lineToModify = lines[startingTextPosition.Line];
+            var currentLine = lines[startingTextPosition.Line];
             bool attachRest = startingTextPosition.Column < lines[startingTextPosition.Line].Length;
-            var firstPart = Cut(lineToModify, 0, startingTextPosition.Column - 1);
-            var secondPart = attachRest ? Cut(lineToModify, startingTextPosition.Column) : null;
-            var lineAfterRemove = secondPart != null ? VisualTextLine.MergeLines(new[] { firstPart, secondPart }, lineToModify.Index) : firstPart;
+            var firstPart = Cut(currentLine, 0, startingTextPosition.Column - 1);
+            var secondPart = attachRest ? Cut(currentLine, startingTextPosition.Column) : null;
+            var lineAfterRemove = secondPart != null ? VisualTextLine.MergeLines(new[] { firstPart, secondPart }, currentLine.Index) : firstPart;
 
             return new ChangeInLinesInfo {
                 LinesToChange = new Dictionary<TextPosition, VisualTextLine> {
@@ -84,10 +84,10 @@ namespace CodeEditor.Algorithms.TextManipulation {
         }
 
         private ChangeInLinesInfo DeleteFromActiveLine(IReadOnlyList<VisualTextLine> lines, TextPosition startingTextPosition) {
-            var lineToModify = lines[startingTextPosition.Line];
-            var firstPart = Cut(lineToModify, 0, startingTextPosition.Column);
-            var secondPart = Cut(lineToModify, startingTextPosition.Column + 1);
-            var lineAfterRemove = VisualTextLine.MergeLines(new[] { firstPart, secondPart }, lineToModify.Index);
+            var currentLine = lines[startingTextPosition.Line];
+            var firstPart = Cut(currentLine, 0, startingTextPosition.Column);
+            var secondPart = Cut(currentLine, startingTextPosition.Column + 1);
+            var lineAfterRemove = VisualTextLine.MergeLines(new[] { firstPart, secondPart }, currentLine.Index);
 
             return new ChangeInLinesInfo {
                 LinesToChange = new Dictionary<TextPosition, VisualTextLine> {
@@ -135,42 +135,60 @@ namespace CodeEditor.Algorithms.TextManipulation {
             };
         }
 
-        private VisualTextLine Cut(VisualTextLine line, int startIndex, int length = -1) {
-            if (length < 0) {
-                length = line.Length;
-            }
+        private VisualTextLine Cut(VisualTextLine line, int startIndex, int? count = null) {
+            int substringLength = count == null ? line.Length - startIndex : count.Value;
 
             if (line is CollapsedVisualTextLine) {
-                var charInfos = Enumerable.Range(startIndex, length).Select(index => line.GetCharInfoAt(index));
+                var charInfos = Enumerable.Range(startIndex, substringLength).Select(index => line.GetCharInfoAt(index));
 
                 if (charInfos.Any(info => !info.IsCharacter)) {
-                    return CutWithoutCollapse(charInfos, line, startIndex, length);
+                    return GetPartialLineBeforeCollapse(charInfos, line, startIndex, substringLength);
                 } else {
-                    return CutWithCollapse(line, startIndex, length);
+                    return GetPartialLineAfterCollapse(line, startIndex, substringLength);
                 }                
             } else {
-                return CutStandardLine(line, startIndex, length);
+                return CutStandardLine(line, startIndex, substringLength);
             }
         }
 
-        private VisualTextLine CutStandardLine(VisualTextLine line, int startIndex, int length) {
+        private VisualTextLine CutStandardLine(VisualTextLine line, int startIndex, int count) {
             string contents = line.GetStringContents()[0];
+            int length = count - startIndex;
+            string newText = string.Empty;
 
-            return VisualTextLine.Create(contents.Substring(startIndex, length - startIndex), line.Index);
+            if (startIndex + count == line.Length) {
+                newText = contents.Substring(startIndex);
+            } else {
+                newText = contents.Substring(startIndex, count - startIndex);
+            }
+
+            return VisualTextLine.Create(newText, line.Index);
         }
 
-        private VisualTextLine CutWithCollapse(VisualTextLine line, int startIndex, int length) {
-            var contents = line.GetStringContents();
-            string firstPart = contents[0].Substring(startIndex, length);
+        private VisualTextLine GetPartialLineAfterCollapse(VisualTextLine line, int startIndex, int count) {
+            string firstPart = line.RenderedText.Substring(startIndex, count);
 
-            return VisualTextLine.Create(contents.Skip(1).Take(contents.Count - 2), firstPart, contents.Last(), line.Index, EditorConfiguration.GetCollapseRepresentation());
+            return VisualTextLine.Create(firstPart, line.Index);
         }
 
-        private VisualTextLine CutWithoutCollapse(IEnumerable<CharInfo> charInfos, VisualTextLine line, int startIndex, int length) {
+        private VisualTextLine GetPartialLineBeforeCollapse(IEnumerable<CharInfo> charInfos, VisualTextLine line, int startIndex, int count) {
             var collapseInfo = charInfos.First(info => !info.IsCharacter);
-            var contents = line.GetStringContents();
-            string textBeforeCollapse = contents[0].Substring(startIndex, collapseInfo.PrevCharPosition.Column);
-            string textAfterCollapse = string.Join("", contents[0].Skip(collapseInfo.NextCharPosition.Column).Take(length));
+            var contents = line.RenderedText;
+            string textBeforeCollapse = string.Empty;
+
+            if (collapseInfo.PrevCharPosition.Column >= startIndex) {
+                textBeforeCollapse = contents.Substring(startIndex, collapseInfo.PrevCharPosition.Column);
+            } else {
+                textBeforeCollapse = contents.Substring(startIndex);
+            }
+
+            int diff = 0;
+
+            if (startIndex + count >= collapseInfo.NextCharPosition.Column) {
+                diff = (startIndex + count) - collapseInfo.NextCharPosition.Column;
+            }
+
+            string textAfterCollapse = string.Join("", contents.Skip(collapseInfo.NextCharPosition.Column).Take(diff));
 
             return VisualTextLine.Create(textBeforeCollapse + textAfterCollapse, line.Index);
         }

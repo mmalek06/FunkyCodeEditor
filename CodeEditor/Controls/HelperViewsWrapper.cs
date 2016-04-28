@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -36,12 +35,6 @@ namespace CodeEditor.Controls {
 
         #region event handlers
 
-        protected override void OnInitialized(EventArgs e) {
-            base.OnInitialized(e);
-            
-            InitEvents();
-        }
-
         protected override void OnRender(DrawingContext drawingContext) {
             drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
 
@@ -54,7 +47,7 @@ namespace CodeEditor.Controls {
             var m = (LinesRemovedMessage)message;
 
             foreach (var view in views) {
-                view.HandleLinesRemove(m.Count);
+                view.HandleLinesRemove(m);
             }
         }
 
@@ -83,10 +76,6 @@ namespace CodeEditor.Controls {
         #endregion
 
         #region methods
-
-        private void InitEvents() {
-            
-        }
 
         private void SetupViews() {
             linesView = new LinesView();

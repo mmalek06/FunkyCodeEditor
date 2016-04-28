@@ -461,7 +461,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 163
   testRunner.And("I request folding for position starting at \'5\' \'0\' and ending at \'7\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 164
-  testRunner.And("I move caret to column number \'9\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I move caret to column number \'10\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 165
   testRunner.And("I hit backspace key", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166

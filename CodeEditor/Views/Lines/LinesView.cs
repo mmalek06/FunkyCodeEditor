@@ -1,7 +1,6 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
@@ -30,15 +29,17 @@ namespace CodeEditor.Views.Lines {
 
         #region event handlers
 
-        public override void HandleLinesRemove(int count) {
-            int initialLinesCount = linesCount;
+        public override void HandleTextRemove(TextRemovedMessage message) {}
 
-            linesCount -= count;
+        public override void HandleLinesRemove(LinesRemovedMessage message) {
+            int initialLinesCount = message.Count;
 
-            while (count > 0) { 
+            linesCount -= message.Count;
+
+            while (message.Count > 0) { 
                 Pop();
 
-                count--;
+                message.Count--;
             }
 
             UpdateSize();
@@ -52,10 +53,10 @@ namespace CodeEditor.Views.Lines {
             }
         }
 
-        public void HandleFolding(FoldClickedMessage m) {
-            int diff = m.AreaBeforeFolding.EndPosition.Line - m.AreaBeforeFolding.StartPosition.Line;
+        public void HandleFolding(FoldClickedMessage message) {
+            int diff = message.AreaBeforeFolding.EndPosition.Line - message.AreaBeforeFolding.StartPosition.Line;
 
-            if (m.State == Algorithms.Folding.FoldingStates.FOLDED) {
+            if (message.State == Algorithms.Folding.FoldingStates.FOLDED) {
                 linesCount -= diff;
 
                 while (diff > 0) {

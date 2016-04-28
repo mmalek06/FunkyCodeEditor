@@ -21,11 +21,11 @@ namespace CodeEditor.Views.BaseClasses {
 
         #region event handlers
 
-        public virtual void HandleTextInput(TextAddedMessage message) { }
+        public abstract void HandleTextInput(TextAddedMessage message);
 
-        public virtual void HandleTextRemove(TextRemovedMessage message) { }
+        public abstract void HandleTextRemove(TextRemovedMessage message);
 
-        public virtual void HandleLinesRemove(int count) { }
+        public abstract void HandleLinesRemove(LinesRemovedMessage message);
 
         protected override void OnRender(DrawingContext drawingContext) =>
             drawingContext.DrawRectangle(bgBrush, null, new Rect(0, 0, GetWidth(), ActualHeight));

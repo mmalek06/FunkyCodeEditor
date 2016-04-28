@@ -68,7 +68,7 @@ namespace CodeEditor.Visuals {
         public override IReadOnlyList<string> GetStringContents() {
             var contents = new List<string>();
 
-            contents.Add(textBeforeCollapse + collapsedContent[0]);
+            contents.Add(textBeforeCollapse + (collapsedContent.Any() ? collapsedContent[0] : string.Empty));
             contents.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 1)
                               select text);
             contents[contents.Count - 1] += textAfterCollapse;
@@ -97,7 +97,7 @@ namespace CodeEditor.Visuals {
                     NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
                 };
             }
-            if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length) {
+            if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length && column < RenderedText.Length) {
                 return new CharInfo {
                     IsCharacter = true,
                     Character = RenderedText[column],

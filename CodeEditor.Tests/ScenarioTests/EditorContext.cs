@@ -72,8 +72,8 @@ namespace CodeEditor.Tests.ScenarioTests {
             Postbox.Instance.For(typeof(LinesRemovedMessage)).Invoke(message => {
                                 var linesRemovedMessage = message as LinesRemovedMessage;
 
-                                LinesView.HandleLinesRemove(linesRemovedMessage.Count);
-                                FoldingView.HandleLinesRemove(linesRemovedMessage.Count);
+                                LinesView.HandleLinesRemove(linesRemovedMessage);
+                                FoldingView.HandleLinesRemove(linesRemovedMessage);
                             })
                             .For(typeof(TextRemovedMessage)).Invoke(message => {
                                 var textRemovedMessage = message as TextRemovedMessage;
