@@ -28,7 +28,7 @@ namespace CodeEditor.Controls {
 
         #region properties
 
-        public TextPosition CaretPosition => caretView.CaretPosition;
+        public static InputViewsWrapper Instance;
 
         protected override int VisualChildrenCount => views.Count;
 
@@ -41,6 +41,7 @@ namespace CodeEditor.Controls {
         public InputViewsWrapper(InputPanel parent) : base() {
             master = parent;
             views = new List<LocalViewBase>();
+            Instance = this;
 
             Postbox.Instance.For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
         }
@@ -145,7 +146,7 @@ namespace CodeEditor.Controls {
         private void InitEvents() {
             GotFocus += textView.HandleGotFocus;
         }
-
+        
         private void ExecuteTextCommand(BaseTextViewCommand doCommand, BaseTextViewCommand undoCommand, EventArgs e) {
             doCommand.Execute(e);
             master.DoCommands.Push(doCommand);

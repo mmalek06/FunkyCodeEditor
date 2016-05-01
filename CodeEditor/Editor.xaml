@@ -21,7 +21,8 @@
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
-                      scroll:ScrollSynchronizer.ScrollGroup="Group1">
+                      scroll:ScrollSynchronizer.ScrollGroup="Group1"
+                      Focusable="False">
             <local:HelperViewsWrapper />
         </ScrollViewer>
         <ScrollViewer Grid.Row="0" Grid.Column="1"  
@@ -30,6 +31,7 @@
                       HorizontalScrollBarVisibility="Auto" 
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
+                      Focusable="False"
                       scroll:ScrollSynchronizer.ScrollGroup="Group1"
                       scroll:Autoscroll.AlwaysScrollToEnd="True">
             <local:InputPanel />

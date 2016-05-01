@@ -51,7 +51,11 @@ namespace CodeEditor.Views.Text {
 
         #region event handlers
 
-        public void HandleGotFocus(object sender, RoutedEventArgs e) => Focus();
+        public void HandleGotFocus(object sender, RoutedEventArgs e) {
+            Focus();
+
+            e.Handled = true;
+        }
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 

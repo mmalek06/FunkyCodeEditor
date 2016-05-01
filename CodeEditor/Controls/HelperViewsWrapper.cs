@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.Configuration;
 using CodeEditor.Messaging;
@@ -41,6 +42,12 @@ namespace CodeEditor.Controls {
             if (linesView == null && foldingView == null) {
                 SetupViews();
             }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e) {
+            var focusScope = FocusManager.GetFocusScope(this);
+
+            FocusManager.SetFocusedElement(focusScope, InputViewsWrapper.Instance);            
         }
 
         private void OnLineRemoved(object message) {

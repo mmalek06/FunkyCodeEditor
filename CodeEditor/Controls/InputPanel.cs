@@ -12,6 +12,8 @@ namespace CodeEditor.Controls {
 
         private InputViewsWrapper viewsWrapper;
 
+        private static InputPanel self;
+
         #endregion
 
         #region dependency properties
@@ -25,6 +27,8 @@ namespace CodeEditor.Controls {
         #endregion
 
         #region properties
+
+        public static InputPanel Instance => self;
 
         public string Text {
             get { return (string)GetValue(TextProperty); }
@@ -45,6 +49,7 @@ namespace CodeEditor.Controls {
             DoCommands = new AutoTrimmingStack<ICommand>(100);
             UndoCommands = new AutoTrimmingStack<ICommand>(100);
             Focusable = false;
+            self = this;
         }
 
         #endregion
