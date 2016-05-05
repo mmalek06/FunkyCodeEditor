@@ -1,5 +1,4 @@
-﻿using CodeEditor.Messaging;
-using TechTalk.SpecFlow;
+﻿using TechTalk.SpecFlow;
 
 namespace CodeEditor.Tests.ScenarioTests.Steps {
     [Binding]

@@ -459,7 +459,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 162
  testRunner.When("I enter text", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 163
-  testRunner.And("I request folding for position starting at \'5\' \'0\' and ending at \'7\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I request folding for position starting at \'5\' \'0\' and ending at \'6\' \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 164
   testRunner.And("I move caret to column number \'10\' in line \'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 165
