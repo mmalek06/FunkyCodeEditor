@@ -12,14 +12,37 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CodeEditor.Enums;
 
 namespace CodeEditor {
-    /// <summary>
-    /// Interaction logic for Editor.xaml
-    /// </summary>
     public partial class Editor : UserControl {
+
+        #region dependency properties
+
+        public static readonly DependencyProperty FormattingTypeProperty = DependencyProperty.Register(
+            "FormattingType",
+            typeof(FormattingType),
+            typeof(FormattingType),
+            null);
+
+        #endregion
+
+        #region properties
+
+        public FormattingType FormattingType {
+            get { return (FormattingType)GetValue(FormattingTypeProperty); }
+            set { SetValue(FormattingTypeProperty, FormattingType); }
+        }
+
+        #endregion
+
+        #region constructor
+
         public Editor() {
             InitializeComponent();
         }
+
+        #endregion
+
     }
 }

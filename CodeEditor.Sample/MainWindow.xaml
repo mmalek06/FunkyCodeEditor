@@ -1,0 +1,26 @@
+﻿<Window x:Class="CodeEditor.Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:editor="clr-namespace:CodeEditor;assembly=CodeEditor"
+        xmlns:local="clr-namespace:CodeEditor.Sample"
+        mc:Ignorable="d"
+        Title="Sample application" 
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <editor:Editor FormattingType="BRACKETS" Grid.Row="0" Grid.Column="0" />
+
+        <editor:Editor FormattingType="MARKUP" Grid.Row="1" Grid.Column="1" />
+
+    </Grid>
+</Window>

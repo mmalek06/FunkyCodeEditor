@@ -72,6 +72,7 @@
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Enums\CaretMoveDirection.cs" />
+    <Compile Include="Enums\FormattingType.cs" />
     <Compile Include="Enums\LanguageFormattingType.cs" />
     <Compile Include="Messaging\FoldClickedMessage.cs" />
     <Compile Include="Messaging\LinesRemovedMessage.cs" />
@@ -138,16 +139,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

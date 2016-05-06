@@ -34,7 +34,7 @@
                       Focusable="False"
                       scroll:ScrollSynchronizer.ScrollGroup="Group1"
                       scroll:Autoscroll.AlwaysScrollToEnd="True">
-            <local:InputPanel />
+            <local:InputPanel x:Name="InputPanel" />
         </ScrollViewer>
     </Grid>
 </UserControl>

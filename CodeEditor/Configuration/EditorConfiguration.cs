@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Algorithms.Parsing.WordTypes;
@@ -26,7 +25,7 @@ namespace CodeEditor.Configuration {
             return GetEditorBrush();
         }
 
-        internal static IEnumerable<IWordType> GetWordParsers() =>
+        public static IEnumerable<IWordType> GetWordParsers() =>
             new List<IWordType> {
                 new CollapseWordType(),
                 new DefinitionWordType(),
