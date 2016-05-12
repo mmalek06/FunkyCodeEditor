@@ -1,5 +1,5 @@
 ﻿namespace CodeEditor.Enums {
-    public enum FormattingType {
+    internal enum FormattingType {
         BRACKETS,
         MARKUP,
         WHITESPACE

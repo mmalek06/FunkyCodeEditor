@@ -45,7 +45,7 @@ namespace CodeEditor.Visuals {
 
         public override IReadOnlyList<SimpleTextSource> GetTextSources() => new[] { textSource };
 
-        public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Character = RenderedText[column] };
+        public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Text = RenderedText[column].ToString() };
 
         public override VisualTextLine CloneWithIndexChange(int index) => Create(RenderedText, index);
 

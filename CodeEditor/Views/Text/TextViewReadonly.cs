@@ -42,7 +42,15 @@ namespace CodeEditor.Views.Text {
             return newPosition;
         }
 
-        public char GetCharAt(TextPosition position) => ((VisualTextLine)visuals[position.Line]).GetCharInfoAt(position.Column).Character;
+        public char GetCharAt(TextPosition position) {
+            var info = ((VisualTextLine)visuals[position.Line]).GetCharInfoAt(position.Column);
+
+            if (info.IsCharacter) {
+                return info.Text[0];
+            } else {
+                return default(char);
+            }
+        }
 
         public int GetLineLength(int index) => visuals.Count == 0 ? 0 : ((VisualTextLine)visuals[index]).Length;
 

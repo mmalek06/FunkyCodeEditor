@@ -54,6 +54,12 @@ namespace CodeEditor.Controls {
 
         #endregion
 
+        #region public methods
+
+        public void SetUpMessaging() => viewsWrapper.SetUpMessaging();
+
+        #endregion
+
         #region event handlers
 
         protected override void OnInitialized(EventArgs e) {

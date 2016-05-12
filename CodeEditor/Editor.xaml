@@ -23,7 +23,7 @@
                       VerticalAlignment="Stretch"
                       scroll:ScrollSynchronizer.ScrollGroup="Group1"
                       Focusable="False">
-            <local:HelperViewsWrapper />
+            <local:HelperViewsWrapper x:Name="HelpersPanel" />
         </ScrollViewer>
         <ScrollViewer Grid.Row="0" Grid.Column="1"  
                       CanContentScroll="True" 

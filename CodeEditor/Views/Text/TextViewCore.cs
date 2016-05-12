@@ -23,13 +23,13 @@ namespace CodeEditor.Views.Text {
 
         #region fields
 
-        private TextUpdater updatingAlgorithm;
+        private TextUpdatingAlgorithm updatingAlgorithm;
 
-        private TextRemover removingAlgorithm;
+        private TextRemovingAlgorithm removingAlgorithm;
 
-        private TextCollapser collapsingAlgorithm;
+        private TextCollapsingAlgorithm collapsingAlgorithm;
 
-        private TextParser parsingAlgorithm;
+        private TextParsingAlgorithm parsingAlgorithm;
 
         private ICaretViewReadonly caretViewReader;
 
@@ -38,10 +38,10 @@ namespace CodeEditor.Views.Text {
         #region constructor
 
         public TextView(ICaretViewReadonly caretViewReader) : base() {
-            updatingAlgorithm = new TextUpdater();
-            removingAlgorithm = new TextRemover();
-            collapsingAlgorithm = new TextCollapser();
-            parsingAlgorithm = new TextParser();
+            updatingAlgorithm = new TextUpdatingAlgorithm();
+            removingAlgorithm = new TextRemovingAlgorithm();
+            collapsingAlgorithm = new TextCollapsingAlgorithm();
+            parsingAlgorithm = new TextParsingAlgorithm();
             this.caretViewReader = caretViewReader;
 
             visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
@@ -104,7 +104,8 @@ namespace CodeEditor.Views.Text {
         }
 
         public void CollapseText(FoldClickedMessage message) {
-            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.AreaBeforeFolding, GetScreenLines(), message.AreaBeforeFolding.StartPosition.Line);
+            var algorithm = CollapseRepresentationAlgorithmFactory.GetAlgorithm(ConfigManager.GetConfig(EditorCode).FormattingType);
+            var collapsedLine = collapsingAlgorithm.CollapseTextRange(message.AreaBeforeFolding, GetScreenLines(), algorithm);
             var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterCollapse(visuals.ToEnumerableOf<VisualTextLine>().ToList(), collapsedLine, message.AreaBeforeFolding);
 
             if (message.AreaBeforeFolding.StartPosition.Line != message.AreaBeforeFolding.EndPosition.Line) {

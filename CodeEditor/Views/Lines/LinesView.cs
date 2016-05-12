@@ -19,7 +19,7 @@ namespace CodeEditor.Views.Lines {
         #region constructor
 
         public LinesView() : base() {
-            bgBrush = EditorConfiguration.GetLinesColumnBrush();
+            bgBrush = SharedEditorConfiguration.GetLinesColumnBrush();
             linesCount = 1;
             formatter = TextFormatter.Create();
             paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = TextConfiguration.GetGlobalTextRunProperties() };
@@ -89,7 +89,7 @@ namespace CodeEditor.Views.Lines {
 
         #region methods
 
-        protected override double GetWidth() => EditorConfiguration.GetLinesColumnWidth();
+        protected override double GetWidth() => SharedEditorConfiguration.GetLinesColumnWidth();
 
         private void UpdateSize() {
             double h = linesCount * TextConfiguration.GetCharSize().Height;

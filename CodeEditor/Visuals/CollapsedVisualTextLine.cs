@@ -92,7 +92,7 @@ namespace CodeEditor.Visuals {
             if (column < textBeforeCollapse.Length) {
                 return new CharInfo {
                     IsCharacter = true,
-                    Character = textBeforeCollapse[column],
+                    Text = textBeforeCollapse[column].ToString(),
                     PrevCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index),
                     NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
                 };
@@ -100,7 +100,7 @@ namespace CodeEditor.Visuals {
             if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length && column < RenderedText.Length) {
                 return new CharInfo {
                     IsCharacter = true,
-                    Character = RenderedText[column],
+                    Text = RenderedText[column].ToString(),
                     PrevCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index),
                     NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
                 };
@@ -108,6 +108,7 @@ namespace CodeEditor.Visuals {
 
             return new CharInfo {
                 IsCharacter = false,
+                Text = "{...}",
                 PrevCharPosition = new Core.DataStructures.TextPosition(column: textBeforeCollapse.Length, line: Index),
                 NextCharPosition = new Core.DataStructures.TextPosition(column: $"{textBeforeCollapse}{collapseRepresentation}".Length, line: Index)
             };

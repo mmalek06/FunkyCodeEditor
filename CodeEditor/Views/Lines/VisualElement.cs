@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Media;
 using CodeEditor.Configuration;
-using CodeEditor.Core.Extensions;
 
 namespace CodeEditor.Views.Lines {
     internal class VisualElement : DrawingVisual {
@@ -18,8 +17,8 @@ namespace CodeEditor.Views.Lines {
         #region public methods
 
         public void Redraw(int num) {
-            var fontColor = EditorConfiguration.GetLinesColumnFontColor();
-            var typeface = EditorConfiguration.GetTypeface();
+            var fontColor = SharedEditorConfiguration.GetLinesColumnFontColor();
+            var typeface = SharedEditorConfiguration.GetTypeface();
             double fontHeight = TextConfiguration.GetCharSize().Height;
 
             using (var drawingContext = RenderOpen()) {

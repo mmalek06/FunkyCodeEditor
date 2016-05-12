@@ -9,7 +9,7 @@ using CodeEditor.Views.Text;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.Selection {
-    internal class TextSelector {
+    internal class TextSelectionAlgorithm {
 
         #region fields
 
@@ -23,7 +23,7 @@ namespace CodeEditor.Algorithms.Selection {
 
         #region constructor
 
-        public TextSelector(ICaretViewReadonly caretViewReader, ITextViewReadonly textViewReader, SelectionView parent) {
+        public TextSelectionAlgorithm(ICaretViewReadonly caretViewReader, ITextViewReadonly textViewReader, SelectionView parent) {
             this.caretViewReader = caretViewReader;
             this.textViewReader = textViewReader;
             this.parent = parent;
@@ -187,7 +187,7 @@ namespace CodeEditor.Algorithms.Selection {
             for (int i = clickPosition.Column; i >= 0; i--) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
-                if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Character)) {
+                if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Text[0])) {
                     startColumn = i;
                 } else {
                     break;
@@ -197,7 +197,7 @@ namespace CodeEditor.Algorithms.Selection {
             for (int i = clickPosition.Column; i < lineLength; i++) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
-                if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Character)) {
+                if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Text[0])) {
                     endColumn = i + 1;
                 } else {
                     break;
@@ -220,7 +220,7 @@ namespace CodeEditor.Algorithms.Selection {
             for (int i = clickPosition.Column; i >= 0; i--) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
-                if (!charInfo.IsCharacter && !char.IsLetterOrDigit(charInfo.Character)) {
+                if (!charInfo.IsCharacter && !char.IsLetterOrDigit(charInfo.Text[0])) {
                     startColumn = i;
                 } else {
                     break;
@@ -230,7 +230,7 @@ namespace CodeEditor.Algorithms.Selection {
             for (int i = clickPosition.Column; i < lineLength; i++) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
-                if (!charInfo.IsCharacter && !char.IsLetterOrDigit(charInfo.Character)) {
+                if (!charInfo.IsCharacter && !char.IsLetterOrDigit(charInfo.Text[0])) {
                     endColumn = i + 1;
                 } else {
                     break;

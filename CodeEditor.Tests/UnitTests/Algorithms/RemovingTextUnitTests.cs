@@ -9,11 +9,11 @@ using CodeEditor.Visuals;
 namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
     public class RemovingTextUnitTests {
-        private static TextRemover algorithm;
+        private static TextRemovingAlgorithm algorithm;
 
         [ClassInitialize]
         public static void Initialize(TestContext context) {
-            algorithm = new TextRemover();
+            algorithm = new TextRemovingAlgorithm();
         }
 
         [TestMethod]

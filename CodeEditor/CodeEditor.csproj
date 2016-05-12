@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,9 +59,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithms\Folding\FoldingAlgorithmFactory.cs" />
     <Compile Include="Algorithms\Folding\MarkupFoldingAlgorithm.cs" />
+    <Compile Include="Algorithms\Folding\WhitespaceFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Parsing\ParsingInfo.cs" />
-    <Compile Include="Algorithms\Parsing\TextParser.cs" />
+    <Compile Include="Algorithms\Parsing\TextParsingAlgorithm.cs" />
     <Compile Include="Algorithms\Parsing\WordTypes\TextType.cs" />
     <Compile Include="Algorithms\Parsing\WordTypes\CollapseWordType.cs" />
     <Compile Include="Algorithms\Parsing\WordTypes\DefinitionWordType.cs" />
@@ -66,14 +72,23 @@
     <Compile Include="Algorithms\Parsing\WordTypes\StdWordType.cs" />
     <Compile Include="Algorithms\Parsing\WordTypes\StringWordType.cs" />
     <Compile Include="Algorithms\Selection\SelectionInfo.cs" />
-    <Compile Include="Algorithms\Selection\TextSelector.cs" />
-    <Compile Include="Algorithms\TextManipulation\TextCollapser.cs" />
-    <Compile Include="Configuration\EditorConfiguration.cs" />
+    <Compile Include="Algorithms\Selection\TextSelectionAlgorithm.cs" />
+    <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\BracketsRepresentationAlgorithm.cs" />
+    <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\CollapseRepresentationFactory.cs" />
+    <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\ICollapseRepresentation.cs" />
+    <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\MarkupRepresentationAlgorithm.cs" />
+    <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\WhitespaceRepresentationAlgorithm.cs" />
+    <Compile Include="Algorithms\TextManipulation\MainAlgorithms\TextCollapsingAlgorithm.cs" />
+    <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\SharedEditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Enums\CaretMoveDirection.cs" />
     <Compile Include="Enums\FormattingType.cs" />
-    <Compile Include="Enums\LanguageFormattingType.cs" />
+    <Compile Include="Enums\SupportedLanguages.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Languages\LanguageFeatureInfo.cs" />
+    <Compile Include="Messaging\EditorSettingsChangedMessage.cs" />
     <Compile Include="Messaging\FoldClickedMessage.cs" />
     <Compile Include="Messaging\LinesRemovedMessage.cs" />
     <Compile Include="Controls\HelperViewsWrapper.cs" />
@@ -98,7 +113,7 @@
     <Compile Include="Views\BaseClasses\HelperViewBase.cs" />
     <Compile Include="Algorithms\Folding\BracketsFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Folding\IFoldingAlgorithm.cs" />
-    <Compile Include="Algorithms\TextManipulation\Autoformatting.cs" />
+    <Compile Include="Algorithms\TextManipulation\MainAlgorithms\TextAutoformattingAlgorithm.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CaretMoveCommand.cs" />
     <Compile Include="Commands\EnterTextCommand.cs" />
@@ -122,11 +137,11 @@
     <Compile Include="Views\Folding\VisualElementSymbol.cs" />
     <Compile Include="Views\Selection\VisualElement.cs" />
     <Compile Include="Views\Selection\SelectionViewCore.cs" />
-    <Compile Include="Algorithms\TextManipulation\ChangeInLinesInfo.cs" />
+    <Compile Include="Algorithms\TextManipulation\MainAlgorithms\ChangeInLinesInfo.cs" />
     <Compile Include="TextProperties\Properties.cs" />
     <Compile Include="Views\Text\TextViewReadonly.cs" />
-    <Compile Include="Algorithms\TextManipulation\TextRemover.cs" />
-    <Compile Include="Algorithms\TextManipulation\TextUpdater.cs" />
+    <Compile Include="Algorithms\TextManipulation\MainAlgorithms\TextRemovingAlgorithm.cs" />
+    <Compile Include="Algorithms\TextManipulation\MainAlgorithms\TextUpdatingAlgorithm.cs" />
     <Compile Include="Views\BaseClasses\InputViewBase.cs" />
     <Compile Include="TextProperties\SimpleParagraphProperties.cs" />
     <Compile Include="Controls\InputViewsWrapper.cs" />
@@ -162,6 +177,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Languages\LanguageFeatures.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

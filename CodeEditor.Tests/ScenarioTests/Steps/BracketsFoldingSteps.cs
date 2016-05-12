@@ -14,7 +14,7 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
             var message = GetBracketFoldClickedMessage(columnStart, lineStart, columnEnd, lineEnd, FoldingStates.FOLDED);
 
             Common.Context.TextView.HandleTextFolding(message);
-            Postbox.Instance.Send(message);
+            Common.Context.Postbox.Put(message);
         }
 
         [When(@"I request unfolding for position starting at '(.*)' '(.*)' and ending at '(.*)' '(.*)'")]
@@ -22,7 +22,7 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
             var message = GetBracketFoldClickedMessage(columnStart, lineStart, columnEnd, lineEnd, FoldingStates.EXPANDED);
 
             Common.Context.TextView.HandleTextFolding(message);
-            Postbox.Instance.Send(message);
+            Common.Context.Postbox.Put(message);
         }
 
         #endregion

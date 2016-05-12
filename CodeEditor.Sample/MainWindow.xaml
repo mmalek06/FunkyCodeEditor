@@ -18,9 +18,8 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <editor:Editor FormattingType="BRACKETS" Grid.Row="0" Grid.Column="0" />
+        <editor:Editor CodingLang="JS"  Grid.Row="0" Grid.Column="0" />
 
-        <editor:Editor FormattingType="MARKUP" Grid.Row="1" Grid.Column="1" />
-
+        <editor:Editor CodingLang="HTML" Grid.Row="1" Grid.Column="1" />
     </Grid>
 </Window>

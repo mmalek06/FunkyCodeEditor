@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -20,13 +21,19 @@ namespace CodeEditor.Views.Folding {
 
         #endregion
 
+        #region properties
+
+        private IFoldingAlgorithm FoldingAlgorithm =>
+            foldingAlgorithm == null ? FoldingAlgorithmFactory.CreateAlgorithm(ConfigManager.GetConfig(EditorCode).Language) : foldingAlgorithm;
+
+        #endregion
+
         #region constructor
 
         public FoldingView() : base() {
-            bgBrush = EditorConfiguration.GetFoldingColumnBrush();
-            foldingAlgorithm = EditorConfiguration.GetFoldingAlgorithm();
+            bgBrush = SharedEditorConfiguration.GetFoldingColumnBrush();
             foldingPositions = new Dictionary<FoldingPositionInfo, FoldingPositionInfo>();
-            Margin = new Thickness(EditorConfiguration.GetLinesColumnWidth(), 0, 0, 0);
+            Margin = new Thickness(SharedEditorConfiguration.GetLinesColumnWidth(), 0, 0, 0);
         }
 
         #endregion
@@ -37,7 +44,7 @@ namespace CodeEditor.Views.Folding {
             if (message.Text == TextProperties.Properties.NEWLINE) {
                 MoveFoldsDown(message.PrevCaretPosition);
             } else {
-                if (!foldingAlgorithm.CanRun(message.Text)) {
+                if (!FoldingAlgorithm.CanRun(message.Text)) {
                     return;
                 }
 
@@ -52,7 +59,7 @@ namespace CodeEditor.Views.Folding {
                 MoveFoldsUp(message.NewCaretPosition);
             } else {
                 var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
-                var removedKey = foldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
+                var removedKey = FoldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
 
                 if (removedKey == null) {
                     return;
@@ -81,19 +88,19 @@ namespace CodeEditor.Views.Folding {
                     areaBeforeFolding.StartPosition = folding.Position;
                     areaBeforeFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
                     areaAfterFolding.StartPosition = folding.Position;
-                    areaAfterFolding.EndPosition = new TextPosition(column: folding.Position.Column + foldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
+                    areaAfterFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
                 } else {
                     areaAfterFolding.StartPosition = folding.Position;
                     areaAfterFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
                     areaBeforeFolding.StartPosition = folding.Position;
-                    areaBeforeFolding.EndPosition = new TextPosition(column: folding.Position.Column + foldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
+                    areaBeforeFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
                 }
 
-                Postbox.Instance.Send(new FoldClickedMessage {
+                Postbox.Put(new FoldClickedMessage {
                     AreaBeforeFolding = areaBeforeFolding,
                     AreaAfterFolding = areaAfterFolding,
-                    ClosingTag = foldingAlgorithm.GetClosingTag(),
-                    OpeningTag = foldingAlgorithm.GetOpeningTag(),
+                    ClosingTag = FoldingAlgorithm.GetClosingTag(),
+                    OpeningTag = FoldingAlgorithm.GetOpeningTag(),
                     State = state
                 });
                 folding.State = state;
@@ -106,10 +113,10 @@ namespace CodeEditor.Views.Folding {
 
         #region methods
 
-        protected override double GetWidth() => EditorConfiguration.GetFoldingColumnWidth();
+        protected override double GetWidth() => SharedEditorConfiguration.GetFoldingColumnWidth();
 
         private void RunFolding(string text, TextPosition caretPosition) {
-            var folds = foldingAlgorithm.CreateFolds(text, new TextPosition(column: caretPosition.Column - 1, line: caretPosition.Line), GetPotentialFoldingPositions());
+            var folds = FoldingAlgorithm.CreateFolds(text, new TextPosition(column: caretPosition.Column - 1, line: caretPosition.Line), GetPotentialFoldingPositions());
 
             if (folds == null || !folds.Any()) {
                 return;
@@ -150,7 +157,7 @@ namespace CodeEditor.Views.Folding {
         }
 
         private void MakeFoldsUnique() {
-            var repeatingFolds = foldingAlgorithm.GetRepeatingFolds(foldingPositions.ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position));
+            var repeatingFolds = FoldingAlgorithm.GetRepeatingFolds(foldingPositions.ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position));
 
             foreach (var repeatingKey in repeatingFolds) {
                 var position = foldingPositions.First(pair => pair.Key.Position == repeatingKey);
@@ -191,13 +198,13 @@ namespace CodeEditor.Views.Folding {
                 return;
             }
 
-            if (foldingAlgorithm.IsOpeningTag(removedText)) {
+            if (FoldingAlgorithm.IsOpeningTag(removedText)) {
                 if (foldingPositions[info] == null || foldingPositions[info].Deleted || foldingPositions[info].Position == null) {
                     foldingPositions.Remove(info);
                 } else {
                     info.Deleted = true;
                 }
-            } else if (foldingAlgorithm.IsCollapseRepresentation(removedText)) {
+            } else if (FoldingAlgorithm.IsCollapseRepresentation(removedText)) {
                 foldingPositions.Remove(info);
             } else {
                 foldingPositions[info].Deleted = true;

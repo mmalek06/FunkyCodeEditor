@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
-    internal class TextCollapser {
+    internal class TextCollapsingAlgorithm {
 
         #region public methods
 
@@ -39,9 +38,10 @@ namespace CodeEditor.Algorithms.TextManipulation {
             return linesToRedraw;
         }
 
-        public VisualTextLine CollapseTextRange(TextRange area, IReadOnlyList<string> lines, int collapsedLineIndex) {
+        public VisualTextLine CollapseTextRange(TextRange area, IReadOnlyList<string> lines, ICollapseRepresentation collapseRepresentationAlgorithm) {
             string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
             string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
+            int collapsedLineIndex = area.StartPosition.Line;
             var linesToStartFrom = lines.Skip(area.StartPosition.Line);
             var middlePart = new List<string>();
             int start = area.StartPosition.Line;
@@ -63,7 +63,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 middlePart.Add(string.Join("", lines[start].Skip(area.StartPosition.Column).Take((1 + area.EndPosition.Column) - area.StartPosition.Column)));
             }
 
-            return VisualTextLine.Create(middlePart, precedingText, followingText, collapsedLineIndex, EditorConfiguration.GetCollapseRepresentation());
+            return VisualTextLine.Create(middlePart, precedingText, followingText, collapsedLineIndex, collapseRepresentationAlgorithm.GetCollapseRepresentation());
         }
 
         public IEnumerable<VisualTextLine> ExpandTextRange(TextRange area, IEnumerable<string> lines) =>

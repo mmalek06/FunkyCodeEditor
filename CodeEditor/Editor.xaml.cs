@@ -12,26 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CodeEditor.Configuration;
 using CodeEditor.Enums;
+using CodeEditor.Languages;
 
 namespace CodeEditor {
     public partial class Editor : UserControl {
 
         #region dependency properties
 
-        public static readonly DependencyProperty FormattingTypeProperty = DependencyProperty.Register(
-            "FormattingType",
-            typeof(FormattingType),
-            typeof(FormattingType),
+        public static readonly DependencyProperty CodingLangProperty = DependencyProperty.Register(
+            "CodingLang",
+            typeof(SupportedLanguages),
+            typeof(SupportedLanguages),
             null);
 
         #endregion
 
         #region properties
 
-        public FormattingType FormattingType {
-            get { return (FormattingType)GetValue(FormattingTypeProperty); }
-            set { SetValue(FormattingTypeProperty, FormattingType); }
+        public SupportedLanguages CodingLang {
+            get { return (SupportedLanguages)GetValue(CodingLangProperty); }
+            set { SetValue(CodingLangProperty, value); }
         }
 
         #endregion
@@ -40,6 +42,25 @@ namespace CodeEditor {
 
         public Editor() {
             InitializeComponent();
+        }
+
+        #endregion
+
+        #region events
+
+        protected override void OnInitialized(EventArgs e) {
+            base.OnInitialized(e);
+            
+            int code = GetHashCode();
+            var formattingType = LanguageFeatureInfo.GetFormattingType(CodingLang);
+
+            ConfigManager.AddEditorConfig(code, new Config {
+                Language = CodingLang,
+                FormattingType = formattingType
+            });
+
+            HelpersPanel.SetUpMessaging();
+            InputPanel.SetUpMessaging();
         }
 
         #endregion

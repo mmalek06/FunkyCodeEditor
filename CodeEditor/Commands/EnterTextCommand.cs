@@ -55,7 +55,7 @@ namespace CodeEditor.Commands {
             UpdateCommandState(AfterCommandExecutedState);
 
             caretView.HandleTextChange(e.Text);
-            Postbox.Instance.Send(new TextAddedMessage {
+            textView.Postbox.Put(new TextAddedMessage {
                 Text = e.Text,
                 PrevCaretPosition = prevCaretPosition,
                 NewCaretPosition = caretViewReader.CaretPosition

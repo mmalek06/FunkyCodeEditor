@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.Configuration;
+using CodeEditor.Extensions;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 using CodeEditor.Views.Folding;
@@ -14,9 +16,15 @@ namespace CodeEditor.Controls {
 
         #region fields
 
+        private Postbox postbox;
+
         private List<HelperViewBase> views;
+
         private LinesView linesView;
+
         private FoldingView foldingView;
+
+        private List<Action> onComponentReadyActions;
 
         #endregion
 
@@ -25,11 +33,20 @@ namespace CodeEditor.Controls {
         public HelperViewsWrapper() : base() {
             views = new List<HelperViewBase>();
             Orientation = Orientation.Horizontal;
+            onComponentReadyActions = new List<Action>();
+        }
 
-            Postbox.Instance.For(typeof(TextAddedMessage)).Invoke(OnTextAdded)
-                            .For(typeof(TextRemovedMessage)).Invoke(OnTextRemoved)
-                            .For(typeof(LinesRemovedMessage)).Invoke(OnLineRemoved)
-                            .For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
+        #endregion
+
+        #region public methods
+
+        public void SetUpMessaging() {
+            postbox = Postbox.InstanceFor(this.GetEditor().GetHashCode());
+
+            postbox.For(typeof(TextAddedMessage)).Invoke(OnTextAdded)
+                   .For(typeof(TextRemovedMessage)).Invoke(OnTextRemoved)
+                   .For(typeof(LinesRemovedMessage)).Invoke(OnLineRemoved)
+                   .For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
         }
 
         #endregion
@@ -37,7 +54,7 @@ namespace CodeEditor.Controls {
         #region event handlers
 
         protected override void OnRender(DrawingContext drawingContext) {
-            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
+            drawingContext.DrawRectangle(SharedEditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
 
             if (linesView == null && foldingView == null) {
                 SetupViews();
@@ -85,14 +102,21 @@ namespace CodeEditor.Controls {
         #region methods
 
         private void SetupViews() {
+            int editorCode = editorCode = this.GetEditor().GetHashCode();
+
             linesView = new LinesView();
             foldingView = new FoldingView();
 
             views.Add(linesView);
             views.Add(foldingView);
-
+            
             Children.Add(linesView);
             Children.Add(foldingView);
+
+            linesView.EditorCode = editorCode;
+            linesView.Postbox = postbox;
+            foldingView.EditorCode = editorCode;
+            foldingView.Postbox = postbox;
         }
 
         #endregion

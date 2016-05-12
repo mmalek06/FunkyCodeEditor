@@ -7,11 +7,11 @@ using ParseResultType = System.Collections.Generic.IEnumerable<System.Collection
 using ParseResultContents = System.Collections.Generic.List<System.Collections.Generic.List<CodeEditor.Algorithms.Parsing.ParsingInfo>>;
 
 namespace CodeEditor.Algorithms.Parsing {
-    internal class TextParser {
+    internal class TextParsingAlgorithm {
 
         #region fields
 
-        private static IEnumerable<IWordType> wordParsers = EditorConfiguration.GetWordParsers();
+        private static IEnumerable<IWordType> wordParsers = SharedEditorConfiguration.GetWordParsers();
 
         #endregion
 

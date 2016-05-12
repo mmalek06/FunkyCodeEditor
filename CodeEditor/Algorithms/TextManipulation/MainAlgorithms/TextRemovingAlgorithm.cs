@@ -8,7 +8,7 @@ using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {
-    internal class TextRemover {
+    internal class TextRemovingAlgorithm {
 
         #region public methods
 

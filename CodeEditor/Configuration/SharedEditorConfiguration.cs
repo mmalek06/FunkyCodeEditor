@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
-using CodeEditor.Algorithms.Folding;
 using CodeEditor.Algorithms.Parsing.WordTypes;
-using CodeEditor.Enums;
 
 namespace CodeEditor.Configuration {
-    internal static class EditorConfiguration {
+    internal static class SharedEditorConfiguration {
+
+        #region properties
 
         public static int GetLinesColumnWidth() => ((int)TextConfiguration.GetCharSize().Width) * 5;
 
@@ -42,20 +42,10 @@ namespace CodeEditor.Configuration {
             return Brushes.LightGray;
         }
 
-        public static Typeface GetTypeface() => 
+        public static Typeface GetTypeface() =>
             new Typeface(TextConfiguration.GetFontFamily(), TextConfiguration.GetFontStyle(), TextConfiguration.GetFontWeight(), TextConfiguration.GetFontStretch());
 
-        public static IFoldingAlgorithm GetFoldingAlgorithm() => new BracketsFoldingAlgorithm();
-
-        public static LanguageFormattingType GetFormattingType() => LanguageFormattingType.BRACKETS;
-
-        public static string GetCollapseRepresentation() {
-            if (GetFormattingType() == LanguageFormattingType.BRACKETS) {
-                return "{...}";
-            }
-
-            return string.Empty;
-        }
+        #endregion
 
     }
 }

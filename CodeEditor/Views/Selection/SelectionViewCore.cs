@@ -16,7 +16,7 @@ namespace CodeEditor.Views.Selection {
 
         private TextPosition lastSelectionEnd;
 
-        private TextSelector selectionAlgorithm;
+        private TextSelectionAlgorithm selectionAlgorithm;
 
         private bool isSelecting;
 
@@ -24,7 +24,7 @@ namespace CodeEditor.Views.Selection {
 
         #region properties
 
-        public TextSelector SelectionAlgorithm => selectionAlgorithm;
+        public TextSelectionAlgorithm SelectionAlgorithm => selectionAlgorithm;
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace CodeEditor.Views.Selection {
 
         public SelectionView(ITextViewReadonly textViewReader, ICaretViewReadonly caretViewReader) : base() {
             isSelecting = false;
-            selectionAlgorithm = new TextSelector(caretViewReader, textViewReader, this);
+            selectionAlgorithm = new TextSelectionAlgorithm(caretViewReader, textViewReader, this);
         }
 
         #endregion

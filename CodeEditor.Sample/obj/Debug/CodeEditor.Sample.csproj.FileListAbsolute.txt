@@ -16,3 +16,6 @@ E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\obj\Debug\CodeEditor.Sample.Pro
 E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\obj\Debug\CodeEditor.Sample.csproj.GenerateResource.Cache
 E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\obj\Debug\CodeEditor.Sample.exe
 E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\obj\Debug\CodeEditor.Sample.pdb
+E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\bin\Debug\Languages\LanguageFeatures.json
+E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\bin\Debug\Newtonsoft.Json.dll
+E:\projekty\cs\FunkyCodeEditor\CodeEditor.Sample\bin\Debug\Newtonsoft.Json.xml

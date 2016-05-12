@@ -33,11 +33,21 @@ namespace CodeEditor.Tests.ScenarioTests {
 
         internal TextSelectionCommand SelectionCommand { get; set; }
 
+        internal Postbox Postbox { get; set; }
+
+        internal const int EditorCode = 1;
+
         #endregion
 
         #region constructor
 
         public EditorContext() {
+            Postbox = Postbox.InstanceFor(EditorCode);
+            Configuration.ConfigManager.AddEditorConfig(EditorCode, new Configuration.Config {
+                Language = Enums.SupportedLanguages.JS,
+                FormattingType = Enums.FormattingType.BRACKETS
+            });
+
             TextsToEnter = new List<string>();
             CaretView = new CaretView();
             TextView = new TextView(CaretView);
@@ -49,6 +59,17 @@ namespace CodeEditor.Tests.ScenarioTests {
             CaretMoveCommand = new CaretMoveCommand(CaretView, TextView);
             SelectionCommand = new TextSelectionCommand(TextView, SelectionView, CaretView);
 
+            CaretView.EditorCode = EditorCode;
+            CaretView.Postbox = Postbox;
+            TextView.EditorCode = EditorCode;
+            TextView.Postbox = Postbox;
+            SelectionView.EditorCode = EditorCode;
+            SelectionView.Postbox = Postbox;
+            LinesView.EditorCode = EditorCode;
+            LinesView.Postbox = Postbox;
+            FoldingView.EditorCode = EditorCode;
+            FoldingView.Postbox = Postbox;
+
             InitEvents();
             ForceDraw();
         }
@@ -58,10 +79,12 @@ namespace CodeEditor.Tests.ScenarioTests {
         #region public methods
 
         public void RemoveMessages() {
-            Postbox.Instance.RemoveListener(typeof(LinesRemovedMessage))
-                            .RemoveListener(typeof(TextRemovedMessage))
-                            .RemoveListener(typeof(TextAddedMessage))
-                            .RemoveListener(typeof(FoldClickedMessage));
+            var postbox = Postbox.InstanceFor(EditorCode);
+
+            postbox.RemoveListener(typeof(LinesRemovedMessage))
+                   .RemoveListener(typeof(TextRemovedMessage))
+                   .RemoveListener(typeof(TextAddedMessage))
+                   .RemoveListener(typeof(FoldClickedMessage));
         }
 
         #endregion
@@ -69,25 +92,27 @@ namespace CodeEditor.Tests.ScenarioTests {
         #region methods
 
         private void InitEvents() {
-            Postbox.Instance.For(typeof(LinesRemovedMessage)).Invoke(message => {
-                                var linesRemovedMessage = message as LinesRemovedMessage;
+            var postbox = Postbox.InstanceFor(EditorCode);
 
-                                LinesView.HandleLinesRemove(linesRemovedMessage);
-                                FoldingView.HandleLinesRemove(linesRemovedMessage);
-                            })
-                            .For(typeof(TextRemovedMessage)).Invoke(message => {
-                                var textRemovedMessage = message as TextRemovedMessage;
+            postbox.For(typeof(LinesRemovedMessage)).Invoke(message => {
+                       var linesRemovedMessage = message as LinesRemovedMessage;
 
-                                LinesView.HandleTextRemove(textRemovedMessage);
-                                FoldingView.HandleTextRemove(textRemovedMessage);
-                            })
-                            .For(typeof(TextAddedMessage)).Invoke(message => {
-                                var textAddedMessage = message as TextAddedMessage;
+                       LinesView.HandleLinesRemove(linesRemovedMessage);
+                       FoldingView.HandleLinesRemove(linesRemovedMessage);
+                   })
+                   .For(typeof(TextRemovedMessage)).Invoke(message => {
+                       var textRemovedMessage = message as TextRemovedMessage;
 
-                                LinesView.HandleTextInput(textAddedMessage);
-                                FoldingView.HandleTextInput(textAddedMessage);
-                            })
-                            .For(typeof(FoldClickedMessage)).Invoke(message => LinesView.HandleFolding(message as FoldClickedMessage));
+                       LinesView.HandleTextRemove(textRemovedMessage);
+                       FoldingView.HandleTextRemove(textRemovedMessage);
+                   })
+                   .For(typeof(TextAddedMessage)).Invoke(message => {
+                       var textAddedMessage = message as TextAddedMessage;
+
+                       LinesView.HandleTextInput(textAddedMessage);
+                       FoldingView.HandleTextInput(textAddedMessage);
+                   })
+                   .For(typeof(FoldClickedMessage)).Invoke(message => LinesView.HandleFolding(message as FoldClickedMessage));
         }
 
         private void ForceDraw() {

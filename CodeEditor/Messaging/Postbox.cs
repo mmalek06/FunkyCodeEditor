@@ -10,21 +10,7 @@ namespace CodeEditor.Messaging {
 
         private Type lastMessageType;
 
-        private static Postbox self;
-
-        #endregion
-
-        #region properties
-
-        public static Postbox Instance {
-            get {
-                if (self == null) {
-                    self = new Postbox();
-                }
-
-                return self;
-            }
-        }
+        private static Dictionary<int, Postbox> instances;
 
         #endregion
 
@@ -32,6 +18,17 @@ namespace CodeEditor.Messaging {
 
         private Postbox() {
             messageToMethodsMap = new Dictionary<Type, List<Action<object>>>();
+        }
+
+        public static Postbox InstanceFor(int code) {
+            if (instances == null) {
+                instances = new Dictionary<int, Postbox>();
+            }
+            if (!instances.ContainsKey(code)) {
+                instances[code] = new Postbox();
+            }
+
+            return instances[code];
         }
 
         #endregion
@@ -54,7 +51,7 @@ namespace CodeEditor.Messaging {
             return this;
         }
 
-        public Postbox Send<TMessage>(TMessage message) {
+        public Postbox Put<TMessage>(TMessage message) {
             if (messageToMethodsMap.ContainsKey(typeof(TMessage))) {
                 foreach (var action in messageToMethodsMap[typeof(TMessage)]) {
                     action(message);

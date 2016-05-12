@@ -8,15 +8,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.UnitTests.Views {
     [TestClass]
-    public class TextViewCollapsingTextUnitTests {
+    public class TextViewCollapsingTextWithBracketsUnitTests {
         private TextView tv;
 
         private CaretView cv;
 
         [TestInitialize]
         public void InitializeTest() {
+            const int EditorCode = 1;
+
+            Configuration.ConfigManager.AddEditorConfig(EditorCode, new Configuration.Config {
+                Language = Enums.SupportedLanguages.JS,
+                FormattingType = Enums.FormattingType.BRACKETS
+            });
+
             cv = new CaretView();
             tv = new TextView(cv);
+
+            cv.EditorCode = EditorCode;
+            tv.EditorCode = EditorCode;
         }
 
         [TestMethod]

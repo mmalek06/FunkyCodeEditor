@@ -7,7 +7,7 @@ namespace CodeEditor.TextProperties {
 
         public bool IsCharacter { get; set; }
 
-        public char Character { get; set; }
+        public string Text { get; set; }
 
         public TextPosition NextCharPosition { get; set; }
 

@@ -8,7 +8,7 @@ namespace CodeEditor.Views.BaseClasses {
         #region fields
 
         protected Brush bgBrush;
-
+        
         #endregion
 
         #region constructor

@@ -90,12 +90,12 @@ namespace CodeEditor.Commands {
                 textView.RemoveText(selectionArea);
             }
             if (textViewReader.LinesCount < linesCountBeforeRemove) {
-                Postbox.Instance.Send(new LinesRemovedMessage {
+                textView.Postbox.Put(new LinesRemovedMessage {
                     Count = removedLinesCount
                 });
             }
 
-            Postbox.Instance.Send(new TextRemovedMessage {
+            textView.Postbox.Put(new TextRemovedMessage {
                 Key = e.Key,
                 OldCaretPosition = caretViewReader.CaretPosition,
                 NewCaretPosition = positionAfterRemove,
@@ -138,7 +138,7 @@ namespace CodeEditor.Commands {
                 var info = line.GetCharInfoAt(caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0);
 
                 if (!info.IsCharacter) {
-                    return EditorConfiguration.GetCollapseRepresentation();
+                    return info.Text;
                 } 
 
                 return textViewReader.GetCharAt(

@@ -5,12 +5,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
     [TestClass]
-    public class TextCollapsingUnitTests {
-        private TextCollapser tc;
+    public class TextWithBracketsCollapsingUnitTests {
+        private TextCollapsingAlgorithm tc;
+
+        private ICollapseRepresentation ra;
 
         [TestInitialize]
         public void InitializeTest() {
-            tc = new TextCollapser();
+            tc = new TextCollapsingAlgorithm();
+            ra = CollapseRepresentationAlgorithmFactory.GetAlgorithm(Enums.FormattingType.BRACKETS);
         }
 
         [TestMethod]
@@ -21,7 +24,12 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             string close = "}";
             string text3 = " xzcv";
             var lines = new[] { text1 + open, text2, close + text3 };
-            var line = tc.CollapseTextRange(new TextRange { StartPosition = new TextPosition(column: 5, line: 0), EndPosition = new TextPosition(column: 0, line: 2) }, lines, 0);
+            var line = tc.CollapseTextRange(
+                new TextRange {
+                    StartPosition = new TextPosition(column: 5, line: 0),
+                    EndPosition = new TextPosition(column: 0, line: 2) }, 
+                lines, 
+                ra);
 
             Assert.AreEqual(text1, string.Join("", line.RenderedText.Take(5)));
             Assert.AreEqual(text3, string.Join("", line.RenderedText.Skip(10)));
@@ -35,11 +43,12 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             string close = "}";
             string text3 = " xzcv";
             var lines = new[] { text1 + open + text2 + close + text3 };
-            var line = tc.CollapseTextRange(new TextRange {
-                StartPosition = new TextPosition(column: 5, line: 0),
-                EndPosition = new TextPosition(column: 6, line: 0) }, 
+            var line = tc.CollapseTextRange(
+                new TextRange {
+                    StartPosition = new TextPosition(column: 5, line: 0),
+                    EndPosition = new TextPosition(column: 6, line: 0) }, 
                 lines, 
-                0);
+                ra);
             string stringContents = line.GetStringContents()[0];
 
             Assert.AreEqual(text1, string.Join("", stringContents.Take(5)));
@@ -56,7 +65,12 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             string close = "}";
             string text3 = "zxcv";
             var lines = new[] { text1, open, text2, close, text3 };
-            var line = tc.CollapseTextRange(new TextRange { StartPosition = new TextPosition(column: 0, line: 1), EndPosition = new TextPosition(column: 0, line: 3) }, lines, 1);
+            var line = tc.CollapseTextRange(
+                new TextRange {
+                    StartPosition = new TextPosition(column: 0, line: 1),
+                    EndPosition = new TextPosition(column: 0, line: 3) }, 
+                lines, 
+                ra);
 
             Assert.AreEqual("{...}", line.RenderedText);
         }

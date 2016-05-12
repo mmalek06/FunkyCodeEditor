@@ -6,7 +6,7 @@ using System.Windows.Media;
 using CodeEditor.Commands;
 using CodeEditor.Configuration;
 using CodeEditor.Core.Controls;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.Extensions;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
@@ -18,10 +18,16 @@ namespace CodeEditor.Controls {
 
         #region fields
 
+        private Postbox postbox;
+
         private InputPanel master;
+
         private List<LocalViewBase> views;
+
         private TextView textView;
+
         private CaretView caretView;
+
         private SelectionView selectionView;
 
         #endregion
@@ -42,8 +48,16 @@ namespace CodeEditor.Controls {
             master = parent;
             views = new List<LocalViewBase>();
             Instance = this;
+        }
 
-            Postbox.Instance.For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
+        #endregion
+
+        #region public methods
+
+        public void SetUpMessaging() {
+            postbox = Postbox.InstanceFor(this.GetEditor().GetHashCode());
+
+            postbox.For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
         }
 
         #endregion
@@ -51,7 +65,7 @@ namespace CodeEditor.Controls {
         #region event handlers
 
         protected override void OnRender(DrawingContext drawingContext) {
-            drawingContext.DrawRectangle(EditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
+            drawingContext.DrawRectangle(SharedEditorConfiguration.GetEditorBrush(), null, new Rect(0, 0, ActualWidth, ActualHeight));
 
             if (textView == null && selectionView == null && caretView == null) {
                 SetupViews();
@@ -129,6 +143,8 @@ namespace CodeEditor.Controls {
         protected override Visual GetVisualChild(int index) => views[index];
 
         private void SetupViews() {
+            int editorCode = editorCode = this.GetEditor().GetHashCode();
+
             caretView = new CaretView();
             textView = new TextView(caretView);
             selectionView = new SelectionView(textView, caretView);
@@ -137,9 +153,12 @@ namespace CodeEditor.Controls {
                 view.Margin = new Thickness(2, 0, 0, 0);
                 view.HorizontalAlignment = HorizontalAlignment.Left;
                 view.VerticalAlignment = VerticalAlignment.Top;
-
+                
                 views.Add(view);
                 Children.Add(view);
+
+                view.EditorCode = editorCode;
+                view.Postbox = postbox;
             }
         }
 

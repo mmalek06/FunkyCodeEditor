@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeEditor.Algorithms.TextManipulation {
-    internal class Autoformatting {
+    internal class TextAutoformattingAlgorithm {
     }
 }

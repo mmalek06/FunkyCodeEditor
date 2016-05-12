@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using CodeEditor.Core.DataStructures;
 
 namespace CodeEditor.Algorithms.TextManipulation {
-    internal class TextUpdater {
+    internal class TextUpdatingAlgorithm {
 
         #region public properties
 
@@ -16,7 +16,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         #region constructor
 
-        public TextUpdater() {
+        public TextUpdatingAlgorithm() {
             SpecialCharsRegex = new Regex("[\a|\b|\n|\r|\f|\t|\v]");
         }
 
