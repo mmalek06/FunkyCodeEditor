@@ -1,28 +1,28 @@
 ﻿using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Views {
-    [TestClass]
+    [TestFixture]
     public class TextViewAddingTextUnitTests {
         private TextView tv;
 
         private CaretView cv;
 
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest() {
             cv = new CaretView();
             tv = new TextView(cv);
         }
 
-        [TestMethod]
+        [Test]
         public void FourCharsPasted_LinesShouldBe1() {
             tv.EnterText("asdf");
 
             Assert.AreEqual(1, tv.LinesCount);
         }
 
-        [TestMethod]
+        [Test]
         public void FourCharsEntered_LineLengthShouldBe4() {
             tv.EnterText("a");
             tv.EnterText("b");
@@ -32,7 +32,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             Assert.AreEqual(4, tv.GetLineLength(0));
         }
 
-        [TestMethod]
+        [Test]
         public void ThreeLinesAddedCharsEntered_LinesShouldBe3() {
             tv.EnterText("a");
             tv.EnterText("s");
@@ -48,7 +48,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             Assert.AreEqual(3, tv.LinesCount);
         }
 
-        [TestMethod]
+        [Test]
         public void ThreeLinesPasted_LinesShouldBe3() {
             tv.EnterText("asdf");
             tv.EnterText("\r");

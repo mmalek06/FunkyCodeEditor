@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CodeEditor.Commands;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
