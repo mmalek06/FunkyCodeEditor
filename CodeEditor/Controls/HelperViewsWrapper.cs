@@ -63,8 +63,11 @@ namespace CodeEditor.Controls {
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
             var focusScope = FocusManager.GetFocusScope(this);
+            var editor = this.GetEditor();
+            int hash = editor.GetHashCode();
+            var config = ConfigManager.GetConfig(hash);
 
-            FocusManager.SetFocusedElement(focusScope, InputViewsWrapper.Instance);            
+            FocusManager.SetFocusedElement(focusScope, config.InputControl);
         }
 
         private void OnLineRemoved(object message) {

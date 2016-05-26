@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CodeEditor.Controls;
 using CodeEditor.Enums;
 
 namespace CodeEditor.Configuration {
@@ -27,6 +28,8 @@ namespace CodeEditor.Configuration {
         public SupportedLanguages Language { get; set; }
 
         public FormattingType FormattingType { get; set; }
+
+        public InputViewsWrapper InputControl { get; set; }
 
         #endregion
 

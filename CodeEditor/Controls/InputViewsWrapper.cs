@@ -34,8 +34,6 @@ namespace CodeEditor.Controls {
 
         #region properties
 
-        public static InputViewsWrapper Instance;
-
         protected override int VisualChildrenCount => views.Count;
 
         protected override FrameworkElement MeasurementElement => textView;
@@ -47,7 +45,6 @@ namespace CodeEditor.Controls {
         public InputViewsWrapper(InputPanel parent) : base() {
             master = parent;
             views = new List<LocalViewBase>();
-            Instance = this;
         }
 
         #endregion
@@ -70,6 +67,7 @@ namespace CodeEditor.Controls {
             if (textView == null && selectionView == null && caretView == null) {
                 SetupViews();
                 InitEvents();
+                UpdateConfig();
             }
         }
 
@@ -160,6 +158,14 @@ namespace CodeEditor.Controls {
                 view.EditorCode = editorCode;
                 view.Postbox = postbox;
             }
+        }
+
+        private void UpdateConfig() {
+            var editor = master.GetEditor();
+            int hash = editor.GetHashCode();
+            var config = ConfigManager.GetConfig(hash);
+
+            config.InputControl = this;
         }
 
         private void InitEvents() {
