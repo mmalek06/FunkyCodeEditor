@@ -1,22 +1,22 @@
 ﻿using System.Linq;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
-    [TestClass]
+    [TestFixture]
     public class TextWithBracketsCollapsingUnitTests {
         private TextCollapsingAlgorithm tc;
 
         private ICollapseRepresentation ra;
 
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest() {
             tc = new TextCollapsingAlgorithm();
             ra = CollapseRepresentationAlgorithmFactory.GetAlgorithm(Enums.FormattingType.BRACKETS);
         }
 
-        [TestMethod]
+        [Test]
         public void BracketsInTheSameLineAsText_ShouldHaveTextBeforeAndAfterFold() {
             string text1 = "asdf ";
             string open = "{";
@@ -35,7 +35,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text3, string.Join("", line.RenderedText.Skip(10)));
         }
 
-        [TestMethod]
+        [Test]
         public void OneLineWithBracketsAndText_ActualTextShouldBeEqualToRenderedText() {
             string text1 = "asdf ";
             string open = "{";
@@ -57,7 +57,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(string.Join("", line.RenderedText.Skip(10)), string.Join("", stringContents.Skip(7)));
         }
 
-        [TestMethod]
+        [Test]
         public void BracketsInDifferentLinesThanText_ShouldHaveTextBeforeAndAfterFold() {
             string text1 = "asdf";
             string open = "{";
