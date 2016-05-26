@@ -1,22 +1,22 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Visuals;
+using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
-    [TestClass]
+    [TestFixture]
     public class RemovingTextUnitTests {
         private static TextRemovingAlgorithm algorithm;
 
-        [ClassInitialize]
-        public static void Initialize(TestContext context) {
+        [OneTimeSetUp]
+        public void Initialize() {
             algorithm = new TextRemovingAlgorithm();
         }
 
-        [TestMethod]
+        [Test]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_LineShouldBeEqualToText1Text2() {
             string text1 = "asdf";
             string text2 = "zxcv";
@@ -29,7 +29,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_LineShouldBeEqualToText1Text2() {
             string text1 = "asdf";
             string text2 = "zxcv";
@@ -42,7 +42,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text1 + text2, newLines.LinesToChange.First().Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void ThreeNonEmptyLinesEnteredBackspacePressedAtCharOneBeforeTheLastOneInTheLastLine_LinesShouldBeText4() {
             string text1 = "some text";
             string text2 = "";
@@ -62,7 +62,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.IsTrue(Enumerable.SequenceEqual((new[] { 0, 1, 2 }).OrderBy(key => key).ToArray(), newLines.LinesToRemove.OrderBy(key => key).ToArray()));
         }
 
-        [TestMethod]
+        [Test]
         public void OneNonEmptyLineEnteredText2SelectedBackspacePressed_LineShouldBeText1Text3() {
             string text1 = "some ";
             string text2 = "text";
@@ -78,7 +78,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text1 + text3, newLines.LinesToChange.First().Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void ThreeLinesEnteredBackspacePressedOnTheSecondOne_LinesShouldBeText1Text3AndLinesToRemoveShouldBeLast() {
             string text1 = "a";
             string text2 = "";
@@ -95,7 +95,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text3, newLines.LinesToChange.Last().Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBeText1Text2Text3() {
             string text1 = "asdf";
             string text2 = "zxcv";
@@ -116,7 +116,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(3, removedLinesIndexes[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void FourLinesEnteredDeletePressedTwiceAtTheEndOfFirst_LinesShouldBeText1PlusText2Text3() {
             string text1 = "asdf";
             string text2 = "zxcv";
@@ -140,7 +140,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(3, removedLinesIndexes[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void OneLineEnteredSelectionOfFourCharsDeletePressed_LineShouldBeText1Text3() {
             string text1 = "asdf";
             string text2 = "qwer";
@@ -158,7 +158,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text1 + text3, newLines.LinesToChange.ElementAt(0).Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TwoLinesEnteredSelectionInTheMiddleOfFirst_LinesShouldBeText1Text3Text4() {
             string text1 = "as";
             string text2 = " df ";
@@ -179,7 +179,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text1 + text3, newLines.LinesToChange.ElementAt(0).Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void FourLinesEnteredSelectionInbetweenDeletePressed_LinesShouldBeText1Text6() {
             string text1 = "as";
             string text2 = "df";
@@ -204,7 +204,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(text1 + text6, newLines.LinesToChange.ElementAt(0).Value.GetStringContents()[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void FourCharactersEnteredSelectionForLastTwo_LineShouldBeText1() {
             string text1 = "as";
             string text2 = "df";

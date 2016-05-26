@@ -4,16 +4,16 @@ using CodeEditor.Core.DataStructures;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Views {
-    [TestClass]
+    [TestFixture]
     public class TextViewCollapsingTextWithBracketsUnitTests {
         private TextView tv;
 
         private CaretView cv;
 
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest() {
             const int EditorCode = 1;
 
@@ -29,7 +29,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             tv.EditorCode = EditorCode;
         }
 
-        [TestMethod]
+        [Test]
         public void EnterOpeningAndClosingBracket_LineStateShouldNotChange() {
             string text1 = "{}";
 
@@ -42,7 +42,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
             Assert.AreEqual(renderedLines[0], text1);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTwoFolds_StateAfterCollapseAndExpandShouldNotChange() {
             string text1 = "asdf {";
             string text2 = "";

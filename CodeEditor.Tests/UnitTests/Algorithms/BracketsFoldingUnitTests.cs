@@ -2,28 +2,28 @@
 using System.Linq;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Core.DataStructures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
-    [TestClass]
+    [TestFixture]
     public class BracketsFoldingUnitTests {
         private BracketsFoldingAlgorithm fa;
         private Dictionary<TextPosition, TextPosition> foldingPositions;
 
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest() {
             fa = new BracketsFoldingAlgorithm();
             foldingPositions = new Dictionary<TextPosition, TextPosition>();
         }
 
-        [TestMethod]
+        [Test]
         public void EnterSentence_ShouldBeNoFolding() {
             var folds = fa.CreateFolds("I saw Susie in a shoe shine shop", new TextPosition(column: 0, line: 0), foldingPositions);
 
             Assert.IsNull(folds);
         }
         
-        [TestMethod]
+        [Test]
         public void EnterTwoOpeningBrackets_ShouldHaveTwoEmptyFolds() {
             Fold("{", 0, 0);
 
@@ -36,7 +36,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.IsNull(folds[1].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void EnterOpeningAndClosingBrackets_ShouldHaveOneFold() {
             Fold("{", 0, 0);
 
@@ -46,7 +46,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(new TextPosition(column: 0, line: 0), folds[0].Key);
         }
 
-        [TestMethod]
+        [Test]
         public void StartFoldingAt_0_0_ShouldHaveThreeFolds() {
             Fold("{", 0, 0);
             Fold("{", 5, 1);
@@ -65,7 +65,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(new TextPosition(column: 8, line: 3), folds[2].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void ClosingBracketsInTheSameLine_ShouldHaveThreeFolds() {
             Fold("{", 0, 0);
             Fold("{", 5, 1);
@@ -84,7 +84,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[2].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void OpeningBracketsInTheSameLine_ShouldHaveThreeFolds() {
             Fold("{", 0, 0);
             Fold("{", 1, 0);
@@ -97,7 +97,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(3, folds.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void OpeningBracketsInTheSameLine_RepeatingFoldsShouldBeThree() {
             Fold("{", 0, 0);
             Fold("{", 1, 0);
@@ -111,7 +111,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(3, repeating.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void ThreeBracketsEnteredOneNotPaired_ShouldHaveTwoFullFoldsAndOneEmpty() {
             Fold("{", 0, 0);
             Fold("{", 5, 1);
@@ -129,7 +129,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[2].Value);            
         }
 
-        [TestMethod]
+        [Test]
         public void TwoBracketsAtTheSameLevel_ShouldHaveThreeFolds() {
             Fold("{", 0, 0);
             Fold("{", 0, 1);
@@ -148,7 +148,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.AreEqual(new TextPosition(column: 0, line: 4), folds[2].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void ClosingBracketAdded_ShouldBeNoFolding() {
             var folds = Fold("}", 0, 0);
 
