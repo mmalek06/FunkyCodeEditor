@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.Commands;
 using CodeEditor.Core.Enums;
-using CodeEditor.Messaging;
+using CodeEditor.Core.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Folding;
 using CodeEditor.Views.Lines;

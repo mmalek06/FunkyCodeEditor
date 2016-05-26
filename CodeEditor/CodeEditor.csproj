@@ -85,14 +85,7 @@
     <Compile Include="Configuration\TextConfiguration.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Languages\LanguageFeatureInfo.cs" />
-    <Compile Include="Messaging\EditorSettingsChangedMessage.cs" />
-    <Compile Include="Messaging\FoldClickedMessage.cs" />
-    <Compile Include="Messaging\LinesRemovedMessage.cs" />
     <Compile Include="Controls\HelperViewsWrapper.cs" />
-    <Compile Include="Messaging\LineClickedMessage.cs" />
-    <Compile Include="Messaging\TextAddedMessage.cs" />
-    <Compile Include="Messaging\Postbox.cs" />
-    <Compile Include="Messaging\TextRemovedMessage.cs" />
     <Compile Include="TextProperties\CharInfo.cs" />
     <Compile Include="Views\Caret\CaretViewReadonly.cs" />
     <Compile Include="Views\Caret\ICaretViewReadonly.cs" />

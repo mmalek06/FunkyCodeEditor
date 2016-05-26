@@ -2,7 +2,7 @@
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.Core.Enums;
-using CodeEditor.Messaging;
+using CodeEditor.Core.Messaging;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 

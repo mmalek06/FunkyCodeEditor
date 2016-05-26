@@ -1,5 +1,5 @@
-﻿namespace CodeEditor.Messaging {
-    internal class LineClickedMessage {
+﻿namespace CodeEditor.Core.Messaging {
+    public class LineClickedMessage {
 
         #region properties
 

@@ -1,8 +1,8 @@
 ﻿using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Enums;
 
-namespace CodeEditor.Messaging {
-    internal class FoldClickedMessage {
+namespace CodeEditor.Core.Messaging {
+    public class FoldClickedMessage {
 
         #region properties
 

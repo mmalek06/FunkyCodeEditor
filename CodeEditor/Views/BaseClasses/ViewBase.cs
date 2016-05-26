@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using CodeEditor.Messaging;
+using CodeEditor.Core.Messaging;
 
 namespace CodeEditor.Views.BaseClasses {
     internal abstract class ViewBase : FrameworkElement {

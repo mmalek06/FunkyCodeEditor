@@ -9,8 +9,8 @@ using System.Windows.Threading;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Enums;
+using CodeEditor.Core.Messaging;
 using CodeEditor.Events;
-using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Caret {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Enums;
-using CodeEditor.Messaging;
+using CodeEditor.Core.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 using NUnit.Framework;

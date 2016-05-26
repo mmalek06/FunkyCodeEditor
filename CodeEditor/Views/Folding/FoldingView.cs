@@ -7,7 +7,7 @@ using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Enums;
 using CodeEditor.Core.Extensions;
-using CodeEditor.Messaging;
+using CodeEditor.Core.Messaging;
 using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Folding {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CodeEditor.Messaging {
-    internal class Postbox {
+namespace CodeEditor.Core.Messaging {
+    public class Postbox {
 
         #region fields
 

@@ -1,5 +1,5 @@
-﻿namespace CodeEditor.Messaging {
-    internal class LinesRemovedMessage {
+﻿namespace CodeEditor.Core.Messaging {
+    public class LinesRemovedMessage {
 
         #region properties
 

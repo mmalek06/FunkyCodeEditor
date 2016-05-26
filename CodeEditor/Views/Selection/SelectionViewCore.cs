@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using CodeEditor.Algorithms.Selection;
 using CodeEditor.Core.DataStructures;
-using CodeEditor.Messaging;
+using CodeEditor.Core.Messaging;
 using CodeEditor.Views.BaseClasses;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;

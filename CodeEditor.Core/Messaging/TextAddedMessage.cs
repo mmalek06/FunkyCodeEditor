@@ -1,7 +1,7 @@
 ﻿using CodeEditor.Core.DataStructures;
 
-namespace CodeEditor.Messaging {
-    internal class TextAddedMessage {
+namespace CodeEditor.Core.Messaging {
+    public class TextAddedMessage {
 
         #region properties
 
