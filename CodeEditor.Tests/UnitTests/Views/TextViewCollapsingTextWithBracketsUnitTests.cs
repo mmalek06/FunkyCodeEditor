@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using CodeEditor.Algorithms.Folding;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Core.Enums;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
@@ -18,8 +18,8 @@ namespace CodeEditor.Tests.UnitTests.Views {
             const int EditorCode = 1;
 
             Configuration.ConfigManager.AddEditorConfig(EditorCode, new Configuration.Config {
-                Language = Enums.SupportedLanguages.JS,
-                FormattingType = Enums.FormattingType.BRACKETS
+                Language = SupportedLanguages.JS,
+                FormattingType = FormattingType.BRACKETS
             });
 
             cv = new CaretView();

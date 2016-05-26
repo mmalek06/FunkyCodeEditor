@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using CodeEditor.Enums;
+using CodeEditor.Core.Enums;
 using Newtonsoft.Json;
 
 namespace CodeEditor.Languages {

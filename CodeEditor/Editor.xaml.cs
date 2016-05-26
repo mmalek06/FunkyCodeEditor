@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CodeEditor.Configuration;
-using CodeEditor.Enums;
+using CodeEditor.Core.Enums;
 using CodeEditor.Languages;
 
 namespace CodeEditor {

@@ -8,11 +8,11 @@ using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Configuration;
 using CodeEditor.Views.BaseClasses;
 using CodeEditor.Messaging;
-using CodeEditor.Algorithms.Folding;
 using CodeEditor.Visuals;
 using CodeEditor.TextProperties;
 using CodeEditor.Algorithms.Parsing;
 using CodeEditor.Core.Extensions;
+using CodeEditor.Core.Enums;
 using CodeEditor.Views.Caret;
 
 namespace CodeEditor.Views.Text {

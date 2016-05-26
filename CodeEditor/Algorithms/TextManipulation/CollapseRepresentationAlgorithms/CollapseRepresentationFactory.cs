@@ -1,5 +1,5 @@
 ﻿using System;
-using CodeEditor.Enums;
+using CodeEditor.Core.Enums;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal static class CollapseRepresentationAlgorithmFactory {

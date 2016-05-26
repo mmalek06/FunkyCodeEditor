@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.Commands;
+using CodeEditor.Core.Enums;
 using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Folding;
@@ -43,8 +44,8 @@ namespace CodeEditor.Tests.ScenarioTests {
         public EditorContext() {
             Postbox = Postbox.InstanceFor(EditorCode);
             Configuration.ConfigManager.AddEditorConfig(EditorCode, new Configuration.Config {
-                Language = Enums.SupportedLanguages.JS,
-                FormattingType = Enums.FormattingType.BRACKETS
+                Language = SupportedLanguages.JS,
+                FormattingType = FormattingType.BRACKETS
             });
 
             TextsToEnter = new List<string>();

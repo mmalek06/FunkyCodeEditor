@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
+using CodeEditor.Core.Enums;
 using CodeEditor.Messaging;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
@@ -54,7 +55,7 @@ namespace CodeEditor.Views.Lines {
         }
 
         public void HandleFolding(FoldClickedMessage message) {
-            if (message.State == Algorithms.Folding.FoldingStates.FOLDED) {
+            if (message.State == FoldingStates.FOLDED) {
                 int diff = message.AreaBeforeFolding.EndPosition.Line - message.AreaBeforeFolding.StartPosition.Line;
 
                 linesCount -= diff;

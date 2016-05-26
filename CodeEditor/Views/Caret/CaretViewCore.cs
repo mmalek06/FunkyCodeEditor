@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Core.Enums;
 using CodeEditor.Events;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
@@ -62,7 +63,7 @@ namespace CodeEditor.Views.Caret {
         public void HandleTextRemove(TextPosition newPosition) => MoveCaret(newPosition);
 
         public override void HandleTextFolding(FoldClickedMessage message) {
-            if (message.State == Algorithms.Folding.FoldingStates.FOLDED) {
+            if (message.State == FoldingStates.FOLDED) {
                 if (IsCaretInbetweenTags(message.AreaAfterFolding)) {
                     MoveCaret(message.AreaAfterFolding.EndPosition);
                 } else if (IsFoldMultiline(message.AreaBeforeFolding)) {

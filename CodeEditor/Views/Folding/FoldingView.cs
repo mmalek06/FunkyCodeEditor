@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Core.Enums;
 using CodeEditor.Core.Extensions;
 using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;

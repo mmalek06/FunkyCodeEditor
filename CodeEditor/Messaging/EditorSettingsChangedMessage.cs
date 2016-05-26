@@ -1,4 +1,4 @@
-﻿using CodeEditor.Enums;
+﻿using CodeEditor.Core.Enums;
 
 namespace CodeEditor.Messaging {
     internal class EditorSettingsChangedMessage {

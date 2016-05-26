@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
-using CodeEditor.Enums;
+using CodeEditor.Core.Enums;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 

@@ -1,4 +1,4 @@
-﻿namespace CodeEditor.Enums {
+﻿namespace CodeEditor.Core.Enums {
     public enum SupportedLanguages {
         JS, 
         CS,

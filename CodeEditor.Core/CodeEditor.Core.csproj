@@ -55,6 +55,10 @@
     <Compile Include="DataStructures\PointsPair.cs" />
     <Compile Include="DataStructures\TextRange.cs" />
     <Compile Include="DataStructures\TextPosition.cs" />
+    <Compile Include="Enums\CaretMoveDirection.cs" />
+    <Compile Include="Enums\FoldingStates.cs" />
+    <Compile Include="Enums\FormattingType.cs" />
+    <Compile Include="Enums\SupportedLanguages.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Extensions\ICollectionExtensions.cs" />

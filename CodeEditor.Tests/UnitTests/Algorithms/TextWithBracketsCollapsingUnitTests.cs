@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Core.DataStructures;
+using CodeEditor.Core.Enums;
 using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {
@@ -13,7 +14,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
         [SetUp]
         public void InitializeTest() {
             tc = new TextCollapsingAlgorithm();
-            ra = CollapseRepresentationAlgorithmFactory.GetAlgorithm(Enums.FormattingType.BRACKETS);
+            ra = CollapseRepresentationAlgorithmFactory.GetAlgorithm(FormattingType.BRACKETS);
         }
 
         [Test]

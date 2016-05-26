@@ -1,6 +1,6 @@
 ﻿using System;
-using CodeEditor.Enums;
 using CodeEditor.Languages;
+using CodeEditor.Core.Enums;
 
 namespace CodeEditor.Algorithms.Folding {
     internal static class FoldingAlgorithmFactory {

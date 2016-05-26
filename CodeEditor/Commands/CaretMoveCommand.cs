@@ -3,7 +3,7 @@ using System.Windows.Input;
 using CodeEditor.Configuration;
 using CodeEditor.Core.DataStructures;
 using CodeEditor.Core.Extensions;
-using CodeEditor.Enums;
+using CodeEditor.Core.Enums;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 

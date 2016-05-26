@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:editor="clr-namespace:CodeEditor;assembly=CodeEditor"
+        xmlns:enums="clr-namespace:CodeEditor.Core.Enums;assembly=CodeEditor.Core"
         xmlns:local="clr-namespace:CodeEditor.Sample"
         mc:Ignorable="d"
         Title="Sample application" 

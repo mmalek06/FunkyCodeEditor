@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.Controls;
-using CodeEditor.Enums;
+using CodeEditor.Core.Enums;
 
 namespace CodeEditor.Configuration {
     internal static class ConfigManager {

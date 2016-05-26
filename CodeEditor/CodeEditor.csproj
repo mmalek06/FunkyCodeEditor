@@ -83,9 +83,6 @@
     <Compile Include="Configuration\SharedEditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
-    <Compile Include="Enums\CaretMoveDirection.cs" />
-    <Compile Include="Enums\FormattingType.cs" />
-    <Compile Include="Enums\SupportedLanguages.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Languages\LanguageFeatureInfo.cs" />
     <Compile Include="Messaging\EditorSettingsChangedMessage.cs" />
@@ -133,7 +130,6 @@
     <Compile Include="Commands\ViewState.cs" />
     <Compile Include="Views\Caret\VisualElement.cs" />
     <Compile Include="TextProperties\GlobalTextRunProperties.cs" />
-    <Compile Include="Algorithms\Folding\FoldingStates.cs" />
     <Compile Include="Views\Folding\VisualElementSymbol.cs" />
     <Compile Include="Views\Selection\VisualElement.cs" />
     <Compile Include="Views\Selection\SelectionViewCore.cs" />
