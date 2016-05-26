@@ -1,6 +1,4 @@
-﻿using CodeEditor.Algorithms.Folding;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Messaging;
+﻿using CodeEditor.Core.DataStructures;
 using TechTalk.SpecFlow;
 
 namespace CodeEditor.Tests.ScenarioTests.Steps {
@@ -9,39 +7,17 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         #region steps
 
-        [When(@"I request folding for position starting at '(.*)' '(.*)' and ending at '(.*)' '(.*)'")]
-        public void WhenIRequestFoldingForPositionStartingAtAndEndingAt(int columnStart, int lineStart, int columnEnd, int lineEnd) {
-            var message = GetBracketFoldClickedMessage(columnStart, lineStart, columnEnd, lineEnd, FoldingStates.FOLDED);
-
-            Common.Context.TextView.HandleTextFolding(message);
-            Common.Context.Postbox.Put(message);
+        [When(@"I request folding for position starting at '(.*)' '(.*)'")]
+        public void WhenIRequestFoldingForPositionStartingAtAndEndingAt(int columnStart, int lineStart) {
+            PrivateMembersHelper.InvokeMethod(Common.Context.FoldingView, "RunFoldingOnClick", new[] { new TextPosition(column: columnStart, line: lineStart) });
         }
 
-        [When(@"I request unfolding for position starting at '(.*)' '(.*)' and ending at '(.*)' '(.*)'")]
-        public void WhenIRequestUnfoldingForPositionStartingAtAndEndingAt(int columnStart, int lineStart, int columnEnd, int lineEnd) {
-            var message = GetBracketFoldClickedMessage(columnStart, lineStart, columnEnd, lineEnd, FoldingStates.EXPANDED);
-
-            Common.Context.TextView.HandleTextFolding(message);
-            Common.Context.Postbox.Put(message);
+        [When(@"I request unfolding for position starting at '(.*)' '(.*)'")]
+        public void WhenIRequestUnfoldingForPositionStartingAtAndEndingAt(int columnStart, int lineStart) {
+            PrivateMembersHelper.InvokeMethod(Common.Context.FoldingView, "RunFoldingOnClick", new[] { new TextPosition(column: columnStart, line: lineStart) });
         }
 
         #endregion
-
-        #region helpers
-
-        private FoldClickedMessage GetBracketFoldClickedMessage(int startingCol, int startingLine, int endingCol, int endingLine, FoldingStates state) {
-            return new FoldClickedMessage {
-                State = state,
-                AreaBeforeFolding = new TextRange {
-                    StartPosition = new TextPosition(startingCol, startingLine),
-                    EndPosition = new TextPosition(endingCol, endingLine)
-                },
-                OpeningTag = "{",
-                ClosingTag = "}"
-            };
-        }
-
-        #endregion
-
+        
     }
 }

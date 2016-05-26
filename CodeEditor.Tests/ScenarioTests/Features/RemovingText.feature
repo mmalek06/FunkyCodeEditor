@@ -145,7 +145,7 @@ Scenario: Four lines entered, delete pressed twice at the end of first
 Scenario: Remove from collapsed line with brackets only
 	Given Text to enter is '{}'
 	When I enter text
-		And I request folding for position starting at '0' '0' and ending at '2' '0'
+		And I request folding for position starting at '0' '0'
 		And I move caret to column number '5' in line '0'
 		And I hit backspace key
 	Then I should see '1' lines
@@ -160,7 +160,7 @@ Scenario: Remove from collapsed line with brackets and text
 		And Text to enter is '{}'
 		And Text to enter is ' qwer'
 	When I enter text
-		And I request folding for position starting at '5' '0' and ending at '6' '0'
+		And I request folding for position starting at '5' '0'
 		And I move caret to column number '10' in line '0'
 		And I hit backspace key
 	Then I should see '1' lines

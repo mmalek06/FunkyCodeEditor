@@ -111,7 +111,13 @@ namespace CodeEditor.Tests.ScenarioTests {
                        LinesView.HandleTextInput(textAddedMessage);
                        FoldingView.HandleTextInput(textAddedMessage);
                    })
-                   .For(typeof(FoldClickedMessage)).Invoke(message => LinesView.HandleFolding(message as FoldClickedMessage));
+                   .For(typeof(FoldClickedMessage)).Invoke(message => {
+                       var foldClickedMessage = message as FoldClickedMessage;
+
+                       TextView.HandleTextFolding(foldClickedMessage);
+                       LinesView.HandleFolding(foldClickedMessage);
+                       CaretView.HandleTextFolding(foldClickedMessage);
+                   });
         }
 
         private void ForceDraw() {

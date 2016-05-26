@@ -36,5 +36,15 @@ namespace CodeEditor.Views.Caret {
 
         #endregion
 
+        #region methods
+
+        private bool IsCaretInbetweenTags(TextRange range) =>
+            CaretPosition >= range.StartPosition && CaretPosition <= range.EndPosition;
+
+        private bool IsFoldMultiline(TextRange range) =>
+            range.StartPosition.Line != range.EndPosition.Line;
+
+        #endregion
+
     }
 }

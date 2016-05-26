@@ -54,9 +54,9 @@ namespace CodeEditor.Views.Lines {
         }
 
         public void HandleFolding(FoldClickedMessage message) {
-            int diff = message.AreaBeforeFolding.EndPosition.Line - message.AreaBeforeFolding.StartPosition.Line;
-
             if (message.State == Algorithms.Folding.FoldingStates.FOLDED) {
+                int diff = message.AreaBeforeFolding.EndPosition.Line - message.AreaBeforeFolding.StartPosition.Line;
+
                 linesCount -= diff;
 
                 while (diff > 0) {
@@ -65,6 +65,7 @@ namespace CodeEditor.Views.Lines {
                     diff--;
                 }
             } else {
+                int diff = message.AreaAfterFolding.EndPosition.Line - message.AreaAfterFolding.StartPosition.Line;
                 int initialLinesCount = linesCount;
 
                 linesCount += diff;

@@ -42,7 +42,11 @@ namespace CodeEditor.Views.Folding {
 
         public override void HandleTextInput(TextAddedMessage message) {
             if (message.Text == TextProperties.Properties.NEWLINE) {
-                MoveFoldsDown(message.PrevCaretPosition);
+                if (IsCaretInbetweenTags(message.PrevCaretPosition)) {
+                    IncreaseFoldHeight(message.PrevCaretPosition);
+                } else {
+                    MoveFoldsDown(message.PrevCaretPosition);
+                }
             } else {
                 if (!FoldingAlgorithm.CanRun(message.Text)) {
                     return;
@@ -56,7 +60,11 @@ namespace CodeEditor.Views.Folding {
 
         public override void HandleTextRemove(TextRemovedMessage message) {
             if (message.RemovedText == string.Empty) {
-                MoveFoldsUp(message.NewCaretPosition);
+                if (IsCaretInbetweenTags(message.OldCaretPosition)) {
+                    DecreaseFoldHeight(message.OldCaretPosition);
+                } else {
+                    MoveFoldsUp(message.NewCaretPosition);
+                }
             } else {
                 var positions = GetClosedFoldingInfos().ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position);
                 var removedKey = FoldingAlgorithm.DeleteFolds(message.RemovedText, message.NewCaretPosition, positions);
@@ -77,43 +85,56 @@ namespace CodeEditor.Views.Folding {
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
             var position = e.GetPosition(this).GetDocumentPosition(TextConfiguration.GetCharSize());
-            var folding = foldingPositions.Keys.FirstOrDefault(foldingInfo => foldingInfo.Position.Line == position.Line);
 
-            if (folding != null) {
-                var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
-                var areaBeforeFolding = new TextRange();
-                var areaAfterFolding = new TextRange();
-
-                if (state == FoldingStates.FOLDED) {
-                    areaBeforeFolding.StartPosition = folding.Position;
-                    areaBeforeFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
-                    areaAfterFolding.StartPosition = folding.Position;
-                    areaAfterFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
-                } else {
-                    areaAfterFolding.StartPosition = folding.Position;
-                    areaAfterFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
-                    areaBeforeFolding.StartPosition = folding.Position;
-                    areaBeforeFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
-                }
-
-                Postbox.Put(new FoldClickedMessage {
-                    AreaBeforeFolding = areaBeforeFolding,
-                    AreaAfterFolding = areaAfterFolding,
-                    ClosingTag = FoldingAlgorithm.GetClosingTag(),
-                    OpeningTag = FoldingAlgorithm.GetOpeningTag(),
-                    State = state
-                });
-                folding.State = state;
-
-                RedrawFolds();
-            }
+            RunFoldingOnClick(position);
         }
-
+        
         #endregion
 
         #region methods
 
         protected override double GetWidth() => SharedEditorConfiguration.GetFoldingColumnWidth();
+
+        private bool IsCaretInbetweenTags(TextPosition position) =>
+            foldingPositions.Any(pair => position > pair.Key.Position && position <= pair.Value.Position);
+
+        private void SendMessage(FoldingStates state, FoldingPositionInfo folding) {
+            var areaBeforeFolding = new TextRange();
+            var areaAfterFolding = new TextRange();
+
+            if (state == FoldingStates.FOLDED) {
+                areaBeforeFolding.StartPosition = folding.Position;
+                areaBeforeFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
+                areaAfterFolding.StartPosition = folding.Position;
+                areaAfterFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
+            } else {
+                areaAfterFolding.StartPosition = folding.Position;
+                areaAfterFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
+                areaBeforeFolding.StartPosition = folding.Position;
+                areaBeforeFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
+            }
+
+            Postbox.Put(new FoldClickedMessage {
+                AreaBeforeFolding = areaBeforeFolding,
+                AreaAfterFolding = areaAfterFolding,
+                ClosingTag = FoldingAlgorithm.GetClosingTag(),
+                OpeningTag = FoldingAlgorithm.GetOpeningTag(),
+                State = state
+            });
+        }
+
+        private void RunFoldingOnClick(TextPosition position) {
+            var folding = foldingPositions.Keys.FirstOrDefault(foldingInfo => foldingInfo.Position.Line == position.Line);
+
+            if (folding != null) {
+                var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
+
+                folding.State = state;
+
+                SendMessage(state, folding);
+                RedrawFolds();
+            }
+        }
 
         private void RunFolding(string text, TextPosition caretPosition) {
             var folds = FoldingAlgorithm.CreateFolds(text, new TextPosition(column: caretPosition.Column - 1, line: caretPosition.Line), GetPotentialFoldingPositions());
@@ -125,6 +146,20 @@ namespace CodeEditor.Views.Folding {
             CreateFolds(folds);
             MakeFoldsUnique();
             RedrawFolds();
+        }
+
+        private void IncreaseFoldHeight(TextPosition position, int amount = 1) {
+            var key = foldingPositions.First(pair => position >= pair.Key.Position && position <= pair.Value.Position).Key;
+            var tmpPosition = foldingPositions[key].Position;
+
+            foldingPositions[key].Position = new TextPosition(column: tmpPosition.Column, line: tmpPosition.Line + amount);
+        }
+
+        private void DecreaseFoldHeight(TextPosition position, int amount = 1) {
+            var key = foldingPositions.First(pair => position >= pair.Key.Position && position <= pair.Value.Position).Key;
+            var tmpPosition = foldingPositions[key].Position;
+
+            foldingPositions[key].Position = new TextPosition(column: tmpPosition.Column, line: tmpPosition.Line - amount);
         }
 
         private void MoveFoldsDown(TextPosition prevCaretPosition) {

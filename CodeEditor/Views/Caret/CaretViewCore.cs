@@ -63,11 +63,13 @@ namespace CodeEditor.Views.Caret {
 
         public override void HandleTextFolding(FoldClickedMessage message) {
             if (message.State == Algorithms.Folding.FoldingStates.FOLDED) {
-                if (CaretPosition >= message.AreaAfterFolding.StartPosition && CaretPosition <= message.AreaAfterFolding.EndPosition) {
+                if (IsCaretInbetweenTags(message.AreaAfterFolding)) {
+                    MoveCaret(message.AreaAfterFolding.EndPosition);
+                } else if (IsFoldMultiline(message.AreaBeforeFolding)) {
                     MoveCaret(message.AreaAfterFolding.EndPosition);
                 }
             } else {
-                if (CaretPosition >= message.AreaBeforeFolding.StartPosition && CaretPosition <= message.AreaBeforeFolding.EndPosition) {
+                if (IsCaretInbetweenTags(message.AreaBeforeFolding)) {
                     MoveCaret(new TextPosition(column: message.AreaAfterFolding.EndPosition.Column + 1, line: message.AreaAfterFolding.EndPosition.Line));
                 }
             }
