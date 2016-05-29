@@ -4,10 +4,10 @@ using System.Windows;
 using System.Windows.Input;
 using CodeEditor.Algorithms.Folding;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Enums;
-using CodeEditor.Core.Extensions;
-using CodeEditor.Core.Messaging;
+using CodeEditor.DataStructures;
+using CodeEditor.Enums;
+using CodeEditor.Extensions;
+using CodeEditor.Messaging;
 using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Folding {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Extensions;
-using CodeEditor.Core.Enums;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
+using CodeEditor.Enums;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 
@@ -65,7 +65,7 @@ namespace CodeEditor.Views.Text {
                 return parts;
             }
             if (startPosition.Line == endPosition.Line) {
-                parts[0] = parts[0].Substring(startPosition.Column, endPosition.Column);
+                parts[0] = string.Join("", parts[0].Skip(startPosition.Column).Take(endPosition.Column - startPosition.Column));
             } else {
                 parts[0] = parts[0].Substring(startPosition.Column);
             }

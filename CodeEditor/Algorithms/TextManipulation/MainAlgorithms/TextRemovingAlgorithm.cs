@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 

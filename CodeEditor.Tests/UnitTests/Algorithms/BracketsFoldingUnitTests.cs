@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.Algorithms.Folding;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {

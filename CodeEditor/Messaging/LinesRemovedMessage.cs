@@ -1,4 +1,4 @@
-﻿namespace CodeEditor.Core.Messaging {
+﻿namespace CodeEditor.Messaging {
     public class LinesRemovedMessage {
 
         #region properties

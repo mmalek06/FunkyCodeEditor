@@ -1,10 +1,9 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
-using CodeEditor.Core.Extensions;
+using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 
 namespace CodeEditor.Configuration {

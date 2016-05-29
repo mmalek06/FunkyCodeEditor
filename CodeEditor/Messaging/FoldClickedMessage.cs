@@ -1,7 +1,7 @@
-﻿using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Enums;
+﻿using CodeEditor.DataStructures;
+using CodeEditor.Enums;
 
-namespace CodeEditor.Core.Messaging {
+namespace CodeEditor.Messaging {
     public class FoldClickedMessage {
 
         #region properties

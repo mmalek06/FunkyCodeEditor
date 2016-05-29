@@ -1,4 +1,4 @@
-﻿using CodeEditor.Core.DataStructures;
+﻿using CodeEditor.DataStructures;
 using TechTalk.SpecFlow;
 
 namespace CodeEditor.Tests.ScenarioTests.Steps {

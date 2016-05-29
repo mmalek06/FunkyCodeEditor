@@ -1,3 +1,3 @@
-﻿namespace CodeEditor.Core.Enums {
+﻿namespace CodeEditor.Enums {
     public enum FoldingStates { EXPANDED, FOLDED }
 }

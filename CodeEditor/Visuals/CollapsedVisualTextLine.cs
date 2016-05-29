@@ -93,24 +93,24 @@ namespace CodeEditor.Visuals {
                 return new CharInfo {
                     IsCharacter = true,
                     Text = textBeforeCollapse[column].ToString(),
-                    PrevCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index),
-                    NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
+                    PrevCharPosition = new DataStructures.TextPosition(column: column, line: Index),
+                    NextCharPosition = new DataStructures.TextPosition(column: column, line: Index)
                 };
             }
             if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length && column < RenderedText.Length) {
                 return new CharInfo {
                     IsCharacter = true,
                     Text = RenderedText[column].ToString(),
-                    PrevCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index),
-                    NextCharPosition = new Core.DataStructures.TextPosition(column: column, line: Index)
+                    PrevCharPosition = new DataStructures.TextPosition(column: column, line: Index),
+                    NextCharPosition = new DataStructures.TextPosition(column: column, line: Index)
                 };
             }
 
             return new CharInfo {
                 IsCharacter = false,
                 Text = "{...}",
-                PrevCharPosition = new Core.DataStructures.TextPosition(column: textBeforeCollapse.Length, line: Index),
-                NextCharPosition = new Core.DataStructures.TextPosition(column: $"{textBeforeCollapse}{collapseRepresentation}".Length, line: Index)
+                PrevCharPosition = new DataStructures.TextPosition(column: textBeforeCollapse.Length, line: Index),
+                NextCharPosition = new DataStructures.TextPosition(column: $"{textBeforeCollapse}{collapseRepresentation}".Length, line: Index)
             };
         }
 

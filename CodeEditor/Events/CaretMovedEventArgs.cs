@@ -1,5 +1,5 @@
 ﻿using System;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 
 namespace CodeEditor.Events {
     public class CaretMovedEventArgs : EventArgs {

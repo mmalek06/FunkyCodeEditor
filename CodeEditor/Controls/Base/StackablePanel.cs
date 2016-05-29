@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace CodeEditor.Core.Controls {
+namespace CodeEditor.Controls.Base {
     public abstract class StackablePanel : StackPanel {
 
         #region properties

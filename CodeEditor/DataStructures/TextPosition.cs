@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace CodeEditor.Core.DataStructures {
+namespace CodeEditor.DataStructures {
     public class TextPosition : IComparable {
 
         #region properties

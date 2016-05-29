@@ -2,8 +2,8 @@
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Extensions;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
 

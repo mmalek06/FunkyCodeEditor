@@ -1,4 +1,4 @@
-﻿namespace CodeEditor.Core.Enums {
+﻿namespace CodeEditor.Enums {
     public enum FormattingType {
         BRACKETS,
         MARKUP,

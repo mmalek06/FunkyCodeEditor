@@ -1,4 +1,4 @@
-﻿namespace CodeEditor.Core.Extensions {
+﻿namespace CodeEditor.Extensions {
     public static class ArrayExtensions {
 
         #region public methods

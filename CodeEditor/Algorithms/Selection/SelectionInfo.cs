@@ -1,4 +1,4 @@
-﻿using CodeEditor.Core.DataStructures;
+﻿using CodeEditor.DataStructures;
 
 namespace CodeEditor.Algorithms.Selection {
     internal class SelectionInfo {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Media;
 
-namespace CodeEditor.Core.Extensions {
+namespace CodeEditor.Extensions {
     public static class VisualCollectionExtensions {
 
         #region public methods

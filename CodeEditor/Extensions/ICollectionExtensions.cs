@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeEditor.Core.Extensions {
+namespace CodeEditor.Extensions {
     public static class ICollectionExtensions {
 
         #region public methods

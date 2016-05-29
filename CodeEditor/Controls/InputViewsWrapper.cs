@@ -5,9 +5,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CodeEditor.Commands;
 using CodeEditor.Configuration;
-using CodeEditor.Core.Controls;
-using CodeEditor.Core.Messaging;
+using CodeEditor.Controls.Base;
 using CodeEditor.Extensions;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
@@ -145,7 +145,7 @@ namespace CodeEditor.Controls {
 
             caretView = new CaretView();
             textView = new TextView(caretView);
-            selectionView = new SelectionView(textView, caretView);
+            selectionView = new SelectionView(textView);
             
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 view.Margin = new Thickness(2, 0, 0, 0);

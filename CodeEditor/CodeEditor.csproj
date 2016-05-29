@@ -83,9 +83,34 @@
     <Compile Include="Configuration\SharedEditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
     <Compile Include="Configuration\TextConfiguration.cs" />
+    <Compile Include="ControlHelpers\Autoscroll.cs" />
+    <Compile Include="ControlHelpers\ScrollSynchronizer.cs" />
+    <Compile Include="Controls\Base\StackablePanel.cs" />
+    <Compile Include="DataStructures\AutoTrimmingStack.cs" />
+    <Compile Include="DataStructures\PointsPair.cs" />
+    <Compile Include="DataStructures\TextPosition.cs" />
+    <Compile Include="DataStructures\TextRange.cs" />
+    <Compile Include="Enums\CaretMoveDirection.cs" />
+    <Compile Include="Enums\FoldingStates.cs" />
+    <Compile Include="Enums\FormattingType.cs" />
+    <Compile Include="Enums\SupportedLanguages.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Extensions\HashSetExtensions.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\PointExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\VisualCollectionExtensions.cs" />
     <Compile Include="Languages\LanguageFeatureInfo.cs" />
     <Compile Include="Controls\HelperViewsWrapper.cs" />
+    <Compile Include="Messaging\EditorSettingsChangedMessage.cs" />
+    <Compile Include="Messaging\FoldClickedMessage.cs" />
+    <Compile Include="Messaging\LineClickedMessage.cs" />
+    <Compile Include="Messaging\LinesRemovedMessage.cs" />
+    <Compile Include="Messaging\Postbox.cs" />
+    <Compile Include="Messaging\TextAddedMessage.cs" />
+    <Compile Include="Messaging\TextRemovedMessage.cs" />
     <Compile Include="TextProperties\CharInfo.cs" />
     <Compile Include="Views\Caret\CaretViewReadonly.cs" />
     <Compile Include="Views\Caret\ICaretViewReadonly.cs" />
@@ -178,12 +203,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodeEditor.Core\CodeEditor.Core.csproj">
-      <Project>{396e0f88-2b8e-4ab6-bca4-b3c103f51166}</Project>
-      <Name>CodeEditor.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 
 namespace CodeEditor.Algorithms.Folding {
     internal class BracketsFoldingAlgorithm : IFoldingAlgorithm {

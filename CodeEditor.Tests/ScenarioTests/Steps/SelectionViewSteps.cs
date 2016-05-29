@@ -9,8 +9,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [When(@"I select text from '(.*)' '(.*)' to '(.*)' '(.*)'")]
         public void WhenISelectTextFromTo(int columnStart, int lineStart, int columnEnd, int lineEnd) {
-            Common.Context.SelectionView.Select(new Core.DataStructures.TextPosition(column: columnStart, line: lineStart));
-            Common.Context.SelectionView.Select(new Core.DataStructures.TextPosition(column: columnEnd, line: lineEnd));
+            Common.Context.SelectionView.Select(new DataStructures.TextPosition(column: columnStart, line: lineStart));
+            Common.Context.SelectionView.Select(new DataStructures.TextPosition(column: columnEnd, line: lineEnd));
         }
 
         [Then(@"Selected text should be '(.*)'")]

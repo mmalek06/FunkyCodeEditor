@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CodeEditor.Core.ControlHelpers {
+namespace CodeEditor.ControlHelpers {
     /// <summary>
     /// code snippet taken from http://www.codeproject.com/Articles/39244/Scroll-Synchronization
     /// </summary>

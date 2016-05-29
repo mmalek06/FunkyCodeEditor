@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace CodeEditor.Core.Extensions {
+namespace CodeEditor.Extensions {
     public static class StringExtensions {
 
         #region public methods

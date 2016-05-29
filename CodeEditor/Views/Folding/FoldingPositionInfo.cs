@@ -1,5 +1,5 @@
-﻿using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Enums;
+﻿using CodeEditor.DataStructures;
+using CodeEditor.Enums;
 
 namespace CodeEditor.Views.Folding {
     internal class FoldingPositionInfo {

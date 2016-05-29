@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.Commands;
-using CodeEditor.Core.Enums;
-using CodeEditor.Core.Messaging;
+using CodeEditor.Enums;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Folding;
 using CodeEditor.Views.Lines;
@@ -51,7 +51,7 @@ namespace CodeEditor.Tests.ScenarioTests {
             TextsToEnter = new List<string>();
             CaretView = new CaretView();
             TextView = new TextView(CaretView);
-            SelectionView = new SelectionView(TextView, CaretView);
+            SelectionView = new SelectionView(TextView);
             LinesView = new LinesView();
             FoldingView = new FoldingView();
             EnterTextCommand = new EnterTextCommand(TextView, CaretView, SelectionView);

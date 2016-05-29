@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using System.Windows.Interop;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 using CodeEditor.Events;
 
 namespace CodeEditor.Tests.ScenarioTests {

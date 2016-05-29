@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Extensions;
-using CodeEditor.Core.Enums;
+using CodeEditor.Extensions;
+using CodeEditor.Enums;
+using CodeEditor.DataStructures;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Text;
 

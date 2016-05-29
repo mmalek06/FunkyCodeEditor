@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Algorithms.TextManipulation {

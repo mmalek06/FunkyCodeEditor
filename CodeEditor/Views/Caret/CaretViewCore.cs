@@ -7,9 +7,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Enums;
-using CodeEditor.Core.Messaging;
+using CodeEditor.DataStructures;
+using CodeEditor.Enums;
+using CodeEditor.Messaging;
 using CodeEditor.Events;
 using CodeEditor.Views.BaseClasses;
 

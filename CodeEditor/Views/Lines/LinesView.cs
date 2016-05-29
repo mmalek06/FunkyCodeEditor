@@ -1,8 +1,8 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
-using CodeEditor.Core.Enums;
-using CodeEditor.Core.Messaging;
+using CodeEditor.Enums;
+using CodeEditor.Messaging;
 using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 

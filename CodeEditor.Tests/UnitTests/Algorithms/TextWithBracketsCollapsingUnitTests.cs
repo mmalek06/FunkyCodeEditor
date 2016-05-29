@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using CodeEditor.Algorithms.TextManipulation;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Enums;
+using CodeEditor.DataStructures;
+using CodeEditor.Enums;
 using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {

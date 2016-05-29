@@ -96,10 +96,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEditor.Core\CodeEditor.Core.csproj">
-      <Project>{396e0f88-2b8e-4ab6-bca4-b3c103f51166}</Project>
-      <Name>CodeEditor.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CodeEditor\CodeEditor.csproj">
       <Project>{73a5df78-02d6-47e5-9f97-66619a8f9499}</Project>
       <Name>CodeEditor</Name>

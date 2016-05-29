@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 
-namespace CodeEditor.Core.Messaging {
+namespace CodeEditor.Messaging {
     public class TextRemovedMessage {
 
         #region properties

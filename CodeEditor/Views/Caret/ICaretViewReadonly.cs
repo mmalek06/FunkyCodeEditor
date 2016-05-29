@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 
 namespace CodeEditor.Views.Caret {
     internal interface ICaretViewReadonly {

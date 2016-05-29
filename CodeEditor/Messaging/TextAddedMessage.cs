@@ -1,6 +1,6 @@
-﻿using CodeEditor.Core.DataStructures;
+﻿using CodeEditor.DataStructures;
 
-namespace CodeEditor.Core.Messaging {
+namespace CodeEditor.Messaging {
     public class TextAddedMessage {
 
         #region properties

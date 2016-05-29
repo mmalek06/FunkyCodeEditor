@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEditor", "CodeEditor.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEditor.Tests", "..\CodeEditor.Tests\CodeEditor.Tests.csproj", "{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEditor.Core", "..\CodeEditor.Core\CodeEditor.Core.csproj", "{396E0F88-2B8E-4AB6-BCA4-B3C103F51166}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEditor.Sample", "..\CodeEditor.Sample\CodeEditor.Sample.csproj", "{635F9299-1D66-4041-A672-915698F8FDCE}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{226FEFA5-7641-4542-911A-D5EB3C4AE6FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{396E0F88-2B8E-4AB6-BCA4-B3C103F51166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{396E0F88-2B8E-4AB6-BCA4-B3C103F51166}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{396E0F88-2B8E-4AB6-BCA4-B3C103F51166}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{396E0F88-2B8E-4AB6-BCA4-B3C103F51166}.Release|Any CPU.Build.0 = Release|Any CPU
 		{635F9299-1D66-4041-A672-915698F8FDCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{635F9299-1D66-4041-A672-915698F8FDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{635F9299-1D66-4041-A672-915698F8FDCE}.Release|Any CPU.ActiveCfg = Release|Any CPU

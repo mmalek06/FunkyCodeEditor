@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CodeEditor.Core.ControlHelpers {
+namespace CodeEditor.ControlHelpers {
     public class Autoscroll {
 
         #region fields

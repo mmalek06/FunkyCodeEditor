@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 
-namespace CodeEditor.Core.Extensions {
+namespace CodeEditor.Extensions {
     public static class PointExtensions {
         public static TextPosition GetDocumentPosition(this Point point, Size charSize) {
             int column = (int)(point.X / charSize.Width);

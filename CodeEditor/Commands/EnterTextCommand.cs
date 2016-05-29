@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using CodeEditor.Core.Messaging;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;

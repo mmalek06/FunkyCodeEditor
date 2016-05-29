@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Messaging;
+using CodeEditor.DataStructures;
+using CodeEditor.Messaging;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;

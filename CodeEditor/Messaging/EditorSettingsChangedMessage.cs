@@ -1,6 +1,6 @@
-﻿using CodeEditor.Core.Enums;
+﻿using CodeEditor.Enums;
 
-namespace CodeEditor.Core.Messaging {
+namespace CodeEditor.Messaging {
     public class EditorSettingsChangedMessage {
 
         #region properties

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeEditor.Core.Extensions {
+namespace CodeEditor.Extensions {
     public static class IEnumerableExtensions {
 
         #region public methods

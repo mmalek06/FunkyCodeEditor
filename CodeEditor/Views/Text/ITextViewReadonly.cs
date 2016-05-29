@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Enums;
+using CodeEditor.DataStructures;
+using CodeEditor.Enums;
 using CodeEditor.Visuals;
 
 namespace CodeEditor.Views.Text {

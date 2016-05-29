@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Algorithms.TextManipulation;
-using CodeEditor.Core.DataStructures;
+using CodeEditor.DataStructures;
 using CodeEditor.Visuals;
 using NUnit.Framework;
 

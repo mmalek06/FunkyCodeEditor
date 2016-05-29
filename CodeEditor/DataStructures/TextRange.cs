@@ -1,4 +1,4 @@
-﻿namespace CodeEditor.Core.DataStructures {
+﻿namespace CodeEditor.DataStructures {
     public class TextRange {
 
         #region properties

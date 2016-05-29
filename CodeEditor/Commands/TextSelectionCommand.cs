@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
+using CodeEditor.Algorithms.Selection;
 using CodeEditor.Configuration;
-using CodeEditor.Core.DataStructures;
-using CodeEditor.Core.Extensions;
+using CodeEditor.DataStructures;
+using CodeEditor.Extensions;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
@@ -17,7 +18,9 @@ namespace CodeEditor.Commands {
         private CaretView caretView;
 
         private SelectionView selectionView;
-        
+
+        private TextSelectionAlgorithm algorithm;
+       
         #endregion
 
         #region events
@@ -32,6 +35,7 @@ namespace CodeEditor.Commands {
             this.textViewReader = textViewReader;
             this.selectionView = selectionView;
             this.caretView = caretView;
+            algorithm = new TextSelectionAlgorithm(caretView, textViewReader, selectionView);
         }
 
         #endregion
@@ -109,7 +113,7 @@ namespace CodeEditor.Commands {
                 textViewReader.IsInTextRange(mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize()));
 
         private void ExecuteKeyboard(KeyEventArgs keyboardEvent) {
-            var endingPosition = selectionView.SelectionAlgorithm.GetSelectionPosition(keyboardEvent);
+            var endingPosition = algorithm.GetSelectionPosition(keyboardEvent);
 
             if (!selectionView.HasSelection()) {
                 selectionView.Select(new TextPosition(column: caretView.CaretPosition.Column, line: caretView.CaretPosition.Line));
@@ -121,13 +125,13 @@ namespace CodeEditor.Commands {
 
         private void ExecuteMouse(MouseButtonEventArgs mouseEvent) {
             if (mouseEvent.ClickCount == 2) {
-                var selectionInfo = selectionView.SelectionAlgorithm.WordSelection(mouseEvent);
+                var selectionInfo = algorithm.WordSelection(mouseEvent);
 
                 selectionView.Select(selectionInfo.StartPosition);
                 selectionView.Select(selectionInfo.EndPosition);
                 caretView.MoveCursor(selectionInfo.CursorPosition);
             } else if (mouseEvent.ClickCount == 3) {
-                var selectionInfo = selectionView.SelectionAlgorithm.LineSelection(mouseEvent);
+                var selectionInfo = algorithm.LineSelection(mouseEvent);
 
                 selectionView.Select(selectionInfo.StartPosition);
                 selectionView.Select(selectionInfo.EndPosition);
@@ -136,7 +140,7 @@ namespace CodeEditor.Commands {
         }
 
         private void ExecuteMouse(MouseEventArgs mouseEvent) {
-            var endPosition = selectionView.SelectionAlgorithm.StandardSelection(mouseEvent);
+            var endPosition = algorithm.StandardSelection(mouseEvent);
 
             selectionView.Select(endPosition);
             caretView.MoveCursor(endPosition);
