@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using CodeEditor.Configuration;
 using CodeEditor.Enums;
 using CodeEditor.Languages;
+using CodeEditor.Messaging;
 
 namespace CodeEditor {
     public partial class Editor : UserControl {
@@ -61,6 +62,14 @@ namespace CodeEditor {
 
             HelpersPanel.SetUpMessaging();
             InputPanel.SetUpMessaging();
+        }
+
+        private void OnScrollChanged(object sender, ScrollChangedEventArgs evt) {
+            if (evt.VerticalChange != 0) {
+                Postbox.InstanceFor(GetHashCode()).Put(new ScrollChangedMessage {
+                    ChangeInLines = (int)(evt.VerticalChange / TextConfiguration.GetCharSize().Height)
+                });
+            }
         }
 
         #endregion

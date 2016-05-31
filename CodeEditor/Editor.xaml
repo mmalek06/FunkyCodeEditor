@@ -32,6 +32,7 @@
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Focusable="False"
+                      ScrollChanged="OnScrollChanged"
                       scroll:ScrollSynchronizer.ScrollGroup="Group1"
                       scroll:Autoscroll.AlwaysScrollToEnd="True">
             <local:InputPanel x:Name="InputPanel" />

@@ -54,7 +54,8 @@ namespace CodeEditor.Controls {
         public void SetUpMessaging() {
             postbox = Postbox.InstanceFor(this.GetEditor().GetHashCode());
 
-            postbox.For(typeof(FoldClickedMessage)).Invoke(OnFoldClicked);
+            postbox.For<FoldClickedMessage>().Invoke(OnFoldClicked)
+                   .For<ScrollChangedMessage>().Invoke(OnScrollChanged);
         }
 
         #endregion
@@ -132,6 +133,12 @@ namespace CodeEditor.Controls {
             foreach (var view in views) {
                 view.HandleTextFolding(m);
             }
+        }
+
+        private void OnScrollChanged(object message) {
+            var m = message as ScrollChangedMessage;
+
+            textView.CacheText(0, m.ChangeInLines);
         }
 
         #endregion
