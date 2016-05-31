@@ -28,6 +28,8 @@ namespace CodeEditor.Visuals {
 
         public string CollapseRepresentation => collapseRepresentation;
 
+        public IReadOnlyList<string> CollapsedContent => collapsedContent;
+
         #endregion
 
         #region constructor

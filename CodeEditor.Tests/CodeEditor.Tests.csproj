@@ -103,6 +103,7 @@
     <Compile Include="UnitTests\Algorithms\TextWithBracketsCollapsingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\BracketsFoldingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\RemovingTextUnitTests.cs" />
+    <Compile Include="UnitTests\Other\LinesCachingUnitTests.cs" />
     <Compile Include="UnitTests\Views\TextViewAddingTextUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\Views\TextViewCollapsingTextWithBracketsUnitTests.cs" />

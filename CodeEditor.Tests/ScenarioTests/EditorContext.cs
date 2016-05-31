@@ -94,25 +94,25 @@ namespace CodeEditor.Tests.ScenarioTests {
         private void InitEvents() {
             var postbox = Postbox.InstanceFor(EditorCode);
 
-            postbox.For(typeof(LinesRemovedMessage)).Invoke(message => {
+            postbox.For<LinesRemovedMessage>().Invoke(message => {
                        var linesRemovedMessage = message as LinesRemovedMessage;
 
                        LinesView.HandleLinesRemove(linesRemovedMessage);
                        FoldingView.HandleLinesRemove(linesRemovedMessage);
                    })
-                   .For(typeof(TextRemovedMessage)).Invoke(message => {
+                   .For<TextRemovedMessage>().Invoke(message => {
                        var textRemovedMessage = message as TextRemovedMessage;
 
                        LinesView.HandleTextRemove(textRemovedMessage);
                        FoldingView.HandleTextRemove(textRemovedMessage);
                    })
-                   .For(typeof(TextAddedMessage)).Invoke(message => {
+                   .For<TextAddedMessage>().Invoke(message => {
                        var textAddedMessage = message as TextAddedMessage;
 
                        LinesView.HandleTextInput(textAddedMessage);
                        FoldingView.HandleTextInput(textAddedMessage);
                    })
-                   .For(typeof(FoldClickedMessage)).Invoke(message => {
+                   .For<FoldClickedMessage>().Invoke(message => {
                        var foldClickedMessage = message as FoldClickedMessage;
 
                        TextView.HandleTextFolding(foldClickedMessage);
