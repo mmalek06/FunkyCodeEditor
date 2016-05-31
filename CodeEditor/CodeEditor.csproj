@@ -79,6 +79,9 @@
     <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\MarkupRepresentationAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\WhitespaceRepresentationAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\MainAlgorithms\TextCollapsingAlgorithm.cs" />
+    <Compile Include="Caching\CachedCollapsedLine.cs" />
+    <Compile Include="Caching\CachedLine.cs" />
+    <Compile Include="Caching\CachedSingleLine.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\SharedEditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Messaging\LineClickedMessage.cs" />
     <Compile Include="Messaging\LinesRemovedMessage.cs" />
     <Compile Include="Messaging\Postbox.cs" />
+    <Compile Include="Messaging\ScrollChangedMessage.cs" />
     <Compile Include="Messaging\TextAddedMessage.cs" />
     <Compile Include="Messaging\TextRemovedMessage.cs" />
     <Compile Include="TextProperties\CharInfo.cs" />

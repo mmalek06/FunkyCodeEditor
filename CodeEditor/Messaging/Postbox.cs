@@ -35,6 +35,9 @@ namespace CodeEditor.Messaging {
 
         #region public methods
 
+        public Postbox For<TType>() =>
+            For(typeof(TType));
+
         public Postbox For(Type messageType) {
             if (!messageToMethodsMap.ContainsKey(messageType)) {
                 messageToMethodsMap[messageType] = new List<Action<object>>();
