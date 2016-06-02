@@ -12,7 +12,7 @@ namespace CodeEditor.Views.Selection {
 
         #region fields
 
-        private ITextViewReadonly textViewReader;
+        private readonly ITextViewReadonly textViewReader;
 
         private TextPosition lastSelectionStart;
 

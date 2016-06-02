@@ -13,7 +13,7 @@ namespace CodeEditor.Views.BaseClasses {
 
         #region constructor
 
-        public HelperViewBase() : base() {
+        public HelperViewBase() {
             bgBrush = Brushes.Transparent;
         }
 

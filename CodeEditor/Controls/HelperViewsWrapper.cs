@@ -30,7 +30,7 @@ namespace CodeEditor.Controls {
 
         #region constructor
 
-        public HelperViewsWrapper() : base() {
+        public HelperViewsWrapper() {
             views = new List<HelperViewBase>();
             Orientation = Orientation.Horizontal;
             onComponentReadyActions = new List<Action>();

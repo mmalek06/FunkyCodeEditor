@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Algorithms.Parsing;
+using CodeEditor.Caching;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
@@ -23,25 +24,27 @@ namespace CodeEditor.Views.Text {
 
         #region fields
 
-        private TextUpdatingAlgorithm updatingAlgorithm;
+        private readonly TextUpdatingAlgorithm updatingAlgorithm;
 
-        private TextRemovingAlgorithm removingAlgorithm;
+        private readonly TextRemovingAlgorithm removingAlgorithm;
 
-        private TextCollapsingAlgorithm collapsingAlgorithm;
+        private readonly TextCollapsingAlgorithm collapsingAlgorithm;
 
         private TextParsingAlgorithm parsingAlgorithm;
 
-        private ICaretViewReadonly caretViewReader;
+        private readonly ICaretViewReadonly caretViewReader;
 
         #endregion
 
         #region constructor
 
-        public TextView(ICaretViewReadonly caretViewReader) : base() {
+        public TextView(ICaretViewReadonly caretViewReader) {
             updatingAlgorithm = new TextUpdatingAlgorithm();
             removingAlgorithm = new TextRemovingAlgorithm();
             collapsingAlgorithm = new TextCollapsingAlgorithm();
             parsingAlgorithm = new TextParsingAlgorithm();
+            topCachedLines = new List<CachedLine>();
+            bottomCachedLines = new List<CachedLine>();
             this.caretViewReader = caretViewReader;
 
             visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
@@ -59,16 +62,14 @@ namespace CodeEditor.Views.Text {
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
+        public void HandleScrolling(ScrollChangedMessage message) => Cache(message.BottommostLine, message.TopmostLine, message.ChangeInLines);
+
         public override void HandleTextFolding(FoldClickedMessage message) {
             if (message.State == FoldingStates.EXPANDED) {
                 ExpandText(message);
             } else {
                 CollapseText(message);
             }
-        }
-
-        public void HandleScrolling(ScrollChangedMessage message) {
-
         }
 
         #endregion
@@ -124,8 +125,8 @@ namespace CodeEditor.Views.Text {
         public void ExpandText(FoldClickedMessage message) {
             int collapseIndex = message.AreaBeforeFolding.StartPosition.Line;
             var collapsedLineContent = ((VisualTextLine)visuals[collapseIndex]).GetStringContents();
-            var expandedLines = collapsedLineContent.Select((line, index) => VisualTextLine.Create(line, collapseIndex + index));
-            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterExpand(visuals.ToEnumerableOf<VisualTextLine>().Where(line => line.Index > message.AreaBeforeFolding.StartPosition.Line), expandedLines.Count() - 1);
+            var expandedLines = collapsedLineContent.Select((line, index) => VisualTextLine.Create(line, collapseIndex + index)).ToArray();
+            var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterExpand(visuals.ToEnumerableOf<VisualTextLine>().Where(line => line.Index > message.AreaBeforeFolding.StartPosition.Line), expandedLines.Length - 1);
 
             visuals.RemoveRange(collapseIndex, LinesCount - collapseIndex);
             
@@ -156,15 +157,7 @@ namespace CodeEditor.Views.Text {
         private void DeleteLines(IReadOnlyCollection<int> linesToRemove) => RemoveLines(linesToRemove);
 
         private void UpdateSize() {
-            int maxLineLen = 0;
-
-            foreach (var visual in visuals) {
-                var line = (VisualTextLine)visual;
-
-                if (line.RenderedText.Length > maxLineLen) {
-                    maxLineLen = line.RenderedText.Length;
-                }
-            }
+            int maxLineLen = (from VisualTextLine line in visuals select line.RenderedText.Length).Concat(new[] {0}).Max();
 
             Width = maxLineLen * TextConfiguration.GetCharSize().Width;
             Height = Convert.ToInt32(visuals.Count * TextConfiguration.GetCharSize().Height);

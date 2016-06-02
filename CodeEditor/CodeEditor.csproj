@@ -123,6 +123,7 @@
     <Compile Include="Views\Selection\ISelectionViewReadonly.cs" />
     <Compile Include="Views\Selection\SelectionViewReadonly.cs" />
     <Compile Include="Views\Text\ITextViewReadonly.cs" />
+    <Compile Include="Views\Text\TextViewCaching.cs" />
     <Compile Include="Views\Text\TextViewRendering.cs" />
     <Compile Include="Visuals\CollapsedVisualTextLine.cs" />
     <Compile Include="Visuals\SingleVisualTextLine.cs" />

@@ -17,20 +17,20 @@ namespace CodeEditor.Views.Folding {
 
         private IFoldingAlgorithm foldingAlgorithm;
 
-        private Dictionary<FoldingPositionInfo, FoldingPositionInfo> foldingPositions;
+        private readonly Dictionary<FoldingPositionInfo, FoldingPositionInfo> foldingPositions;
 
         #endregion
 
         #region properties
 
         private IFoldingAlgorithm FoldingAlgorithm =>
-            foldingAlgorithm == null ? FoldingAlgorithmFactory.CreateAlgorithm(ConfigManager.GetConfig(EditorCode).Language) : foldingAlgorithm;
+            foldingAlgorithm ?? FoldingAlgorithmFactory.CreateAlgorithm(ConfigManager.GetConfig(EditorCode).Language);
 
         #endregion
 
         #region constructor
 
-        public FoldingView() : base() {
+        public FoldingView() {
             bgBrush = SharedEditorConfiguration.GetFoldingColumnBrush();
             foldingPositions = new Dictionary<FoldingPositionInfo, FoldingPositionInfo>();
             Margin = new Thickness(SharedEditorConfiguration.GetLinesColumnWidth(), 0, 0, 0);

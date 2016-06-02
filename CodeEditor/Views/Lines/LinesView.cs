@@ -1,9 +1,7 @@
 ﻿using System.Windows.Media;
-using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.Enums;
 using CodeEditor.Messaging;
-using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 
 namespace CodeEditor.Views.Lines {
@@ -12,18 +10,15 @@ namespace CodeEditor.Views.Lines {
         #region fields
 
         private int linesCount;
-        private TextFormatter formatter;
-        private SimpleParagraphProperties paragraphProperties;
+
 
         #endregion
 
         #region constructor
 
-        public LinesView() : base() {
+        public LinesView() {
             bgBrush = SharedEditorConfiguration.GetLinesColumnBrush();
             linesCount = 1;
-            formatter = TextFormatter.Create();
-            paragraphProperties = new SimpleParagraphProperties { defaultTextRunProperties = TextConfiguration.GetGlobalTextRunProperties() };
         }
 
         #endregion
@@ -33,8 +28,6 @@ namespace CodeEditor.Views.Lines {
         public override void HandleTextRemove(TextRemovedMessage message) {}
 
         public override void HandleLinesRemove(LinesRemovedMessage message) {
-            int initialLinesCount = message.Count;
-
             linesCount -= message.Count;
 
             while (message.Count > 0) { 
@@ -67,7 +60,6 @@ namespace CodeEditor.Views.Lines {
                 }
             } else {
                 int diff = message.AreaAfterFolding.EndPosition.Line - message.AreaAfterFolding.StartPosition.Line;
-                int initialLinesCount = linesCount;
 
                 linesCount += diff;
 

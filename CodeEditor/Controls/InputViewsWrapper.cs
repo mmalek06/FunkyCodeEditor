@@ -42,7 +42,7 @@ namespace CodeEditor.Controls {
 
         #region constructor
 
-        public InputViewsWrapper(InputPanel parent) : base() {
+        public InputViewsWrapper(InputPanel parent) {
             master = parent;
             views = new List<LocalViewBase>();
         }

@@ -7,7 +7,7 @@ namespace CodeEditor.Views.BaseClasses {
         
         #region constructor
 
-        public InputViewBase() : base() {
+        public InputViewBase() {
             Focusable = true;
         }
 

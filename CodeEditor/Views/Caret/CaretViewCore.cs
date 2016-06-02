@@ -42,7 +42,7 @@ namespace CodeEditor.Views.Caret {
 
         #region constructor
 
-        public CaretView() : base() {
+        public CaretView() {
             StepKeys = new HashSet<Key>(new[] { Key.Left, Key.Right, Key.Up, Key.Down });
             JumpKeys = new HashSet<Key>(new[] { Key.End, Key.Home, Key.PageUp, Key.PageDown });
             CaretPosition = TextPosition.Zero;
