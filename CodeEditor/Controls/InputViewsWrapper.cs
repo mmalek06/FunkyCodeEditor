@@ -135,11 +135,8 @@ namespace CodeEditor.Controls {
             }
         }
 
-        private void OnScrollChanged(object message) {
-            var m = message as ScrollChangedMessage;
-
-            textView.CacheText(0, m.ChangeInLines);
-        }
+        private void OnScrollChanged(object message) =>
+            textView.HandleScrolling(message as ScrollChangedMessage);
 
         #endregion
 
@@ -148,7 +145,7 @@ namespace CodeEditor.Controls {
         protected override Visual GetVisualChild(int index) => views[index];
 
         private void SetupViews() {
-            int editorCode = editorCode = this.GetEditor().GetHashCode();
+            int editorCode = this.GetEditor().GetHashCode();
 
             caretView = new CaretView();
             textView = new TextView(caretView);

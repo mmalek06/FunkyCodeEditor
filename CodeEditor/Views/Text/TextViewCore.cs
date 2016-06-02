@@ -67,13 +67,13 @@ namespace CodeEditor.Views.Text {
             }
         }
 
+        public void HandleScrolling(ScrollChangedMessage message) {
+
+        }
+
         #endregion
 
         #region public methods
-
-        public void CacheText(int currentLine, int linesCount) {
-
-        }
 
         public void EnterText(string enteredText) {
             InputText(enteredText);

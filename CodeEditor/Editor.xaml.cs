@@ -67,7 +67,9 @@ namespace CodeEditor {
         private void OnScrollChanged(object sender, ScrollChangedEventArgs evt) {
             if (evt.VerticalChange != 0) {
                 Postbox.InstanceFor(GetHashCode()).Put(new ScrollChangedMessage {
-                    ChangeInLines = (int)(evt.VerticalChange / TextConfiguration.GetCharSize().Height)
+                    TopmostLine = (int)Math.Round(evt.VerticalOffset / TextConfiguration.GetCharSize().Height),
+                    BottommostLine = (int)Math.Round((evt.VerticalOffset + evt.ViewportHeight) / TextConfiguration.GetCharSize().Height),
+                    ChangeInLines = (int)Math.Floor(evt.VerticalChange / TextConfiguration.GetCharSize().Height)
                 });
             }
         }

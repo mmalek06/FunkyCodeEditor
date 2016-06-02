@@ -66,12 +66,13 @@ namespace CodeEditor.Configuration {
 
         public static TextRunProperties CreateGlobalTextRunProperties() {
             var fe = new FrameworkElement();
-            var p = new GlobalTextRunProperties();
-
-            p.typeface = CreateTypeface();
-            p.fontRenderingEmSize = GetFontSize();
-            p.foregroundBrush = (Brush)fe.GetValue(Control.ForegroundProperty);
-            p.cultureInfo = CultureInfo.CurrentCulture;
+            var p = new GlobalTextRunProperties
+            {
+                typeface = CreateTypeface(),
+                fontRenderingEmSize = GetFontSize(),
+                foregroundBrush = (Brush) fe.GetValue(Control.ForegroundProperty),
+                cultureInfo = CultureInfo.CurrentCulture
+            };
 
             return p;
         }

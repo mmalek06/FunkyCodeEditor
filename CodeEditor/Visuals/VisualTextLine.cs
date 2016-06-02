@@ -51,7 +51,7 @@ namespace CodeEditor.Visuals {
 
         public abstract VisualTextLine CloneWithIndexChange(int index);
 
-        public override string ToString() => $"{GetType().ToString()}, {RenderedText}, {Index}";
+        public override string ToString() => $"{GetType()}, {RenderedText}, {Index}";
 
         public static VisualTextLine Create(string text, int index) {
             return new SingleVisualTextLine(new SimpleTextSource(text, TextConfiguration.GetGlobalTextRunProperties()), index);
@@ -66,7 +66,7 @@ namespace CodeEditor.Visuals {
         }
 
         public static VisualTextLine MergeLines(IEnumerable<VisualTextLine> lines, int index) =>
-            VisualTextLine.Create(string.Join("", lines.SelectMany(line => line.GetStringContents())), index);
+            Create(string.Join("", lines.SelectMany(line => line.GetStringContents())), index);
 
         #endregion
 
