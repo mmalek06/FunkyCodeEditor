@@ -21,7 +21,6 @@ namespace CodeEditor.Extensions {
         }
 
         public static IList<CachedLine> ConvertToCachedLines(this VisualCollection collection, int omit, int count) {
-            var result = new List<CachedLine>();
             var fragment = collection.ToEnumerableOf<VisualTextLine>().Skip(omit).Take(count);
 
             return fragment.Select(line => {
