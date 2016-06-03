@@ -14,34 +14,31 @@ namespace CodeEditor.Tests.UnitTests.Views {
         public void InitializeTest() {
             cv = new CaretView();
             tv = new TextView(cv);
+
+            tv.EnterText("one");
+            tv.EnterText("\r");
+            tv.EnterText("two");
+            tv.EnterText("\r");
+            tv.EnterText("three");
+            tv.EnterText("\r");
+            tv.EnterText("four");
+            tv.EnterText("\r");
+            tv.EnterText("five");
+            tv.EnterText("\r");
+            tv.EnterText("six");
         }
 
-        [Test]
-        public void SixLinesEntered_ShouldCacheTwoFirstAndTwoLastsLines() {
-            tv.EnterText("one");
-            tv.EnterText("\n");
-            tv.EnterText("two");
-            tv.EnterText("\n");
-            tv.EnterText("three");
-            tv.EnterText("\n");
-            tv.EnterText("four");
-            tv.EnterText("\n");
-            tv.EnterText("five");
-            tv.EnterText("\n");
-            tv.EnterText("six");
-            tv.HandleScrolling(CreateScrollChangedMessage(1, 4, 2));
+        [TestCase(2)]
+        [TestCase(-2)]
+        public void ScrollTwoLines(int changeInLines) {
+            tv.HandleScrolling(new ScrollChangedMessage {
+                ChangeInLines = changeInLines
+            });
 
             var visualLines = tv.GetVisualLines();
 
             Assert.That(tv.LinesCount, Is.EqualTo(6));
-            Assert.That(visualLines.Count, Is.EqualTo(2));
+            Assert.That(visualLines.Count, Is.EqualTo(4));
         }
-
-        private ScrollChangedMessage CreateScrollChangedMessage(int topmostLine, int bottommostLine, int changeInLines) =>
-            new ScrollChangedMessage {
-                TopmostLine = topmostLine,
-                BottommostLine = bottommostLine,
-                ChangeInLines = changeInLines
-            };
     }
 }

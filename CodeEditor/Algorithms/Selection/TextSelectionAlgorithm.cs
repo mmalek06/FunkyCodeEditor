@@ -5,7 +5,7 @@ using CodeEditor.DataStructures;
 using CodeEditor.Views.Caret;
 using CodeEditor.Views.Selection;
 using CodeEditor.Views.Text;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Algorithms.Selection {
     internal class TextSelectionAlgorithm {

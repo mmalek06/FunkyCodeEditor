@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Views.Text {
     internal partial class TextView {

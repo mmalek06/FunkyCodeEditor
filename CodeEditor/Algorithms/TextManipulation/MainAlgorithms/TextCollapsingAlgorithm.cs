@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CodeEditor.DataStructures;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextCollapsingAlgorithm {
@@ -42,7 +42,6 @@ namespace CodeEditor.Algorithms.TextManipulation {
             string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
             string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
             int collapsedLineIndex = area.StartPosition.Line;
-            var linesToStartFrom = lines.Skip(area.StartPosition.Line);
             var middlePart = new List<string>();
             int start = area.StartPosition.Line;
             int end = area.EndPosition.Line;

@@ -5,7 +5,7 @@ using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
 using CodeEditor.Enums;
 using CodeEditor.TextProperties;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Views.Text {
     internal partial class TextView : ITextViewReadonly {
@@ -47,9 +47,9 @@ namespace CodeEditor.Views.Text {
 
             if (info.IsCharacter) {
                 return info.Text[0];
-            } else {
-                return default(char);
             }
+
+            return default(char);
         }
 
         public int GetLineLength(int index) => visuals.Count == 0 ? 0 : ((VisualTextLine)visuals[index]).Length;

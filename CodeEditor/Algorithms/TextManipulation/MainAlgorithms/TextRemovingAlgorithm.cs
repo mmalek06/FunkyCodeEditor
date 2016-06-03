@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
 using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class TextRemovingAlgorithm {
@@ -46,21 +46,21 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 }
                 if (isStartEqToTextLen) {
                     return DeleteNextLine(lines, startingTextPosition);
-                } else {
-                    return DeleteFromActiveLine(lines, startingTextPosition);
-                }
-            } else {
-                bool isStartEqZero = startingTextPosition.Column == 0;
+                } 
 
-                if (isStartEqZero && startingTextPosition.Line == 0) {
-                    return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, VisualTextLine>(), LinesToRemove = new[] { startingTextPosition.Line } };
-                }
-                if (isStartEqZero) {
-                    return RemoveThisLine(lines, startingTextPosition);
-                } else {
-                    return RemoveFromActiveLine(lines, startingTextPosition);
-                }
+                return DeleteFromActiveLine(lines, startingTextPosition);
+            } 
+
+            bool isStartEqZero = startingTextPosition.Column == 0;
+
+            if (isStartEqZero && startingTextPosition.Line == 0) {
+                return new ChangeInLinesInfo { LinesToChange = new Dictionary<TextPosition, VisualTextLine>(), LinesToRemove = new[] { startingTextPosition.Line } };
             }
+            if (isStartEqZero) {
+                return RemoveThisLine(lines, startingTextPosition);
+            }
+
+            return RemoveFromActiveLine(lines, startingTextPosition);
         }
 
         #endregion
@@ -152,7 +152,6 @@ namespace CodeEditor.Algorithms.TextManipulation {
 
         private VisualTextLine CutStandardLine(VisualTextLine line, int startIndex, int count) {
             string contents = line.GetStringContents()[0];
-            int length = count - startIndex;
             string newText = string.Empty;
 
             if (startIndex + count == line.Length) {

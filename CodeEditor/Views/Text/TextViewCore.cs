@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Input;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Algorithms.Parsing;
-using CodeEditor.Caching;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.Extensions;
@@ -15,6 +14,7 @@ using CodeEditor.TextProperties;
 using CodeEditor.Views.BaseClasses;
 using CodeEditor.Views.Caret;
 using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Views.Text {
     /// <summary>
@@ -43,8 +43,6 @@ namespace CodeEditor.Views.Text {
             removingAlgorithm = new TextRemovingAlgorithm();
             collapsingAlgorithm = new TextCollapsingAlgorithm();
             parsingAlgorithm = new TextParsingAlgorithm();
-            topCachedLines = new List<CachedLine>();
-            bottomCachedLines = new List<CachedLine>();
             this.caretViewReader = caretViewReader;
 
             visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
@@ -62,7 +60,8 @@ namespace CodeEditor.Views.Text {
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
-        public void HandleScrolling(ScrollChangedMessage message) => Cache(message.BottommostLine, message.TopmostLine, message.ChangeInLines);
+        public void HandleScrolling(ScrollChangedMessage message) => 
+            UpdateCache(message.ChangeInLines, message.TopmostLine, message.BottommostLine);
 
         public override void HandleTextFolding(FoldClickedMessage message) {
             if (message.State == FoldingStates.EXPANDED) {
@@ -158,9 +157,10 @@ namespace CodeEditor.Views.Text {
 
         private void UpdateSize() {
             int maxLineLen = (from VisualTextLine line in visuals select line.RenderedText.Length).Concat(new[] {0}).Max();
+            double charHeight = TextConfiguration.GetCharSize().Height;
 
             Width = maxLineLen * TextConfiguration.GetCharSize().Width;
-            Height = Convert.ToInt32(visuals.Count * TextConfiguration.GetCharSize().Height);
+            Height = Convert.ToInt32(visuals.Count * charHeight);
         }
         
         #endregion

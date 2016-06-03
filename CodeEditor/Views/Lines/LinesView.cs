@@ -11,6 +11,7 @@ namespace CodeEditor.Views.Lines {
 
         private int linesCount;
 
+        private bool initialRendering;
 
         #endregion
 
@@ -19,6 +20,7 @@ namespace CodeEditor.Views.Lines {
         public LinesView() {
             bgBrush = SharedEditorConfiguration.GetLinesColumnBrush();
             linesCount = 1;
+            initialRendering = true;
         }
 
         #endregion
@@ -76,7 +78,11 @@ namespace CodeEditor.Views.Lines {
         protected override void OnRender(DrawingContext drawingContext) {
             base.OnRender(drawingContext);
 
-            Push();
+            if (initialRendering) {
+                Push();
+
+                initialRendering = false;
+            }
         }
 
         #endregion

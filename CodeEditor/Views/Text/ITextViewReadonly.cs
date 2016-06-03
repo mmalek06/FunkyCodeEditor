@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.DataStructures;
 using CodeEditor.Enums;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Views.Text {
     internal interface ITextViewReadonly {

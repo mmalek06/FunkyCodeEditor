@@ -5,7 +5,7 @@ using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.TextProperties;
 
-namespace CodeEditor.Visuals {
+namespace CodeEditor.Visuals.Base {
     internal abstract class VisualTextLine : DrawingVisual {
 
         #region fields
@@ -43,13 +43,13 @@ namespace CodeEditor.Visuals {
 
         public abstract void Draw();
 
-        public abstract IReadOnlyList<SimpleTextSource> GetTextSources();
-
         public abstract IReadOnlyList<string> GetStringContents();
 
         public abstract CharInfo GetCharInfoAt(int column);
 
         public abstract VisualTextLine CloneWithIndexChange(int index);
+
+        public abstract CachedVisualTextLine ToCachedLine();
 
         public override string ToString() => $"{GetType()}, {RenderedText}, {Index}";
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeEditor.DataStructures;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Algorithms.TextManipulation {
     internal class ChangeInLinesInfo {

@@ -2,13 +2,27 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Linq;
-using CodeEditor.Caching;
 using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Extensions {
     internal static class VisualCollectionExtensions {
 
         #region public methods
+
+        public static void InsertRange(this VisualCollection collection, IEnumerable<Visual> visuals, int index) {
+            foreach (var visual in visuals) {
+                collection.Insert(index, visual);
+
+                index++;
+            }
+        }
+
+        public static void AddRange(this VisualCollection collection, IEnumerable<Visual> visuals) {
+            foreach (var visual in visuals) {
+                collection.Add(visual);
+            }
+        }
 
         public static IEnumerable<T> ToEnumerableOf<T>(this VisualCollection collection) where T : class {
             var contents = new List<T>();
@@ -20,7 +34,7 @@ namespace CodeEditor.Extensions {
             return contents;
         }
 
-        public static IList<CachedLine> ConvertToCachedLines(this VisualCollection collection, int omit, int count) {
+        public static IList<CachedVisualTextLine> ConvertToCachedLines(this VisualCollection collection, int count, int omit = 0) {
             var fragment = collection.ToEnumerableOf<VisualTextLine>().Skip(omit).Take(count);
 
             return fragment.Select(line => {
@@ -28,45 +42,14 @@ namespace CodeEditor.Extensions {
                 var singleLine = line as SingleVisualTextLine;
 
                 if (collapsedLine != null) {
-                    return GetCachedCollapsedLine(collapsedLine);
-                } else {
-                    return GetCachedSingleLine(singleLine);
+                    return collapsedLine.ToCachedLine();
                 }
+                if (singleLine == null) {
+                    throw new ArgumentException(nameof(line));
+                }
+
+                return singleLine.ToCachedLine();
             }).ToList();
-        }
-
-        #endregion
-
-        #region methods
-
-        private static CachedLine GetCachedSingleLine(SingleVisualTextLine singleLine) =>
-            new CachedSingleLine {
-                Index = singleLine.Index,
-                RenderedContents = singleLine.RenderedText
-            };
-
-        private static CachedLine GetCachedCollapsedLine(CollapsedVisualTextLine collapsedLine) =>
-            new CachedCollapsedLine {
-                Index = collapsedLine.Index,
-                RenderedContents = collapsedLine.RenderedText,
-                CollapsedContents = collapsedLine.CollapsedContent,
-                CollapseRepresentation = collapsedLine.CollapseRepresentation,
-                PrecedingText = GetPrecedingText(collapsedLine),
-                FollowingText = GetFollowingText(collapsedLine)
-            };
-
-        private static string GetPrecedingText(CollapsedVisualTextLine line) {
-            var text = line.RenderedText;
-            var parts = text.Split(new[] { line.CollapseRepresentation }, StringSplitOptions.None);
-
-            return parts[0];
-        }
-
-        private static string GetFollowingText(CollapsedVisualTextLine line) {
-            var text = line.RenderedText;
-            var parts = text.Split(new[] { line.CollapseRepresentation }, StringSplitOptions.None);
-
-            return parts.Last();
         }
 
         #endregion

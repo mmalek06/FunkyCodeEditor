@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.TextProperties;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Visuals {
     internal class SingleVisualTextLine : VisualTextLine {
@@ -43,11 +44,12 @@ namespace CodeEditor.Visuals {
 
         public override IReadOnlyList<string> GetStringContents() => new[] { RenderedText };
 
-        public override IReadOnlyList<SimpleTextSource> GetTextSources() => new[] { textSource };
-
         public override CharInfo GetCharInfoAt(int column) => new CharInfo { IsCharacter = true, Text = RenderedText[column].ToString() };
 
         public override VisualTextLine CloneWithIndexChange(int index) => Create(RenderedText, index);
+
+        public override CachedVisualTextLine ToCachedLine() =>
+            new CachedSingleVisualTextLine(RenderedText, Index);
 
         #endregion
 

@@ -79,9 +79,10 @@
     <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\MarkupRepresentationAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\WhitespaceRepresentationAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\MainAlgorithms\TextCollapsingAlgorithm.cs" />
-    <Compile Include="Caching\CachedCollapsedLine.cs" />
-    <Compile Include="Caching\CachedLine.cs" />
-    <Compile Include="Caching\CachedSingleLine.cs" />
+    <Compile Include="Visuals\Base\CollapseLineTraits.cs" />
+    <Compile Include="Visuals\CachedCollapsedVisualTextLine.cs" />
+    <Compile Include="Visuals\Base\CachedVisualTextLine.cs" />
+    <Compile Include="Visuals\CachedSingleVisualTextLine.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\SharedEditorConfiguration.cs" />
     <Compile Include="Configuration\GlobalConstants.cs" />
@@ -102,7 +103,6 @@
     <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Extensions\ICollectionExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\VisualCollectionExtensions.cs" />
@@ -169,7 +169,7 @@
     <Compile Include="Views\Caret\CaretViewCore.cs" />
     <Compile Include="Views\Text\TextViewCore.cs" />
     <Compile Include="Visuals\VisualElementSymbolBase.cs" />
-    <Compile Include="Visuals\VisualTextLine.cs" />
+    <Compile Include="Visuals\Base\VisualTextLine.cs" />
     <Page Include="Editor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

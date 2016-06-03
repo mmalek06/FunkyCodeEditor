@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using CodeEditor.Caching;
 using CodeEditor.Extensions;
 using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Other {
@@ -27,12 +27,12 @@ namespace CodeEditor.Tests.UnitTests.Other {
             collection.Add(VisualTextLine.Create("", 2));
             collection.Add(VisualTextLine.Create("}", 3));
 
-            var cachedResult = collection.ConvertToCachedLines(1, 3);
+            var cachedResult = collection.ConvertToCachedLines(3, 1);
 
             Assert.AreEqual(cachedResult.Count, 3);
-            Assert.AreEqual(cachedResult[0].RenderedContents, "{");
-            Assert.AreEqual(cachedResult[1].RenderedContents, "");
-            Assert.AreEqual(cachedResult[2].RenderedContents, "}");
+            Assert.AreEqual(cachedResult[0].RenderedText, "{");
+            Assert.AreEqual(cachedResult[1].RenderedText, "");
+            Assert.AreEqual(cachedResult[2].RenderedText, "}");
         }
 
         [Test]
@@ -45,12 +45,12 @@ namespace CodeEditor.Tests.UnitTests.Other {
             collection.Add(VisualTextLine.Create(new[] { "{", "", "}" }, "", "", 1, Collapse));
             collection.Add(VisualTextLine.Create(LastLine, 2));
 
-            var cachedResult = collection.ConvertToCachedLines(0, 3);
+            var cachedResult = collection.ConvertToCachedLines(3);
 
             Assert.AreEqual(cachedResult.Count, 3);
-            Assert.AreEqual(cachedResult[0].RenderedContents, FirstLine);
-            Assert.AreEqual(cachedResult[1].RenderedContents, Collapse);
-            Assert.AreEqual(cachedResult[2].RenderedContents, LastLine);
+            Assert.AreEqual(cachedResult[0].RenderedText, FirstLine);
+            Assert.AreEqual(cachedResult[1].RenderedText, Collapse);
+            Assert.AreEqual(cachedResult[2].RenderedText, LastLine);
         }
 
         [Test]
@@ -58,23 +58,15 @@ namespace CodeEditor.Tests.UnitTests.Other {
             const string FirstLine = "asdf";
             const string Collapse = "{...}";
             const string LastLine = "zxcv";
-            string[] collapsedContents = new[] { "{ jh", "as", "cv }" };
-            var cachedLines = new List<CachedLine>();
+            string[] collapsedContents = { "{ jh", "as", "cv }" };
+            var cachedLines = new List<CachedVisualTextLine> {
+                new CachedSingleVisualTextLine(FirstLine, 0),
+                new CachedCollapsedVisualTextLine(collapsedContents, "", "", 1, Collapse),
+                new CachedSingleVisualTextLine(LastLine, 2)
+            };
 
-            cachedLines.Add(new CachedSingleLine { Index = 0, RenderedContents = FirstLine });
-            cachedLines.Add(
-                new CachedCollapsedLine {
-                    CollapsedContents = collapsedContents,
-                    CollapseRepresentation = Collapse,
-                    PrecedingText = "",
-                    FollowingText = "",
-                    Index = 1,
-                    RenderedContents = Collapse
-                });
-            cachedLines.Add(new CachedSingleLine { Index = 2, RenderedContents = LastLine });
 
             var visualLines = cachedLines.GetVisualLines().ToList();
-            var collapsedLine = visualLines[1] as CollapsedVisualTextLine;
 
             Assert.IsInstanceOf<SingleVisualTextLine>(visualLines[0]);
             Assert.IsInstanceOf<CollapsedVisualTextLine>(visualLines[1]);
@@ -82,7 +74,6 @@ namespace CodeEditor.Tests.UnitTests.Other {
             Assert.That(visualLines[0].RenderedText, Is.EqualTo(FirstLine));
             Assert.That(visualLines[1].RenderedText, Is.EqualTo(Collapse));
             Assert.That(visualLines[2].RenderedText, Is.EqualTo(LastLine));
-            CollectionAssert.AreEqual(collapsedContents, collapsedLine.CollapsedContent);
         }
 
     }

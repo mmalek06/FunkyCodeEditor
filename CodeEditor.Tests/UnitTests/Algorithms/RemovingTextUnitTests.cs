@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.DataStructures;
-using CodeEditor.Visuals;
+using CodeEditor.Visuals.Base;
 using NUnit.Framework;
 
 namespace CodeEditor.Tests.UnitTests.Algorithms {

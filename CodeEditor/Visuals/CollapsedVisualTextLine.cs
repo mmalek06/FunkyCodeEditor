@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media.TextFormatting;
 using CodeEditor.Configuration;
 using CodeEditor.TextProperties;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Visuals {
     internal class CollapsedVisualTextLine : VisualTextLine {
@@ -26,10 +27,6 @@ namespace CodeEditor.Visuals {
 
         public override int Length => RenderedText.Length;
 
-        public string CollapseRepresentation => collapseRepresentation;
-
-        public IReadOnlyList<string> CollapsedContent => collapsedContent;
-
         #endregion
 
         #region constructor
@@ -48,9 +45,10 @@ namespace CodeEditor.Visuals {
 
         public override void Draw() {
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
-            double top = 0;
 
             using (var drawingContext = RenderOpen()) {
+                double top;
+
                 using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(textBeforeCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
                     top = Index * textLine.Height;
 
@@ -67,56 +65,16 @@ namespace CodeEditor.Visuals {
             }
         }
 
-        public override IReadOnlyList<string> GetStringContents() {
-            var contents = new List<string>();
+        public override IReadOnlyList<string> GetStringContents() =>
+            CollapseLineTraits.GetStringContents(textBeforeCollapse, textAfterCollapse, collapsedContent);
 
-            contents.Add(textBeforeCollapse + (collapsedContent.Any() ? collapsedContent[0] : string.Empty));
-            contents.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 1)
-                              select text);
-            contents[contents.Count - 1] += textAfterCollapse;
-
-            return contents;
-        }
-
-        public override IReadOnlyList<SimpleTextSource> GetTextSources() {
-            var textSources = new List<SimpleTextSource>();
-            var runProperties = TextConfiguration.GetGlobalTextRunProperties();
-
-            textSources.Add(new SimpleTextSource(textBeforeCollapse + collapsedContent[0], runProperties));
-            textSources.AddRange(from text in collapsedContent.Skip(1).Take(collapsedContent.Count - 1)
-                                 select new SimpleTextSource(text, runProperties));
-            textSources[textSources.Count - 1].Text += textAfterCollapse;
-
-            return textSources;
-        }
-
-        public override CharInfo GetCharInfoAt(int column) {
-            if (column < textBeforeCollapse.Length) {
-                return new CharInfo {
-                    IsCharacter = true,
-                    Text = textBeforeCollapse[column].ToString(),
-                    PrevCharPosition = new DataStructures.TextPosition(column: column, line: Index),
-                    NextCharPosition = new DataStructures.TextPosition(column: column, line: Index)
-                };
-            }
-            if (column > textBeforeCollapse.Length && column >= $"{textBeforeCollapse}{collapseRepresentation}".Length && column < RenderedText.Length) {
-                return new CharInfo {
-                    IsCharacter = true,
-                    Text = RenderedText[column].ToString(),
-                    PrevCharPosition = new DataStructures.TextPosition(column: column, line: Index),
-                    NextCharPosition = new DataStructures.TextPosition(column: column, line: Index)
-                };
-            }
-
-            return new CharInfo {
-                IsCharacter = false,
-                Text = "{...}",
-                PrevCharPosition = new DataStructures.TextPosition(column: textBeforeCollapse.Length, line: Index),
-                NextCharPosition = new DataStructures.TextPosition(column: $"{textBeforeCollapse}{collapseRepresentation}".Length, line: Index)
-            };
-        }
+        public override CharInfo GetCharInfoAt(int column) =>
+            CollapseLineTraits.GetCharInfoAt(column, textBeforeCollapse, textAfterCollapse, RenderedText, Index, collapseRepresentation);
 
         public override VisualTextLine CloneWithIndexChange(int index) => Create(collapsedContent, textBeforeCollapse, textAfterCollapse, index, collapseRepresentation);
+
+        public override CachedVisualTextLine ToCachedLine() =>
+            new CachedCollapsedVisualTextLine(collapsedContent, textBeforeCollapse, textAfterCollapse, Index, collapseRepresentation);
 
         #endregion
 
