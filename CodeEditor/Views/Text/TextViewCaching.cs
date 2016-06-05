@@ -5,48 +5,42 @@ namespace CodeEditor.Views.Text {
 
         #region methods
 
-        private void UpdateCache(int changeInLines, int topmostLine, int bottommostLine) {
-            // scrolled to bottom
-            if (changeInLines > 0) {
-                ConvertVisualLinesToCachedLines(topmostLine - changeInLines, changeInLines);
-                ConvertCachedLinesToVisualLines(bottommostLine - changeInLines, changeInLines);
+        private void UpdateCache(int linesScrolled, int firstVisibleLineIndex, int lastVisibleLineIndex) {
+            if (linesScrolled == 0) {
+                return;
             }
-            // scrolled to top
-            else if (changeInLines < 0) {
-                changeInLines = -changeInLines;
 
-                ConvertCachedLinesToVisualLines(topmostLine, changeInLines);
-                ConvertVisualLinesToCachedLines(bottommostLine, changeInLines);
-            }
+            int startForTop = firstVisibleLineIndex - linesScrolled < 0 ? 0 : firstVisibleLineIndex - linesScrolled;
+
+            ConvertVisualLinesToCachedLines(0, firstVisibleLineIndex);
+            ConvertVisualLinesToCachedLines(lastVisibleLineIndex, visuals.Count - lastVisibleLineIndex);
+            ConvertCachedLinesToVisualLines(firstVisibleLineIndex, lastVisibleLineIndex - firstVisibleLineIndex);
         }
 
-        #endregion
-
-        #region methods
-
         private void ConvertVisualLinesToCachedLines(int start, int count) {
-            start -= 1;
-
             for (int i = start; i < start + count; i++) {
-                var cachedVisualLine = ((VisualTextLine)visuals[i]).ToCachedLine();
+                if (visuals[i] is CachedVisualTextLine) {
+                    continue;
+                }
+
+                var cachedLine = ((VisualTextLine)visuals[i]).ToCachedLine();
 
                 visuals.RemoveAt(i);
-                visuals.Insert(i, cachedVisualLine);
+                visuals.Insert(i, cachedLine);
             }
         }
 
         private void ConvertCachedLinesToVisualLines(int start, int count) {
-            start -= 1;
-
             for (int i = start; i < start + count; i++) {
-                var visualLine = visuals[i] as CachedVisualTextLine;
-
-                if (visualLine == null) {
+                if (!(visuals[i] is CachedVisualTextLine)) {
                     continue;
                 }
 
+                var visualLine = ((CachedVisualTextLine)visuals[i]).ToVisualTextLine();
+
                 visuals.RemoveAt(i);
-                visuals.Insert(i, visualLine.ToVisualTextLine());
+                visuals.Insert(i, visualLine);
+                visualLine.Draw();
             }
         }
 

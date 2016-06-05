@@ -61,7 +61,7 @@ namespace CodeEditor.Views.Text {
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
 
         public void HandleScrolling(ScrollChangedMessage message) => 
-            UpdateCache(message.ChangeInLines, message.TopmostLine, message.BottommostLine);
+            UpdateCache(message.LinesScrolled, message.FirstVisibleLineIndex, message.LastVisibleLineIndex);
 
         public override void HandleTextFolding(FoldClickedMessage message) {
             if (message.State == FoldingStates.EXPANDED) {

@@ -3,11 +3,11 @@
 
         #region properties
 
-        public int ChangeInLines { get; set; }
+        public int LinesScrolled { get; set; }
 
-        public int TopmostLine { get; set; }
+        public int FirstVisibleLineIndex { get; set; }
 
-        public int BottommostLine { get; set; }
+        public int LastVisibleLineIndex { get; set; }
 
         #endregion
 

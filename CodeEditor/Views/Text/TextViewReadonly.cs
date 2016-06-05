@@ -24,8 +24,7 @@ namespace CodeEditor.Views.Text {
         public IReadOnlyList<string> GetActualLines() => 
             GetTextPartsBetweenPositions(new TextPosition(column: 0, line: 0), new TextPosition(column: GetLineLength(LinesCount - 1), line: LinesCount - 1)).ToArray();
 
-        public IReadOnlyList<VisualTextLine> GetVisualLines() =>
-            visuals.ToEnumerableOf<VisualTextLine>().Select(line => line.CloneWithIndexChange(line.Index)).ToArray();
+        public IReadOnlyList<VisualTextLine> GetVisualLines() => visuals.ToEnumerableOf<VisualTextLine>().ToArray();
 
         public TextPosition AdjustStep(TextPosition newPosition, CaretMoveDirection moveDirection) {
             var line = ((VisualTextLine)visuals[newPosition.Line]);
