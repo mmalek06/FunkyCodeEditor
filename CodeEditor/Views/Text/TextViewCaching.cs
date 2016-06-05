@@ -1,7 +1,15 @@
-﻿using CodeEditor.Visuals.Base;
+﻿using CodeEditor.Messaging;
+using CodeEditor.Visuals.Base;
 
 namespace CodeEditor.Views.Text {
     internal partial class TextView {
+
+        #region event handlers
+
+        public void HandleScrolling(ScrollChangedMessage message) =>
+            UpdateCache(message.LinesScrolled, message.FirstVisibleLineIndex, message.LastVisibleLineIndex);
+
+        #endregion
 
         #region methods
 
