@@ -81,11 +81,7 @@ namespace CodeEditor.Views.Caret {
 
         #region public methods
 
-        public void MoveCursor(TextPosition newPos) {
-            var oldPos = CaretPosition;
-
-            MoveCaret(newPos);
-        }
+        public void MoveCursor(TextPosition newPos) => MoveCaret(newPos);
 
         #endregion
 

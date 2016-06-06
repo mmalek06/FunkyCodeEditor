@@ -28,21 +28,17 @@ namespace CodeEditor.Algorithms.Folding {
         public IDictionary<TextPosition, TextPosition> CreateFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             if (text == GetOpeningTag()) {
                 return CreateEmptyFold(position, foldingPositions);
-            } else if (text == GetClosingTag()) {
-                return RebuildFolds(position, foldingPositions);
             }
 
-            return null;
+            return text == GetClosingTag() ? RebuildFolds(position, foldingPositions) : null;
         }
 
         public TextPosition DeleteFolds(string text, TextPosition position, IDictionary<TextPosition, TextPosition> foldingPositions) {
             if (text == GetOpeningTag() || text == GetCollapsibleRepresentation()) {
                 return position;
-            } else if (text == GetClosingTag()) {
-                return DeleteFoldForClosePosition(position, foldingPositions);
             }
 
-            return null;
+            return text == GetClosingTag() ? DeleteFoldForClosePosition(position, foldingPositions) : null;
         }
 
         public IEnumerable<TextPosition> GetRepeatingFolds(IDictionary<TextPosition, TextPosition> folds) =>

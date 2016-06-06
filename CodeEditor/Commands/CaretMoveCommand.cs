@@ -98,7 +98,7 @@ namespace CodeEditor.Commands {
             return nextPosition.Column >= 0;
         }
 
-        private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
+        private bool CanExecuteMouseMove(MouseEventArgs mouseEvent) {
             var docPosition = mouseEvent.GetPosition(caretView).GetDocumentPosition(TextConfiguration.GetCharSize());
 
             if (docPosition.Line < 0 || docPosition.Line >= textViewReader.LinesCount) {
@@ -109,11 +109,11 @@ namespace CodeEditor.Commands {
         }
 
         private CaretMoveDirection GetMoveDirection(TextPosition newPos, TextPosition activePosition) {
-            if (newPos.Line == activePosition.Line) {
+            if (newPos != null && newPos.Line == activePosition.Line) {
                 return newPos.Column > activePosition.Column ? CaretMoveDirection.RIGHT : CaretMoveDirection.LEFT;
             }
 
-            return newPos.Line > activePosition.Line ? CaretMoveDirection.BOTTOM : CaretMoveDirection.TOP;
+            return newPos != null && newPos.Line > activePosition.Line ? CaretMoveDirection.BOTTOM : CaretMoveDirection.TOP;
         }
 
         #endregion
