@@ -63,6 +63,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Mocks\MockDefinitionLoader.cs" />
     <Compile Include="ScenarioTests\EditorContext.cs" />
     <Compile Include="ScenarioTests\EventGenerator.cs" />
     <Compile Include="ScenarioTests\Features\BreakNonEmptyLine.feature.cs">
@@ -100,6 +101,7 @@
     <Compile Include="ScenarioTests\Steps\KeysSteps.cs" />
     <Compile Include="ScenarioTests\Steps\SelectionViewSteps.cs" />
     <Compile Include="ScenarioTests\Steps\TextViewSteps.cs" />
+    <Compile Include="UnitTests\Algorithms\CsCodeParsingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\TextWithBracketsCollapsingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\BracketsFoldingUnitTests.cs" />
     <Compile Include="UnitTests\Algorithms\RemovingTextUnitTests.cs" />

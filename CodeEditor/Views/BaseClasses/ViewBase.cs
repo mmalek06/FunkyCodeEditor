@@ -23,7 +23,7 @@ namespace CodeEditor.Views.BaseClasses {
 
         #region constructor
 
-        public ViewBase() {
+        protected ViewBase() {
             FocusVisualStyle = null;
             visuals = new VisualCollection(this);
         }

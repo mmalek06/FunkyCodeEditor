@@ -6,12 +6,18 @@ using Newtonsoft.Json;
 
 namespace CodeEditor.Languages {
     internal static class LanguageFeatureInfo {
+
+        #region constants
+
         private const string LanguagefeaturesFilePath = @"Languages/LanguageFeatures.json";
+
         private const string DefaultLanguageFeaturesJson = "{'js':{'formatting':'brackets'}}";
+
+        #endregion
 
         #region fields
 
-        private static Dictionary<string, Dictionary<string, string>> languageFeatures = null;
+        private static Dictionary<string, Dictionary<string, string>> languageFeatures;
 
         #endregion
 
@@ -28,12 +34,8 @@ namespace CodeEditor.Languages {
             return formattingType;
         }
 
-        private static string GetLanguageFeaturesJson()
-        {
-            return File.Exists(LanguagefeaturesFilePath)
-                ? File.ReadAllText(LanguagefeaturesFilePath)
-                : DefaultLanguageFeaturesJson;
-        }
+        private static string GetLanguageFeaturesJson() =>
+            File.Exists(LanguagefeaturesFilePath) ? File.ReadAllText(LanguagefeaturesFilePath) : DefaultLanguageFeaturesJson;
 
         #endregion
 

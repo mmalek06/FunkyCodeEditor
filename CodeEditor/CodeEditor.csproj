@@ -64,13 +64,15 @@
     <Compile Include="Algorithms\Folding\WhitespaceFoldingAlgorithm.cs" />
     <Compile Include="Algorithms\Parsing\ParsingInfo.cs" />
     <Compile Include="Algorithms\Parsing\TextParsingAlgorithm.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\TextType.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\CollapseWordType.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\DefinitionWordType.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\IWordType.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\KeywordWordType.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\StdWordType.cs" />
-    <Compile Include="Algorithms\Parsing\WordTypes\StringWordType.cs" />
+    <Compile Include="CodeParsing\DefinitionLoader.cs" />
+    <Compile Include="CodeParsing\IDefinitionLoader.cs" />
+    <Compile Include="CodeParsing\WordTypes\TextType.cs" />
+    <Compile Include="CodeParsing\WordTypes\CollapseWordType.cs" />
+    <Compile Include="CodeParsing\WordTypes\TypeWordType.cs" />
+    <Compile Include="CodeParsing\WordTypes\IWordType.cs" />
+    <Compile Include="CodeParsing\WordTypes\KeywordWordType.cs" />
+    <Compile Include="CodeParsing\WordTypes\StdWordType.cs" />
+    <Compile Include="CodeParsing\WordTypes\StringWordType.cs" />
     <Compile Include="Algorithms\Selection\SelectionInfo.cs" />
     <Compile Include="Algorithms\Selection\TextSelectionAlgorithm.cs" />
     <Compile Include="Algorithms\TextManipulation\CollapseRepresentationAlgorithms\BracketsRepresentationAlgorithm.cs" />
@@ -198,6 +200,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="CodeParsing\Files\cs_keyword.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\LanguageFeatures.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

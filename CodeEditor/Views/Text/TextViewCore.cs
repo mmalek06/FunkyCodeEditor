@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using CodeEditor.Algorithms.TextManipulation;
 using CodeEditor.Algorithms.Parsing;
+using CodeEditor.CodeParsing;
 using CodeEditor.Configuration;
 using CodeEditor.DataStructures;
 using CodeEditor.TextProperties;
@@ -39,7 +41,6 @@ namespace CodeEditor.Views.Text {
             updatingAlgorithm = new TextUpdatingAlgorithm();
             removingAlgorithm = new TextRemovingAlgorithm();
             collapsingAlgorithm = new TextCollapsingAlgorithm();
-            parsingAlgorithm = new TextParsingAlgorithm();
             this.caretViewReader = caretViewReader;
 
             visuals.Add(new SingleVisualTextLine(new SimpleTextSource(string.Empty, TextConfiguration.GetGlobalTextRunProperties()), 0));
@@ -56,6 +57,12 @@ namespace CodeEditor.Views.Text {
         }
 
         public void HandleMouseDown(MouseButtonEventArgs e) => Focus();
+
+        protected override void OnRender(DrawingContext drawingContext) {
+            base.OnRender(drawingContext);
+
+            parsingAlgorithm = new TextParsingAlgorithm(ConfigManager.GetConfig(EditorCode).Language, new DefinitionLoader());
+        }
 
         #endregion
 

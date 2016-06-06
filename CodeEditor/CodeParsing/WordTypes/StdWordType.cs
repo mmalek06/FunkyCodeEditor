@@ -1,9 +1,15 @@
-﻿namespace CodeEditor.Algorithms.Parsing.WordTypes {
+﻿using CodeEditor.Enums;
+
+namespace CodeEditor.CodeParsing.WordTypes {
     internal class StdWordType : IWordType {
 
         #region properties
 
         public TextType Type => TextType.STANDARD;
+
+        public SupportedLanguages Language { get; set; }
+
+        public IDefinitionLoader DefinitionLoader { get; set; }
 
         #endregion
 

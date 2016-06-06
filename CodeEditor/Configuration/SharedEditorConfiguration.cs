@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
-using CodeEditor.Algorithms.Parsing.WordTypes;
+using CodeEditor.CodeParsing;
+using CodeEditor.CodeParsing.WordTypes;
+using CodeEditor.Enums;
 
 namespace CodeEditor.Configuration {
     internal static class SharedEditorConfiguration {
@@ -25,13 +27,13 @@ namespace CodeEditor.Configuration {
             return GetEditorBrush();
         }
 
-        public static IEnumerable<IWordType> GetWordParsers() =>
+        public static IEnumerable<IWordType> GetWordParsers(SupportedLanguages language, IDefinitionLoader definitionLoader) =>
             new List<IWordType> {
-                new CollapseWordType(),
-                new DefinitionWordType(),
-                new KeywordWordType(),
-                new StdWordType(),
-                new StringWordType()
+                new CollapseWordType { Language = language },
+                new TypeWordType { Language = language },
+                new KeywordWordType { Language = language },
+                new StdWordType { Language = language },
+                new StringWordType { Language = language }
             };
 
         public static Brush GetFoldingColumnFontColor() {

@@ -1,4 +1,4 @@
-﻿using CodeEditor.Algorithms.Parsing.WordTypes;
+﻿using CodeEditor.CodeParsing.WordTypes;
 
 namespace CodeEditor.Algorithms.Parsing {
     internal class ParsingInfo {
