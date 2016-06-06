@@ -46,10 +46,12 @@ namespace CodeEditor.Commands {
             var area = selectionViewReader.GetCurrentSelectionArea();
             var lastLineLength = textViewReader.GetLineLength(caretViewReader.CaretPosition.Line);
 
+            // if user pressed delete key and the caret is at the last position in the document and nothing is selected, then no text should be removed
             if (e.Key == Key.Delete && caretViewReader.CaretPosition.Line == textViewReader.LinesCount - 1 && caretViewReader.CaretPosition.Column == lastLineLength && area == null) { 
                 return false;
             }
-            if (e.Key == Key.Back && caretViewReader.CaretPosition.Line == 0 && caretViewReader.CaretPosition.Column == 0) {
+            // if user pressed backspace key and caret is at the first position in the document and nothing is selected, then no text should be removed
+            if (e.Key == Key.Back && caretViewReader.CaretPosition.Line == 0 && caretViewReader.CaretPosition.Column == 0 && area == null) {
                 return false;
             }
             if (area?.StartPosition != null && area.EndPosition != null) {
