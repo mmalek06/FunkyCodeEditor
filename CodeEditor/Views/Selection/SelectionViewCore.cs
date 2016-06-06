@@ -24,7 +24,7 @@ namespace CodeEditor.Views.Selection {
 
         #region constructor
 
-        public SelectionView(ITextViewReadonly textViewReader) : base() {
+        public SelectionView(ITextViewReadonly textViewReader) {
             isSelecting = false;
             this.textViewReader = textViewReader;
         }
@@ -78,9 +78,9 @@ namespace CodeEditor.Views.Selection {
 
             if (start.Line <= end.Line) {
                 return GetSelectionPointsForward(start, end);
-            } else {
-                return GetSelectionPointsInverted(start, end);
             }
+
+            return GetSelectionPointsInverted(start, end);
         }
 
         private IEnumerable<PointsPair> GetSelectionPointsForward(TextPosition start, TextPosition end) {

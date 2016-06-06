@@ -59,16 +59,13 @@ namespace CodeEditor.DataStructures {
             if (this < otherPosition) {
                 return -1;
             }
-            if (this > otherPosition) {
-                return 1;
-            }
 
-            return 0;
+            return this > otherPosition ? 1 : 0;
         }
 
-        public static bool operator <(TextPosition @this, TextPosition other) => other == null ? false : @this.Line < other.Line || (@this.Line <= other.Line && @this.Column < other.Column);
+        public static bool operator <(TextPosition @this, TextPosition other) => other != null && (@this.Line < other.Line || (@this.Line <= other.Line && @this.Column < other.Column));
 
-        public static bool operator >(TextPosition @this, TextPosition other) => other == null ? false : @this.Line > other.Line || (@this.Line >= other.Line && @this.Column > other.Column);
+        public static bool operator >(TextPosition @this, TextPosition other) => other != null && (@this.Line > other.Line || (@this.Line >= other.Line && @this.Column > other.Column));
 
         public static bool operator <=(TextPosition @this, TextPosition other) => @this < other || @this == other;
 
@@ -82,7 +79,7 @@ namespace CodeEditor.DataStructures {
                 return false;
             }
 
-            return @this.Column == other.Column && @this.Line == other.Line;
+            return @this != null && (@this.Column == other.Column && @this.Line == other.Line);
         }
 
         public static bool operator !=(TextPosition @this, TextPosition other) {
