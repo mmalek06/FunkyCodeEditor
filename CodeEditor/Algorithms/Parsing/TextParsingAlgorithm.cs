@@ -11,7 +11,7 @@ namespace CodeEditor.Algorithms.Parsing {
 
         #region fields
 
-        private static IEnumerable<IWordType> wordParsers = SharedEditorConfiguration.GetWordParsers();
+        private static readonly IEnumerable<IWordType> WordParsers = SharedEditorConfiguration.GetWordParsers();
 
         #endregion
 
@@ -24,8 +24,9 @@ namespace CodeEditor.Algorithms.Parsing {
             foreach (var line in lines) {
                 var parts = Regex.Matches(line, "(?<match>[^\\s\"]+)|(?<match>\"[^\"]*\")")
                                  .Cast<Match>()
-                                 .Select(m => m.Groups["match"].Value);
-                var parsingInfos = from parser in wordParsers
+                                 .Select(m => m.Groups["match"].Value)
+                                 .ToArray();
+                var parsingInfos = from parser in WordParsers
                                    from word in parts
                                    where parser.IsMatch(word)
                                    select new ParsingInfo(type: parser.Type, text: word);
