@@ -19,11 +19,11 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void BracketsInTheSameLineAsText_ShouldHaveTextBeforeAndAfterFold() {
-            var text1 = "asdf ";
-            var open = "{";
+            const string text1 = "asdf ";
+            const string open = "{";
             var text2 = string.Empty;
-            var close = "}";
-            var text3 = " xzcv";
+            const string close = "}";
+            const string text3 = " xzcv";
             var lines = new[] { text1 + open, text2, close + text3 };
             var line = tc.CollapseTextRange(
                 new TextRange {
@@ -38,11 +38,11 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void OneLineWithBracketsAndText_ActualTextShouldBeEqualToRenderedText() {
-            var text1 = "asdf ";
-            var open = "{";
+            const string text1 = "asdf ";
+            const string open = "{";
             var text2 = string.Empty;
-            var close = "}";
-            var text3 = " xzcv";
+            const string close = "}";
+            const string text3 = " xzcv";
             var lines = new[] { text1 + open + text2 + close + text3 };
             var line = tc.CollapseTextRange(
                 new TextRange {
@@ -60,11 +60,11 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void BracketsInDifferentLinesThanText_ShouldHaveTextBeforeAndAfterFold() {
-            var text1 = "asdf";
-            var open = "{";
-            var text2 = "";
-            var close = "}";
-            var text3 = "zxcv";
+            const string text1 = "asdf";
+            const string open = "{";
+            const string text2 = "";
+            const string close = "}";
+            const string text3 = "zxcv";
             var lines = new[] { text1, open, text2, close, text3 };
             var line = tc.CollapseTextRange(
                 new TextRange {

@@ -41,11 +41,9 @@ namespace CodeEditor.Commands {
 
             if (keyboardEvent != null) {
                 return CanExecuteKeyMove(keyboardEvent);
-            } else if (mouseEvent != null) {
-                return CanExecuteMouseMove(mouseEvent);
             }
 
-            return false;
+            return mouseEvent != null && CanExecuteMouseMove(mouseEvent);
         }
 
         public void Execute(object parameter) {
@@ -96,11 +94,8 @@ namespace CodeEditor.Commands {
             if (nextPosition.Line < 0 || nextPosition.Line >= textViewReader.LinesCount) {
                 return false;
             }
-            if (nextPosition.Column < 0) {
-                return false;
-            }
 
-            return true;
+            return nextPosition.Column >= 0;
         }
 
         private bool CanExecuteMouseMove(MouseButtonEventArgs mouseEvent) {
@@ -109,27 +104,16 @@ namespace CodeEditor.Commands {
             if (docPosition.Line < 0 || docPosition.Line >= textViewReader.LinesCount) {
                 return false;
             }
-            if (docPosition.Column < 0) {
-                return false;
-            }
 
-            return true;
+            return docPosition.Column >= 0;
         }
 
         private CaretMoveDirection GetMoveDirection(TextPosition newPos, TextPosition activePosition) {
             if (newPos.Line == activePosition.Line) {
-                if (newPos.Column > activePosition.Column) {
-                    return CaretMoveDirection.RIGHT;
-                }
-
-                return CaretMoveDirection.LEFT;
-            } 
-
-            if (newPos.Line > activePosition.Line) {
-                return CaretMoveDirection.BOTTOM;
+                return newPos.Column > activePosition.Column ? CaretMoveDirection.RIGHT : CaretMoveDirection.LEFT;
             }
 
-            return CaretMoveDirection.TOP;
+            return newPos.Line > activePosition.Line ? CaretMoveDirection.BOTTOM : CaretMoveDirection.TOP;
         }
 
         #endregion

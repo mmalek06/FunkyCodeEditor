@@ -58,9 +58,10 @@ namespace CodeEditor.Tests.ScenarioTests {
             RemoveTextCommand = new RemoveTextCommand(TextView, CaretView, SelectionView);
             CaretMoveCommand = new CaretMoveCommand(CaretView, TextView);
             SelectionCommand = new TextSelectionCommand(TextView, SelectionView, CaretView);
-
+            
             CaretView.EditorCode = EditorCode;
             CaretView.Postbox = Postbox;
+            CaretView.TextViewReader = TextView;
             TextView.EditorCode = EditorCode;
             TextView.Postbox = Postbox;
             SelectionView.EditorCode = EditorCode;

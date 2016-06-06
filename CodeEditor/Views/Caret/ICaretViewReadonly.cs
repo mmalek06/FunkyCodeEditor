@@ -14,6 +14,10 @@ namespace CodeEditor.Views.Caret {
 
         TextPosition GetNextPosition(Key key);
 
+        bool IsPositionAtDocumentEnd(TextPosition position);
+
+        bool IsCurrentPositionAtDocumentEnd();
+
         #endregion
 
     }

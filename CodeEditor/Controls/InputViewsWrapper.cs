@@ -150,7 +150,9 @@ namespace CodeEditor.Controls {
             caretView = new CaretView();
             textView = new TextView(caretView);
             selectionView = new SelectionView(textView);
-            
+
+            caretView.TextViewReader = textView;
+
             foreach (var view in new LocalViewBase[] { selectionView, textView, caretView }) {
                 view.Margin = new Thickness(2, 0, 0, 0);
                 view.HorizontalAlignment = HorizontalAlignment.Left;

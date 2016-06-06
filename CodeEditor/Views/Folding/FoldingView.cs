@@ -97,7 +97,7 @@ namespace CodeEditor.Views.Folding {
         protected override double GetWidth() => SharedEditorConfiguration.GetFoldingColumnWidth();
 
         private bool IsCaretInbetweenTags(TextPosition position) =>
-            foldingPositions.Any(pair => position > pair.Key.Position && position <= pair.Value.Position);
+            foldingPositions.Any(pair => position > pair.Key.Position && position <= pair.Value.Position && pair.Key.State == FoldingStates.EXPANDED);
 
         private void SendMessage(FoldingStates state, FoldingPositionInfo folding) {
             var areaBeforeFolding = new TextRange();
@@ -105,12 +105,12 @@ namespace CodeEditor.Views.Folding {
 
             if (state == FoldingStates.FOLDED) {
                 areaBeforeFolding.StartPosition = folding.Position;
-                areaBeforeFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
+                areaBeforeFolding.EndPosition = foldingPositions.First(pair => Equals(pair.Key, folding)).Value.Position;
                 areaAfterFolding.StartPosition = folding.Position;
                 areaAfterFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
             } else {
                 areaAfterFolding.StartPosition = folding.Position;
-                areaAfterFolding.EndPosition = foldingPositions.First(pair => pair.Key == folding).Value.Position;
+                areaAfterFolding.EndPosition = foldingPositions.First(pair => Equals(pair.Key, folding)).Value.Position;
                 areaBeforeFolding.StartPosition = folding.Position;
                 areaBeforeFolding.EndPosition = new TextPosition(column: folding.Position.Column + FoldingAlgorithm.GetCollapsibleRepresentation().Length, line: folding.Position.Line);
             }
@@ -177,9 +177,11 @@ namespace CodeEditor.Views.Folding {
         }
 
         private void MoveFoldsUp(TextPosition newCaretPosition) {
-            var foldsAfterCaret = foldingPositions.Where(pair => pair.Key.Position > newCaretPosition);
+            var foldsAfterCaret = foldingPositions.Where(pair => pair.Key.Position > newCaretPosition).ToArray();
             var foldsWithClosingTagAfterPosition = foldingPositions.Except(foldsAfterCaret)
-                                                                   .Where(pair => pair.Value.Position != null && pair.Value.Position.Line > newCaretPosition.Line);
+                                                                   .Where(pair => pair.Value.Position != null && 
+                                                                                  pair.Value.Position.Line > newCaretPosition.Line && 
+                                                                                  pair.Key.State == FoldingStates.EXPANDED);
 
             foreach (var fold in foldsAfterCaret) {
                 fold.Key.Position = new TextPosition(column: fold.Key.Position.Column, line: fold.Key.Position.Line - 1);
@@ -196,13 +198,11 @@ namespace CodeEditor.Views.Folding {
         private void MakeFoldsUnique() {
             var repeatingFolds = FoldingAlgorithm.GetRepeatingFolds(foldingPositions.ToDictionary(pair => pair.Key.Position, pair => pair.Value.Position));
 
-            foreach (var repeatingKey in repeatingFolds) {
-                var position = foldingPositions.First(pair => pair.Key.Position == repeatingKey);
-
+            foreach (var position in repeatingFolds.Select(repeatingKey => foldingPositions.First(pair => pair.Key.Position == repeatingKey))) {
                 position.Key.Deleted = true;
             }
         }
-        
+
         private IDictionary<TextPosition, TextPosition> GetPotentialFoldingPositions() =>
             foldingPositions.Where(pair => pair.Key.Deleted || pair.Value == null || pair.Value.Deleted || pair.Value.Position == null)
                             .Distinct()

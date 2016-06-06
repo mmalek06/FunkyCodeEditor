@@ -74,7 +74,7 @@ namespace CodeEditor.Commands {
                 removedText = GetRemovedText(key);
                 positionAfterRemove = GetPositionAfterKeypress(key, removedText);
 
-                if (removedText == string.Empty) {
+                if (removedText == string.Empty && !caretViewReader.IsCurrentPositionAtDocumentEnd()) {
                     removedLinesCount = 1;
                 }
 

@@ -12,6 +12,7 @@ using CodeEditor.Enums;
 using CodeEditor.Messaging;
 using CodeEditor.Events;
 using CodeEditor.Views.BaseClasses;
+using CodeEditor.Views.Text;
 
 namespace CodeEditor.Views.Caret {
     internal partial class CaretView : InputViewBase {
@@ -37,7 +38,9 @@ namespace CodeEditor.Views.Caret {
         public HashSet<Key> StepKeys { get; set; }
 
         public HashSet<Key> JumpKeys { get; set; }
-        
+
+        public ITextViewReadonly TextViewReader { get; set; }
+
         #endregion
 
         #region constructor
@@ -123,7 +126,6 @@ namespace CodeEditor.Views.Caret {
                 case Key.Right: x = 1; break;
                 case Key.Up: y = -1; break;
                 case Key.Down: y = 1; break;
-                default: break;
             }
 
             return new TextPosition(x, y);
@@ -138,7 +140,6 @@ namespace CodeEditor.Views.Caret {
                 case Key.End: x = int.MaxValue; break;
                 case Key.PageUp: y = -GlobalConstants.PageSize; break;
                 case Key.PageDown: y = GlobalConstants.PageSize; break;
-                default: break;
             }
 
             return new TextPosition(x, y);
@@ -174,7 +175,7 @@ namespace CodeEditor.Views.Caret {
                     if (isCaretVisible) {
                         var caret = new VisualElement();
 
-                        caret.Draw((TextPosition)this.CaretPosition);
+                        caret.Draw(CaretPosition);
                         visuals.Add(caret);
                     } else {
                         visuals.Clear();
