@@ -19,7 +19,7 @@ namespace CodeEditor.Views.Lines {
         public void Redraw(int num) {
             var fontColor = SharedEditorConfiguration.GetLinesColumnFontColor();
             var typeface = SharedEditorConfiguration.GetTypeface();
-            double fontHeight = TextConfiguration.GetCharSize().Height;
+            var fontHeight = TextConfiguration.GetCharSize().Height;
 
             using (var drawingContext = RenderOpen()) {
                 drawingContext.DrawText(

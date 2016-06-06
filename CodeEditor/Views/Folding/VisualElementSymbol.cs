@@ -9,7 +9,7 @@ namespace CodeEditor.Views.Folding {
     internal class VisualElementSymbol : VisualElementSymbolBase {
 
         public void DrawFolding(FoldingStates state, int top) {
-            string symbol = state == FoldingStates.EXPANDED ? "-" : "+";
+            var symbol = state == FoldingStates.EXPANDED ? "-" : "+";
             var runProperties = TextConfiguration.GetGlobalTextRunProperties();
             var formattedText = GetFormattedText(symbol, runProperties);
             var textLocation = new Point(5, top);

@@ -33,8 +33,8 @@ namespace CodeEditor.Visuals {
         #region public methods
 
         public override void Draw() {
-            using (TextLine textLine = Formatter.FormatLine(textSource, 0, 96 * 6, ParagraphProperties, null)) {
-                double top = Index * textLine.Height;
+            using (var textLine = Formatter.FormatLine(textSource, 0, 96 * 6, ParagraphProperties, null)) {
+                var top = Index * textLine.Height;
 
                 using (var drawingContext = RenderOpen()) {
                     textLine.Draw(drawingContext, new Point(0, top), InvertAxes.None);

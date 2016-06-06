@@ -86,17 +86,17 @@ namespace CodeEditor.Views.Selection {
         private IEnumerable<PointsPair> GetSelectionPointsForward(TextPosition start, TextPosition end) {
             var pairs = new List<PointsPair>();
 
-            for (int i = start.Line; i <= end.Line; i++) {
-                int tmpStartColumn = 0;
-                int tmpStartLine = i;
-                int tmpEndColumn = 0;
-                int tmpEndLine = i;
+            for (var i = start.Line; i <= end.Line; i++) {
+                var tmpStartColumn = 0;
+                var tmpStartLine = i;
+                var tmpEndColumn = 0;
+                var tmpEndLine = i;
 
                 if (i == start.Line) {
                     tmpStartColumn = start.Column;
                 }
 
-                int lineLen = textViewReader.GetLineLength(i);
+                var lineLen = textViewReader.GetLineLength(i);
 
                 if (i == end.Line) {
                     tmpEndColumn = end.Column > lineLen ? lineLen : end.Column;
@@ -118,12 +118,12 @@ namespace CodeEditor.Views.Selection {
         private IEnumerable<PointsPair> GetSelectionPointsInverted(TextPosition start, TextPosition end) {
             var pairs = new List<PointsPair>();
 
-            for (int i = start.Line; i >= end.Line; i--) {
-                int tmpStartColumn = 0;
-                int tmpStartLine = i;
-                int tmpEndColumn = 0;
-                int tmpEndLine = i;
-                int lineLen = textViewReader.GetLineLength(i);
+            for (var i = start.Line; i >= end.Line; i--) {
+                var tmpStartColumn = 0;
+                var tmpStartLine = i;
+                var tmpEndColumn = 0;
+                var tmpEndLine = i;
+                var lineLen = textViewReader.GetLineLength(i);
 
                 if (i == start.Line) {
                     tmpStartColumn = start.Column;

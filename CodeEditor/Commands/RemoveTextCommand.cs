@@ -63,9 +63,9 @@ namespace CodeEditor.Commands {
             var e = (KeyEventArgs)parameter;
             var key = e.Key;
             var selectionArea = selectionViewReader.GetCurrentSelectionArea();
-            int linesCountBeforeRemove = textViewReader.LinesCount;
-            int removedLinesCount = 0;
-            string removedText = string.Empty;
+            var linesCountBeforeRemove = textViewReader.LinesCount;
+            var removedLinesCount = 0;
+            var removedText = string.Empty;
             TextPosition positionAfterRemove;
 
             UpdateCommandState(BeforeCommandExecutedState);

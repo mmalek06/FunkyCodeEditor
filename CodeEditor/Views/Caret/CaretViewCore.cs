@@ -115,8 +115,8 @@ namespace CodeEditor.Views.Caret {
         }
 
         private TextPosition GetStep(Key key) {
-            int x = 0;
-            int y = 0;
+            var x = 0;
+            var y = 0;
 
             switch (key) {
                 case Key.Left: x = -1; break;
@@ -130,8 +130,8 @@ namespace CodeEditor.Views.Caret {
         }
 
         private TextPosition GetJump(Key key) {
-            int x = CaretPosition.Column;
-            int y = CaretPosition.Line;
+            var x = CaretPosition.Column;
+            var y = CaretPosition.Line;
 
             switch (key) {
                 case Key.Home: x = 0; break;
@@ -147,8 +147,8 @@ namespace CodeEditor.Views.Caret {
         private TextPosition GetNewCaretPosition(string text) {
             var specialCharsRegex = new Regex("[\a|\b|\n|\r|\f|\t|\v]");
             var replacedText = specialCharsRegex.Replace(text, string.Empty);
-            int column = -1;
-            int line = -1;
+            var column = -1;
+            var line = -1;
 
             if (text == TextProperties.Properties.NEWLINE) {
                 column = 0;
@@ -187,7 +187,7 @@ namespace CodeEditor.Views.Caret {
         }
 
         private void RestartCheckTimer() {
-            bool wasTimerNull = checkTimer == null;
+            var wasTimerNull = checkTimer == null;
 
             checkTimer = new Timer((obj) => {
                 isCaretVisible = false;

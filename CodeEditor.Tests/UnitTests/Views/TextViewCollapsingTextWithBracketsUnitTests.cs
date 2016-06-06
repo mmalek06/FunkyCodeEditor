@@ -31,7 +31,7 @@ namespace CodeEditor.Tests.UnitTests.Views {
 
         [Test]
         public void EnterOpeningAndClosingBracket_LineStateShouldNotChange() {
-            string text1 = "{}";
+            var text1 = "{}";
 
             tv.EnterText(text1);
             tv.HandleTextFolding(GetFoldClickedMessage(0, 0, 1, 0, FoldingStates.FOLDED));
@@ -44,13 +44,13 @@ namespace CodeEditor.Tests.UnitTests.Views {
 
         [Test]
         public void CreateTwoFolds_StateAfterCollapseAndExpandShouldNotChange() {
-            string text1 = "asdf {";
-            string text2 = "";
-            string text3 = "} qwer";
-            string text4 = "{";
-            string text5 = "";
-            string text6 = "}";
-            string text7 = "xzcv";
+            var text1 = "asdf {";
+            var text2 = "";
+            var text3 = "} qwer";
+            var text4 = "{";
+            var text5 = "";
+            var text6 = "}";
+            var text7 = "xzcv";
 
             tv.EnterText(text1);
             tv.EnterText("\r");

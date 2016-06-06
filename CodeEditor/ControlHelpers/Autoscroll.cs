@@ -42,10 +42,10 @@ namespace CodeEditor.ControlHelpers {
         #region methods
 
         private static void AlwaysScrollToEndChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            ScrollViewer scroll = sender as ScrollViewer;
+            var scroll = sender as ScrollViewer;
 
             if (scroll != null) {
-                bool alwaysScrollToEnd = (e.NewValue != null) && (bool)e.NewValue;
+                var alwaysScrollToEnd = (e.NewValue != null) && (bool)e.NewValue;
 
                 if (alwaysScrollToEnd) {
                     scroll.ScrollToEnd();
@@ -59,7 +59,7 @@ namespace CodeEditor.ControlHelpers {
         }
 
         private static void ScrollChanged(object sender, ScrollChangedEventArgs e) {
-            ScrollViewer scroll = sender as ScrollViewer;
+            var scroll = sender as ScrollViewer;
 
             if (scroll == null) {
                 throw new InvalidOperationException("The attached AlwaysScrollToEnd property can only be applied to ScrollViewer instances.");

@@ -19,11 +19,11 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void BracketsInTheSameLineAsText_ShouldHaveTextBeforeAndAfterFold() {
-            string text1 = "asdf ";
-            string open = "{";
-            string text2 = string.Empty;
-            string close = "}";
-            string text3 = " xzcv";
+            var text1 = "asdf ";
+            var open = "{";
+            var text2 = string.Empty;
+            var close = "}";
+            var text3 = " xzcv";
             var lines = new[] { text1 + open, text2, close + text3 };
             var line = tc.CollapseTextRange(
                 new TextRange {
@@ -38,11 +38,11 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void OneLineWithBracketsAndText_ActualTextShouldBeEqualToRenderedText() {
-            string text1 = "asdf ";
-            string open = "{";
-            string text2 = string.Empty;
-            string close = "}";
-            string text3 = " xzcv";
+            var text1 = "asdf ";
+            var open = "{";
+            var text2 = string.Empty;
+            var close = "}";
+            var text3 = " xzcv";
             var lines = new[] { text1 + open + text2 + close + text3 };
             var line = tc.CollapseTextRange(
                 new TextRange {
@@ -50,7 +50,7 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
                     EndPosition = new TextPosition(column: 6, line: 0) }, 
                 lines, 
                 ra);
-            string stringContents = line.GetStringContents()[0];
+            var stringContents = line.GetStringContents()[0];
 
             Assert.AreEqual(text1, string.Join("", stringContents.Take(5)));
             Assert.AreEqual(text3, string.Join("", stringContents.Skip(7)));
@@ -60,11 +60,11 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void BracketsInDifferentLinesThanText_ShouldHaveTextBeforeAndAfterFold() {
-            string text1 = "asdf";
-            string open = "{";
-            string text2 = "";
-            string close = "}";
-            string text3 = "zxcv";
+            var text1 = "asdf";
+            var open = "{";
+            var text2 = "";
+            var close = "}";
+            var text3 = "zxcv";
             var lines = new[] { text1, open, text2, close, text3 };
             var line = tc.CollapseTextRange(
                 new TextRange {

@@ -51,7 +51,7 @@ namespace CodeEditor.Views.Lines {
 
         public void HandleFolding(FoldClickedMessage message) {
             if (message.State == FoldingStates.FOLDED) {
-                int diff = message.AreaBeforeFolding.EndPosition.Line - message.AreaBeforeFolding.StartPosition.Line;
+                var diff = message.AreaBeforeFolding.EndPosition.Line - message.AreaBeforeFolding.StartPosition.Line;
 
                 linesCount -= diff;
 
@@ -61,7 +61,7 @@ namespace CodeEditor.Views.Lines {
                     diff--;
                 }
             } else {
-                int diff = message.AreaAfterFolding.EndPosition.Line - message.AreaAfterFolding.StartPosition.Line;
+                var diff = message.AreaAfterFolding.EndPosition.Line - message.AreaAfterFolding.StartPosition.Line;
 
                 linesCount += diff;
 
@@ -92,7 +92,7 @@ namespace CodeEditor.Views.Lines {
         protected override double GetWidth() => SharedEditorConfiguration.GetLinesColumnWidth();
 
         private void UpdateSize() {
-            double h = linesCount * TextConfiguration.GetCharSize().Height;
+            var h = linesCount * TextConfiguration.GetCharSize().Height;
 
             if (h > ActualHeight) {
                 Height = h;

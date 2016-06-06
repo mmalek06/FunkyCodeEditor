@@ -18,7 +18,7 @@ namespace CodeEditor.Views.Text {
                 return;
             }
 
-            int startForTop = firstVisibleLineIndex - linesScrolled < 0 ? 0 : firstVisibleLineIndex - linesScrolled;
+            var startForTop = firstVisibleLineIndex - linesScrolled < 0 ? 0 : firstVisibleLineIndex - linesScrolled;
 
             ConvertVisualLinesToCachedLines(0, firstVisibleLineIndex);
             ConvertVisualLinesToCachedLines(lastVisibleLineIndex, visuals.Count - lastVisibleLineIndex);
@@ -26,7 +26,7 @@ namespace CodeEditor.Views.Text {
         }
 
         private void ConvertVisualLinesToCachedLines(int start, int count) {
-            for (int i = start; i < start + count; i++) {
+            for (var i = start; i < start + count; i++) {
                 if (visuals[i] is CachedVisualTextLine) {
                     continue;
                 }
@@ -39,7 +39,7 @@ namespace CodeEditor.Views.Text {
         }
 
         private void ConvertCachedLinesToVisualLines(int start, int count) {
-            for (int i = start; i < start + count; i++) {
+            for (var i = start; i < start + count; i++) {
                 if (!(visuals[i] is CachedVisualTextLine)) {
                     continue;
                 }

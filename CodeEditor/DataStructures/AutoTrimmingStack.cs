@@ -43,7 +43,7 @@ namespace CodeEditor.DataStructures {
         }
 
         public T Pop() {
-            T item = stack.Last();
+            var item = stack.Last();
 
             stack.Remove(item);
 

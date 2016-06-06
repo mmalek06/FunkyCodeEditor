@@ -31,7 +31,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RemovingText", "\tIn order to remove text\r\n\tAs a user\r\n\tI want to press backspace or delete keys w" +
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RemovingText", "\tIn order to remove text\r\n\tAs a user\r\n\tI want to press backspace or delete keys w" +
                     "ith or without text selected", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -68,7 +68,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         [NUnit.Framework.DescriptionAttribute("Enter one character and press backspace")]
         public virtual void EnterOneCharacterAndPressBackspace()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one character and press backspace", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one character and press backspace", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -87,7 +87,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter single empty line and press backspace")]
         public virtual void EnterSingleEmptyLineAndPressBackspace()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter single empty line and press backspace", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter single empty line and press backspace", ((string[])(null)));
 #line 14
 this.ScenarioSetup(scenarioInfo);
 #line 15
@@ -112,7 +112,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter three empty lines and press delete")]
         public virtual void EnterThreeEmptyLinesAndPressDelete()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three empty lines and press delete", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three empty lines and press delete", ((string[])(null)));
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line 25
@@ -137,7 +137,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Delete from empty line")]
         public virtual void DeleteFromEmptyLine()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete from empty line", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete from empty line", ((string[])(null)));
 #line 34
 this.ScenarioSetup(scenarioInfo);
 #line 35
@@ -164,7 +164,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Delete last line when the cursor is at the second one")]
         public virtual void DeleteLastLineWhenTheCursorIsAtTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line when the cursor is at the second one", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line when the cursor is at the second one", ((string[])(null)));
 #line 45
 this.ScenarioSetup(scenarioInfo);
 #line 46
@@ -195,7 +195,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Delete last line that is not empty and when the cursor is at the second one")]
         public virtual void DeleteLastLineThatIsNotEmptyAndWhenTheCursorIsAtTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line that is not empty and when the cursor is at the second one", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete last line that is not empty and when the cursor is at the second one", ((string[])(null)));
 #line 58
 this.ScenarioSetup(scenarioInfo);
 #line 59
@@ -226,7 +226,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Two non empty lines entered, delete pressed at the end of first one")]
         public virtual void TwoNonEmptyLinesEnteredDeletePressedAtTheEndOfFirstOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, delete pressed at the end of first one", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, delete pressed at the end of first one", ((string[])(null)));
 #line 71
 this.ScenarioSetup(scenarioInfo);
 #line 72
@@ -257,7 +257,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Backspace first line when the cursor is at the second one")]
         public virtual void BackspaceFirstLineWhenTheCursorIsAtTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Backspace first line when the cursor is at the second one", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Backspace first line when the cursor is at the second one", ((string[])(null)));
 #line 84
 this.ScenarioSetup(scenarioInfo);
 #line 85
@@ -288,7 +288,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Two non empty lines entered, backspace pressed at the beginning of second one")]
         public virtual void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, backspace pressed at the beginning of second one", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two non empty lines entered, backspace pressed at the beginning of second one", ((string[])(null)));
 #line 97
 this.ScenarioSetup(scenarioInfo);
 #line 98
@@ -319,7 +319,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Four lines entered, delete pressed at the end of first")]
         public virtual void FourLinesEnteredDeletePressedAtTheEndOfFirst()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed at the end of first", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed at the end of first", ((string[])(null)));
 #line 110
 this.ScenarioSetup(scenarioInfo);
 #line 111
@@ -360,7 +360,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Four lines entered, delete pressed twice at the end of first")]
         public virtual void FourLinesEnteredDeletePressedTwiceAtTheEndOfFirst()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed twice at the end of first", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Four lines entered, delete pressed twice at the end of first", ((string[])(null)));
 #line 128
 this.ScenarioSetup(scenarioInfo);
 #line 129
@@ -399,7 +399,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Remove from collapsed line with brackets only")]
         public virtual void RemoveFromCollapsedLineWithBracketsOnly()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove from collapsed line with brackets only", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove from collapsed line with brackets only", ((string[])(null)));
 #line 145
 this.ScenarioSetup(scenarioInfo);
 #line 146
@@ -430,7 +430,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Remove from collapsed line with brackets and text")]
         public virtual void RemoveFromCollapsedLineWithBracketsAndText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove from collapsed line with brackets and text", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove from collapsed line with brackets and text", ((string[])(null)));
 #line 158
 this.ScenarioSetup(scenarioInfo);
 #line 159
@@ -465,7 +465,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Press delete after collapse")]
         public virtual void PressDeleteAfterCollapse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Press delete after collapse", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Press delete after collapse", ((string[])(null)));
 #line 173
 this.ScenarioSetup(scenarioInfo);
 #line 174

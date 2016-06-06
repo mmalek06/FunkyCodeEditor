@@ -52,7 +52,7 @@ namespace CodeEditor {
         protected override void OnInitialized(EventArgs e) {
             base.OnInitialized(e);
             
-            int code = GetHashCode();
+            var code = GetHashCode();
             var formattingType = LanguageFeatureInfo.GetFormattingType(CodingLang);
 
             ConfigManager.AddEditorConfig(code, new Config {
@@ -66,8 +66,8 @@ namespace CodeEditor {
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs evt) {
             if (evt.VerticalChange != 0) {
-                int firstIdx = (int)Math.Round(evt.VerticalOffset / TextConfiguration.GetCharSize().Height);
-                int lastIdx = (int)Math.Round((evt.VerticalOffset + evt.ViewportHeight) / TextConfiguration.GetCharSize().Height);
+                var firstIdx = (int)Math.Round(evt.VerticalOffset / TextConfiguration.GetCharSize().Height);
+                var lastIdx = (int)Math.Round((evt.VerticalOffset + evt.ViewportHeight) / TextConfiguration.GetCharSize().Height);
 
                 Postbox.InstanceFor(GetHashCode()).Put(new ScrollChangedMessage {
                     FirstVisibleLineIndex = firstIdx,

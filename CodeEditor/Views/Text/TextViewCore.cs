@@ -111,8 +111,8 @@ namespace CodeEditor.Views.Text {
         private void DeleteLines(IReadOnlyCollection<int> linesToRemove) => RemoveLines(linesToRemove);
 
         private void UpdateSize() {
-            int maxLineLen = (from VisualTextLine line in visuals select line.RenderedText.Length).Concat(new[] {0}).Max();
-            double charHeight = TextConfiguration.GetCharSize().Height;
+            var maxLineLen = (from VisualTextLine line in visuals select line.RenderedText.Length).Concat(new[] {0}).Max();
+            var charHeight = TextConfiguration.GetCharSize().Height;
 
             Width = maxLineLen * TextConfiguration.GetCharSize().Width;
             Height = Convert.ToInt32(visuals.Count * charHeight);

@@ -18,10 +18,10 @@ namespace CodeEditor.Algorithms.Parsing {
         #region public methods
 
         public ParseResultType Parse(IEnumerable<string> lines) {
-            ParseResultContents result = new ParseResultContents();
-            int lineIndex = 0;
+            var result = new ParseResultContents();
+            var lineIndex = 0;
 
-            foreach (string line in lines) {
+            foreach (var line in lines) {
                 var parts = Regex.Matches(line, "(?<match>[^\\s\"]+)|(?<match>\"[^\"]*\")")
                                  .Cast<Match>()
                                  .Select(m => m.Groups["match"].Value);

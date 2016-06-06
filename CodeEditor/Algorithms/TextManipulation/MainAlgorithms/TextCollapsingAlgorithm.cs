@@ -15,7 +15,7 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 return linesToRedraw;
             }
 
-            int collapseEndLine = range.EndPosition.Line;
+            var collapseEndLine = range.EndPosition.Line;
 
             for (int i = collapseEndLine + 1, newIndex = collapsedLine.Index + 1; i < visuals.Count; i++, newIndex++) {
                 var line = visuals[i].CloneWithIndexChange(newIndex);
@@ -39,16 +39,16 @@ namespace CodeEditor.Algorithms.TextManipulation {
         }
 
         public VisualTextLine CollapseTextRange(TextRange area, IReadOnlyList<string> lines, ICollapseRepresentation collapseRepresentationAlgorithm) {
-            string precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
-            string followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
-            int collapsedLineIndex = area.StartPosition.Line;
+            var precedingText = new string(lines[area.StartPosition.Line].Take(area.StartPosition.Column).ToArray());
+            var followingText = new string(lines[area.EndPosition.Line].Skip(area.EndPosition.Column + 1).ToArray());
+            var collapsedLineIndex = area.StartPosition.Line;
             var middlePart = new List<string>();
-            int start = area.StartPosition.Line;
-            int end = area.EndPosition.Line;
+            var start = area.StartPosition.Line;
+            var end = area.EndPosition.Line;
 
             if (start != end) {
-                for (int i = start; i <= end; i++) {
-                    string currentLine = lines[i];
+                for (var i = start; i <= end; i++) {
+                    var currentLine = lines[i];
 
                     if (i == start) {
                         currentLine = string.Join("", currentLine.Skip(area.StartPosition.Column));

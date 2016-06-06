@@ -120,7 +120,7 @@ namespace CodeEditor.Controls {
 
         protected override void OnMouseMove(MouseEventArgs e) {
             var selectionCmd = new TextSelectionCommand(textView, selectionView, caretView);
-            bool canExecuteSelection = selectionCmd.CanExecute(e);
+            var canExecuteSelection = selectionCmd.CanExecute(e);
             
             if (canExecuteSelection) {
                 selectionCmd.Execute(e);
@@ -145,7 +145,7 @@ namespace CodeEditor.Controls {
         protected override Visual GetVisualChild(int index) => views[index];
 
         private void SetupViews() {
-            int editorCode = this.GetEditor().GetHashCode();
+            var editorCode = this.GetEditor().GetHashCode();
 
             caretView = new CaretView();
             textView = new TextView(caretView);
@@ -166,7 +166,7 @@ namespace CodeEditor.Controls {
 
         private void UpdateConfig() {
             var editor = master.GetEditor();
-            int hash = editor.GetHashCode();
+            var hash = editor.GetHashCode();
             var config = ConfigManager.GetConfig(hash);
 
             config.InputControl = this;

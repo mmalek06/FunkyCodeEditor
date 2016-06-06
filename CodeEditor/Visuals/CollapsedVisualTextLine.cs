@@ -49,15 +49,15 @@ namespace CodeEditor.Visuals {
             using (var drawingContext = RenderOpen()) {
                 double top;
 
-                using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(textBeforeCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
+                using (var textLine = Formatter.FormatLine(new SimpleTextSource(textBeforeCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
                     top = Index * textLine.Height;
 
                     textLine.Draw(drawingContext, new Point(0, top), InvertAxes.None);
                 }
-                using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(collapseRepresentation, runProperties), 0, 96 * 6, ParagraphProperties, null)) {    
+                using (var textLine = Formatter.FormatLine(new SimpleTextSource(collapseRepresentation, runProperties), 0, 96 * 6, ParagraphProperties, null)) {    
                     textLine.Draw(drawingContext, new Point(TextConfiguration.GetCharSize().Width * textBeforeCollapse.Length, top), InvertAxes.None);
                 }
-                using (TextLine textLine = Formatter.FormatLine(new SimpleTextSource(textAfterCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
+                using (var textLine = Formatter.FormatLine(new SimpleTextSource(textAfterCollapse, runProperties), 0, 96 * 6, ParagraphProperties, null)) {
                     textLine.Draw(drawingContext, 
                         new Point(TextConfiguration.GetCharSize().Width * textBeforeCollapse.Length + TextConfiguration.GetCharSize().Width * collapseRepresentation.Length, top), 
                         InvertAxes.None);

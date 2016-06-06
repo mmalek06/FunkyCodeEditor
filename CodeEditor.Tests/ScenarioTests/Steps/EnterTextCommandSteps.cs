@@ -18,8 +18,8 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
 
         [When(@"I enter text")]
         public void WhenIEnterText() {
-            foreach (string text in Common.Context.TextsToEnter) {
-                foreach (char character in text) {
+            foreach (var text in Common.Context.TextsToEnter) {
+                foreach (var character in text) {
                     var evtArgs = EventGenerator.CreateTextCompositionEventArgs(character.ToString());
 
                     if (Common.Context.EnterTextCommand.CanExecute(evtArgs)) {

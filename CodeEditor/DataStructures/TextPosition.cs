@@ -41,7 +41,7 @@ namespace CodeEditor.DataStructures {
         }
 
         public override int GetHashCode() {
-            int hash = 23;
+            var hash = 23;
 
             hash = hash * 31 + Column.GetHashCode();
             hash = hash * 31 + Line.GetHashCode();

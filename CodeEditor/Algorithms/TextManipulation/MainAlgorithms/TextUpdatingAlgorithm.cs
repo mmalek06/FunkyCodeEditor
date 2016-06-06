@@ -43,14 +43,14 @@ namespace CodeEditor.Algorithms.TextManipulation {
         #region methods
 
         private IReadOnlyDictionary<int, string> LineAdded(IReadOnlyList<string> lines, string text, TextPosition startingTextPosition) {
-            string textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
-            string textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
+            var textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
+            var textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
             var transformations = new Dictionary<int, string> {
                 [startingTextPosition.Line] = textBeforeCursorPosition,
                 [startingTextPosition.Line + 1] = textAfterCursorPosition
             };
 
-            for (int i = startingTextPosition.Line + 1; i < lines.Count; i++) {
+            for (var i = startingTextPosition.Line + 1; i < lines.Count; i++) {
                 transformations[i + 1] = lines[i];
             }
 
@@ -63,8 +63,8 @@ namespace CodeEditor.Algorithms.TextManipulation {
                 .ToDictionary(pair => pair.Item1, kvp => kvp.Item2);
 
         private IReadOnlyDictionary<int, string> TabPressed(IReadOnlyList<string> lines, string text, TextPosition startingTextPosition) {
-            string textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
-            string textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
+            var textBeforeCursorPosition = string.Concat(lines[startingTextPosition.Line].Take(startingTextPosition.Column));
+            var textAfterCursorPosition = string.Concat(lines[startingTextPosition.Line].Skip(startingTextPosition.Column));
 
             return new Dictionary<int, string> {
                 [startingTextPosition.Line] = textBeforeCursorPosition + new string(' ', TextProperties.Properties.TabSize) + textAfterCursorPosition
@@ -90,14 +90,14 @@ namespace CodeEditor.Algorithms.TextManipulation {
         }
 
         private Tuple<int, string> GetPositionWithText(string line, int loopIndex, int startingLineIdx, int startingColIdx) {
-            string normalizedText = NormalizeText(line);
-            int colIdx = loopIndex == 0 ? startingColIdx : 0;
+            var normalizedText = NormalizeText(line);
+            var colIdx = loopIndex == 0 ? startingColIdx : 0;
 
             return new Tuple<int, string>(startingLineIdx + loopIndex, normalizedText);
         }
 
         private string NormalizeText(string text) {
-            string normalizedText = text;
+            var normalizedText = text;
 
             if (text == TextProperties.Properties.NEWLINE) {
                 normalizedText = string.Empty;

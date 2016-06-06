@@ -28,7 +28,7 @@ namespace CodeEditor.Views.Text {
 
         public TextPosition AdjustStep(TextPosition newPosition, CaretMoveDirection moveDirection) {
             var line = ((VisualTextLine)visuals[newPosition.Line]);
-            CharInfo charInfo = line.RenderedText != string.Empty && newPosition.Column < GetLineLength(newPosition.Line) ? line.GetCharInfoAt(newPosition.Column) : null;
+            var charInfo = line.RenderedText != string.Empty && newPosition.Column < GetLineLength(newPosition.Line) ? line.GetCharInfoAt(newPosition.Column) : null;
 
             if (charInfo != null) {
                 if (charInfo.IsCharacter) {
@@ -69,8 +69,8 @@ namespace CodeEditor.Views.Text {
                 parts[0] = parts[0].Substring(startPosition.Column);
             }
 
-            int lastIndex = parts.Count - 1;
-            int substringTo = endPosition.Column;
+            var lastIndex = parts.Count - 1;
+            var substringTo = endPosition.Column;
 
             if (startPosition.Line == endPosition.Line) {
                 substringTo = endPosition.Column - startPosition.Column;

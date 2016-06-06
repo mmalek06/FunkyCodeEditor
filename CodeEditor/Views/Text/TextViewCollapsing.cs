@@ -38,7 +38,7 @@ namespace CodeEditor.Views.Text {
         }
 
         public void ExpandText(FoldClickedMessage message) {
-            int collapseIndex = message.AreaBeforeFolding.StartPosition.Line;
+            var collapseIndex = message.AreaBeforeFolding.StartPosition.Line;
             var collapsedLineContent = ((VisualTextLine)visuals[collapseIndex]).GetStringContents();
             var expandedLines = collapsedLineContent.Select((line, index) => VisualTextLine.Create(line, collapseIndex + index)).ToArray();
             var linesToRedraw = collapsingAlgorithm.GetLinesToRedrawAfterExpand(visuals.ToEnumerableOf<VisualTextLine>().Where(line => line.Index > message.AreaBeforeFolding.StartPosition.Line), expandedLines.Length - 1);

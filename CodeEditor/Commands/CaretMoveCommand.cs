@@ -72,7 +72,7 @@ namespace CodeEditor.Commands {
                 line = textViewReader.LinesCount - 1;
             }
 
-            CaretMoveDirection moveDir = GetMoveDirection(newPos, caretView.CaretPosition);
+            var moveDir = GetMoveDirection(newPos, caretView.CaretPosition);
             newPos = new TextPosition(column > -1 ? column : newPos.Column, line > -1 ? line : newPos.Line);
             newPos = textViewReader.AdjustStep(newPos, moveDir);
 

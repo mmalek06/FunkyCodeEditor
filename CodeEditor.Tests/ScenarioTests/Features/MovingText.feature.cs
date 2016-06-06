@@ -31,7 +31,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MovingText", "\tIn order to move text\r\n\tI place caret on an appropriate position\r\n\tAnd hit one o" +
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MovingText", "\tIn order to move text\r\n\tI place caret on an appropriate position\r\n\tAnd hit one o" +
                     "f enter, delete, backspace keys", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -68,7 +68,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         [NUnit.Framework.DescriptionAttribute("Move text from first to second line")]
         public virtual void MoveTextFromFirstToSecondLine()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text from first to second line", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text from first to second line", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -97,7 +97,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Move text from first to second and again to the first line")]
         public virtual void MoveTextFromFirstToSecondAndAgainToTheFirstLine()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text from first to second and again to the first line", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move text from first to second and again to the first line", ((string[])(null)));
 #line 19
 this.ScenarioSetup(scenarioInfo);
 #line 20
@@ -124,7 +124,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Folds should not move")]
         public virtual void FoldsShouldNotMove()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Folds should not move", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Folds should not move", ((string[])(null)));
 #line 30
 this.ScenarioSetup(scenarioInfo);
 #line 31
@@ -147,7 +147,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Folds should move")]
         public virtual void FoldsShouldMove()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Folds should move", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Folds should move", ((string[])(null)));
 #line 39
 this.ScenarioSetup(scenarioInfo);
 #line 40

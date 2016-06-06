@@ -14,8 +14,8 @@ namespace CodeEditor.Views.Caret {
 
         public TextPosition GetNextPosition(Key key) {
             TextPosition coordinates;
-            int column = 0;
-            int line = 0;
+            var column = 0;
+            var line = 0;
 
             if (IsStep(key)) {
                 coordinates = GetStep(key);

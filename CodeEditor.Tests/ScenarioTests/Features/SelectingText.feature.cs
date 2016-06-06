@@ -31,7 +31,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SelectingText", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SelectingText", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -67,7 +67,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         [NUnit.Framework.DescriptionAttribute("Enter one line and select chars in the middle - left to right")]
         public virtual void EnterOneLineAndSelectCharsInTheMiddle_LeftToRight()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line and select chars in the middle - left to right", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line and select chars in the middle - left to right", ((string[])(null)));
 #line 4
 this.ScenarioSetup(scenarioInfo);
 #line 5
@@ -86,7 +86,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter one line and select chars in the middle - right to left")]
         public virtual void EnterOneLineAndSelectCharsInTheMiddle_RightToLeft()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line and select chars in the middle - right to left", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line and select chars in the middle - right to left", ((string[])(null)));
 #line 11
 this.ScenarioSetup(scenarioInfo);
 #line 12
@@ -105,7 +105,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter two lines and select text")]
         public virtual void EnterTwoLinesAndSelectText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines and select text", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines and select text", ((string[])(null)));
 #line 18
 this.ScenarioSetup(scenarioInfo);
 #line 19
@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter two lines where first one is shorter than the second one")]
         public virtual void EnterTwoLinesWhereFirstOneIsShorterThanTheSecondOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines where first one is shorter than the second one", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines where first one is shorter than the second one", ((string[])(null)));
 #line 27
 this.ScenarioSetup(scenarioInfo);
 #line 28

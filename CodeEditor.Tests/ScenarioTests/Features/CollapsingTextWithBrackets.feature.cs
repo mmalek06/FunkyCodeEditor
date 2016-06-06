@@ -31,7 +31,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CollapsingText", "\tIn order to collapse a range of text\r\n\tAs a user\r\n\tI want to click on a folding " +
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CollapsingText", "\tIn order to collapse a range of text\r\n\tAs a user\r\n\tI want to click on a folding " +
                     "symbol", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -68,7 +68,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         [NUnit.Framework.DescriptionAttribute("Create two folds in one line")]
         public virtual void CreateTwoFoldsInOneLine()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create two folds in one line", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create two folds in one line", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -89,7 +89,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Create fold spanning three lines")]
         public virtual void CreateFoldSpanningThreeLines()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create fold spanning three lines", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create fold spanning three lines", ((string[])(null)));
 #line 15
 this.ScenarioSetup(scenarioInfo);
 #line 16
@@ -118,7 +118,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter three opening and three closing brackets")]
         public virtual void EnterThreeOpeningAndThreeClosingBrackets()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three opening and three closing brackets", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three opening and three closing brackets", ((string[])(null)));
 #line 27
 this.ScenarioSetup(scenarioInfo);
 #line 28
@@ -153,7 +153,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter two lines with brackets only with fold in first")]
         public virtual void EnterTwoLinesWithBracketsOnlyWithFoldInFirst()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines with brackets only with fold in first", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines with brackets only with fold in first", ((string[])(null)));
 #line 42
 this.ScenarioSetup(scenarioInfo);
 #line 43
@@ -182,7 +182,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter two lines with brackets only")]
         public virtual void EnterTwoLinesWithBracketsOnly()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines with brackets only", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter two lines with brackets only", ((string[])(null)));
 #line 54
 this.ScenarioSetup(scenarioInfo);
 #line 55
@@ -217,7 +217,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter five lines and collapse text")]
         public virtual void EnterFiveLinesAndCollapseText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter five lines and collapse text", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter five lines and collapse text", ((string[])(null)));
 #line 69
 this.ScenarioSetup(scenarioInfo);
 #line 70
@@ -258,7 +258,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter four lines with two collapsible sections")]
         public virtual void EnterFourLinesWithTwoCollapsibleSections()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter four lines with two collapsible sections", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter four lines with two collapsible sections", ((string[])(null)));
 #line 87
 this.ScenarioSetup(scenarioInfo);
 #line 88
@@ -299,7 +299,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter brackets below a line of text")]
         public virtual void EnterBracketsBelowALineOfText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter brackets below a line of text", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter brackets below a line of text", ((string[])(null)));
 #line 105
 this.ScenarioSetup(scenarioInfo);
 #line 106
@@ -334,7 +334,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Create folding, move closing bracket one line to the bottom")]
         public virtual void CreateFoldingMoveClosingBracketOneLineToTheBottom()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create folding, move closing bracket one line to the bottom", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create folding, move closing bracket one line to the bottom", ((string[])(null)));
 #line 120
 this.ScenarioSetup(scenarioInfo);
 #line 121
@@ -367,7 +367,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Create folding in first line, move it to the second")]
         public virtual void CreateFoldingInFirstLineMoveItToTheSecond()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create folding in first line, move it to the second", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create folding in first line, move it to the second", ((string[])(null)));
 #line 134
 this.ScenarioSetup(scenarioInfo);
 #line 135

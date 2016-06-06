@@ -43,7 +43,7 @@ namespace CodeEditor.Algorithms.Selection {
         public SelectionInfo WordSelection(MouseButtonEventArgs mouseEvent) {
             var clickPosition = mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
             var activeLine = textViewReader.GetVisualLine(clickPosition.Line);
-            int lineLength = textViewReader.GetLineLength(clickPosition.Line);
+            var lineLength = textViewReader.GetLineLength(clickPosition.Line);
             int[] selectionRange;
 
             if (!activeLine.GetCharInfoAt(clickPosition.Column).IsCharacter) {
@@ -63,8 +63,8 @@ namespace CodeEditor.Algorithms.Selection {
             var clickPosition = mouseEvent.GetPosition(parent).GetDocumentPosition(TextConfiguration.GetCharSize());
             var startPosition = new TextPosition(column: 0, line: clickPosition.Line);
             var endPosition = new TextPosition(column: textViewReader.GetLineLength(clickPosition.Line), line: clickPosition.Line);
-            int cursorColumn = clickPosition.Line + 1 < textViewReader.LinesCount ? 0 : textViewReader.GetLineLength(clickPosition.Line);
-            int cursorLine = clickPosition.Line + 1 < textViewReader.LinesCount ? clickPosition.Line + 1 : clickPosition.Line;
+            var cursorColumn = clickPosition.Line + 1 < textViewReader.LinesCount ? 0 : textViewReader.GetLineLength(clickPosition.Line);
+            var cursorLine = clickPosition.Line + 1 < textViewReader.LinesCount ? clickPosition.Line + 1 : clickPosition.Line;
 
             return new SelectionInfo {
                 StartPosition = startPosition,
@@ -111,8 +111,8 @@ namespace CodeEditor.Algorithms.Selection {
         #region methods
 
         private int[] GetStandardWordSelectionRange(TextPosition clickPosition, VisualTextLine activeLine, int lineLength) {
-            int startColumn = clickPosition.Column;
-            int endColumn = clickPosition.Column;
+            var startColumn = clickPosition.Column;
+            var endColumn = clickPosition.Column;
 
             if (endColumn + 1 <= lineLength) {
                 endColumn += 1;
@@ -120,7 +120,7 @@ namespace CodeEditor.Algorithms.Selection {
                 startColumn -= 1;
             }
             // move left from current position
-            for (int i = clickPosition.Column; i >= 0; i--) {
+            for (var i = clickPosition.Column; i >= 0; i--) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
                 if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Text[0])) {
@@ -130,7 +130,7 @@ namespace CodeEditor.Algorithms.Selection {
                 }
             }
             // move right from current position
-            for (int i = clickPosition.Column; i < lineLength; i++) {
+            for (var i = clickPosition.Column; i < lineLength; i++) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
                 if (charInfo.IsCharacter && char.IsLetterOrDigit(charInfo.Text[0])) {
@@ -144,8 +144,8 @@ namespace CodeEditor.Algorithms.Selection {
         }
 
         private int[] GetCollapseSelectionRange(TextPosition clickPosition, VisualTextLine activeLine, int lineLength) {
-            int startColumn = clickPosition.Column;
-            int endColumn = clickPosition.Column;
+            var startColumn = clickPosition.Column;
+            var endColumn = clickPosition.Column;
 
             if (endColumn + 1 <= lineLength) {
                 endColumn += 1;
@@ -153,7 +153,7 @@ namespace CodeEditor.Algorithms.Selection {
                 startColumn -= 1;
             }
             // move left from current position
-            for (int i = clickPosition.Column; i >= 0; i--) {
+            for (var i = clickPosition.Column; i >= 0; i--) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
                 if (!charInfo.IsCharacter && !char.IsLetterOrDigit(charInfo.Text[0])) {
@@ -163,7 +163,7 @@ namespace CodeEditor.Algorithms.Selection {
                 }
             }
             // move right from current position
-            for (int i = clickPosition.Column; i < lineLength; i++) {
+            for (var i = clickPosition.Column; i < lineLength; i++) {
                 var charInfo = activeLine.GetCharInfoAt(i);
 
                 if (!charInfo.IsCharacter && !char.IsLetterOrDigit(charInfo.Text[0])) {

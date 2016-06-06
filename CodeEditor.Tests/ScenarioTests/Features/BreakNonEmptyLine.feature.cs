@@ -31,7 +31,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BreakNonEmptyLine", "\tIn order to break line\r\n\tAs a user\r\n\tI want to move the caret to a place inside " +
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BreakNonEmptyLine", "\tIn order to break line\r\n\tAs a user\r\n\tI want to move the caret to a place inside " +
                     "a line and hit return", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -68,7 +68,7 @@ namespace CodeEditor.Tests.ScenarioTests.Features
         [NUnit.Framework.DescriptionAttribute("Enter one line four chars long  - Green Path")]
         public virtual void EnterOneLineFourCharsLong_GreenPath()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line four chars long  - Green Path", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line four chars long  - Green Path", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -95,7 +95,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter three lines with varying lengths - Green Path")]
         public virtual void EnterThreeLinesWithVaryingLengths_GreenPath()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three lines with varying lengths - Green Path", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter three lines with varying lengths - Green Path", ((string[])(null)));
 #line 18
 this.ScenarioSetup(scenarioInfo);
 #line 19
@@ -126,7 +126,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter one line four chars long with cursor at the beginning - Green Path")]
         public virtual void EnterOneLineFourCharsLongWithCursorAtTheBeginning_GreenPath()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line four chars long with cursor at the beginning - Green Path", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line four chars long with cursor at the beginning - Green Path", ((string[])(null)));
 #line 31
 this.ScenarioSetup(scenarioInfo);
 #line 32
@@ -151,7 +151,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Enter one line four chars long and move the cursor outside text range - Red Path")]
         public virtual void EnterOneLineFourCharsLongAndMoveTheCursorOutsideTextRange_RedPath()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line four chars long and move the cursor outside text range - Red Path", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter one line four chars long and move the cursor outside text range - Red Path", ((string[])(null)));
 #line 41
 this.ScenarioSetup(scenarioInfo);
 #line 42

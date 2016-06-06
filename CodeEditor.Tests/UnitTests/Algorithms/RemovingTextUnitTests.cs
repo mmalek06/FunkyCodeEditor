@@ -18,8 +18,8 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void TwoNonEmptyLinesEnteredDelPressedAtTheEndOfFirstOne_LineShouldBeEqualToText1Text2() {
-            string text1 = "asdf";
-            string text2 = "zxcv";
+            var text1 = "asdf";
+            var text2 = "zxcv";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1, 0),
                 VisualTextLine.Create(text2, 1)
@@ -31,8 +31,8 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void TwoNonEmptyLinesEnteredBackspacePressedAtTheBeginningOfSecond_LineShouldBeEqualToText1Text2() {
-            string text1 = "asdf";
-            string text2 = "zxcv";
+            var text1 = "asdf";
+            var text2 = "zxcv";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1, 0),
                 VisualTextLine.Create(text2, 1)
@@ -44,10 +44,10 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void ThreeNonEmptyLinesEnteredBackspacePressedAtCharOneBeforeTheLastOneInTheLastLine_LinesShouldBeText4() {
-            string text1 = "some text";
-            string text2 = "";
-            string text3 = "totally unimportant text";
-            string text4 = "text that stays";
+            var text1 = "some text";
+            var text2 = "";
+            var text3 = "totally unimportant text";
+            var text4 = "text that stays";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1, 0),
                 VisualTextLine.Create(text2, 1),
@@ -64,9 +64,9 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void OneNonEmptyLineEnteredText2SelectedBackspacePressed_LineShouldBeText1Text3() {
-            string text1 = "some ";
-            string text2 = "text";
-            string text3 = " asdf";
+            var text1 = "some ";
+            var text2 = "text";
+            var text3 = " asdf";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1 + text2 + text3, 0)
             };
@@ -80,9 +80,9 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void ThreeLinesEnteredBackspacePressedOnTheSecondOne_LinesShouldBeText1Text3AndLinesToRemoveShouldBeLast() {
-            string text1 = "a";
-            string text2 = "";
-            string text3 = "b";
+            var text1 = "a";
+            var text2 = "";
+            var text3 = "b";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1, 0),
                 VisualTextLine.Create(text2, 1),
@@ -97,9 +97,9 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void FourLinesEnteredDeletePressedAtTheEndOfFirst_LinesShouldBeText1Text2Text3() {
-            string text1 = "asdf";
-            string text2 = "zxcv";
-            string text3 = "qwer";
+            var text1 = "asdf";
+            var text2 = "zxcv";
+            var text3 = "qwer";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1, 0),
                 VisualTextLine.Create(string.Empty, 1),
@@ -118,9 +118,9 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void FourLinesEnteredDeletePressedTwiceAtTheEndOfFirst_LinesShouldBeText1PlusText2Text3() {
-            string text1 = "asdf";
-            string text2 = "zxcv";
-            string text3 = "qwer";
+            var text1 = "asdf";
+            var text2 = "zxcv";
+            var text3 = "qwer";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1, 0),
                 VisualTextLine.Create(string.Empty, 1),
@@ -142,9 +142,9 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void OneLineEnteredSelectionOfFourCharsDeletePressed_LineShouldBeText1Text3() {
-            string text1 = "asdf";
-            string text2 = "qwer";
-            string text3 = "zxcv";
+            var text1 = "asdf";
+            var text2 = "qwer";
+            var text3 = "zxcv";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1 + text2 + text3, 0)
             };
@@ -160,10 +160,10 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void TwoLinesEnteredSelectionInTheMiddleOfFirst_LinesShouldBeText1Text3Text4() {
-            string text1 = "as";
-            string text2 = " df ";
-            string text3 = "qwer";
-            string text4 = "zxcv";
+            var text1 = "as";
+            var text2 = " df ";
+            var text3 = "qwer";
+            var text4 = "zxcv";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1 + text2 + text3, 0),
                 VisualTextLine.Create(text4, 1)
@@ -181,12 +181,12 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void FourLinesEnteredSelectionInbetweenDeletePressed_LinesShouldBeText1Text6() {
-            string text1 = "as";
-            string text2 = "df";
-            string text3 = "qwer";
-            string text4 = "zxcv";
-            string text5 = "fg";
-            string text6 = "hj";
+            var text1 = "as";
+            var text2 = "df";
+            var text3 = "qwer";
+            var text4 = "zxcv";
+            var text5 = "fg";
+            var text6 = "hj";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1 + text2, 0),
                 VisualTextLine.Create(text3, 1),
@@ -206,8 +206,8 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [Test]
         public void FourCharactersEnteredSelectionForLastTwo_LineShouldBeText1() {
-            string text1 = "as";
-            string text2 = "df";
+            var text1 = "as";
+            var text2 = "df";
             var lines = new List<VisualTextLine> {
                 VisualTextLine.Create(text1 + text2, 0)
             };

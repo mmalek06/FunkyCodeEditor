@@ -30,8 +30,8 @@ namespace CodeEditor.Controls.Base {
                 return finalSize;
             }
 
-            double h = finalSize.Height;
-            double w = finalSize.Width;
+            var h = finalSize.Height;
+            var w = finalSize.Width;
 
             if (h > MeasurementElement.Height) {
                 h = MeasurementElement.Height;

@@ -23,8 +23,9 @@ namespace CodeEditor.Views.Folding {
 
         #region properties
 
-        private IFoldingAlgorithm FoldingAlgorithm =>
-            foldingAlgorithm ?? FoldingAlgorithmFactory.CreateAlgorithm(ConfigManager.GetConfig(EditorCode).Language);
+        private IFoldingAlgorithm FoldingAlgorithm => foldingAlgorithm ??
+                                                      (foldingAlgorithm =
+                                                          FoldingAlgorithmFactory.CreateAlgorithm(ConfigManager.GetConfig(EditorCode).Language));
 
         #endregion
 
@@ -252,7 +253,7 @@ namespace CodeEditor.Views.Folding {
 
             foreach (var kvp in GetClosedFoldingInfos()) {
                 var symbol = new VisualElementSymbol();
-                int top = (int)kvp.Key.Position.GetPositionRelativeToParent(TextConfiguration.GetCharSize()).Y;
+                var top = (int)kvp.Key.Position.GetPositionRelativeToParent(TextConfiguration.GetCharSize()).Y;
 
                 symbol.DrawFolding(kvp.Key.State, top);
 
