@@ -29,11 +29,11 @@ namespace CodeEditor.Configuration {
 
         public static IEnumerable<IWordType> GetWordParsers(SupportedLanguages language, IDefinitionLoader definitionLoader) =>
             new List<IWordType> {
-                new CollapseWordType { Language = language },
-                new TypeWordType { Language = language },
-                new KeywordWordType { Language = language },
-                new StdWordType { Language = language },
-                new StringWordType { Language = language }
+                new CollapseWordType { Language = language, DefinitionLoader = definitionLoader },
+                new TypeWordType { Language = language, DefinitionLoader = definitionLoader  },
+                new KeywordWordType { Language = language, DefinitionLoader = definitionLoader  },
+                new StdWordType { Language = language, DefinitionLoader = definitionLoader  },
+                new StringWordType { Language = language, DefinitionLoader = definitionLoader  }
             };
 
         public static Brush GetFoldingColumnFontColor() {

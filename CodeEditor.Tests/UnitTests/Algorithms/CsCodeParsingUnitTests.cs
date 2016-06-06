@@ -17,12 +17,25 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
 
         [TestCase("public")]
         [TestCase("void")]
-        public void KeywordsEntered_ShouldApplyKeywordParsing(string text) {
+        public void KeywordEntered_ShouldApplyKeywordParsing(string text) {
             var parsedContent = algorithm.Parse(new [] { text }).First().ToArray();
 
             CollectionAssert.AllItemsAreNotNull(parsedContent);
             Assert.That(parsedContent[0].Text, Is.EqualTo(text));
             Assert.That(parsedContent[0].Type, Is.EqualTo(TextType.KEYWORD));
+        }
+
+        [TestCase("public void")]
+        [TestCase("internal static")]
+        public void KeywordsEntered_ShouldApplyKeywordParsing(string text) {
+            var parsedContent = algorithm.Parse(new[] { text }).First().ToArray();
+            var rawWords = text.Split(' ');
+
+            CollectionAssert.AllItemsAreNotNull(parsedContent);
+            Assert.That(parsedContent[0].Text, Is.EqualTo(rawWords[0]));
+            Assert.That(parsedContent[0].Type, Is.EqualTo(TextType.KEYWORD));
+            Assert.That(parsedContent[1].Text, Is.EqualTo(rawWords[1]));
+            Assert.That(parsedContent[1].Type, Is.EqualTo(TextType.KEYWORD));
         }
     }
 }
