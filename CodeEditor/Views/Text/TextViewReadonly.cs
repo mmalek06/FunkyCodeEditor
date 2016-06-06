@@ -31,11 +31,7 @@ namespace CodeEditor.Views.Text {
             var charInfo = line.RenderedText != string.Empty && newPosition.Column < GetLineLength(newPosition.Line) ? line.GetCharInfoAt(newPosition.Column) : null;
 
             if (charInfo != null) {
-                if (charInfo.IsCharacter) {
-                    return newPosition;
-                } else {
-                    return GetAdjustedPosition(charInfo, moveDirection);
-                }
+                return charInfo.IsCharacter ? newPosition : GetAdjustedPosition(charInfo, moveDirection);
             }
 
             return newPosition;
@@ -44,11 +40,7 @@ namespace CodeEditor.Views.Text {
         public char GetCharAt(TextPosition position) {
             var info = ((VisualTextLine)visuals[position.Line]).GetCharInfoAt(position.Column);
 
-            if (info.IsCharacter) {
-                return info.Text[0];
-            }
-
-            return default(char);
+            return info.IsCharacter ? info.Text[0] : default(char);
         }
 
         public int GetLineLength(int index) => visuals.Count == 0 ? 0 : ((VisualTextLine)visuals[index]).Length;
@@ -88,11 +80,8 @@ namespace CodeEditor.Views.Text {
             if (position.Line >= LinesCount) {
                 return false;
             }
-            if (position.Column > GetLineLength(position.Line)) {
-                return false;
-            }
 
-            return true;
+            return position.Column <= GetLineLength(position.Line);
         }
 
         #endregion

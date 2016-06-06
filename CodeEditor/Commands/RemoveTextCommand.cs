@@ -44,15 +44,15 @@ namespace CodeEditor.Commands {
             }
 
             var area = selectionViewReader.GetCurrentSelectionArea();
+            var lastLineLength = textViewReader.GetLineLength(caretViewReader.CaretPosition.Line);
 
-            if (e.Key == Key.Delete && caretViewReader.CaretPosition.Line == textViewReader.LinesCount && caretViewReader.CaretPosition.Column == textViewReader.GetLineLength(caretViewReader.CaretPosition.Line) && area == null) { 
+            if (e.Key == Key.Delete && caretViewReader.CaretPosition.Line == textViewReader.LinesCount - 1 && caretViewReader.CaretPosition.Column == lastLineLength && area == null) { 
                 return false;
             }
             if (e.Key == Key.Back && caretViewReader.CaretPosition.Line == 0 && caretViewReader.CaretPosition.Column == 0) {
                 return false;
             }
-
-            if (area != null && area.StartPosition != null && area.EndPosition != null) {
+            if (area?.StartPosition != null && area.EndPosition != null) {
                 return area.StartPosition != area.EndPosition;
             }
 
@@ -74,7 +74,7 @@ namespace CodeEditor.Commands {
                 removedText = GetRemovedText(key);
                 positionAfterRemove = GetPositionAfterKeypress(key, removedText);
 
-                if (removedText == string.Empty && !caretViewReader.IsCurrentPositionAtDocumentEnd()) {
+                if (removedText == string.Empty) {
                     removedLinesCount = 1;
                 }
 
@@ -111,26 +111,24 @@ namespace CodeEditor.Commands {
 
         private TextPosition GetPositionAfterKeypress(Key key, string removedText) {
             if (key == Key.Back) {
-                if (removedText == string.Empty) {
-                    return new TextPosition(column: textViewReader.GetLineLength(caretViewReader.CaretPosition.Line - 1), line: caretViewReader.CaretPosition.Line - 1);
-                }
-
-                return new TextPosition(column: caretViewReader.CaretPosition.Column - removedText.Length, line: caretViewReader.CaretPosition.Line);
+                return removedText == string.Empty ? 
+                    new TextPosition(column: textViewReader.GetLineLength(caretViewReader.CaretPosition.Line - 1), line: caretViewReader.CaretPosition.Line - 1) : 
+                    new TextPosition(column: caretViewReader.CaretPosition.Column - removedText.Length, line: caretViewReader.CaretPosition.Line);
             }
 
             return caretViewReader.CaretPosition;
         }
 
         private string GetRemovedText(Key key) {
-            if (textViewReader.GetLineLength(caretViewReader.CaretPosition.Line) == 0 || (key == Key.Delete && caretViewReader.CaretPosition.Column >= textViewReader.GetLine(caretViewReader.CaretPosition.Line).Length)) {
+            if (key == Key.Delete && caretViewReader.CaretPosition.Column >= textViewReader.GetLine(caretViewReader.CaretPosition.Line).Length) {
                 return string.Empty;
             }
             if (key == Key.Delete) {
                 return textViewReader.GetCharAt(caretViewReader.CaretPosition).ToString();
             }
-            if (caretViewReader.CaretPosition.Column == 0 && caretViewReader.CaretPosition.Line > 0) {
+            if (caretViewReader.CaretPosition.Column == 0 && caretViewReader.CaretPosition.Line > 0 && key == Key.Back) {
                 return string.Empty;
-            } 
+            }
 
             var line = textViewReader.GetVisualLine(caretViewReader.CaretPosition.Line);
             var info = line.GetCharInfoAt(caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0);

@@ -61,7 +61,6 @@ namespace CodeEditor.Tests.ScenarioTests {
             
             CaretView.EditorCode = EditorCode;
             CaretView.Postbox = Postbox;
-            CaretView.TextViewReader = TextView;
             TextView.EditorCode = EditorCode;
             TextView.Postbox = Postbox;
             SelectionView.EditorCode = EditorCode;

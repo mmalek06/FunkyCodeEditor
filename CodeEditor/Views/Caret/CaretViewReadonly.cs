@@ -33,11 +33,7 @@ namespace CodeEditor.Views.Caret {
 
             return new TextPosition(column: column, line: line);
         }
-
-        public bool IsPositionAtDocumentEnd(TextPosition position) => position.Line >= TextViewReader.LinesCount;
-
-        public bool IsCurrentPositionAtDocumentEnd() => IsPositionAtDocumentEnd(CaretPosition);
-
+        
         #endregion
 
         #region methods

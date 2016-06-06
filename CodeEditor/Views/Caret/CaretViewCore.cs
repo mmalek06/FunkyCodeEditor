@@ -39,8 +39,6 @@ namespace CodeEditor.Views.Caret {
 
         public HashSet<Key> JumpKeys { get; set; }
 
-        public ITextViewReadonly TextViewReader { get; set; }
-
         #endregion
 
         #region constructor
