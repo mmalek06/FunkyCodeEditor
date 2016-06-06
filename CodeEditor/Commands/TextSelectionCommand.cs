@@ -13,13 +13,13 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private ITextViewReadonly textViewReader;
+        private readonly ITextViewReadonly textViewReader;
 
-        private CaretView caretView;
+        private readonly CaretView caretView;
 
-        private SelectionView selectionView;
+        private readonly SelectionView selectionView;
 
-        private TextSelectionAlgorithm algorithm;
+        private readonly TextSelectionAlgorithm algorithm;
        
         #endregion
 
@@ -49,9 +49,11 @@ namespace CodeEditor.Commands {
 
             if (keyboardEvent != null) {
                 return CanExecuteKeyboard(keyboardEvent);
-            } else if (mouseClickEvent != null) {
+            }
+            if (mouseClickEvent != null) {
                 return CanExecuteMouse(mouseClickEvent);
-            } else if (mouseMoveEvent != null) {
+            }
+            if (mouseMoveEvent != null) {
                 return CanExecuteMouse(mouseMoveEvent);
             }
 

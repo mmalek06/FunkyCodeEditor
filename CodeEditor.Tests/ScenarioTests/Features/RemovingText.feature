@@ -168,3 +168,17 @@ Scenario: Remove from collapsed line with brackets and text
 		And The '0' line should be equal to 'asdf  qwer'
 		And Cursor should be at '5' '0'
 		And I should see no folding
+
+
+Scenario: Press delete after collapse
+	Given Text to enter is '{'
+		And Text to enter is newline
+		And Text to enter is newline
+		And Text to enter is '}'
+	When I enter text
+		And I request folding for position starting at '0' '0'
+		And I move caret to column number '5' in line '0'
+		And I hit delete key
+	Then I should see folding on position starting at '0' '0' and ending at '0' '2'
+		And Shown number of lines in the lines panel should be '1'
+		And The '0' line should be equal to '{...}'

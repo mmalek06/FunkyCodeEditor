@@ -7,7 +7,7 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private SelectionView selectionView;
+        private readonly SelectionView selectionView;
 
         #endregion
 

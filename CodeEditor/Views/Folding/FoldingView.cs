@@ -130,6 +130,7 @@ namespace CodeEditor.Views.Folding {
                 var state = folding.State == FoldingStates.EXPANDED ? FoldingStates.FOLDED : FoldingStates.EXPANDED;
 
                 folding.State = state;
+                foldingPositions[folding].State = state;
 
                 SendMessage(state, folding);
                 RedrawFolds();

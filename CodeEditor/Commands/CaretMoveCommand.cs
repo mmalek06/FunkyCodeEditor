@@ -12,9 +12,9 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private CaretView caretView;
+        private readonly CaretView caretView;
 
-        private ITextViewReadonly textViewReader;
+        private readonly ITextViewReadonly textViewReader;
 
         #endregion
 
@@ -123,13 +123,13 @@ namespace CodeEditor.Commands {
                 }
 
                 return CaretMoveDirection.LEFT;
-            } else {
-                if (newPos.Line > activePosition.Line) {
-                    return CaretMoveDirection.BOTTOM;
-                }
+            } 
 
-                return CaretMoveDirection.TOP;
+            if (newPos.Line > activePosition.Line) {
+                return CaretMoveDirection.BOTTOM;
             }
+
+            return CaretMoveDirection.TOP;
         }
 
         #endregion

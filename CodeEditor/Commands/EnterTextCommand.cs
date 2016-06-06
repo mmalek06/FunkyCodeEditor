@@ -9,11 +9,11 @@ namespace CodeEditor.Commands {
 
         #region fields
 
-        private TextView textView;
+        private readonly TextView textView;
 
-        private CaretView caretView;
+        private readonly CaretView caretView;
 
-        private ISelectionViewReadonly selectionViewReader;
+        private readonly ISelectionViewReadonly selectionViewReader;
 
         #endregion
 

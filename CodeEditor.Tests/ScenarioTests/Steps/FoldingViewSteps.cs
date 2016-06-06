@@ -34,7 +34,7 @@ namespace CodeEditor.Tests.ScenarioTests.Steps {
         public void ThenIShouldSeeNoFolding() {
             var foldingPositions = (Dictionary<FoldingPositionInfo, FoldingPositionInfo>)PrivateMembersHelper.GetFieldValue(Common.Context.FoldingView, "foldingPositions");
 
-            Assert.AreEqual(0, foldingPositions.Where(pair => !pair.Key.Deleted).Count());
+            Assert.AreEqual(0, foldingPositions.Count(pair => !pair.Key.Deleted));
         }
 
         #endregion

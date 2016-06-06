@@ -11,13 +11,13 @@ namespace CodeEditor.Commands {
         
         #region fields
 
-        private HashSet<Key> removalKeys = new HashSet<Key> { Key.Delete, Key.Back };
+        private readonly HashSet<Key> removalKeys = new HashSet<Key> { Key.Delete, Key.Back };
 
-        private TextView textView;
+        private readonly TextView textView;
 
-        private CaretView caretView;
+        private readonly CaretView caretView;
 
-        private ISelectionViewReadonly selectionViewReader;
+        private readonly ISelectionViewReadonly selectionViewReader;
 
         #endregion
 
@@ -60,10 +60,9 @@ namespace CodeEditor.Commands {
         }
 
         public override void Execute(object parameter) {
-            var e = parameter as KeyEventArgs;
+            var e = (KeyEventArgs)parameter;
             var key = e.Key;
             var selectionArea = selectionViewReader.GetCurrentSelectionArea();
-            var prevPosition = caretViewReader.CaretPosition;
             int linesCountBeforeRemove = textViewReader.LinesCount;
             int removedLinesCount = 0;
             string removedText = string.Empty;
@@ -131,20 +130,19 @@ namespace CodeEditor.Commands {
             }
             if (caretViewReader.CaretPosition.Column == 0 && caretViewReader.CaretPosition.Line > 0) {
                 return string.Empty;
-            } else {
-                var line = textViewReader.GetVisualLine(caretViewReader.CaretPosition.Line);
-                var info = line.GetCharInfoAt(caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0);
+            } 
 
-                if (!info.IsCharacter) {
-                    return info.Text;
-                } 
+            var line = textViewReader.GetVisualLine(caretViewReader.CaretPosition.Line);
+            var info = line.GetCharInfoAt(caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0);
 
-                return textViewReader.GetCharAt(
-                    new TextPosition(
-                        column: caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0, 
-                        line: caretViewReader.CaretPosition.Line))
-                                        .ToString();
-            }
+            if (!info.IsCharacter) {
+                return info.Text;
+            } 
+
+            return textViewReader.GetCharAt(
+                new TextPosition(
+                    column: caretViewReader.CaretPosition.Column > 0 ? caretViewReader.CaretPosition.Column - 1 : 0, 
+                    line: caretViewReader.CaretPosition.Line)).ToString();
         }
 
         #endregion
