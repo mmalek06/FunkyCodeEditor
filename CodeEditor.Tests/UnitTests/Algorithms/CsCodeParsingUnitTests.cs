@@ -37,5 +37,18 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.That(parsedContent[1].Text, Is.EqualTo(rawWords[1]));
             Assert.That(parsedContent[1].Type, Is.EqualTo(TextType.KEYWORD));
         }
+
+        [TestCase("publi privat")]
+        [TestCase("public.void methodName()")]
+        public void KeywordsWithTyposEntered_ShouldNotApplyKeywordParsing(string text) {
+            var parsedContent = algorithm.Parse(new[] { text }).First().ToArray();
+            var rawWords = text.Split(' ');
+
+            CollectionAssert.AllItemsAreNotNull(parsedContent);
+            Assert.That(parsedContent[0].Text, Is.EqualTo(rawWords[0]));
+            Assert.That(parsedContent[0].Type, Is.EqualTo(TextType.STANDARD));
+            Assert.That(parsedContent[1].Text, Is.EqualTo(rawWords[1]));
+            Assert.That(parsedContent[1].Type, Is.EqualTo(TextType.STANDARD));
+        }
     }
 }
