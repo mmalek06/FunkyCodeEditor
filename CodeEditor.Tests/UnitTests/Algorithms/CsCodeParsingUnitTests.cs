@@ -50,5 +50,19 @@ namespace CodeEditor.Tests.UnitTests.Algorithms {
             Assert.That(parsedContent[1].Text, Is.EqualTo(rawWords[1]));
             Assert.That(parsedContent[1].Type, Is.EqualTo(TextType.STANDARD));
         }
+
+        [TestCase("public void methodName()")]
+        public void MethodSignatureEntered_ShouldApplyMixedParsing(string text) {
+            var parsedContent = algorithm.Parse(new[] { text }).First().ToArray();
+            var rawWords = text.Split(' ');
+
+            CollectionAssert.AllItemsAreNotNull(parsedContent);
+            Assert.That(parsedContent[0].Text, Is.EqualTo(rawWords[0]));
+            Assert.That(parsedContent[0].Type, Is.EqualTo(TextType.KEYWORD));
+            Assert.That(parsedContent[1].Text, Is.EqualTo(rawWords[1]));
+            Assert.That(parsedContent[1].Type, Is.EqualTo(TextType.KEYWORD));
+            Assert.That(parsedContent[2].Text, Is.EqualTo(rawWords[2]));
+            Assert.That(parsedContent[2].Type, Is.EqualTo(TextType.STANDARD));
+        }
     }
 }

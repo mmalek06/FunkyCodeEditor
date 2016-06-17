@@ -94,10 +94,12 @@ namespace CodeEditor.Views.Text {
         public void RemoveText(TextRange range) {
             var removalInfo = removingAlgorithm.GetChangeInLines(GetVisualLines(), range);
 
-            if (removalInfo.LinesToChange.Any()) {
-                DeleteText(removalInfo);
-                UpdateSize();
+            if (!removalInfo.LinesToChange.Any()) {
+                return;
             }
+
+            DeleteText(removalInfo);
+            UpdateSize();
         }
 
         #endregion

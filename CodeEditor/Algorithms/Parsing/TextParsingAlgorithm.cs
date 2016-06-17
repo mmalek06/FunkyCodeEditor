@@ -12,11 +12,17 @@ namespace CodeEditor.Algorithms.Parsing {
 
         #region fields
 
-        private IEnumerable<IWordType> wordParsers;
+        private IEnumerable<IWordType> wordTypes;
 
         private readonly SupportedLanguages language;
 
         private readonly IDefinitionLoader definitionLoader;
+
+        #endregion
+
+        #region properties
+
+        private IEnumerable<IWordType> WordTypes => wordTypes ?? (wordTypes = SharedEditorConfiguration.GetWordParsers(language, definitionLoader));
 
         #endregion
 
@@ -32,22 +38,43 @@ namespace CodeEditor.Algorithms.Parsing {
         #region public methods
 
         public ParseResultType Parse(IEnumerable<string> lines) {
-            if (wordParsers == null) {
-                wordParsers = SharedEditorConfiguration.GetWordParsers(language, definitionLoader);
+            var initialParsingResult = ParseInitial(lines);
+            var filteredParsingResult = Filter(initialParsingResult);
+
+            return filteredParsingResult;
+        }
+        
+        #endregion
+
+        #region methods
+
+        private ParseResultType ParseInitial(IEnumerable<string> lines) =>
+            from line in lines
+            select Regex.Matches(line, "(?<match>[^\\s\"]+)|(?<match>\"[^\"]*\")")
+                        .Cast<Match>()
+                        .Select(m => m.Groups["match"].Value)
+                        .ToArray() 
+            into parts
+            select
+                (from type in WordTypes
+                 from text in parts
+                 where type.IsMatch(text)
+                 select new ParsingInfo(type.Type, text)) 
+            into parsingInfos
+            select parsingInfos;
+
+        private ParseResultType Filter(ParseResultType initialParsingResult) {
+            var result = new List<List<ParsingInfo>>();
+
+            foreach (var row in initialParsingResult) {
+                foreach (var info in row) {
+                    if (info.Type != TextType.STANDARD) {
+                        continue;
+                    }
+                }
             }
 
-            return (from line in lines
-                    select Regex.Matches(line, "(?<match>[^\\s\"]+)|(?<match>\"[^\"]*\")")
-                                .Cast<Match>()
-                                .Select(m => m.Groups["match"].Value)
-                                .ToArray() into parts
-                    select 
-                        (from parser in wordParsers
-                         from word in parts
-                         where parser.IsMatch(word)
-                         select new ParsingInfo(type: parser.Type, text: word)) 
-                    into parsingInfos
-                    select new List<ParsingInfo>(parsingInfos)).ToList();
+            return result;
         }
 
         #endregion

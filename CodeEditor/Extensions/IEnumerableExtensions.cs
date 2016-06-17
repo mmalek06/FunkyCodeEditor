@@ -34,6 +34,26 @@ namespace CodeEditor.Extensions {
                 return singleLine.ToVisualTextLine();
             });
 
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.DistinctBy(keySelector, null);
+        
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+            if (source == null) {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (keySelector == null) {
+                throw new ArgumentNullException(nameof(keySelector));
+            }
+
+            return DistinctByImpl(source, keySelector, comparer);
+        }
+
+        #endregion
+
+        #region methods
+
+        private static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) =>
+            source.GroupBy(keySelector, comparer).Select(g => g.First());
+
         #endregion
 
     }
